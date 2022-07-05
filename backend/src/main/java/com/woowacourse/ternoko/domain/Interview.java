@@ -18,8 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Interview {
 
     @Id
@@ -50,8 +50,12 @@ public class Interview {
     @JoinColumn(name = "formItem_id")
     private List<FormItem> Items = new ArrayList<>();
 
-    public Interview(LocalDate interviewDate, LocalTime interviewStartTime, LocalTime interviewEndTime,
-                     Member coach, String crewNickname, Location location,
+    public Interview(LocalDate interviewDate,
+                     LocalTime interviewStartTime,
+                     LocalTime interviewEndTime,
+                     Member coach,
+                     String crewNickname,
+                     Location location,
                      List<FormItem> items) {
         this.interviewDate = interviewDate;
         this.interviewStartTime = interviewStartTime;
