@@ -5,7 +5,7 @@ export type ButtonProps = {
   gray?: boolean;
 };
 
-export const Button = styled.button<ButtonProps>`
+const Button = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +19,7 @@ export const Button = styled.button<ButtonProps>`
   color: white;
   font-weight: bold;
   font-size: 1rem;
+  cursor: pointer;
 
   ${({ gray }) =>
     gray &&
@@ -27,3 +28,5 @@ export const Button = styled.button<ButtonProps>`
       color: ${({ theme }) => theme.colors.pink};
     `}
 `;
+
+export default Button;
