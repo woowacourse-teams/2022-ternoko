@@ -9,5 +9,4 @@ class TernokoApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
