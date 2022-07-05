@@ -4,6 +4,7 @@ export type ButtonProps = {
   width?: string;
   height?: string;
   orange?: boolean;
+  white?: boolean;
 };
 
 const Button = styled.button<ButtonProps>`
@@ -28,6 +29,14 @@ const Button = styled.button<ButtonProps>`
     css`
       background-color: ${({ theme }) => theme.colors.orange};
       color: ${({ theme }) => theme.colors.pink};
+    `}
+
+  ${({ white }) =>
+    white &&
+    css`
+      border: 0.5px solid ${({ theme }) => theme.colors.black};
+      background-color: ${({ theme }) => theme.colors.white};
+      color: ${({ theme }) => theme.colors.black};
     `}
 `;
 

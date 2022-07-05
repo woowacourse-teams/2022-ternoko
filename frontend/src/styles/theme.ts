@@ -3,6 +3,7 @@ const theme = {
     pink: '#ff385c',
     gray: '#e9ebee',
     white: '#ffffff',
+    black: '#000000',
     orange: 'rgba(255, 210, 77, 0.3)',
   },
 };
