@@ -13,6 +13,10 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
+  #root{
+    height:100%;
+  }
+
   *, *:before, *:after {
     padding: 0;
     margin: 0;

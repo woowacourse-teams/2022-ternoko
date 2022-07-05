@@ -4,15 +4,15 @@ import styled, { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
 
+import HomePage from './pages/HomePage';
 import Header from './components/Header';
-import Reservation from './components/Reservation';
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Layout>
-        <Reservation />
+        <HomePage />
       </Layout>
     </ThemeProvider>
   );
@@ -33,7 +33,7 @@ const Layout = ({ children }: LayoutProps) => {
 
 const S = {
   Body: styled.div`
-    height: calc(100% - 9rem);
+    min-height: calc(100% - 60px);
     padding: 3rem 9rem 0;
   `,
 };
