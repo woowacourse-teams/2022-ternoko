@@ -1,5 +1,6 @@
 import Button from '../../components/@common/Button/styled';
 import CoachProfile from '../../components/CoachProfile';
+import GridContainer from '../../components/@common/GridContainer/styled';
 import * as S from './styled';
 
 const ReservationApplyPage = () => {
@@ -12,7 +13,8 @@ const ReservationApplyPage = () => {
         <S.Circle>1</S.Circle>
         <h3>코치를 선택해주세요.</h3>
       </S.SubTitleBox>
-      <S.CoachProfileContainer>
+
+      <GridContainer minSize="110px" pb="3rem">
         <CoachProfile />
         <CoachProfile />
         <CoachProfile />
@@ -23,7 +25,7 @@ const ReservationApplyPage = () => {
         <CoachProfile />
         <CoachProfile />
         <CoachProfile />
-      </S.CoachProfileContainer>
+      </GridContainer>
 
       <Button width="100%" height="40px">
         다음
