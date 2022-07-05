@@ -25,7 +25,7 @@ const Reservation = () => {
         <p>잠실</p>
       </S.ImageTextBox>
       <S.ButtonBox>
-        <Button gray={true}>
+        <Button orange={true}>
           <S.ButtonImage src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="" />
           편집
         </Button>
