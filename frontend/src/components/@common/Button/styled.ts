@@ -2,7 +2,8 @@ import styled, { css } from 'styled-components';
 
 export type ButtonProps = {
   width?: string;
-  gray?: boolean;
+  height?: string;
+  orange?: boolean;
 };
 
 const Button = styled.button<ButtonProps>`
@@ -11,18 +12,19 @@ const Button = styled.button<ButtonProps>`
   justify-content: center;
   gap: 1rem;
   width: ${({ width }) => width || ''};
+  height: ${({ height }) => height ?? 'auto'};
   padding: 7px 12px;
   border: none;
   border-radius: 12px;
 
   background-color: ${({ theme }) => theme.colors.pink};
-  color: white;
+  color: ${({ theme }) => theme.colors.white};
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
 
-  ${({ gray }) =>
-    gray &&
+  ${({ orange }) =>
+    orange &&
     css`
       background-color: ${({ theme }) => theme.colors.orange};
       color: ${({ theme }) => theme.colors.pink};
