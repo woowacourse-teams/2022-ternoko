@@ -13,5 +13,4 @@ export const Basic: Story<ButtonProps> = Template.bind({});
 
 Basic.args = {
   width: '100px',
-  height: '40px',
 };
