@@ -39,10 +39,3 @@ export const Circle = styled.div`
   background-color: ${({ theme }) => theme.colors.pink};
   color: ${({ theme }) => theme.colors.white};
 `;
-
-export const CoachProfileContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  grid-gap: 3rem;
-  padding-bottom: 3rem;
-`;
