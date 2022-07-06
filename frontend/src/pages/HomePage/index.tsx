@@ -5,7 +5,7 @@ import * as S from './styled';
 
 const HomePage = () => {
   return (
-    <S.Box>
+    <>
       <S.TitleBox>
         <h2>나의 면담</h2>
         <Button>+ 신청하기</Button>
@@ -20,7 +20,7 @@ const HomePage = () => {
         <Reservation />
         <Reservation />
       </GridContainer>
-    </S.Box>
+    </>
   );
 };
 
