@@ -30,7 +30,6 @@ export const Box = styled.div<BoxProps>`
     css`
       overflow: visible;
       opacity: 1;
-      border: 3px solid yellow;
       z-index: 1;
 
       .fold-box {
@@ -43,7 +42,6 @@ export const Box = styled.div<BoxProps>`
     css`
       max-height: 0;
       opacity: 0;
-      border: 3px solid yellow;
     `}
 
   ${({ stepStatus }) =>
@@ -51,7 +49,6 @@ export const Box = styled.div<BoxProps>`
     css`
       overflow: visible;
       opacity: 1;
-      border: 3px solid yellow;
 
       .fold-box {
         max-height: 0;
@@ -109,4 +106,35 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+`;
+
+export const DateBox = styled.div`
+  display: flex;
+  gap: 3rem;
+  padding-bottom: 3rem;
+`;
+
+export const TimeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  height: 42rem;
+
+  overflow-y: scroll;
+
+  padding-right: 3rem;
+`;
+
+export const Time = styled.div`
+  padding: 1.5rem 5rem;
+  color: ${({ theme }) => theme.colors.pink};
+  border: 1px solid #ffe3e3;
+  font-weight: 600;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  :hover {
+    border: 1px solid #f03e3e;
+  }
 `;
