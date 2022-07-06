@@ -18,8 +18,10 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class ReservationService {
 
@@ -67,10 +69,20 @@ public class ReservationService {
         return formItems;
     }
 
+    @Transactional(readOnly = true)
     public ReservationResponse findReservationById(final Long id) {
         final Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 면담 예약입니다."));
 
         return ReservationResponse.from(reservation);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationResponse> findAllReservations() {
+        final List<Reservation> reservations = reservationRepository.findAll();
+
+        return reservations.stream()
+                .map(ReservationResponse::from)
+                .collect(Collectors.toList());
     }
 }

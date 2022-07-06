@@ -1,6 +1,9 @@
 package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH2;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -22,18 +25,8 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("면담 예약을 생성한다.")
     void create() {
-        // given
-        final ReservationRequest reservationRequest = new ReservationRequest("바니",
-                LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                Location.JAMSIL.getValue(),
-                List.of(new FormItemRequest("고정질문1", "답변1"),
-                        new FormItemRequest("고정질문2", "답변2"),
-                        new FormItemRequest("고정질문3", "답변3")));
-
-        final Long coachId = 1L;
-
-        // when
-        final ExtractableResponse<Response> response = post("/api/reservations/coaches/" + coachId, reservationRequest);
+        // given, when
+        final ExtractableResponse<Response> response = createReservation(COACH1.getId(), "애쉬");
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -44,14 +37,14 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findReservationById() {
         // given
-        final ReservationRequest reservationRequest = new ReservationRequest("바니",
+        final ReservationRequest reservationRequest = new ReservationRequest("수달7",
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
                 Location.JAMSIL.getValue(),
                 List.of(new FormItemRequest("고정질문1", "답변1"),
                         new FormItemRequest("고정질문2", "답변2"),
                         new FormItemRequest("고정질문3", "답변3")));
 
-        final ExtractableResponse<Response> createdResponse = post("/api/reservations/coaches/" + COACH1.getId(),
+        final ExtractableResponse<Response> createdResponse = post("/api/reservations/coaches/" + COACH3.getId(),
                 reservationRequest);
 
         // when
@@ -62,7 +55,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(reservationResponse.getCoachNickname())
-                        .isEqualTo(COACH1.getNickname()),
+                        .isEqualTo(COACH3.getNickname()),
                 () -> assertThat(reservationResponse.getReservationDate())
                         .isEqualTo(reservationDatetime.toLocalDate()),
                 () -> assertThat(reservationResponse.getReservationStartTime())
@@ -70,5 +63,34 @@ class ReservationAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(reservationResponse.getReservationEndTime())
                         .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime())
         );
+    }
+
+    @Test
+    @DisplayName("면담 예약 내역 목록을 조회한다.")
+    void findAll() {
+        // given
+        createReservation(COACH1.getId(), "애쉬");
+        createReservation(COACH2.getId(), "바니");
+        createReservation(COACH3.getId(), "앤지");
+        createReservation(COACH4.getId(), "열음");
+
+        // when
+        final ExtractableResponse<Response> response = get("/api/reservations");
+        final List<ReservationResponse> reservationResponses = response.body().jsonPath()
+                .getList(".", ReservationResponse.class);
+
+        // then
+        assertThat(reservationResponses).hasSize(4);
+    }
+
+    private ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
+        final ReservationRequest reservationRequest = new ReservationRequest(crewName,
+                LocalDateTime.of(2022, 7, 4, 14, 0, 0),
+                Location.JAMSIL.getValue(),
+                List.of(new FormItemRequest("고정질문1", "답변1"),
+                        new FormItemRequest("고정질문2", "답변2"),
+                        new FormItemRequest("고정질문3", "답변3")));
+
+        return post("/api/reservations/coaches/" + coachId, reservationRequest);
     }
 }
