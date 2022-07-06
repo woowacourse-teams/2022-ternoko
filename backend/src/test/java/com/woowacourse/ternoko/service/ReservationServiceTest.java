@@ -35,18 +35,18 @@ class ReservationServiceTest {
         // given, when
         final Long id = reservationService.create(COACH1.getId(), RESERVATION_REQUEST3);
         final ReservationResponse reservationResponse = reservationService.findReservationById(id);
-        final LocalDateTime reservationDatetime = RESERVATION_REQUEST3.getReservationDatetime();
+        final LocalDateTime reservationDatetime = RESERVATION_REQUEST3.getInterviewDatetime();
 
         // then
         assertAll(
                 () -> assertThat(id).isNotNull(),
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH1.getNickname()),
-                () -> assertThat(reservationResponse.getReservationDate())
+                () -> assertThat(reservationResponse.getInterviewDate())
                         .isEqualTo(reservationDatetime.toLocalDate()),
-                () -> assertThat(reservationResponse.getReservationStartTime())
+                () -> assertThat(reservationResponse.getInterviewStartTime())
                         .isEqualTo(reservationDatetime.toLocalTime()),
-                () -> assertThat(reservationResponse.getReservationEndTime())
+                () -> assertThat(reservationResponse.getInterviewEndTime())
                         .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime())
         );
     }

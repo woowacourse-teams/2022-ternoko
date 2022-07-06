@@ -50,17 +50,17 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // when
         final ExtractableResponse<Response> response = get(createdResponse.header("Location"));
         final ReservationResponse reservationResponse = response.body().as(ReservationResponse.class);
-        final LocalDateTime reservationDatetime = reservationRequest.getReservationDatetime();
+        final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         // then
         assertAll(
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(reservationResponse.getReservationDate())
+                () -> assertThat(reservationResponse.getInterviewDate())
                         .isEqualTo(reservationDatetime.toLocalDate()),
-                () -> assertThat(reservationResponse.getReservationStartTime())
+                () -> assertThat(reservationResponse.getInterviewStartTime())
                         .isEqualTo(reservationDatetime.toLocalTime()),
-                () -> assertThat(reservationResponse.getReservationEndTime())
+                () -> assertThat(reservationResponse.getInterviewEndTime())
                         .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime())
         );
     }

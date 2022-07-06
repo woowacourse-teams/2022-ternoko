@@ -46,7 +46,7 @@ public class ReservationService {
                                        final List<FormItemRequest> interviewQuestions) {
         final List<FormItem> formItems = convertFormItem(interviewQuestions);
 
-        final LocalDateTime reservationDatetime = reservationRequest.getReservationDatetime();
+        final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Member coach = memberRepository.findById(coachId)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
