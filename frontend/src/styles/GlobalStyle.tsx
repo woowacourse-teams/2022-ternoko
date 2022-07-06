@@ -11,7 +11,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     width: 100%;
     height: 100%;
+    background-color : ${({ theme }) => theme.colors.gray_50}
   }
+
+  
 
   #root{
     height:100%;
