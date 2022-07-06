@@ -52,7 +52,7 @@ public class ReservationService {
                 reservationDatetime.toLocalTime().plusMinutes(30),
                 coach,
                 reservationRequest.getCrewNickname(),
-                Location.of(reservationRequest.getLocation()),
+                Location.from(reservationRequest.getLocation()),
                 formItems);
     }
 

@@ -14,7 +14,7 @@ public enum Location {
 
     private final String value;
 
-    public static Location of(final String location) {
+    public static Location from(final String location) {
         return Arrays.stream(values())
                 .filter(it -> it.value.equals(location))
                 .findFirst()
