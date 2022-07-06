@@ -7,6 +7,7 @@ import com.woowacourse.ternoko.dto.FormItemRequest;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ class ReservationServiceTest {
     private ReservationService reservationService;
 
     @Test
+    @DisplayName("면담 예약을 생성한다.")
     void create() {
         // given
         final ReservationRequest reservationRequest = new ReservationRequest("바니",
