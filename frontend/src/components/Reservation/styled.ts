@@ -5,9 +5,9 @@ export const Box = styled.div`
   width: 25rem;
   padding: 1rem 1.5rem 1.5rem;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border: 1px solid ${({ theme }) => theme.colors.gray_100};
   border-radius: 5px;
-  box-shadow: 0 8px 18px -5px rgb(23 39 75 / 5%);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 export const ImageTextBox = styled.div`

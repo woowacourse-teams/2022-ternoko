@@ -11,7 +11,7 @@ export const CoachProfileImage = styled.img`
   border-radius: 25px;
   margin-bottom: 0.5rem;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border: 1px solid ${({ theme }) => theme.colors.gray_100};
 `;
 
 export const CoachName = styled.p`

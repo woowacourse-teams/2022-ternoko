@@ -31,6 +31,7 @@ export const Box = styled.div<BoxProps>`
       overflow: visible;
       opacity: 1;
       border: 3px solid yellow;
+      z-index: 1;
 
       .fold-box {
         max-height: 1000px;
