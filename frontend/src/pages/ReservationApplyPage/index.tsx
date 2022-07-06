@@ -6,6 +6,7 @@ import GridContainer from '../../components/@common/GridContainer/styled';
 import TextAreaField from '../../components/TextAreaField';
 
 import * as S from './styled';
+import Calendar from '../../components/Calendar';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -68,9 +69,20 @@ const ReservationApplyPage = () => {
           </div>
 
           <div className="fold-box">
-            <GridContainer minSize="110px" pb="3rem">
-              <CoachProfile />
-            </GridContainer>
+            <S.DateBox>
+              <Calendar />
+              <S.TimeContainer>
+                <S.Time>10 : 00</S.Time>
+                <S.Time>10 : 30</S.Time>
+                <S.Time>11 : 00</S.Time>
+                <S.Time>11 : 30</S.Time>
+                <S.Time>12 : 00</S.Time>
+                <S.Time>12 : 30</S.Time>
+                <S.Time>13 : 00</S.Time>
+                <S.Time>13 : 30</S.Time>
+                <S.Time>14 : 00</S.Time>
+              </S.TimeContainer>
+            </S.DateBox>
 
             <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(1)}>
               다음
