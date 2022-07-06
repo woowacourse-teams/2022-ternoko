@@ -27,7 +27,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
 
-    public Long create(Long coachId, ReservationRequest reservationRequest) {
+    public Long create(final Long coachId, final ReservationRequest reservationRequest) {
         final List<FormItemRequest> interviewQuestions = reservationRequest.getInterviewQuestions();
 
         final Interview interview = convertInterview(coachId, reservationRequest,
@@ -38,8 +38,9 @@ public class ReservationService {
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
 
-    private Interview convertInterview(Long coachId, ReservationRequest reservationRequest,
-                                       List<FormItemRequest> interviewQuestions) {
+    private Interview convertInterview(final Long coachId,
+                                       final ReservationRequest reservationRequest,
+                                       final List<FormItemRequest> interviewQuestions) {
         final List<FormItem> formItems = convertFormItem(interviewQuestions);
 
         final LocalDateTime reservationDatetime = reservationRequest.getReservationDatetime();
@@ -56,7 +57,7 @@ public class ReservationService {
                 formItems);
     }
 
-    private List<FormItem> convertFormItem(List<FormItemRequest> interviewQuestions) {
+    private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
         final List<FormItem> formItems = interviewQuestions.stream()
                 .map(FormItemRequest::toFormItem)
                 .collect(Collectors.toList());
