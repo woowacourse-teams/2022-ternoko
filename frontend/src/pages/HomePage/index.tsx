@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Reservation from '../../components/Reservation';
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
@@ -8,7 +10,9 @@ const HomePage = () => {
     <>
       <S.TitleBox>
         <h2>나의 면담</h2>
-        <Button>+ 신청하기</Button>
+        <Link to="/reservation/apply">
+          <Button>+ 신청하기</Button>
+        </Link>
       </S.TitleBox>
       <S.TabMenuBox>
         <h3>진행중 면담</h3>

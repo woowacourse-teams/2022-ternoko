@@ -8,14 +8,6 @@ export const Box = styled.div`
   padding: 0 9rem;
 `;
 
-export const LogoBox = styled.div`
-  cursor: pointer;
-
-  h1 {
-    font-size: 2rem;
-  }
-`;
-
 export const MenuBox = styled.div`
   display: flex;
   gap: 1rem;
