@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const TitleBox = styled.div`
   display: flex;
@@ -15,13 +15,18 @@ export const TitleBox = styled.div`
 export const TabMenuBox = styled.div`
   display: flex;
   gap: 2rem;
+`;
 
-  h3 {
-    position: relative;
-    font-size: 2rem;
-  }
+type TabMenuProps = {
+  active: boolean;
+};
 
-  h3:after {
+export const TabMenu = styled.h3<TabMenuProps>`
+  position: relative;
+  font-size: 2rem;
+  cursor: pointer;
+
+  &:hover:after {
     content: '';
     position: absolute;
     left: 0;
@@ -31,4 +36,19 @@ export const TabMenuBox = styled.div`
 
     background-color: ${({ theme }) => theme.colors.pink};
   }
+
+  ${({ active }) =>
+    active &&
+    css`
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 100%;
+        height: 3px;
+
+        background-color: ${({ theme }) => theme.colors.pink};
+      }
+    `}
 `;
