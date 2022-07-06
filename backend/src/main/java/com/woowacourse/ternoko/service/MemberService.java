@@ -14,7 +14,7 @@ public class MemberService {
     public MemberService(final MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
-    
+
     public List<Member> findCoaches() {
         return memberRepository.findAllByType(Type.COACH);
     }

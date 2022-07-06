@@ -28,13 +28,13 @@ public class Interview {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate interviewDate;
+    private LocalDate reservationDate;
 
     @Column(nullable = false)
-    private LocalTime interviewStartTime;
+    private LocalTime reservationStartTime;
 
     @Column(nullable = false)
-    private LocalTime interviewEndTime;
+    private LocalTime reservationEndTime;
 
     @OneToOne
     @JoinColumn(name = "member_id")
@@ -50,16 +50,16 @@ public class Interview {
     @JoinColumn(name = "formItem_id")
     private List<FormItem> Items = new ArrayList<>();
 
-    public Interview(LocalDate interviewDate,
-                     LocalTime interviewStartTime,
-                     LocalTime interviewEndTime,
+    public Interview(LocalDate reservationDate,
+                     LocalTime reservationStartTime,
+                     LocalTime reservationEndTime,
                      Member coach,
                      String crewNickname,
                      Location location,
                      List<FormItem> items) {
-        this.interviewDate = interviewDate;
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
+        this.reservationDate = reservationDate;
+        this.reservationStartTime = reservationStartTime;
+        this.reservationEndTime = reservationEndTime;
         this.coach = coach;
         this.crewNickname = crewNickname;
         this.location = location;
