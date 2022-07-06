@@ -1,10 +1,14 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.domain.Location;
 import com.woowacourse.ternoko.dto.FormItemRequest;
 import com.woowacourse.ternoko.dto.ReservationRequest;
+import com.woowacourse.ternoko.dto.ReservationResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -29,11 +33,22 @@ class ReservationServiceTest {
                         new FormItemRequest("고정질문2", "답변2"),
                         new FormItemRequest("고정질문3", "답변3")));
 
-        final Long coachId = 1L;
         // when
-        final Long id = reservationService.create(coachId, reservationRequest);
+        final Long id = reservationService.create(COACH1.getId(), reservationRequest);
+        final ReservationResponse reservationResponse = reservationService.findReservationById(id);
+        final LocalDateTime reservationDatetime = reservationRequest.getReservationDatetime();
 
         // then
-        assertThat(id).isNotNull();
+        assertAll(
+                () -> assertThat(id).isNotNull(),
+                () -> assertThat(reservationResponse.getCoachNickname())
+                        .isEqualTo(COACH1.getNickname()),
+                () -> assertThat(reservationResponse.getReservationDate())
+                        .isEqualTo(reservationDatetime.toLocalDate()),
+                () -> assertThat(reservationResponse.getReservationStartTime())
+                        .isEqualTo(reservationDatetime.toLocalTime()),
+                () -> assertThat(reservationResponse.getReservationEndTime())
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime())
+        );
     }
 }

@@ -8,12 +8,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -32,10 +34,4 @@ public class Member {
 
     @Column
     private String imageUrl;
-
-    public Member(String nickname, String email, Type type) {
-        this.nickname = nickname;
-        this.email = email;
-        this.type = type;
-    }
 }

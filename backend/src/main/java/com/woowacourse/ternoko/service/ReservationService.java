@@ -7,6 +7,7 @@ import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.dto.FormItemRequest;
 import com.woowacourse.ternoko.dto.ReservationRequest;
+import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
@@ -64,5 +65,12 @@ public class ReservationService {
 
         formItemRepository.saveAll(formItems);
         return formItems;
+    }
+
+    public ReservationResponse findReservationById(final Long id) {
+        final Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 면담 예약입니다."));
+
+        return ReservationResponse.from(reservation);
     }
 }
