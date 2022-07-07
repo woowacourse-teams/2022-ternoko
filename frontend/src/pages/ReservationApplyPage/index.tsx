@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
@@ -8,10 +10,14 @@ import Calendar from '../../components/Calendar';
 
 import * as S from './styled';
 
+import { Coach } from 'types/domain';
+
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
+  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [currentCoachId, setCurrentCoachId] = useState<number | null>(null);
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -29,10 +35,23 @@ const ReservationApplyPage = () => {
     );
   };
 
+  const handleClickProfile = (id: number) => {
+    setCurrentCoachId(id);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get('http://192.168.7.8:8080/api/reservations/coaches');
+      setCoaches(response.data.coaches);
+    })();
+  }, []);
+
   return (
     <>
       <S.TitleBox>
-        <h2>{'<'} 면담 신청하기</h2>
+        <h2>
+          <Link to="/">{'<'}</Link> 면담 신청하기
+        </h2>
       </S.TitleBox>
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
@@ -43,17 +62,14 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <GridContainer minSize="110px" pb="3rem">
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
-              <CoachProfile />
+              {coaches.map((coach) => (
+                <CoachProfile
+                  key={coach.id}
+                  {...coach}
+                  currentCoachId={currentCoachId}
+                  handleClickProfile={handleClickProfile}
+                />
+              ))}
             </GridContainer>
 
             <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(0)}>

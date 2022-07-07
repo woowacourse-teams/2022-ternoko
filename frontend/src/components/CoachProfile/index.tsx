@@ -1,13 +1,22 @@
+import { Coach } from 'types/domain';
 import * as S from './styled';
 
-const CoachProfile = () => {
+export type CoachProfileProps = Coach & {
+  currentCoachId: number;
+  handleClickProfile: (id: number) => void;
+};
+
+const CoachProfile = ({
+  id,
+  nickname,
+  imageUrl,
+  currentCoachId,
+  handleClickProfile,
+}: CoachProfileProps) => {
   return (
-    <S.Box>
-      <S.CoachProfileImage
-        src="https://blog.kakaocdn.net/dn/FSvHG/btrzdoAbEI0/WA1kfeo9BFC8n8GOe39U31/img.webp"
-        alt="코치 프로필"
-      />
-      <S.CoachName>카리나(바니)</S.CoachName>
+    <S.Box active={currentCoachId === id} onClick={() => handleClickProfile(id)}>
+      <S.CoachProfileImage src={imageUrl} alt="코치 프로필" />
+      <S.CoachName>{nickname}</S.CoachName>
     </S.Box>
   );
 };
