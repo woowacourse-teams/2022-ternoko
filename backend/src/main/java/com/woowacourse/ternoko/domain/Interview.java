@@ -48,7 +48,7 @@ public class Interview {
 
     @OneToMany
     @JoinColumn(name = "formItem_id")
-    private List<FormItem> Items = new ArrayList<>();
+    private List<FormItem> formItems = new ArrayList<>();
 
     public Interview(LocalDate interviewDate,
                      LocalTime interviewStartTime,
@@ -56,13 +56,13 @@ public class Interview {
                      Member coach,
                      String crewNickname,
                      Location location,
-                     List<FormItem> items) {
+                     List<FormItem> formItems) {
         this.interviewDate = interviewDate;
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crewNickname = crewNickname;
         this.location = location;
-        Items = items;
+        this.formItems = formItems;
     }
 }
