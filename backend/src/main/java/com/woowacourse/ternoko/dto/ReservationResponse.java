@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.dto;
 
+import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,17 +15,23 @@ public class ReservationResponse {
 
     private final Long id;
     private final String coachNickname;
-    private final LocalDate reservationDate;
-    private final LocalTime reservationStartTime;
-    private final LocalTime reservationEndTime;
+    private final String crewNickname;
+    private final LocalDate interviewDate;
+    private final LocalTime interviewStartTime;
+    private final LocalTime interviewEndTime;
+    private final String location;
 
     public static ReservationResponse from(final Reservation reservation) {
+        final Interview interview = reservation.getInterview();
+
         return ReservationResponse.reservationResponseBuilder()
                 .id(reservation.getId())
-                .coachNickname(reservation.getInterview().getCoach().getNickname())
-                .reservationDate(reservation.getInterview().getReservationDate())
-                .reservationStartTime(reservation.getInterview().getReservationStartTime())
-                .reservationEndTime(reservation.getInterview().getReservationEndTime())
+                .coachNickname(interview.getCoach().getNickname())
+                .crewNickname(interview.getCrewNickname())
+                .interviewDate(interview.getInterviewDate())
+                .interviewStartTime(interview.getInterviewStartTime())
+                .interviewEndTime(interview.getInterviewEndTime())
+                .location(interview.getLocation().getValue())
                 .build();
     }
 }
