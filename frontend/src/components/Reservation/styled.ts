@@ -7,7 +7,7 @@ export const Box = styled.div`
 
   border: 1px solid ${({ theme }) => theme.colors.gray_100};
   border-radius: 5px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: ${({ theme }) => theme.shadows.basic};
 `;
 
 export const ImageTextBox = styled.div`

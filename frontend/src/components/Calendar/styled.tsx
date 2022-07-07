@@ -5,7 +5,7 @@ export const Box = styled.div`
   height: max-content;
   position: relative;
 
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: ${({ theme }) => theme.shadows.basic};
   border-radius: 20px;
 `;
 
@@ -34,7 +34,7 @@ export const YearChange = styled.p`
   height: 3rem;
   border-radius: 100%;
 
-  background-color: #edf0f5;
+  background-color: ${({ theme }) => theme.colors.white_100};
   transition: all 0.2s;
   cursor: pointer;
 
@@ -67,7 +67,7 @@ export const WeekDay = styled.div`
   div {
     display: grid;
     place-items: center;
-    color: #c3c2c8;
+    color: ${({ theme }) => theme.colors.gray_150};
   }
 `;
 
@@ -94,7 +94,7 @@ export const Day = styled.div<DayProps>`
     today &&
     css`
       border-radius: 100%;
-      background-color: #ffe3e3;
+      background-color: ${({ theme }) => theme.colors.pink_50};
     `}
 
   span {
@@ -105,7 +105,7 @@ export const Day = styled.div<DayProps>`
   span:nth-child(3) {
     width: 2px;
     height: 0;
-    background-color: #ffe3e3;
+    background-color: ${({ theme }) => theme.colors.pink_50};
   }
 
   span:nth-child(1) {
@@ -205,7 +205,7 @@ export const MonthContainer = styled.div<MonthContainerProps>`
     :hover {
       transform: scale(1.2);
       font-weight: 600;
-      background-color: #edf0f5;
+      background-color: ${({ theme }) => theme.colors.white_100};
     }
   }
 `;

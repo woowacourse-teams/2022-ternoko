@@ -91,15 +91,15 @@ export const Circle = styled.div`
   height: 20px;
   border-radius: 100%;
 
-  background-color: ${({ theme }) => theme.colors.pink};
-  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.pink_200};
+  color: ${({ theme }) => theme.colors.white_50};
 `;
 
 export const Bar = styled.div`
   width: 1px;
   height: 40px;
   margin-left: 10px;
-  background: ${({ theme }) => theme.colors.pink};
+  background: ${({ theme }) => theme.colors.pink_200};
 `;
 
 export const Form = styled.form`
@@ -128,13 +128,13 @@ export const TimeContainer = styled.div`
 
 export const Time = styled.div`
   padding: 1.5rem 5rem;
-  color: ${({ theme }) => theme.colors.pink};
-  border: 1px solid #ffe3e3;
+  color: ${({ theme }) => theme.colors.pink_200};
+  border: 1px solid ${({ theme }) => theme.colors.pink_50};
   font-weight: 600;
   font-size: 1.2rem;
   cursor: pointer;
 
   :hover {
-    border: 1px solid #f03e3e;
+    border: 1px solid ${({ theme }) => theme.colors.pink_300};
   }
 `;

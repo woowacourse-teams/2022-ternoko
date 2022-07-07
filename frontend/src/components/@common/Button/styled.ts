@@ -18,8 +18,8 @@ const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: 12px;
 
-  background-color: ${({ theme }) => theme.colors.pink};
-  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.pink_200};
+  color: ${({ theme }) => theme.colors.white_50};
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
@@ -28,14 +28,14 @@ const Button = styled.button<ButtonProps>`
     orange &&
     css`
       background-color: ${({ theme }) => theme.colors.orange};
-      color: ${({ theme }) => theme.colors.pink};
+      color: ${({ theme }) => theme.colors.pink_200};
     `}
 
   ${({ white }) =>
     white &&
     css`
       border: 0.5px solid ${({ theme }) => theme.colors.black};
-      background-color: ${({ theme }) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.white_50};
       color: ${({ theme }) => theme.colors.black};
     `}
 `;

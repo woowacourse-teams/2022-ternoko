@@ -34,7 +34,7 @@ export const TabMenu = styled.h3<TabMenuProps>`
     width: 100%;
     height: 3px;
 
-    background-color: ${({ theme }) => theme.colors.pink};
+    background-color: ${({ theme }) => theme.colors.pink_200};
   }
 
   ${({ active }) =>
@@ -48,7 +48,7 @@ export const TabMenu = styled.h3<TabMenuProps>`
         width: 100%;
         height: 3px;
 
-        background-color: ${({ theme }) => theme.colors.pink};
+        background-color: ${({ theme }) => theme.colors.pink_200};
       }
     `}
 `;
