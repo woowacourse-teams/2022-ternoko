@@ -143,7 +143,7 @@ export const Day = styled.div<DayProps>`
   }
 
   :hover span {
-    transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
+    transition: width 0.15s ease-in-out, height 0.15s ease-in-out;
   }
 
   :hover span:nth-child(1),
@@ -156,15 +156,15 @@ export const Day = styled.div<DayProps>`
     width: 100%;
   }
   :hover span:nth-child(2) {
-    transition-delay: 0.1s;
+    transition-delay: 0.15s;
   }
 
   :hover span:nth-child(3) {
-    transition-delay: 0.2s;
+    transition-delay: 0.3s;
   }
 
   :hover span:nth-child(4) {
-    transition-delay: 0.3s;
+    transition-delay: 0.45s;
   }
 `;
 
