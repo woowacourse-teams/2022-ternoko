@@ -9,7 +9,7 @@ spring:
     generate-ddl: true
     defer-datasource-initialization: true
   datasource:
-    url: jdbc:h2:~/test6;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url:
     username: sa
   h2:
     console:
