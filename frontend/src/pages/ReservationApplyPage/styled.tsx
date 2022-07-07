@@ -131,7 +131,11 @@ export const TimeContainer = styled.div`
   padding-right: 3rem;
 `;
 
-export const Time = styled.div`
+type TimeProps = {
+  active: boolean;
+};
+
+export const Time = styled.div<TimeProps>`
   padding: 1.5rem 5rem;
   color: ${({ theme }) => theme.colors.pink_200};
   border: 1px solid ${({ theme }) => theme.colors.pink_50};
@@ -142,4 +146,10 @@ export const Time = styled.div`
   :hover {
     border: 1px solid ${({ theme }) => theme.colors.pink_300};
   }
+
+  ${({ active }) =>
+    active &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.pink_300};
+    `}
 `;

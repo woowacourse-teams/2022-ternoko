@@ -1,7 +1,12 @@
 import useCalendar from './useCalendar';
 import * as S from './styled';
 
-const Calendar = () => {
+type CalendarProps = {
+  currentDay: number;
+  handleClickDay: (date: number) => () => void;
+};
+
+const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
   const {
     daysLength,
     monthNames,
@@ -44,14 +49,19 @@ const Calendar = () => {
 
               if (isToday(day)) {
                 return (
-                  <S.Day key={index} today>
+                  <S.Day
+                    key={index}
+                    today
+                    onClick={handleClickDay(day)}
+                    active={currentDay === day}
+                  >
                     {day}
                   </S.Day>
                 );
               }
 
               return (
-                <S.Day key={index}>
+                <S.Day key={index} onClick={handleClickDay(day)} active={currentDay === day}>
                   {day}
                   <span />
                   <span />

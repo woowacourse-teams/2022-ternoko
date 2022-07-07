@@ -15,9 +15,11 @@ import { Coach } from 'types/domain';
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
-  const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
+  const [stepStatus, setStepStatus] = useState<StepStatus[]>(['hidden', 'show', 'hidden']);
   const [coaches, setCoaches] = useState<Coach[]>([]);
-  const [currentCoachId, setCurrentCoachId] = useState<number | null>(null);
+  const [currentCoachId, setCurrentCoachId] = useState<number>(-1);
+  const [currentDay, setCurrentDay] = useState<number>(-1);
+  const [currentTime, setCurrentTime] = useState<string>('');
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -37,6 +39,14 @@ const ReservationApplyPage = () => {
 
   const handleClickProfile = (id: number) => {
     setCurrentCoachId(id);
+  };
+
+  const handleClickDay = (day: number) => () => {
+    setCurrentDay(day);
+  };
+
+  const handleClickTime = (time: string) => () => {
+    setCurrentTime(time);
   };
 
   useEffect(() => {
@@ -86,17 +96,38 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <S.DateBox>
-              <Calendar />
+              <Calendar currentDay={currentDay} handleClickDay={handleClickDay} />
               <S.TimeContainer>
-                <S.Time>10 : 00</S.Time>
-                <S.Time>10 : 30</S.Time>
-                <S.Time>11 : 00</S.Time>
-                <S.Time>11 : 30</S.Time>
-                <S.Time>12 : 00</S.Time>
-                <S.Time>12 : 30</S.Time>
-                <S.Time>13 : 00</S.Time>
-                <S.Time>13 : 30</S.Time>
-                <S.Time>14 : 00</S.Time>
+                <S.Time active={currentTime === '10:00'} onClick={handleClickTime('10:00')}>
+                  10 : 00
+                </S.Time>
+                <S.Time active={currentTime === '10:30'} onClick={handleClickTime('10:30')}>
+                  10 : 30
+                </S.Time>
+                <S.Time active={currentTime === '11:00'} onClick={handleClickTime('11:00')}>
+                  11 : 00
+                </S.Time>
+                <S.Time active={currentTime === '11:30'} onClick={handleClickTime('11:30')}>
+                  11 : 30
+                </S.Time>
+                <S.Time active={currentTime === '12:00'} onClick={handleClickTime('12:00')}>
+                  12 : 00
+                </S.Time>
+                <S.Time active={currentTime === '12:30'} onClick={handleClickTime('12:30')}>
+                  12 : 30
+                </S.Time>
+                <S.Time active={currentTime === '13:00'} onClick={handleClickTime('13:00')}>
+                  13 : 00
+                </S.Time>
+                <S.Time active={currentTime === '13:30'} onClick={handleClickTime('13:30')}>
+                  13 : 30
+                </S.Time>
+                <S.Time active={currentTime === '14:00'} onClick={handleClickTime('14:00')}>
+                  14 : 00
+                </S.Time>
+                <S.Time active={currentTime === '14:30'} onClick={handleClickTime('14:30')}>
+                  14 : 30
+                </S.Time>
               </S.TimeContainer>
             </S.DateBox>
 

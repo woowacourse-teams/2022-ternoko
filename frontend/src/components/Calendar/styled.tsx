@@ -79,6 +79,7 @@ export const Days = styled.div`
 
 type DayProps = {
   today?: boolean;
+  active?: boolean;
 };
 
 export const Day = styled.div<DayProps>`
@@ -97,6 +98,12 @@ export const Day = styled.div<DayProps>`
       background-color: ${({ theme }) => theme.colors.pink_50};
     `}
 
+  ${({ active }) =>
+    active &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.pink_200};
+    `}
+    
   span {
     position: absolute;
   }
