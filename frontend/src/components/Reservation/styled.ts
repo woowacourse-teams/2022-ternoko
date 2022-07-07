@@ -8,6 +8,13 @@ export const Box = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray_100};
   border-radius: 5px;
   box-shadow: ${({ theme }) => theme.shadows.basic};
+
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+
+  :hover {
+    transform: translateY(-2rem);
+  }
 `;
 
 export const ImageTextBox = styled.div`

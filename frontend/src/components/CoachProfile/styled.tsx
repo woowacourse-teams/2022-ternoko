@@ -24,7 +24,12 @@ type BoxProps = {
 
 export const Box = styled.div<BoxProps>`
   width: fit-content;
+  transition: transform 0.2s ease-in-out;
   cursor: pointer;
+
+  :hover {
+    transform: translateY(-1.5rem);
+  }
 
   :hover ${CoachName} {
     background-color: ${({ theme }) => theme.colors.pink_50};
