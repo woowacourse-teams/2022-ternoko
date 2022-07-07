@@ -102,9 +102,13 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    await axios.post(`http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`, body);
+    const response = await axios.post(
+      `http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`,
+      body,
+    );
+    const location = response.headers.location;
 
-    navigate('/reservation/complete/3');
+    navigate(`/reservation/complete/${location.split('/')[3]}`);
   };
 
   useEffect(() => {
