@@ -9,12 +9,13 @@
   "scripts": {
     "dev": "webpack-dev-server --config config/webpack.dev.js",
     "prod": "webpack-dev-server --config config/webpack.prod.js",
-    "storybook": "start-storybook -p 6006",
     "build:dev": "webpack --config config/webpack.dev.js",
     "build:prod": "webpack --config config/webpack.prod.js",
-    "build:storybook": "build-storybook"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.5"
@@ -29,14 +30,13 @@
     "@storybook/addon-essentials": "^6.5.9",
     "@storybook/addon-interactions": "^6.5.9",
     "@storybook/addon-links": "^6.5.9",
-    "@storybook/builder-webpack4": "^6.5.9",
     "@storybook/builder-webpack5": "^6.5.9",
-    "@storybook/manager-webpack4": "^6.5.9",
     "@storybook/manager-webpack5": "^6.5.9",
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "@types/styled-components": "^5.1.25",
     "@typescript-eslint/eslint-plugin": "^5.30.3",
     "@typescript-eslint/parser": "^5.30.3",
     "babel-loader": "^8.2.5",
@@ -53,6 +53,7 @@
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "prettier": "2.7.1",
+    "react-router-dom": "^6.3.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.3.3",
     "typescript": "^4.7.4",
