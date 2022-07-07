@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,11 +44,11 @@ class ReservationServiceTest {
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH1.getNickname()),
                 () -> assertThat(reservationResponse.getInterviewDate())
-                        .isEqualTo(reservationDatetime.toLocalDate()),
+                        .isEqualTo(reservationDatetime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
                 () -> assertThat(reservationResponse.getInterviewStartTime())
-                        .isEqualTo(reservationDatetime.toLocalTime()),
+                        .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime())
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")))
         );
     }
 
