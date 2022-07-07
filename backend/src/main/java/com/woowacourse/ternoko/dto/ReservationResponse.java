@@ -1,9 +1,11 @@
 package com.woowacourse.ternoko.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +20,9 @@ public class ReservationResponse {
     private final String coachNickname;
     private final String imageUrl;
     private final String crewNickname;
-    private final LocalDate interviewDate;
-    private final LocalTime interviewStartTime;
-    private final LocalTime interviewEndTime;
+    private final String interviewDate;
+    private final String interviewStartTime;
+    private final String interviewEndTime;
     private final String location;
 
     public static ReservationResponse from(final Reservation reservation) {
@@ -31,9 +33,9 @@ public class ReservationResponse {
                 .coachNickname(interview.getCoach().getNickname())
                 .imageUrl(interview.getCoach().getImageUrl())
                 .crewNickname(interview.getCrewNickname())
-                .interviewDate(interview.getInterviewDate())
-                .interviewStartTime(interview.getInterviewStartTime())
-                .interviewEndTime(interview.getInterviewEndTime())
+                .interviewDate(interview.getInterviewDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .interviewStartTime(interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                .interviewEndTime(interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
                 .location(interview.getLocation().getValue())
                 .build();
     }
