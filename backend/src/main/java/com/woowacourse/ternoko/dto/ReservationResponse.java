@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class ReservationResponse {
 
     private final Long id;
     private final String coachNickname;
+    private final String imageUrl;
     private final String crewNickname;
     private final LocalDate interviewDate;
     private final LocalTime interviewStartTime;
@@ -27,6 +29,7 @@ public class ReservationResponse {
         return ReservationResponse.reservationResponseBuilder()
                 .id(reservation.getId())
                 .coachNickname(interview.getCoach().getNickname())
+                .imageUrl(interview.getCoach().getImageUrl())
                 .crewNickname(interview.getCrewNickname())
                 .interviewDate(interview.getInterviewDate())
                 .interviewStartTime(interview.getInterviewStartTime())
