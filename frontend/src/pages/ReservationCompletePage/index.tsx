@@ -13,7 +13,9 @@ const ReservationCompletePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get(`http://192.168.7.8:8080/api/reservations/${reservationId}`);
+      const response = await axios.get(
+        `http://192.168.6.170:8080/api/reservations/${reservationId}`,
+      );
       setReservation(response.data);
     })();
   }, []);
@@ -21,10 +23,7 @@ const ReservationCompletePage = () => {
   return (
     <S.Box>
       <S.LogoBox>
-        <S.Logo
-          src="https://blog.kakaocdn.net/dn/FSvHG/btrzdoAbEI0/WA1kfeo9BFC8n8GOe39U31/img.webp"
-          alt="로고"
-        />
+        <S.Logo src={reservation?.imageUrl} alt="로고" />
         <h2>{reservation?.crewNickname}님~ 면담 신청이 완료되었습니다.</h2>
       </S.LogoBox>
 

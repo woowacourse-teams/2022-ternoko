@@ -6,6 +6,7 @@ export interface CoachType {
 
 export interface ReservationType {
   id: number;
+  imageUrl: string;
   crewNickname: string;
   coachNickname: string;
   interviewDate: string;
