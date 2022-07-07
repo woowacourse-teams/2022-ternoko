@@ -1,7 +1,7 @@
-import { Coach } from 'types/domain';
+import { CoachType } from 'types/domain';
 import * as S from './styled';
 
-export type CoachProfileProps = Coach & {
+export type CoachProfileProps = CoachType & {
   currentCoachId: number;
   handleClickProfile: (id: number) => void;
 };

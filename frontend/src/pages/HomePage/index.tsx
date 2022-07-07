@@ -1,19 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Reservation from '../../components/Reservation';
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
 import * as S from './styled';
 
+import { ReservationType } from 'types/domain';
+
 export type TabMenuStatus = 'doing' | 'done';
 
 const HomePage = () => {
+  const [reservations, setReservations] = useState<ReservationType[]>([]);
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
 
   const handleClickTabMenu = (status: TabMenuStatus) => {
     setTabMenuStatus(status);
   };
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get('http://192.168.7.8:8080/api/reservations');
+      setReservations(response.data);
+    })();
+  }, []);
 
   return (
     <>
@@ -32,10 +43,9 @@ const HomePage = () => {
         </S.TabMenu>
       </S.TabMenuBox>
       <GridContainer minSize="25rem" pt="4rem">
-        <Reservation />
-        <Reservation />
-        <Reservation />
-        <Reservation />
+        {reservations?.map((reservation) => (
+          <Reservation key={reservation.id} {...reservation} />
+        ))}
       </GridContainer>
     </>
   );

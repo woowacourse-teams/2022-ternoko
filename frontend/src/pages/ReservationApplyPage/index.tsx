@@ -11,14 +11,14 @@ import useCalendar from '../../components/Calendar/useCalendar';
 
 import * as S from './styled';
 
-import { Coach } from 'types/domain';
+import { CoachType } from 'types/domain';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
-  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [currentDay, setCurrentDay] = useState(-1);
   const [currentTime, setCurrentTime] = useState('');
   const [currentCoachId, setCurrentCoachId] = useState(-1);

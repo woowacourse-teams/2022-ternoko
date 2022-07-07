@@ -1,28 +1,38 @@
 import Button from '../../components/@common/Button/styled';
-import * as S from './styled';
 
-const Reservation = () => {
+import * as S from './styled';
+import { ReservationType } from 'types/domain';
+
+const Reservation = ({
+  coachNickname,
+  interviewDate,
+  interviewStartTime,
+  interviewEndTime,
+  location,
+}: ReservationType) => {
   return (
     <S.Box>
       <S.ImageTextBox>
         <S.ProfileImage
           src="https://blog.kakaocdn.net/dn/FSvHG/btrzdoAbEI0/WA1kfeo9BFC8n8GOe39U31/img.webp"
-          alt="코치 프로필 "
+          alt="코치 프로필"
         />
-        <p>카리나(장현석)</p>
+        <p>{coachNickname}</p>
       </S.ImageTextBox>
 
       <S.ImageTextBox>
         <S.IconImage src="https://cdn-icons-png.flaticon.com/512/7088/7088625.png" alt="" />
-        <p>2022년 07월 23일</p>
+        <p>{interviewDate}</p>
       </S.ImageTextBox>
       <S.ImageTextBox>
         <S.IconImage src="https://cdn-icons-png.flaticon.com/512/88/88291.png" alt="" />
-        <p>13:00 ~ 14:00</p>
+        <p>
+          {interviewStartTime} ~ {interviewEndTime}
+        </p>
       </S.ImageTextBox>
       <S.ImageTextBox>
         <S.IconImage src="https://cdn-icons-png.flaticon.com/512/535/535239.png" alt="" />
-        <p>잠실</p>
+        <p>{location}</p>
       </S.ImageTextBox>
       <S.ButtonBox>
         <Button orange={true}>

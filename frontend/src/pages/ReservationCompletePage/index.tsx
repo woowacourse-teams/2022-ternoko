@@ -5,11 +5,11 @@ import axios from 'axios';
 import Button from '../../components/@common/Button/styled';
 import * as S from './styled';
 
-import { Reservation } from 'types/domain';
+import { ReservationType } from 'types/domain';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
-  const [reservation, setReservation] = useState<Reservation | null>(null);
+  const [reservation, setReservation] = useState<ReservationType | null>(null);
 
   useEffect(() => {
     (async () => {
