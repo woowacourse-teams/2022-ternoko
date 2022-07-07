@@ -64,7 +64,6 @@ class ReservationServiceTest {
         final List<ReservationResponse> reservationResponses = reservationService.findAllReservations();
 
         // then
-
         assertThat(reservationResponses).extracting("crewNickname")
                 .hasSize(4)
                 .contains("바니", "열음", "앤지", "애쉬");
