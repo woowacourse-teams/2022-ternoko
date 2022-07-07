@@ -28,7 +28,7 @@ const useCalendar = () => {
   const [month, setMonth] = useState(currentDate.getMonth());
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
-  const firstDay = new Date(month, year, 1).getDay();
+  const firstDay = new Date(`${year}/${month + 1}/1`).getDay();
   const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysLength = daysOfMonth[month] + firstDay;
 
