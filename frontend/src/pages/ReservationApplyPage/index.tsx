@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import Button from '../../components/@common/Button/styled';
-import CoachProfile from '../../components/CoachProfile';
 import GridContainer from '../../components/@common/GridContainer/styled';
+import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
+import Calendar from '../../components/Calendar';
 
 import * as S from './styled';
-import Calendar from '../../components/Calendar';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 

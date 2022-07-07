@@ -1,51 +1,30 @@
-import { useState } from 'react';
-
+import useCalendar from './useCalendar';
 import * as S from './styled';
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-const isLeapYear = (year: number) =>
-  (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
-  (year % 100 === 0 && year % 400 === 0);
-
-const getFebruaryDays = (year: number) => (isLeapYear(year) ? 29 : 28);
-
 const Calendar = () => {
-  const currentDate = new Date();
-
-  const [year, setYear] = useState(currentDate.getFullYear());
-  const [month, setMonth] = useState(currentDate.getMonth());
-  const [showMonthPicker, setShowMonthPicker] = useState(false);
-
-  const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const firstDay = new Date(month, year, 1).getDay();
-
-  const handleClickMonth = (monthIndex: number) => {
-    setMonth(monthIndex);
-    setShowMonthPicker(false);
-  };
+  const {
+    daysLength,
+    monthNames,
+    month,
+    year,
+    showMonthPicker,
+    getHandleClickMonth,
+    handleClickPrevYear,
+    handleClickNextYear,
+    handleClickMonthPicker,
+    getDay,
+    isToday,
+    isOverFirstDay,
+  } = useCalendar();
 
   return (
     <S.Box>
       <S.Header>
-        <S.MonthPicker onClick={() => setShowMonthPicker(true)}>{monthNames[month]}</S.MonthPicker>
+        <S.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</S.MonthPicker>
         <S.YearPicker>
-          <S.YearChange onClick={() => setYear((prev) => prev - 1)}>{'<'}</S.YearChange>
+          <S.YearChange onClick={handleClickPrevYear}>{'<'}</S.YearChange>
           <p>{year}</p>
-          <S.YearChange onClick={() => setYear((prev) => prev + 1)}>{'>'}</S.YearChange>
+          <S.YearChange onClick={handleClickNextYear}>{'>'}</S.YearChange>
         </S.YearPicker>
       </S.Header>
       <S.Body>
@@ -59,15 +38,11 @@ const Calendar = () => {
           <div>Sat</div>
         </S.WeekDay>
         <S.Days>
-          {Array.from({ length: daysOfMonth[month] + firstDay }, (_, index) => {
-            if (index >= firstDay) {
-              const day = index - firstDay + 1;
+          {Array.from({ length: daysLength }, (_, index) => {
+            if (isOverFirstDay(index)) {
+              const day = getDay(index);
 
-              if (
-                day === currentDate.getDate() &&
-                year === currentDate.getFullYear() &&
-                month === currentDate.getMonth()
-              ) {
+              if (isToday(day)) {
                 return <S.Day today>{day}</S.Day>;
               }
 
@@ -89,7 +64,7 @@ const Calendar = () => {
 
       <S.MonthContainer show={showMonthPicker}>
         {monthNames.map((monthName, index) => (
-          <div onClick={() => handleClickMonth(index)}>{monthName}</div>
+          <div onClick={getHandleClickMonth(index)}>{monthName}</div>
         ))}
       </S.MonthContainer>
     </S.Box>
