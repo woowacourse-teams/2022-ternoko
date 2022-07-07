@@ -121,7 +121,7 @@ const ReservationApplyPage = () => {
       </S.TitleBox>
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
-          <div className="subTitle" onClick={() => handleClickStepTitle(0)}>
+          <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
             <S.Circle>1</S.Circle>
             <h3>코치를 선택해주세요.</h3>
           </div>
@@ -145,7 +145,7 @@ const ReservationApplyPage = () => {
         </S.Box>
 
         <S.Box stepStatus={stepStatus[1]}>
-          <div className="subTitle" onClick={() => handleClickStepTitle(1)}>
+          <div className="sub-title" onClick={() => handleClickStepTitle(1)}>
             <S.Circle>2</S.Circle>
             <h3>날짜 및 시간을 선택해주세요.</h3>
           </div>
@@ -194,7 +194,7 @@ const ReservationApplyPage = () => {
         </S.Box>
 
         <S.Box stepStatus={stepStatus[2]}>
-          <div className="subTitle">
+          <div className="sub-title">
             <S.Circle>3</S.Circle>
             <h3>사전 논의 내용을 입력해주세요.</h3>
           </div>

@@ -12,7 +12,9 @@ type BoxProps = {
 };
 
 export const Box = styled.div<BoxProps>`
-  .subTitle {
+  position: relative;
+
+  .sub-title {
     display: flex;
     align-items: center;
     width: fit-content;
@@ -51,6 +53,22 @@ export const Box = styled.div<BoxProps>`
     css`
       overflow: visible;
       opacity: 1;
+
+      .sub-title {
+        opacity: 0.4;
+      }
+
+      .sub-title:after {
+        content: '';
+        position: absolute;
+        left: 9px;
+        top: 33px;
+        width: 2px;
+        height: 25px;
+
+        background-color: ${({ theme }) => theme.colors.pink_200};
+        opacity: 1;
+      }
 
       .fold-box {
         max-height: 0;
