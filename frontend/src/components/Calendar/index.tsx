@@ -1,7 +1,7 @@
 import useCalendar from './useCalendar';
 import * as S from './styled';
 
-type CalendarProps = {
+export type CalendarProps = {
   currentDay: number;
   handleClickDay: (date: number) => () => void;
 };
@@ -21,7 +21,7 @@ const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
     isToday,
     isOverFirstDay,
   } = useCalendar();
-  console.log('hi calendar');
+
   return (
     <S.Box>
       <S.Header>
