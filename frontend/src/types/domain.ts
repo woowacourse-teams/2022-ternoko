@@ -1,10 +1,10 @@
-export interface Coach {
+export interface CoachType {
   id: number;
   nickname: string;
   imageUrl: string;
 }
 
-export interface Reservation {
+export interface ReservationType {
   id: number;
   crewNickname: string;
   coachNickname: string;

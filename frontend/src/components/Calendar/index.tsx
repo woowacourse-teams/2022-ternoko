@@ -21,7 +21,7 @@ const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
     isToday,
     isOverFirstDay,
   } = useCalendar();
-
+  console.log('hi calendar');
   return (
     <S.Box>
       <S.Header>
@@ -42,7 +42,7 @@ const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
           <div>Fri</div>
           <div>Sat</div>
         </S.WeekDay>
-        <S.Days>
+        <S.Days key={Date.now()}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);

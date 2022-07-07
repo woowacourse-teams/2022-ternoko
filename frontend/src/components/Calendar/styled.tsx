@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 export const Box = styled.div`
   width: max-content;
@@ -77,6 +77,17 @@ export const Days = styled.div`
   gap: 0.2rem;
 `;
 
+const toTop = keyframes`
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+  `;
+
 type DayProps = {
   today?: boolean;
   active?: boolean;
@@ -89,6 +100,7 @@ export const Day = styled.div<DayProps>`
   width: 6rem;
   height: 6rem;
   padding: 0.5rem;
+  animation: ${toTop} 1s;
   cursor: pointer;
 
   ${({ today }) =>
