@@ -22,8 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Transactional
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class ReservationServiceTest {
 
     @Autowired
