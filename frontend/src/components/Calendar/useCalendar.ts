@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useRef } from 'react';
 
 const monthNames = [
   'January',
@@ -23,6 +23,7 @@ const getFebruaryDays = (year: number) => (isLeapYear(year) ? 29 : 28);
 
 const useCalendar = () => {
   const currentDate = new Date();
+  const initRef = useRef(false);
 
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
@@ -31,6 +32,14 @@ const useCalendar = () => {
   const firstDay = new Date(`${year}/${month + 1}/1`).getDay();
   const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysLength = daysOfMonth[month] + firstDay;
+
+  const daysKey = useMemo(() => {
+    const key = Date.now();
+
+    initRef.current = true;
+
+    return key;
+  }, [year, month, initRef.current]);
 
   const isToday = (day: number) => {
     return (
@@ -66,6 +75,7 @@ const useCalendar = () => {
   };
 
   return {
+    daysKey,
     daysLength,
     monthNames,
     month,

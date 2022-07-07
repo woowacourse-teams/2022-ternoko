@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -19,9 +19,11 @@ const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
+
   const [currentDay, setCurrentDay] = useState(-1);
   const [currentTime, setCurrentTime] = useState('');
   const [currentCoachId, setCurrentCoachId] = useState(-1);
+
   const { year: currentYear, month: currentMonth } = useCalendar();
 
   const [answer1, setAnswer1] = useState('');
@@ -50,9 +52,12 @@ const ReservationApplyPage = () => {
     setCurrentCoachId(id);
   };
 
-  const handleClickDay = (day: number) => () => {
-    setCurrentDay(day);
-  };
+  const handleClickDay = useCallback(
+    (day: number) => () => {
+      setCurrentDay(day);
+    },
+    [stepStatus[1]],
+  );
 
   const handleClickTime = (time: string) => () => {
     setCurrentTime(time);
@@ -97,10 +102,7 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await axios.post(
-      `http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`,
-      body,
-    );
+    await axios.post(`http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`, body);
 
     navigate('/reservation/complete/3');
   };

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import useCalendar from './useCalendar';
 import * as S from './styled';
 
@@ -8,6 +10,7 @@ export type CalendarProps = {
 
 const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
   const {
+    daysKey,
     daysLength,
     monthNames,
     month,
@@ -42,7 +45,7 @@ const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
           <div>Fri</div>
           <div>Sat</div>
         </S.WeekDay>
-        <S.Days key={Date.now()}>
+        <S.Days key={daysKey}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
@@ -87,4 +90,4 @@ const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
   );
 };
 
-export default Calendar;
+export default memo(Calendar);
