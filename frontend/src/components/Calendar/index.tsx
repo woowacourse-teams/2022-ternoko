@@ -43,7 +43,11 @@ const Calendar = () => {
               const day = getDay(index);
 
               if (isToday(day)) {
-                return <S.Day today>{day}</S.Day>;
+                return (
+                  <S.Day key={index} today>
+                    {day}
+                  </S.Day>
+                );
               }
 
               return (
@@ -64,7 +68,9 @@ const Calendar = () => {
 
       <S.MonthContainer show={showMonthPicker}>
         {monthNames.map((monthName, index) => (
-          <div onClick={getHandleClickMonth(index)}>{monthName}</div>
+          <div key={index} onClick={getHandleClickMonth(index)}>
+            {monthName}
+          </div>
         ))}
       </S.MonthContainer>
     </S.Box>
