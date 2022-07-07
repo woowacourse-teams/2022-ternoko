@@ -15,10 +15,12 @@ export const Box = styled.div<BoxProps>`
   .subTitle {
     display: flex;
     align-items: center;
+    width: fit-content;
     gap: 1rem;
     margin-bottom: 2rem;
 
     font-weight: bold;
+    cursor: pointer;
 
     h3 {
       font-size: 1.3rem;
@@ -63,10 +65,13 @@ export const TitleBox = styled.div`
   align-items: center;
   margin-bottom: 2rem;
 
+  a {
+    margin-right: 1rem;
+  }
+
   h2 {
     position: relative;
     font-size: 3rem;
-    cursor: pointer;
   }
 `;
 

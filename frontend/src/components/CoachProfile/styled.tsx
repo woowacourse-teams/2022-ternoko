@@ -1,9 +1,4 @@
-import styled from 'styled-components';
-
-export const Box = styled.div`
-  width: fit-content;
-  cursor: pointer;
-`;
+import styled, { css } from 'styled-components';
 
 export const CoachProfileImage = styled.img`
   width: 110px;
@@ -16,6 +11,30 @@ export const CoachProfileImage = styled.img`
 
 export const CoachName = styled.p`
   text-align: center;
+
   font-size: 1.2rem;
   font-weight: bold;
+  padding: 0.3rem 0;
+  border-radius: 10px;
+`;
+
+type BoxProps = {
+  active?: boolean;
+};
+
+export const Box = styled.div<BoxProps>`
+  width: fit-content;
+  cursor: pointer;
+
+  :hover ${CoachName} {
+    background-color: ${({ theme }) => theme.colors.pink_50};
+  }
+
+  ${({ active }) =>
+    active &&
+    css`
+      ${CoachName} {
+        background-color: ${({ theme }) => theme.colors.pink_50};
+      }
+    `}
 `;
