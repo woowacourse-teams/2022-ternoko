@@ -8,11 +8,19 @@ export const Label = styled.label`
   margin-bottom: 0.7rem;
 `;
 
-export const TextArea = styled.textarea`
+type TextAreaProps = {
+  isError: boolean;
+};
+
+export const TextArea = styled.textarea<TextAreaProps>`
   width: 100%;
   min-height: 70px;
   border-radius: 10px;
   padding: 1rem;
   font-size: 1rem;
   resize: none;
+  outline: none;
+
+  border: 1px solid
+    ${({ isError, theme }) => (isError ? theme.colors.pink_200 : theme.colors.gray_150)};
 `;
