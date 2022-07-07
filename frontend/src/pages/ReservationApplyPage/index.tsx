@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,6 +7,7 @@ import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
 import Calendar from '../../components/Calendar';
+import useCalendar from '../../components/Calendar/useCalendar';
 
 import * as S from './styled';
 
@@ -15,11 +16,18 @@ import { Coach } from 'types/domain';
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
-  const [stepStatus, setStepStatus] = useState<StepStatus[]>(['hidden', 'show', 'hidden']);
+  const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<Coach[]>([]);
-  const [currentCoachId, setCurrentCoachId] = useState<number>(-1);
-  const [currentDay, setCurrentDay] = useState<number>(-1);
-  const [currentTime, setCurrentTime] = useState<string>('');
+  const [currentDay, setCurrentDay] = useState(-1);
+  const [currentTime, setCurrentTime] = useState('');
+  const [currentCoachId, setCurrentCoachId] = useState(-1);
+  const { year: currentYear, month: currentMonth } = useCalendar();
+
+  const [answer1, setAnswer1] = useState('');
+  const [answer2, setAnswer2] = useState('');
+  const [answer3, setAnswer3] = useState('');
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -47,6 +55,48 @@ const ReservationApplyPage = () => {
 
   const handleClickTime = (time: string) => () => {
     setCurrentTime(time);
+  };
+
+  const handleChangeAnswer =
+    (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setAnswer(e.target.value);
+    };
+
+  const isOverMinLength = (text: string) => {
+    return text.length >= 10;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    isSubmitted || setIsSubmitted(true);
+
+    if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
+
+    const month = String(currentMonth).padStart(2, '0');
+    const day = String(currentDay).padStart(2, '0');
+    const interviewDatetime = `${currentYear}-${month}-${day} ${currentTime}:00`;
+
+    const body = {
+      interviewDatetime,
+      crewNickname: '록바',
+      location: '잠실',
+      interviewQuestions: [
+        {
+          question: '이번 면담을 통해 논의하고 싶은 내용',
+          answer: `${answer1}`,
+        },
+        {
+          question: '최근에 자신이 긍정적으로 보는 시도와 변화',
+          answer: `${answer2}`,
+        },
+        {
+          question: '이번 면담을 통해 어떤 변화가 생기기를 원하는지',
+          answer: `${answer3}`,
+        },
+      ],
+    };
+
+    axios.post(`http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`, body);
   };
 
   useEffect(() => {
@@ -144,11 +194,32 @@ const ReservationApplyPage = () => {
           </div>
 
           <div className="fold-box">
-            <S.Form>
-              <TextAreaField id="example1" label="이번 면담을 통해 논의하고 싶은 내용" />
-              <TextAreaField id="example2" label="최근에 자신이 긍정적으로 보는 시도와 변화" />
-              <TextAreaField id="example3" label="이번 면담을 통해 어떤 변화가 생기기를 원하는지" />
-              <Button width="100%" height="40px">
+            <S.Form onSubmit={handleSubmit}>
+              <TextAreaField
+                id="example1"
+                label="이번 면담을 통해 논의하고 싶은 내용"
+                answer={answer1}
+                handleChange={handleChangeAnswer(setAnswer1)}
+                checkValidation={isOverMinLength}
+                isSubmitted={isSubmitted}
+              />
+              <TextAreaField
+                id="example2"
+                label="최근에 자신이 긍정적으로 보는 시도와 변화"
+                answer={answer2}
+                handleChange={handleChangeAnswer(setAnswer2)}
+                checkValidation={isOverMinLength}
+                isSubmitted={isSubmitted}
+              />
+              <TextAreaField
+                id="example3"
+                label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
+                answer={answer3}
+                handleChange={handleChangeAnswer(setAnswer3)}
+                checkValidation={isOverMinLength}
+                isSubmitted={isSubmitted}
+              />
+              <Button type="submit" width="100%" height="40px">
                 신청 완료
               </Button>
             </S.Form>
