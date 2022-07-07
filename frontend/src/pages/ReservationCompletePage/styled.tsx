@@ -42,4 +42,8 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  a {
+    width: 47%;
+  }
 `;

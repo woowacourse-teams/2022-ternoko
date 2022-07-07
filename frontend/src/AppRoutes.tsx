@@ -16,7 +16,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout />}>
           <Route path="" element={<HomePage />} />
           <Route path="reservation/apply" element={<ReservationApplyPage />} />
-          <Route path="reservation/complete" element={<ReservationCompletePage />} />
+          <Route path="reservation/complete/:reservationId" element={<ReservationCompletePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

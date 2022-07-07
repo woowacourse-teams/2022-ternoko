@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Button from '../../components/@common/Button/styled';
@@ -16,6 +16,7 @@ import { Coach } from 'types/domain';
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
+  const navigate = useNavigate();
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<Coach[]>([]);
   const [currentDay, setCurrentDay] = useState(-1);
@@ -96,7 +97,12 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    axios.post(`http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`, body);
+    const response = await axios.post(
+      `http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`,
+      body,
+    );
+
+    navigate('/reservation/complete/3');
   };
 
   useEffect(() => {
