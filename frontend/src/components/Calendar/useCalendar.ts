@@ -1,5 +1,7 @@
 import { useState, useMemo, useRef } from 'react';
 
+import { StepStatus } from 'pages/ReservationApplyPage';
+
 const monthNames = [
   'January',
   'February',
@@ -21,9 +23,12 @@ const isLeapYear = (year: number) =>
 
 const getFebruaryDays = (year: number) => (isLeapYear(year) ? 29 : 28);
 
-const useCalendar = () => {
+type useCalendarProps = {
+  stepStatus: StepStatus[];
+};
+
+const useCalendar = ({ stepStatus }: useCalendarProps) => {
   const currentDate = new Date();
-  const initRef = useRef(false);
 
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
@@ -34,12 +39,8 @@ const useCalendar = () => {
   const daysLength = daysOfMonth[month] + firstDay;
 
   const daysKey = useMemo(() => {
-    const key = Date.now();
-
-    initRef.current = true;
-
-    return key;
-  }, [year, month, initRef.current]);
+    return Date.now();
+  }, [year, month, stepStatus[1]]);
 
   const isToday = (day: number) => {
     return (
