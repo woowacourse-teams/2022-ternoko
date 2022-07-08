@@ -5,7 +5,12 @@ export const Box = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  padding: 0 9rem;
+  padding: 0 30rem;
+
+  h1 {
+    font-family: 'EarlyFontDiary';
+    font-size: 3em;
+  }
 `;
 
 export const MenuBox = styled.div`

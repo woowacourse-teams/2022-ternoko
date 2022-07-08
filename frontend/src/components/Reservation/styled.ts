@@ -24,6 +24,11 @@ export const ImageTextBox = styled.div`
   margin-bottom: 10px;
 `;
 
+export const CoachName = styled.p`
+  font-size: 1.2rem;
+  font-weight: 600;
+`;
+
 export const ProfileImage = styled.img`
   width: 40px;
   height: 40px;

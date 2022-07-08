@@ -15,7 +15,7 @@ const Reservation = ({
     <S.Box>
       <S.ImageTextBox>
         <S.ProfileImage src={imageUrl} alt="코치 프로필" />
-        <p>{coachNickname}</p>
+        <S.CoachName>{coachNickname}</S.CoachName>
       </S.ImageTextBox>
 
       <S.ImageTextBox>

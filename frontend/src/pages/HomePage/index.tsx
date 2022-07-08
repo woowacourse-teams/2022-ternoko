@@ -21,7 +21,7 @@ const HomePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get('http://192.168.7.8:8080/api/reservations');
+      const response = await axios.get('http://192.168.6.170:8080/api/reservations');
       setReservations(response.data);
     })();
   }, []);
@@ -31,7 +31,7 @@ const HomePage = () => {
       <S.TitleBox>
         <h2>나의 면담</h2>
         <Link to="/reservation/apply">
-          <Button>+ 신청하기</Button>
+          <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>
       <S.TabMenuBox>

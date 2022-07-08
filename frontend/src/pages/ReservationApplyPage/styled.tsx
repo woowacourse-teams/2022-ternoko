@@ -25,7 +25,7 @@ export const Box = styled.div<BoxProps>`
     cursor: pointer;
 
     h3 {
-      font-size: 1.3rem;
+      font-size: 1.6rem;
     }
   }
 
@@ -110,8 +110,9 @@ export const Circle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
+  font-size: 1.4rem;
   border-radius: 100%;
 
   background-color: ${({ theme }) => theme.colors.pink_200};
@@ -141,11 +142,8 @@ export const TimeContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
   height: 42rem;
-
   overflow-y: scroll;
-
   padding-right: 3rem;
 `;
 
@@ -156,18 +154,21 @@ type TimeProps = {
 export const Time = styled.div<TimeProps>`
   padding: 1.5rem 5rem;
   color: ${({ theme }) => theme.colors.pink_200};
-  border: 1px solid ${({ theme }) => theme.colors.pink_50};
+  border: 1px solid ${({ theme }) => theme.colors.gray_150};
+  color: black;
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
 
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.pink_300};
+    background-color: ${({ theme }) => theme.colors.pink_50};
+    border: 1px solid ${({ theme }) => theme.colors.pink_200};
   }
 
   ${({ active }) =>
     active &&
     css`
-      border: 1px solid ${({ theme }) => theme.colors.pink_300};
+      background-color: ${({ theme }) => theme.colors.pink_50};
+      border: 1px solid ${({ theme }) => theme.colors.pink_200};
     `}
 `;
