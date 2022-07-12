@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 import Reservation from '../../components/Reservation';
 import Button from '../../components/@common/Button/styled';
@@ -8,6 +7,7 @@ import GridContainer from '../../components/@common/GridContainer/styled';
 import * as S from './styled';
 
 import { ReservationType } from 'types/domain';
+import { getReservationsAPI } from '../../api';
 
 export type TabMenuStatus = 'doing' | 'done';
 
@@ -21,7 +21,7 @@ const HomePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get('http://192.168.7.8:8080/api/reservations');
+      const response = await getReservationsAPI();
       setReservations(response.data);
     })();
   }, []);
@@ -31,7 +31,7 @@ const HomePage = () => {
       <S.TitleBox>
         <h2>나의 면담</h2>
         <Link to="/reservation/apply">
-          <Button>+ 신청하기</Button>
+          <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>
       <S.TabMenuBox>

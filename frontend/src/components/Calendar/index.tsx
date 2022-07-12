@@ -3,12 +3,15 @@ import { memo } from 'react';
 import useCalendar from './useCalendar';
 import * as S from './styled';
 
+import { StepStatus } from '../../pages/ReservationApplyPage';
+
 export type CalendarProps = {
   currentDay: number;
+  stepStatus: StepStatus[];
   handleClickDay: (date: number) => () => void;
 };
 
-const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
+const Calendar = ({ currentDay, stepStatus, handleClickDay }: CalendarProps) => {
   const {
     daysKey,
     daysLength,
@@ -23,7 +26,7 @@ const Calendar = ({ currentDay, handleClickDay }: CalendarProps) => {
     getDay,
     isToday,
     isOverFirstDay,
-  } = useCalendar();
+  } = useCalendar({ stepStatus });
 
   return (
     <S.Box>

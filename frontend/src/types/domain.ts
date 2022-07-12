@@ -6,10 +6,23 @@ export interface CoachType {
 
 export interface ReservationType {
   id: number;
+  imageUrl: string;
   crewNickname: string;
   coachNickname: string;
   interviewDate: string;
   interviewStartTime: string;
   interviewEndTime: string;
   location: string;
+}
+
+interface InterviewQuestionType {
+  question: string;
+  answer: string;
+}
+
+export interface ReservationRequestBodyType {
+  interviewDatetime: string;
+  crewNickname: string;
+  location: string;
+  interviewQuestions: InterviewQuestionType[];
 }

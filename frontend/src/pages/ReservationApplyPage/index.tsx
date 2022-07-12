@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
@@ -12,6 +11,7 @@ import useCalendar from '../../components/Calendar/useCalendar';
 import * as S from './styled';
 
 import { CoachType } from 'types/domain';
+import { getCoachesAPI, postReservationAPI } from '../../api';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -19,12 +19,11 @@ const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
+  const { year: currentYear, month: currentMonth } = useCalendar({ stepStatus });
 
   const [currentDay, setCurrentDay] = useState(-1);
   const [currentTime, setCurrentTime] = useState('');
   const [currentCoachId, setCurrentCoachId] = useState(-1);
-
-  const { year: currentYear, month: currentMonth } = useCalendar();
 
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
@@ -80,7 +79,7 @@ const ReservationApplyPage = () => {
 
     const month = String(currentMonth).padStart(2, '0');
     const day = String(currentDay).padStart(2, '0');
-    const interviewDatetime = `${currentYear}-${month}-${day} ${currentTime}:00`;
+    const interviewDatetime = `${currentYear}-${month}-${day} ${currentTime}`;
 
     const body = {
       interviewDatetime,
@@ -102,14 +101,15 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    await axios.post(`http://192.168.7.8:8080/api/reservations/coaches/${currentCoachId}`, body);
+    const response = await postReservationAPI(currentCoachId, body);
+    const location = response.headers.location;
 
-    navigate('/reservation/complete/3');
+    navigate(`/reservation/complete/${location.split('/')[3]}`);
   };
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get('http://192.168.7.8:8080/api/reservations/coaches');
+      const response = await getCoachesAPI();
       setCoaches(response.data.coaches);
     })();
   }, []);
@@ -154,7 +154,11 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <S.DateBox>
-              <Calendar currentDay={currentDay} handleClickDay={handleClickDay} />
+              <Calendar
+                currentDay={currentDay}
+                stepStatus={stepStatus}
+                handleClickDay={handleClickDay}
+              />
               <S.TimeContainer>
                 <S.Time active={currentTime === '10:00'} onClick={handleClickTime('10:00')}>
                   10 : 00

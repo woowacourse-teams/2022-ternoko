@@ -34,7 +34,7 @@ const Layout = () => {
 const S = {
   Body: styled.div`
     min-height: calc(100% - 60px);
-    padding: 3rem 9rem 0;
+    padding: 3rem 30rem 0;
   `,
 };
 

@@ -1,10 +1,30 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { StepStatus } from '.';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
+`;
+
+const slideDown = keyframes`
+  from {
+    max-height: 0;   
+  }
+  
+  to {
+    max-height: 1000px;
+  }
+`;
+
+const slideUp = keyframes`
+  from {
+    max-height: 1000px;  
+  }
+
+  to {
+    max-height: 0;
+  }
 `;
 
 type BoxProps = {
@@ -13,46 +33,53 @@ type BoxProps = {
 
 export const Box = styled.div<BoxProps>`
   position: relative;
+  overflow: hidden;
 
   .sub-title {
     display: flex;
     align-items: center;
     width: fit-content;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.8rem;
 
     font-weight: bold;
     cursor: pointer;
 
     h3 {
-      font-size: 1.3rem;
+      font-size: 1.6rem;
     }
+  }
+
+  .fold-box {
+    overflow: hidden;
+    margin-top: 2rem;
   }
 
   ${({ stepStatus }) =>
     stepStatus === 'show' &&
     css`
-      overflow: visible;
+      visibility: visible;
       opacity: 1;
       z-index: 1;
 
       .fold-box {
-        max-height: 1000px;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+        animation-timing-function: linear;
+        animation-name: ${slideDown};
       }
     `}
 
   ${({ stepStatus }) =>
     stepStatus === 'hidden' &&
     css`
-      max-height: 0;
-      opacity: 0;
+      visibility: hidden;
     `}
 
   ${({ stepStatus }) =>
     stepStatus === 'onlyShowTitle' &&
     css`
-      overflow: visible;
-      opacity: 1;
+      visibility: visible;
 
       .sub-title {
         opacity: 0.4;
@@ -61,7 +88,7 @@ export const Box = styled.div<BoxProps>`
       .sub-title:after {
         content: '';
         position: absolute;
-        left: 9px;
+        left: 12px;
         top: 33px;
         width: 2px;
         height: 25px;
@@ -71,8 +98,10 @@ export const Box = styled.div<BoxProps>`
       }
 
       .fold-box {
-        max-height: 0;
-        overflow: hidden;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+        animation-timing-function: linear;
+        animation-name: ${slideUp};
       }
     `}
 `;
@@ -110,8 +139,9 @@ export const Circle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
+  font-size: 1.4rem;
   border-radius: 100%;
 
   background-color: ${({ theme }) => theme.colors.pink_200};
@@ -141,11 +171,8 @@ export const TimeContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
   height: 42rem;
-
   overflow-y: scroll;
-
   padding-right: 3rem;
 `;
 
@@ -156,18 +183,21 @@ type TimeProps = {
 export const Time = styled.div<TimeProps>`
   padding: 1.5rem 5rem;
   color: ${({ theme }) => theme.colors.pink_200};
-  border: 1px solid ${({ theme }) => theme.colors.pink_50};
+  border: 1px solid ${({ theme }) => theme.colors.gray_150};
+  color: black;
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
 
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.pink_300};
+    background-color: ${({ theme }) => theme.colors.pink_50};
+    border: 1px solid ${({ theme }) => theme.colors.pink_200};
   }
 
   ${({ active }) =>
     active &&
     css`
-      border: 1px solid ${({ theme }) => theme.colors.pink_300};
+      background-color: ${({ theme }) => theme.colors.pink_50};
+      border: 1px solid ${({ theme }) => theme.colors.pink_200};
     `}
 `;

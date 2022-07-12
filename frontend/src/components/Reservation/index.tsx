@@ -5,6 +5,7 @@ import { ReservationType } from 'types/domain';
 
 const Reservation = ({
   coachNickname,
+  imageUrl,
   interviewDate,
   interviewStartTime,
   interviewEndTime,
@@ -13,11 +14,8 @@ const Reservation = ({
   return (
     <S.Box>
       <S.ImageTextBox>
-        <S.ProfileImage
-          src="https://blog.kakaocdn.net/dn/FSvHG/btrzdoAbEI0/WA1kfeo9BFC8n8GOe39U31/img.webp"
-          alt="코치 프로필"
-        />
-        <p>{coachNickname}</p>
+        <S.ProfileImage src={imageUrl} alt="코치 프로필" />
+        <S.CoachName>{coachNickname}</S.CoachName>
       </S.ImageTextBox>
 
       <S.ImageTextBox>

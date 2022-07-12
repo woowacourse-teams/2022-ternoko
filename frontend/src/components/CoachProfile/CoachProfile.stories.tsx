@@ -12,8 +12,9 @@ export const Basic: Story<CoachProfileProps> = Template.bind({});
 
 Basic.args = {
   id: 1,
-  nickname: '록바',
-  imageUrl: 'https://blog.kakaocdn.net/dn/FSvHG/btrzdoAbEI0/WA1kfeo9BFC8n8GOe39U31/img.webp',
+  nickname: '브리',
+  imageUrl:
+    'https://user-images.githubusercontent.com/43205258/177765431-63d39896-c8e1-42e8-a229-08309849f2ff.png',
   currentCoachId: 1,
   handleClickProfile: () => {},
 };

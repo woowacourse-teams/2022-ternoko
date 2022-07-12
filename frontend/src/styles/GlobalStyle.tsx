@@ -14,8 +14,6 @@ const GlobalStyle = createGlobalStyle`
     background-color : ${({ theme }) => theme.colors.gray_50}
   }
 
-  
-
   #root{
     height:100%;
   }
@@ -29,6 +27,13 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
     color: inherit;
+  }
+
+  @font-face {
+    font-family: 'EarlyFontDiary';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
   }
 `;
 
