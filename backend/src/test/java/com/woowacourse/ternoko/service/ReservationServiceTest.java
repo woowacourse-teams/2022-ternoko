@@ -48,7 +48,14 @@ class ReservationServiceTest {
                 () -> assertThat(reservationResponse.getInterviewStartTime())
                         .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime()
+                                .format(DateTimeFormatter.ofPattern("HH:mm"))),
+                () -> assertThat(reservationResponse.getInterviewQuestions())
+                        .extracting("question")
+                        .contains("고정질문1", "고정질문2", "고정질문3"),
+                () -> assertThat(reservationResponse.getInterviewQuestions())
+                        .extracting("answer")
+                        .contains("답변1", "답변2", "답변3")
         );
     }
 

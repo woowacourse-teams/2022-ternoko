@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.domain.Location;
-import com.woowacourse.ternoko.dto.FormItemRequest;
+import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import io.restassured.response.ExtractableResponse;
@@ -41,9 +41,9 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final ReservationRequest reservationRequest = new ReservationRequest("수달7",
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
                 Location.JAMSIL.getValue(),
-                List.of(new FormItemRequest("고정질문1", "답변1"),
-                        new FormItemRequest("고정질문2", "답변2"),
-                        new FormItemRequest("고정질문3", "답변3")));
+                List.of(new FormItemDto("고정질문1", "답변1"),
+                        new FormItemDto("고정질문2", "답변2"),
+                        new FormItemDto("고정질문3", "답변3")));
 
         final ExtractableResponse<Response> createdResponse = post("/api/reservations/coaches/" + COACH3.getId(),
                 reservationRequest);
@@ -88,9 +88,9 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final ReservationRequest reservationRequest = new ReservationRequest(crewName,
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
                 Location.JAMSIL.getValue(),
-                List.of(new FormItemRequest("고정질문1", "답변1"),
-                        new FormItemRequest("고정질문2", "답변2"),
-                        new FormItemRequest("고정질문3", "답변3")));
+                List.of(new FormItemDto("고정질문1", "답변1"),
+                        new FormItemDto("고정질문2", "답변2"),
+                        new FormItemDto("고정질문3", "답변3")));
 
         return post("/api/reservations/coaches/" + coachId, reservationRequest);
     }

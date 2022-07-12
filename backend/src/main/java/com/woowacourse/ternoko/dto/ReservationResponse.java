@@ -6,6 +6,8 @@ import com.woowacourse.ternoko.domain.Reservation;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,10 +25,13 @@ public class ReservationResponse {
     private final String interviewDate;
     private final String interviewStartTime;
     private final String interviewEndTime;
-    private final String location;
+    private final List<FormItemDto> interviewQuestions;
 
     public static ReservationResponse from(final Reservation reservation) {
         final Interview interview = reservation.getInterview();
+        final List<FormItemDto> formItemDtos = interview.getFormItems().stream()
+                .map(FormItemDto::from)
+                .collect(Collectors.toList());
 
         return ReservationResponse.reservationResponseBuilder()
                 .id(reservation.getId())
@@ -36,7 +41,7 @@ public class ReservationResponse {
                 .interviewDate(interview.getInterviewDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .interviewStartTime(interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
                 .interviewEndTime(interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-                .location(interview.getLocation().getValue())
+                .interviewQuestions(formItemDtos)
                 .build();
     }
 }

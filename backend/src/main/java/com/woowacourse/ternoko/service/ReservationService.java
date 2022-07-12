@@ -5,7 +5,7 @@ import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Location;
 import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.domain.Reservation;
-import com.woowacourse.ternoko.dto.FormItemRequest;
+import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.repository.FormItemRepository;
@@ -31,7 +31,7 @@ public class ReservationService {
     private final InterviewRepository interviewRepository;
 
     public Long create(final Long coachId, final ReservationRequest reservationRequest) {
-        final List<FormItemRequest> interviewQuestions = reservationRequest.getInterviewQuestions();
+        final List<FormItemDto> interviewQuestions = reservationRequest.getInterviewQuestions();
 
         final Interview interview = convertInterview(coachId, reservationRequest,
                 interviewQuestions);
@@ -43,7 +43,7 @@ public class ReservationService {
 
     private Interview convertInterview(final Long coachId,
                                        final ReservationRequest reservationRequest,
-                                       final List<FormItemRequest> interviewQuestions) {
+                                       final List<FormItemDto> interviewQuestions) {
         final List<FormItem> formItems = convertFormItem(interviewQuestions);
 
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
@@ -60,9 +60,9 @@ public class ReservationService {
                 formItems);
     }
 
-    private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
+    private List<FormItem> convertFormItem(final List<FormItemDto> interviewQuestions) {
         final List<FormItem> formItems = interviewQuestions.stream()
-                .map(FormItemRequest::toFormItem)
+                .map(FormItemDto::toFormItem)
                 .collect(Collectors.toList());
 
         formItemRepository.saveAll(formItems);
@@ -73,7 +73,6 @@ public class ReservationService {
     public ReservationResponse findReservationById(final Long id) {
         final Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 면담 예약입니다."));
-
         return ReservationResponse.from(reservation);
     }
 
