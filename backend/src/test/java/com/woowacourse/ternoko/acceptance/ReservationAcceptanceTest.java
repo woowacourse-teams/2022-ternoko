@@ -8,7 +8,6 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.domain.Location;
 import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
@@ -40,7 +39,6 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // given
         final ReservationRequest reservationRequest = new ReservationRequest("수달7",
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                Location.JAMSIL.getValue(),
                 List.of(new FormItemDto("고정질문1", "답변1"),
                         new FormItemDto("고정질문2", "답변2"),
                         new FormItemDto("고정질문3", "답변3")));
@@ -87,7 +85,6 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     private ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
         final ReservationRequest reservationRequest = new ReservationRequest(crewName,
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                Location.JAMSIL.getValue(),
                 List.of(new FormItemDto("고정질문1", "답변1"),
                         new FormItemDto("고정질문2", "답변2"),
                         new FormItemDto("고정질문3", "답변3")));

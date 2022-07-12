@@ -43,9 +43,6 @@ public class Interview {
     @Column(nullable = false)
     private String crewNickname;
 
-    @Enumerated(EnumType.STRING)
-    private Location location;
-
     @OneToMany
     @JoinColumn(name = "formItem_id")
     private List<FormItem> formItems = new ArrayList<>();
@@ -55,14 +52,12 @@ public class Interview {
                      LocalTime interviewEndTime,
                      Member coach,
                      String crewNickname,
-                     Location location,
                      List<FormItem> formItems) {
         this.interviewDate = interviewDate;
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crewNickname = crewNickname;
-        this.location = location;
         this.formItems = formItems;
     }
 }

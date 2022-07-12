@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.service;
 
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
-import com.woowacourse.ternoko.domain.Location;
 import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.dto.FormItemDto;
@@ -56,7 +55,6 @@ public class ReservationService {
                 reservationDatetime.toLocalTime().plusMinutes(30),
                 coach,
                 reservationRequest.getCrewNickname(),
-                Location.from(reservationRequest.getLocation()),
                 formItems);
     }
 

@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.fixture;
 
-import com.woowacourse.ternoko.domain.Location;
 import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.domain.Type;
 import com.woowacourse.ternoko.dto.FormItemDto;
@@ -23,21 +22,21 @@ public class ReservationFixture {
 
     public static final ReservationRequest RESERVATION_REQUEST1 = new ReservationRequest("바니",
             LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-            Location.JAMSIL.getValue(), FORM_ITEM_REQUESTS);
+            FORM_ITEM_REQUESTS);
 
     public static final ReservationRequest RESERVATION_REQUEST2 = new ReservationRequest("열음",
             LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-            Location.JAMSIL.getValue(), FORM_ITEM_REQUESTS);
+            FORM_ITEM_REQUESTS);
 
     public static final ReservationRequest RESERVATION_REQUEST3 = new ReservationRequest("앤지",
             LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-            Location.JAMSIL.getValue(), FORM_ITEM_REQUESTS);
+            FORM_ITEM_REQUESTS);
 
     public static final ReservationRequest RESERVATION_REQUEST4 = new ReservationRequest("애쉬",
             LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-            Location.JAMSIL.getValue(), FORM_ITEM_REQUESTS);
+            FORM_ITEM_REQUESTS);
 
     public static final ReservationRequest RESERVATION_REQUEST5 = new ReservationRequest("수달",
             LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-            Location.JAMSIL.getValue(), FORM_ITEM_REQUESTS);
+            FORM_ITEM_REQUESTS);
 }
