@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
@@ -12,6 +11,7 @@ import useCalendar from '../../components/Calendar/useCalendar';
 import * as S from './styled';
 
 import { CoachType } from 'types/domain';
+import { getCoachesAPI, postReservationAPI } from '../../api';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -101,11 +101,7 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await axios.post(
-      `http://192.168.6.170:8080/api/reservations/coaches/${currentCoachId}`,
-      body,
-    );
-
+    const response = await postReservationAPI(currentCoachId, body);
     const location = response.headers.location;
 
     navigate(`/reservation/complete/${location.split('/')[3]}`);
@@ -113,7 +109,7 @@ const ReservationApplyPage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get('http://192.168.6.170:8080/api/reservations/coaches');
+      const response = await getCoachesAPI();
       setCoaches(response.data.coaches);
     })();
   }, []);

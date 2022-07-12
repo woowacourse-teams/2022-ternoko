@@ -14,3 +14,15 @@ export interface ReservationType {
   interviewEndTime: string;
   location: string;
 }
+
+interface InterviewQuestionType {
+  question: string;
+  answer: string;
+}
+
+export interface ReservationRequestBodyType {
+  interviewDatetime: string;
+  crewNickname: string;
+  location: string;
+  interviewQuestions: InterviewQuestionType[];
+}

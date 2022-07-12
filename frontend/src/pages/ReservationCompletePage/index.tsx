@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
 
 import Button from '../../components/@common/Button/styled';
 import * as S from './styled';
 
 import { ReservationType } from 'types/domain';
+import { getReservationAPI } from '../../api';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
@@ -13,9 +13,7 @@ const ReservationCompletePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get(
-        `http://192.168.6.170:8080/api/reservations/${reservationId}`,
-      );
+      const response = await getReservationAPI(Number(reservationId));
       setReservation(response.data);
     })();
   }, []);
