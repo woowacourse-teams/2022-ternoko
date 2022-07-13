@@ -60,8 +60,9 @@ class ReservationAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(reservationResponse.getInterviewStartTime())
                         .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-        ));
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime()
+                                .format(DateTimeFormatter.ofPattern("HH:mm"))
+                        ));
     }
 
     @Test
@@ -80,15 +81,5 @@ class ReservationAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(reservationResponses).hasSize(4);
-    }
-
-    private ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
-        final ReservationRequest reservationRequest = new ReservationRequest(crewName,
-                LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                List.of(new FormItemDto("고정질문1", "답변1"),
-                        new FormItemDto("고정질문2", "답변2"),
-                        new FormItemDto("고정질문3", "답변3")));
-
-        return post("/api/reservations/coaches/" + coachId, reservationRequest);
     }
 }

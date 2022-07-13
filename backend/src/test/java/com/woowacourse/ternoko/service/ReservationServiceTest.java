@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.ScheduleResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -75,5 +76,24 @@ class ReservationServiceTest {
         assertThat(reservationResponses).extracting("crewNickname")
                 .hasSize(4)
                 .contains("바니", "열음", "앤지", "애쉬");
+    }
+
+    @Test
+    @DisplayName("코치별로 면담예약 목록을 조회한다.")
+    void findAllByCoach() {
+        // given
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST1);
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST2);
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST3);
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST4);
+
+        // when
+        final ScheduleResponse scheduleResponses = reservationService.findAllByCoach(COACH4.getId());
+
+        // then
+        assertThat(scheduleResponses.getCalendar()).extracting("crewNickname")
+                .hasSize(4)
+                .contains("바니", "열음", "앤지", "애쉬");
+
     }
 }

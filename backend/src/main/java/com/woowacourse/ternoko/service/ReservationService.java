@@ -7,6 +7,7 @@ import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
@@ -81,5 +82,12 @@ public class ReservationService {
         return reservations.stream()
                 .map(ReservationResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    public ScheduleResponse findAllByCoach(Long coachId) {
+        final Member member = memberRepository.findById(coachId)
+                .orElseThrow(() -> new NoSuchElementException("회원중에" + coachId + "를 가진 멤버가 존재하지 않습니다."));
+        final List<Interview> interviews = interviewRepository.findAllByCoach(member);
+        return ScheduleResponse.from(interviews);
     }
 }

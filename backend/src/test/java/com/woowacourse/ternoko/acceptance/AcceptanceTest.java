@@ -1,9 +1,13 @@
 package com.woowacourse.ternoko.acceptance;
 
+import com.woowacourse.ternoko.dto.FormItemDto;
+import com.woowacourse.ternoko.dto.ReservationRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -89,5 +93,14 @@ public class AcceptanceTest {
                 .then().log().all()
                 .extract();
     }
-}
 
+    protected ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
+            final ReservationRequest reservationRequest = new ReservationRequest(crewName,
+                    LocalDateTime.of(2022, 7, 4, 14, 0, 0),
+                    List.of(new FormItemDto("고정질문1", "답변1"),
+                            new FormItemDto("고정질문2", "답변2"),
+                            new FormItemDto("고정질문3", "답변3")));
+
+            return post("/api/reservations/coaches/" + coachId, reservationRequest);
+        }
+}
