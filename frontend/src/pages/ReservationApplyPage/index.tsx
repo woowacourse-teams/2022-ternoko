@@ -12,7 +12,7 @@ import * as S from './styled';
 import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
 
-import { useCalendarValue } from '../../context/CalendarProvider';
+import { useCalendarState, useCalendarUtils } from '../../context/CalendarProvider';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -22,7 +22,8 @@ const isOverMinLength = (text: string) => {
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
-  const { year, month, day } = useCalendarValue();
+  const { year, month } = useCalendarState();
+  const { dateString } = useCalendarUtils();
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
 
@@ -72,13 +73,8 @@ const ReservationApplyPage = () => {
 
     if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
 
-    const interviewDatetime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(
-      2,
-      '0',
-    )} ${time}`;
-
     const body = {
-      interviewDatetime,
+      interviewDatetime: `${dateString} ${time}`,
       crewNickname: '록바',
       location: '잠실',
       interviewQuestions: [
@@ -100,7 +96,7 @@ const ReservationApplyPage = () => {
     const response = await postReservationAPI(coachId, body);
     const location = response.headers.location;
 
-    navigate(`/reservation/complete/${location.split('/')[3]}`);
+    navigate(`/reservation/complete/${location.split('/').pop()}`);
   };
 
   useEffect(() => {

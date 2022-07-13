@@ -4,7 +4,7 @@ import * as S from './styled';
 
 import {
   useCalendarActions,
-  useCalendarValue,
+  useCalendarState,
   useCalendarUtils,
   monthNames,
 } from '../../context/CalendarProvider';
@@ -14,19 +14,24 @@ export type CalendarProps = {
 };
 
 const Calendar = ({ rerenderKey }: CalendarProps) => {
-  const { year, month, day: currentDay, showMonthPicker } = useCalendarValue();
-  const { increaseYear, decreaseYear, getSetDay, setShowMonthPicker, getHandleClickMonth } =
-    useCalendarActions();
-  const { daysLength, isToday, isOverFirstDay, getDay } = useCalendarUtils();
+  const { year, month, showMonthPicker } = useCalendarState();
+  const {
+    handleClickPrevYear,
+    handleClickNextYear,
+    handleClickMonthPicker,
+    getSetDay,
+    getHandleClickMonth,
+  } = useCalendarActions();
+  const { daysLength, isToday, isSelectedDate, isOverFirstDay, getDay } = useCalendarUtils();
 
   return (
     <S.Box>
       <S.Header>
-        <S.MonthPicker onClick={() => setShowMonthPicker(true)}>{monthNames[month]}</S.MonthPicker>
+        <S.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</S.MonthPicker>
         <S.YearPicker>
-          <S.YearChange onClick={decreaseYear}>{'<'}</S.YearChange>
+          <S.YearChange onClick={handleClickPrevYear}>{'<'}</S.YearChange>
           <p>{year}</p>
-          <S.YearChange onClick={increaseYear}>{'>'}</S.YearChange>
+          <S.YearChange onClick={handleClickNextYear}>{'>'}</S.YearChange>
         </S.YearPicker>
       </S.Header>
 
@@ -47,14 +52,14 @@ const Calendar = ({ rerenderKey }: CalendarProps) => {
 
               if (isToday(day)) {
                 return (
-                  <S.Day key={index} active={currentDay === day} today onClick={getSetDay(day)}>
+                  <S.Day key={index} active={isSelectedDate(day)} today onClick={getSetDay(day)}>
                     {day}
                   </S.Day>
                 );
               }
 
               return (
-                <S.Day key={index} active={currentDay === day} onClick={getSetDay(day)}>
+                <S.Day key={index} active={isSelectedDate(day)} onClick={getSetDay(day)}>
                   {day}
                   <span />
                   <span />
