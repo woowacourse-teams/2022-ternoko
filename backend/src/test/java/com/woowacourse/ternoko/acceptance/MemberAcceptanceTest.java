@@ -4,6 +4,7 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.dto.CalendarRequest;
+import com.woowacourse.ternoko.dto.CalendarResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -41,5 +42,29 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("코치의 면담 가능 시간을 조회한다.")
+    void findCalendarTimes() {
+        // given
+        final List<LocalDateTime> times = List.of(
+                LocalDateTime.of(2022, 7, 7, 14, 0),
+                LocalDateTime.of(2022, 7, 7, 15, 0),
+                LocalDateTime.of(2022, 7, 7, 16, 0));
+
+        final CalendarRequest calendarRequest = new CalendarRequest(times);
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", calendarRequest);
+
+        final ExtractableResponse<Response> calendarResponse = get(
+                "/api/coaches/" + COACH3.getId() + "/calendar/times");
+
+        // when
+        final CalendarResponse response = calendarResponse.body().as(CalendarResponse.class);
+
+        // then
+        assertThat(response.getCalendarTimes())
+                .hasSize(3)
+                .containsAnyElementsOf(times);
     }
 }

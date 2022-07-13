@@ -10,6 +10,7 @@ import com.woowacourse.ternoko.dto.CalendarRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,27 @@ public class MemberServiceTest {
     void putAvailableDateTimesByInvalidCoachId() {
         assertThatThrownBy(() -> memberService.putAvailableDateTimesByCoachId(-1L, new CalendarRequest(List.of())))
                 .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("코치의 면담 가능 시간을 조회한다.")
+    void findAvailableDateTimesByCoachId() {
+        // given
+        final List<LocalDateTime> times = List.of(
+                LocalDateTime.of(2022, 7, 7, 14, 0),
+                LocalDateTime.of(2022, 7, 7, 15, 0),
+                LocalDateTime.of(2022, 7, 7, 16, 0));
+        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new CalendarRequest(times));
+
+        // when
+        final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(
+                COACH3.getId());
+
+        // then
+        assertThat(availableDateTimes.stream()
+                .map(AvailableDateTime::getLocalDateTime)
+                .collect(Collectors.toList()))
+                .hasSize(3)
+                .containsAnyElementsOf(times);
     }
 }
