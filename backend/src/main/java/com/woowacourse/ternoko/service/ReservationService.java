@@ -25,6 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class ReservationService {
 
+    private static final int FIRST_DAY_OF_MONTH = 1;
+    private static final int START_HOUR = 0;
+    private static final int START_MINUTE = 0;
+    private static final int LAST_DAY_OF_MONTH = 31;
+    private static final int END_HOUR = 23;
+    private static final int END_MINUTE = 59;
     private final MemberRepository memberRepository;
     private final FormItemRepository formItemRepository;
     private final ReservationRepository reservationRepository;
@@ -51,9 +57,9 @@ public class ReservationService {
         final Member coach = memberRepository.findById(coachId)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
-        return new Interview(reservationDatetime.toLocalDate(),
-                reservationDatetime.toLocalTime(),
-                reservationDatetime.toLocalTime().plusMinutes(30),
+        return new Interview(
+                reservationDatetime,
+                reservationDatetime.plusMinutes(30),
                 coach,
                 reservationRequest.getCrewNickname(),
                 formItems);
@@ -84,10 +90,13 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public ScheduleResponse findAllByCoach(Long coachId) {
-        final Member member = memberRepository.findById(coachId)
-                .orElseThrow(() -> new NoSuchElementException("회원중에" + coachId + "를 가진 멤버가 존재하지 않습니다."));
-        final List<Interview> interviews = interviewRepository.findAllByCoach(member);
+    public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
+        final LocalDateTime startOfMonth = LocalDateTime.of(year, month, FIRST_DAY_OF_MONTH, START_HOUR, START_MINUTE);
+        final LocalDateTime endOfMonth = LocalDateTime.of(year, month, LAST_DAY_OF_MONTH, END_HOUR, END_MINUTE);
+
+        final List<Interview> interviews = interviewRepository
+                .findAllByCoachAndDateRange(startOfMonth, endOfMonth, coachId);
+
         return ScheduleResponse.from(interviews);
     }
 }

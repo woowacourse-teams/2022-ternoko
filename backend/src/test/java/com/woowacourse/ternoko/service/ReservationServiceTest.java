@@ -44,13 +44,12 @@ class ReservationServiceTest {
                 () -> assertThat(id).isNotNull(),
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH1.getNickname()),
-                () -> assertThat(reservationResponse.getInterviewDate())
-                        .isEqualTo(reservationDatetime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
                 () -> assertThat(reservationResponse.getInterviewStartTime())
-                        .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
+                        .isEqualTo(reservationDatetime
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime()
-                                .format(DateTimeFormatter.ofPattern("HH:mm"))),
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME)
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))),
                 () -> assertThat(reservationResponse.getInterviewQuestions())
                         .extracting("question")
                         .contains("고정질문1", "고정질문2", "고정질문3"),
@@ -88,12 +87,11 @@ class ReservationServiceTest {
         reservationService.create(COACH4.getId(), RESERVATION_REQUEST4);
 
         // when
-        final ScheduleResponse scheduleResponses = reservationService.findAllByCoach(COACH4.getId());
+        final ScheduleResponse scheduleResponses = reservationService.findAllByCoach(COACH4.getId(), 2022, 7);
 
         // then
         assertThat(scheduleResponses.getCalendar()).extracting("crewNickname")
                 .hasSize(4)
                 .contains("바니", "열음", "앤지", "애쉬");
-
     }
 }

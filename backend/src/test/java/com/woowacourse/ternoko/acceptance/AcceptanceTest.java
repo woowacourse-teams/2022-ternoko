@@ -15,7 +15,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
@@ -95,12 +94,12 @@ public class AcceptanceTest {
     }
 
     protected ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
-            final ReservationRequest reservationRequest = new ReservationRequest(crewName,
-                    LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                    List.of(new FormItemDto("고정질문1", "답변1"),
-                            new FormItemDto("고정질문2", "답변2"),
-                            new FormItemDto("고정질문3", "답변3")));
+        final ReservationRequest reservationRequest = new ReservationRequest(crewName,
+                LocalDateTime.of(2022, 7, 4, 14, 0, 0),
+                List.of(new FormItemDto("고정질문1", "답변1"),
+                        new FormItemDto("고정질문2", "답변2"),
+                        new FormItemDto("고정질문3", "답변3")));
 
-            return post("/api/reservations/coaches/" + coachId, reservationRequest);
-        }
+        return post("/api/reservations/coaches/" + coachId, reservationRequest);
+    }
 }

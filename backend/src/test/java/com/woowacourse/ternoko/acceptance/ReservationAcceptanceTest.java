@@ -55,14 +55,13 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(reservationResponse.getInterviewDate())
-                        .isEqualTo(reservationDatetime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
                 () -> assertThat(reservationResponse.getInterviewStartTime())
-                        .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
+                        .isEqualTo(reservationDatetime
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime()
-                                .format(DateTimeFormatter.ofPattern("HH:mm"))
-                        ));
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME)
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+        );
     }
 
     @Test

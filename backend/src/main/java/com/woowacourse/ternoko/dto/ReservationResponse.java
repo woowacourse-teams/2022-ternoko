@@ -22,7 +22,6 @@ public class ReservationResponse {
     private final String coachNickname;
     private final String imageUrl;
     private final String crewNickname;
-    private final String interviewDate;
     private final String interviewStartTime;
     private final String interviewEndTime;
     private final List<FormItemDto> interviewQuestions;
@@ -38,9 +37,8 @@ public class ReservationResponse {
                 .coachNickname(interview.getCoach().getNickname())
                 .imageUrl(interview.getCoach().getImageUrl())
                 .crewNickname(interview.getCrewNickname())
-                .interviewDate(interview.getInterviewDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                .interviewStartTime(interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-                .interviewEndTime(interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                .interviewStartTime(interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .interviewEndTime(interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .interviewQuestions(formItemDtos)
                 .build();
     }

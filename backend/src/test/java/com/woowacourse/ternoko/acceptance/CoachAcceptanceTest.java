@@ -4,11 +4,12 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.dto.ScheduleResponse;
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 
 public class CoachAcceptanceTest extends AcceptanceTest {
 
@@ -22,7 +23,13 @@ public class CoachAcceptanceTest extends AcceptanceTest {
         createReservation(COACH4.getId(), "열음");
 
         // when
-        final ExtractableResponse<Response> response = get("/api/coaches/" + COACH4.getId() + "/schedules");
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .queryParam("year", 2022)
+                .queryParam("month", 7)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/coaches/" + COACH4.getId() + "/schedules")
+                .then().log().all()
+                .extract();
         final ScheduleResponse scheduleResponse = response.body().as(ScheduleResponse.class);
 
         // then
