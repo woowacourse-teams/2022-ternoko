@@ -12,6 +12,7 @@ import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,7 +29,6 @@ public class ReservationService {
     private static final int FIRST_DAY_OF_MONTH = 1;
     private static final int START_HOUR = 0;
     private static final int START_MINUTE = 0;
-    private static final int LAST_DAY_OF_MONTH = 31;
     private static final int END_HOUR = 23;
     private static final int END_MINUTE = 59;
     private final MemberRepository memberRepository;
@@ -92,8 +92,9 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
+        final Integer lastDayOfMonth = LocalDate.of(year, month, FIRST_DAY_OF_MONTH).lengthOfMonth();
         final LocalDateTime startOfMonth = LocalDateTime.of(year, month, FIRST_DAY_OF_MONTH, START_HOUR, START_MINUTE);
-        final LocalDateTime endOfMonth = LocalDateTime.of(year, month, LAST_DAY_OF_MONTH, END_HOUR, END_MINUTE);
+        final LocalDateTime endOfMonth = LocalDateTime.of(year, month, lastDayOfMonth, END_HOUR, END_MINUTE);
 
         final List<Interview> interviews = interviewRepository
                 .findAllByCoachAndDateRange(startOfMonth, endOfMonth, coachId);
