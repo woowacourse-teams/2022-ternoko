@@ -1,17 +1,13 @@
 package com.woowacourse.ternoko.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @AllArgsConstructor
@@ -37,8 +33,10 @@ public class ReservationResponse {
                 .coachNickname(interview.getCoach().getNickname())
                 .imageUrl(interview.getCoach().getImageUrl())
                 .crewNickname(interview.getCrewNickname())
-                .interviewStartTime(interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-                .interviewEndTime(interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .interviewStartTime(
+                        interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .interviewEndTime(
+                        interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .interviewQuestions(formItemDtos)
                 .build();
     }

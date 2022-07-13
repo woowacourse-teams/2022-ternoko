@@ -16,12 +16,14 @@ public class CalendarResponse {
     private final String interviewStartTime;
     private final String interviewEndTime;
 
-    public static CalendarResponse from(Interview interview){
+    public static CalendarResponse from(Interview interview) {
         return CalendarResponse.calenderResponseBuilder()
                 .id(interview.getId())
                 .crewNickname(interview.getCrewNickname())
-                .interviewStartTime(interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-                .interviewEndTime(interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .interviewStartTime(
+                        interview.getInterviewStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .interviewEndTime(
+                        interview.getInterviewEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();
     }
 }
