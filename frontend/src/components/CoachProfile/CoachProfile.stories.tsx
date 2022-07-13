@@ -1,4 +1,5 @@
 import { Story } from '@storybook/react';
+
 import CoachProfile, { CoachProfileProps } from '.';
 
 export default {

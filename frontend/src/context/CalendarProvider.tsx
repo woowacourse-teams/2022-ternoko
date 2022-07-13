@@ -61,7 +61,6 @@ const CalendarProvider = ({ children }: CalendarProviderProps) => {
   const [year, setYear] = useState(date.getFullYear());
   const [month, setMonth] = useState(date.getMonth());
 
-  // 선택한 날짜
   const [selectedYear, setSelectedYear] = useState(year);
   const [selectedMonth, setSelectedMonth] = useState(month);
   const [selectedDay, setSelectedDay] = useState(-1);

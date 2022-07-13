@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import * as S from './styled';
+
 import Reservation from '../../components/Reservation';
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
-import * as S from './styled';
 
 import { ReservationType } from 'types/domain';
 import { getReservationsAPI } from '../../api';

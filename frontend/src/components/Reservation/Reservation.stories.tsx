@@ -1,6 +1,7 @@
 import { Story } from '@storybook/react';
 
 import Reservation from '.';
+
 import { ReservationType } from 'types/domain';
 
 export default {

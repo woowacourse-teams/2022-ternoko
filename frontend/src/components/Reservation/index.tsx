@@ -1,6 +1,7 @@
+import * as S from './styled';
+
 import Button from '../../components/@common/Button/styled';
 
-import * as S from './styled';
 import { ReservationType } from 'types/domain';
 
 const Reservation = ({

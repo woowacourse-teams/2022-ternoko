@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { ReservationRequestBodyType } from '../types/domain';
 
 const SERVER_URL = 'http://192.168.7.160:8080';

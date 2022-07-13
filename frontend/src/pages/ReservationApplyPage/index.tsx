@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import * as S from './styled';
+
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
 import Calendar from '../../components/Calendar';
-
-import * as S from './styled';
 
 import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
@@ -15,6 +15,25 @@ import { getCoachesAPI, postReservationAPI } from '../../api';
 import { useCalendarState, useCalendarUtils } from '../../context/CalendarProvider';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
+
+const dummyTimes = [
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '12:30',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00',
+  '17:30',
+];
 
 const isOverMinLength = (text: string) => {
   return text.length >= 10;
@@ -24,19 +43,18 @@ const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const { year, month } = useCalendarState();
   const { dateString } = useCalendarUtils();
+
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const rerenderKey = useMemo(() => Date.now(), [year, month, stepStatus[1]]);
-
-  const [time, setTime] = useState('');
   const [coachId, setCoachId] = useState(-1);
-
+  const [time, setTime] = useState('');
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const rerenderKey = useMemo(() => Date.now(), [year, month, stepStatus[1]]);
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -149,36 +167,15 @@ const ReservationApplyPage = () => {
               <Calendar rerenderKey={rerenderKey} />
 
               <S.TimeContainer>
-                <S.Time active={time === '10:00'} onClick={getHandleClickTime('10:00')}>
-                  10 : 00
-                </S.Time>
-                <S.Time active={time === '10:30'} onClick={getHandleClickTime('10:30')}>
-                  10 : 30
-                </S.Time>
-                <S.Time active={time === '11:00'} onClick={getHandleClickTime('11:00')}>
-                  11 : 00
-                </S.Time>
-                <S.Time active={time === '11:30'} onClick={getHandleClickTime('11:30')}>
-                  11 : 30
-                </S.Time>
-                <S.Time active={time === '12:00'} onClick={getHandleClickTime('12:00')}>
-                  12 : 00
-                </S.Time>
-                <S.Time active={time === '12:30'} onClick={getHandleClickTime('12:30')}>
-                  12 : 30
-                </S.Time>
-                <S.Time active={time === '13:00'} onClick={getHandleClickTime('13:00')}>
-                  13 : 00
-                </S.Time>
-                <S.Time active={time === '13:30'} onClick={getHandleClickTime('13:30')}>
-                  13 : 30
-                </S.Time>
-                <S.Time active={time === '14:00'} onClick={getHandleClickTime('14:00')}>
-                  14 : 00
-                </S.Time>
-                <S.Time active={time === '14:30'} onClick={getHandleClickTime('14:30')}>
-                  14 : 30
-                </S.Time>
+                {dummyTimes.map((dummyTime, index) => (
+                  <S.Time
+                    key={index}
+                    active={time === dummyTime}
+                    onClick={getHandleClickTime(dummyTime)}
+                  >
+                    {dummyTime}
+                  </S.Time>
+                ))}
               </S.TimeContainer>
             </S.DateBox>
 

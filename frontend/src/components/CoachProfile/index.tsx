@@ -1,5 +1,6 @@
-import { CoachType } from 'types/domain';
 import * as S from './styled';
+
+import { CoachType } from 'types/domain';
 
 export type CoachProfileProps = CoachType & {
   currentCoachId: number;

@@ -1,6 +1,6 @@
-import ErrorMessage from '../../components/@common/ErrorMessage/styled';
-
 import * as S from './styled';
+
+import ErrorMessage from '../../components/@common/ErrorMessage/styled';
 
 export type TextAreaFieldProps = {
   id: string;
@@ -22,9 +22,12 @@ const TextAreaField = ({
   return (
     <S.Box>
       <S.Label htmlFor={id}>{label}</S.Label>
-      <S.TextArea id={id} onChange={handleChange} isError={isSubmitted && !checkValidation(answer)}>
-        {answer}
-      </S.TextArea>
+      <S.TextArea
+        id={id}
+        value={answer}
+        isError={isSubmitted && !checkValidation(answer)}
+        onChange={handleChange}
+      />
       {isSubmitted && !checkValidation(answer) && (
         <ErrorMessage>10글자 이상을 입력해주세요.</ErrorMessage>
       )}
