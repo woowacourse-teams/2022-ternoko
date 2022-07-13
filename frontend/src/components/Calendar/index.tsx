@@ -1,43 +1,35 @@
 import { memo } from 'react';
 
-import useCalendar from './useCalendar';
 import * as S from './styled';
 
-import { StepStatus } from '../../pages/ReservationApplyPage';
+import {
+  useCalendarActions,
+  useCalendarValue,
+  useCalendarUtils,
+  monthNames,
+} from '../../context/CalendarProvider';
 
 export type CalendarProps = {
-  currentDay: number;
-  stepStatus: StepStatus[];
-  handleClickDay: (date: number) => () => void;
+  rerenderKey?: number;
 };
 
-const Calendar = ({ currentDay, stepStatus, handleClickDay }: CalendarProps) => {
-  const {
-    daysKey,
-    daysLength,
-    monthNames,
-    month,
-    year,
-    showMonthPicker,
-    getHandleClickMonth,
-    handleClickPrevYear,
-    handleClickNextYear,
-    handleClickMonthPicker,
-    getDay,
-    isToday,
-    isOverFirstDay,
-  } = useCalendar({ stepStatus });
+const Calendar = ({ rerenderKey }: CalendarProps) => {
+  const { year, month, day: currentDay, showMonthPicker } = useCalendarValue();
+  const { increaseYear, decreaseYear, getSetDay, setShowMonthPicker, getHandleClickMonth } =
+    useCalendarActions();
+  const { daysLength, isToday, isOverFirstDay, getDay } = useCalendarUtils();
 
   return (
     <S.Box>
       <S.Header>
-        <S.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</S.MonthPicker>
+        <S.MonthPicker onClick={() => setShowMonthPicker(true)}>{monthNames[month]}</S.MonthPicker>
         <S.YearPicker>
-          <S.YearChange onClick={handleClickPrevYear}>{'<'}</S.YearChange>
+          <S.YearChange onClick={decreaseYear}>{'<'}</S.YearChange>
           <p>{year}</p>
-          <S.YearChange onClick={handleClickNextYear}>{'>'}</S.YearChange>
+          <S.YearChange onClick={increaseYear}>{'>'}</S.YearChange>
         </S.YearPicker>
       </S.Header>
+
       <S.Body>
         <S.WeekDay>
           <div>Sun</div>
@@ -48,26 +40,21 @@ const Calendar = ({ currentDay, stepStatus, handleClickDay }: CalendarProps) => 
           <div>Fri</div>
           <div>Sat</div>
         </S.WeekDay>
-        <S.Days key={daysKey}>
+        <S.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
 
               if (isToday(day)) {
                 return (
-                  <S.Day
-                    key={index}
-                    today
-                    onClick={handleClickDay(day)}
-                    active={currentDay === day}
-                  >
+                  <S.Day key={index} active={currentDay === day} today onClick={getSetDay(day)}>
                     {day}
                   </S.Day>
                 );
               }
 
               return (
-                <S.Day key={index} onClick={handleClickDay(day)} active={currentDay === day}>
+                <S.Day key={index} active={currentDay === day} onClick={getSetDay(day)}>
                   {day}
                   <span />
                   <span />

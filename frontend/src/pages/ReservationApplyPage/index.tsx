@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../../components/@common/Button/styled';
@@ -6,24 +6,30 @@ import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
 import Calendar from '../../components/Calendar';
-import useCalendar from '../../components/Calendar/useCalendar';
 
 import * as S from './styled';
 
 import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
 
+import { useCalendarValue } from '../../context/CalendarProvider';
+
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
+
+const isOverMinLength = (text: string) => {
+  return text.length >= 10;
+};
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+  const { year, month, day } = useCalendarValue();
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
-  const { year: currentYear, month: currentMonth } = useCalendar({ stepStatus });
 
-  const [currentDay, setCurrentDay] = useState(-1);
-  const [currentTime, setCurrentTime] = useState('');
-  const [currentCoachId, setCurrentCoachId] = useState(-1);
+  const rerenderKey = useMemo(() => Date.now(), [year, month, stepStatus[1]]);
+
+  const [time, setTime] = useState('');
+  const [coachId, setCoachId] = useState(-1);
 
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
@@ -47,29 +53,18 @@ const ReservationApplyPage = () => {
     );
   };
 
-  const handleClickProfile = (id: number) => {
-    setCurrentCoachId(id);
+  const getHandleClickProfile = (id: number) => () => {
+    setCoachId(id);
   };
 
-  const handleClickDay = useCallback(
-    (day: number) => () => {
-      setCurrentDay(day);
-    },
-    [stepStatus[1]],
-  );
-
-  const handleClickTime = (time: string) => () => {
-    setCurrentTime(time);
+  const getHandleClickTime = (time: string) => () => {
+    setTime(time);
   };
 
-  const handleChangeAnswer =
+  const getHandleChangeAnswer =
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setAnswer(e.target.value);
     };
-
-  const isOverMinLength = (text: string) => {
-    return text.length >= 10;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,9 +72,10 @@ const ReservationApplyPage = () => {
 
     if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
 
-    const month = String(currentMonth).padStart(2, '0');
-    const day = String(currentDay).padStart(2, '0');
-    const interviewDatetime = `${currentYear}-${month}-${day} ${currentTime}`;
+    const interviewDatetime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(
+      2,
+      '0',
+    )} ${time}`;
 
     const body = {
       interviewDatetime,
@@ -101,7 +97,7 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await postReservationAPI(currentCoachId, body);
+    const response = await postReservationAPI(coachId, body);
     const location = response.headers.location;
 
     navigate(`/reservation/complete/${location.split('/')[3]}`);
@@ -134,8 +130,8 @@ const ReservationApplyPage = () => {
                 <CoachProfile
                   key={coach.id}
                   {...coach}
-                  currentCoachId={currentCoachId}
-                  handleClickProfile={handleClickProfile}
+                  currentCoachId={coachId}
+                  getHandleClickProfile={getHandleClickProfile}
                 />
               ))}
             </GridContainer>
@@ -154,40 +150,37 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <S.DateBox>
-              <Calendar
-                currentDay={currentDay}
-                stepStatus={stepStatus}
-                handleClickDay={handleClickDay}
-              />
+              <Calendar rerenderKey={rerenderKey} />
+
               <S.TimeContainer>
-                <S.Time active={currentTime === '10:00'} onClick={handleClickTime('10:00')}>
+                <S.Time active={time === '10:00'} onClick={getHandleClickTime('10:00')}>
                   10 : 00
                 </S.Time>
-                <S.Time active={currentTime === '10:30'} onClick={handleClickTime('10:30')}>
+                <S.Time active={time === '10:30'} onClick={getHandleClickTime('10:30')}>
                   10 : 30
                 </S.Time>
-                <S.Time active={currentTime === '11:00'} onClick={handleClickTime('11:00')}>
+                <S.Time active={time === '11:00'} onClick={getHandleClickTime('11:00')}>
                   11 : 00
                 </S.Time>
-                <S.Time active={currentTime === '11:30'} onClick={handleClickTime('11:30')}>
+                <S.Time active={time === '11:30'} onClick={getHandleClickTime('11:30')}>
                   11 : 30
                 </S.Time>
-                <S.Time active={currentTime === '12:00'} onClick={handleClickTime('12:00')}>
+                <S.Time active={time === '12:00'} onClick={getHandleClickTime('12:00')}>
                   12 : 00
                 </S.Time>
-                <S.Time active={currentTime === '12:30'} onClick={handleClickTime('12:30')}>
+                <S.Time active={time === '12:30'} onClick={getHandleClickTime('12:30')}>
                   12 : 30
                 </S.Time>
-                <S.Time active={currentTime === '13:00'} onClick={handleClickTime('13:00')}>
+                <S.Time active={time === '13:00'} onClick={getHandleClickTime('13:00')}>
                   13 : 00
                 </S.Time>
-                <S.Time active={currentTime === '13:30'} onClick={handleClickTime('13:30')}>
+                <S.Time active={time === '13:30'} onClick={getHandleClickTime('13:30')}>
                   13 : 30
                 </S.Time>
-                <S.Time active={currentTime === '14:00'} onClick={handleClickTime('14:00')}>
+                <S.Time active={time === '14:00'} onClick={getHandleClickTime('14:00')}>
                   14 : 00
                 </S.Time>
-                <S.Time active={currentTime === '14:30'} onClick={handleClickTime('14:30')}>
+                <S.Time active={time === '14:30'} onClick={getHandleClickTime('14:30')}>
                   14 : 30
                 </S.Time>
               </S.TimeContainer>
@@ -211,7 +204,7 @@ const ReservationApplyPage = () => {
                 id="example1"
                 label="이번 면담을 통해 논의하고 싶은 내용"
                 answer={answer1}
-                handleChange={handleChangeAnswer(setAnswer1)}
+                handleChange={getHandleChangeAnswer(setAnswer1)}
                 checkValidation={isOverMinLength}
                 isSubmitted={isSubmitted}
               />
@@ -219,7 +212,7 @@ const ReservationApplyPage = () => {
                 id="example2"
                 label="최근에 자신이 긍정적으로 보는 시도와 변화"
                 answer={answer2}
-                handleChange={handleChangeAnswer(setAnswer2)}
+                handleChange={getHandleChangeAnswer(setAnswer2)}
                 checkValidation={isOverMinLength}
                 isSubmitted={isSubmitted}
               />
@@ -227,7 +220,7 @@ const ReservationApplyPage = () => {
                 id="example3"
                 label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
                 answer={answer3}
-                handleChange={handleChangeAnswer(setAnswer3)}
+                handleChange={getHandleChangeAnswer(setAnswer3)}
                 checkValidation={isOverMinLength}
                 isSubmitted={isSubmitted}
               />

@@ -6,6 +6,7 @@ import ReservationApplyPage from './pages/ReservationApplyPage';
 import ReservationCompletePage from './pages/ReservationCompletePage';
 
 import Header from './components/Header';
+import CalendarProvider from './context/CalendarProvider';
 
 const AppRoutes = () => {
   return (
@@ -15,7 +16,14 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="" element={<HomePage />} />
-          <Route path="reservation/apply" element={<ReservationApplyPage />} />
+          <Route
+            path="reservation/apply"
+            element={
+              <CalendarProvider>
+                <ReservationApplyPage />
+              </CalendarProvider>
+            }
+          />
           <Route path="reservation/complete/:reservationId" element={<ReservationCompletePage />} />
         </Route>
       </Routes>
