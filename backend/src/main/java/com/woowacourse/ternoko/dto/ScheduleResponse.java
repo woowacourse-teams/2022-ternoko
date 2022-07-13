@@ -14,7 +14,7 @@ public class ScheduleResponse {
 
     private List<CalendarResponse> calendar;
 
-    public static ScheduleResponse from(List<Interview> interviews) {
+    public static ScheduleResponse from(final List<Interview> interviews) {
         return new ScheduleResponse(interviews.stream()
                 .map(CalendarResponse::from)
                 .collect(Collectors.toList()));

@@ -19,8 +19,8 @@ public class CoachController {
 
     @GetMapping("/{coachId}/schedules")
     public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@PathVariable final Long coachId,
-                                                                      @RequestParam final int year,
-                                                                      @RequestParam final int month) {
+                                                                      @RequestParam final Integer year,
+                                                                      @RequestParam final Integer month) {
         final ScheduleResponse schedules = reservationService.findAllByCoach(coachId, year, month);
         return ResponseEntity.ok(schedules);
     }

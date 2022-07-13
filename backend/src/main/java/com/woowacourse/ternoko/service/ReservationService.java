@@ -90,6 +90,7 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
         final LocalDateTime startOfMonth = LocalDateTime.of(year, month, FIRST_DAY_OF_MONTH, START_HOUR, START_MINUTE);
         final LocalDateTime endOfMonth = LocalDateTime.of(year, month, LAST_DAY_OF_MONTH, END_HOUR, END_MINUTE);
