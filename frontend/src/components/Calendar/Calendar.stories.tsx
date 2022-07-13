@@ -12,6 +12,5 @@ const Template = (args: CalendarProps) => <Calendar {...args} />;
 export const Basic: Story<CalendarProps> = Template.bind({});
 
 Basic.args = {
-  currentDay: 7,
-  handleClickDay: () => () => {},
+  rerenderKey: 1,
 };
