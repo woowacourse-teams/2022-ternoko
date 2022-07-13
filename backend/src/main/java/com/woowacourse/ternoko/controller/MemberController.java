@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.controller;
 
 import com.woowacourse.ternoko.domain.Member;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.service.MemberService;
@@ -9,6 +10,9 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +34,12 @@ public class MemberController {
                         .build())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new CoachesResponse(coachResponses));
+    }
+
+    @PutMapping("/coaches/{coachId}/calendar/times")
+    public ResponseEntity<Void> saveCalendarTimes(@PathVariable final Long coachId,
+                                                  @RequestBody final CalendarRequest calendarRequest) {
+        memberService.putAvailableDateTimesByCoachId(coachId, calendarRequest);
+        return ResponseEntity.ok().build();
     }
 }
