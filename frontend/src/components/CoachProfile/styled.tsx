@@ -1,21 +1,20 @@
 import styled, { css } from 'styled-components';
 
 export const CoachName = styled.p`
+  padding: 0.3rem 0;
   text-align: center;
 
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 0.3rem 0;
   border-radius: 10px;
 `;
 
 export const CoachProfileImage = styled.img`
   width: 110px;
   height: 110px;
+  border: 1px solid ${({ theme }) => theme.colors.gray_100};
   border-radius: 25px;
   margin-bottom: 0.5rem;
-
-  border: 1px solid ${({ theme }) => theme.colors.gray_100};
 `;
 
 type BoxProps = {
@@ -40,10 +39,6 @@ export const Box = styled.div<BoxProps>`
     css`
       ${CoachName} {
         background-color: ${({ theme }) => theme.colors.pink_50};
-        /* background-color: ${({ theme }) => theme.colors.pink_200}; */
-
-        /* background-color: #f03e3e; */
-        backgroud-color: #ffb7d2;
       }
     `}
 `;

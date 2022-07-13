@@ -13,7 +13,7 @@ const Button = styled.button<ButtonProps>`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  width: ${({ width }) => width || ''};
+  width: ${({ width }) => width ?? ''};
   height: ${({ height }) => height ?? 'auto'};
   padding: 7px 12px;
   border: none;
@@ -25,6 +25,14 @@ const Button = styled.button<ButtonProps>`
   font-size: 1.3rem;
   cursor: pointer;
 
+  ${({ white }) =>
+    white &&
+    css`
+      background-color: ${({ theme }) => theme.colors.white_50};
+      color: ${({ theme }) => theme.colors.black};
+      border: 0.5px solid ${({ theme }) => theme.colors.black};
+    `}
+
   ${({ orange }) =>
     orange &&
     css`
@@ -33,15 +41,8 @@ const Button = styled.button<ButtonProps>`
       border-radius: 5px;
     `}
 
-  ${({ white }) =>
-    white &&
-    css`
-      border: 0.5px solid ${({ theme }) => theme.colors.black};
-      background-color: ${({ theme }) => theme.colors.white_50};
-      color: ${({ theme }) => theme.colors.black};
-    `}
 
-    ${({ home }) =>
+  ${({ home }) =>
     home &&
     css`
       width: 12rem;

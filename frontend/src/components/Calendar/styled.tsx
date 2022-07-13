@@ -141,7 +141,7 @@ export const Day = styled.div<DayProps>`
   span:nth-child(4) {
     width: 0;
     height: 2px;
-    background-color: #ffe3e3;
+    background-color: ${({ theme }) => theme.colors.pink_50};
   }
 
   span:nth-child(2) {
@@ -187,11 +187,11 @@ type MonthContainerProps = {
 export const MonthContainer = styled.div<MonthContainerProps>`
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(3, auto);
   gap: 1rem;
+  width: 100%;
+  height: 100%;
 
   border-radius: 20px;
   background-color: white;
@@ -218,13 +218,13 @@ export const MonthContainer = styled.div<MonthContainerProps>`
     place-items: center;
 
     border-radius: 10px;
-    cursor: pointer;
     transition: all 0.2s;
+    cursor: pointer;
 
     :hover {
-      transform: scale(1.2);
-      font-weight: 600;
       background-color: ${({ theme }) => theme.colors.white_100};
+      font-weight: 600;
+      transform: scale(1.2);
     }
   }
 `;
