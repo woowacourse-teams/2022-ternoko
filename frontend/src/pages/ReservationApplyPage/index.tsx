@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '../../components/@common/Button/styled';
+import TitleBox from '../../components/@common/TitleBox';
 import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
@@ -42,7 +43,7 @@ const isOverMinLength = (text: string) => {
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const { year, month } = useCalendarState();
-  const { dateString } = useCalendarUtils();
+  const { getDateStrings } = useCalendarUtils();
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
@@ -92,7 +93,7 @@ const ReservationApplyPage = () => {
     if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
 
     const body = {
-      interviewDatetime: `${dateString} ${time}`,
+      interviewDatetime: `${getDateStrings()[0]} ${time}`,
       crewNickname: '록바',
       location: '잠실',
       interviewQuestions: [
@@ -126,11 +127,7 @@ const ReservationApplyPage = () => {
 
   return (
     <>
-      <S.TitleBox>
-        <h2>
-          <Link to="/">{'<'}</Link> 면담 신청하기
-        </h2>
-      </S.TitleBox>
+      <TitleBox to="/" title="면담 신청하기" />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
