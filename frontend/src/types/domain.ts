@@ -26,3 +26,5 @@ export interface ReservationRequestBodyType {
   location: string;
   interviewQuestions: InterviewQuestionType[];
 }
+
+export type SelectMode = 'single' | 'multiple';

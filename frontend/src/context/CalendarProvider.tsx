@@ -1,7 +1,9 @@
 import React, { createContext, useState, useContext } from 'react';
 
+import { SelectMode } from '../types/domain';
+
 type CalendarProviderProps = {
-  selectMode: 'single' | 'multiple';
+  selectMode: SelectMode;
   children: React.ReactNode;
 };
 
