@@ -14,6 +14,7 @@ import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
 
 import { useCalendarState, useCalendarUtils } from '../../context/CalendarProvider';
+import useTimes from '../../hooks/useTimes';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -44,13 +45,13 @@ const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const { year, month } = useCalendarState();
   const { getDateStrings } = useCalendarUtils();
+  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'multiple' });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [coachId, setCoachId] = useState(-1);
-  const [time, setTime] = useState('');
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
@@ -77,10 +78,6 @@ const ReservationApplyPage = () => {
     setCoachId(id);
   };
 
-  const getHandleClickTime = (time: string) => () => {
-    setTime(time);
-  };
-
   const getHandleChangeAnswer =
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setAnswer(e.target.value);
@@ -93,7 +90,7 @@ const ReservationApplyPage = () => {
     if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
 
     const body = {
-      interviewDatetime: `${getDateStrings()[0]} ${time}`,
+      interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
       crewNickname: '록바',
       location: '잠실',
       interviewQuestions: [
@@ -167,7 +164,7 @@ const ReservationApplyPage = () => {
                 {dummyTimes.map((dummyTime, index) => (
                   <S.Time
                     key={index}
-                    active={time === dummyTime}
+                    active={selectedTimes[0] === dummyTime}
                     onClick={getHandleClickTime(dummyTime)}
                   >
                     {dummyTime}
