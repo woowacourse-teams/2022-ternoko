@@ -13,5 +13,5 @@ public class ReservationRequest {
 
     private String crewNickname;
     private LocalDateTime interviewDatetime;
-    private List<FormItemDto> interviewQuestions;
+    private List<FormItemRequest> interviewQuestions;
 }

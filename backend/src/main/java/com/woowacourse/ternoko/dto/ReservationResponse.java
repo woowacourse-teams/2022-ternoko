@@ -25,12 +25,12 @@ public class ReservationResponse {
     private LocalDateTime interviewStartTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewEndTime;
-    private List<FormItemDto> interviewQuestions;
+    private List<FormItemResponse> interviewQuestions;
 
     public static ReservationResponse from(final Reservation reservation) {
         final Interview interview = reservation.getInterview();
-        final List<FormItemDto> formItemDtos = interview.getFormItems().stream()
-                .map(FormItemDto::from)
+        final List<FormItemResponse> formItemResponses = interview.getFormItems().stream()
+                .map(FormItemResponse::from)
                 .collect(Collectors.toList());
 
         return ReservationResponse.reservationResponseBuilder()
@@ -42,7 +42,7 @@ public class ReservationResponse {
                         interview.getInterviewStartTime())
                 .interviewEndTime(
                         interview.getInterviewEndTime())
-                .interviewQuestions(formItemDtos)
+                .interviewQuestions(formItemResponses)
                 .build();
     }
 }
