@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.domain.Interview;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

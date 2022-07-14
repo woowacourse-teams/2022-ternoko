@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.dto.ScheduleResponse;

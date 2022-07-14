@@ -1,21 +1,20 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
