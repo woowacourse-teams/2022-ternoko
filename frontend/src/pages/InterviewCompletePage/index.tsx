@@ -50,6 +50,8 @@ const InterviewCompletePage = () => {
         <S.Info>
           <p>날짜</p>
           <p>{interview && getDateString(interview.interviewStartTime)}</p>
+
+          <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>시작</p>
