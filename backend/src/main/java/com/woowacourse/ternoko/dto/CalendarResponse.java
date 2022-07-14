@@ -7,18 +7,20 @@ import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "calenderResponseBuilder")
 public class CalendarResponse {
 
-    private final Long id;
-    private final String crewNickname;
+    private Long id;
+    private String crewNickname;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private final LocalDateTime interviewStartTime;
+    private LocalDateTime interviewStartTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private final LocalDateTime interviewEndTime;
+    private LocalDateTime interviewEndTime;
 
     public static CalendarResponse from(final Interview interview) {
         return CalendarResponse.calenderResponseBuilder()

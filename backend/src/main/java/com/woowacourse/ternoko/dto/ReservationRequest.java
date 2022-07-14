@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class ReservationRequest {
 
     private String crewNickname;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewDatetime;
     private List<FormItemDto> interviewQuestions;
 }

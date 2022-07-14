@@ -97,7 +97,7 @@ public class ReservationService {
         final LocalDateTime endOfMonth = LocalDateTime.of(year, month, lastDayOfMonth, END_HOUR, END_MINUTE);
 
         final List<Interview> interviews = interviewRepository
-                .findAllByCoachAndDateRange(startOfMonth, endOfMonth, coachId);
+                .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
 
         return ScheduleResponse.from(interviews);
     }
