@@ -1,31 +1,24 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST1;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST2;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST3;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST4;
-import static com.woowacourse.ternoko.service.ReservationService.INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.ternoko.fixture.MemberFixture.*;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.*;
+import static com.woowacourse.ternoko.service.ReservationService.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.woowacourse.ternoko.dto.ReservationResponse;
-import com.woowacourse.ternoko.dto.ScheduleResponse;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -106,7 +99,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("면담 예약시,과거 기간 예약을 시도하면 에러가 발생한다.")
+    @DisplayName("면담 예약시, 과거 기간 예약을 시도하면 에러가 발생한다.")
     void createReservationException() {
         final ReservationRequest request = new ReservationRequest("SUDAL", LocalDateTime.now().minusDays(1),
                 FORM_ITEM_REQUESTS);

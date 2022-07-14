@@ -28,7 +28,6 @@ public class AvailableDateTime {
     private Member coach;
 
     @Column(nullable = false)
-
     private LocalDateTime localDateTime;
 
     public AvailableDateTime(Member coach, LocalDateTime localDateTime) {
