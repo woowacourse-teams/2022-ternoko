@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.AVAILABLE_TIMES;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.dto.CalendarRequest;
@@ -31,10 +32,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void saveCalendarTimes() {
         // given
-        final CalendarRequest calendarRequest = new CalendarRequest(List.of(
-                LocalDateTime.of(2022, 7, 7, 14, 0),
-                LocalDateTime.of(2022, 7, 7, 15, 0),
-                LocalDateTime.of(2022, 7, 7, 16, 0)));
+        final CalendarRequest calendarRequest = new CalendarRequest(AVAILABLE_TIMES);
 
         // when
         final ExtractableResponse<Response> calendarResponse = put("/api/coaches/" + COACH3.getId() + "/calendar/times",
@@ -48,10 +46,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치의 면담 가능 시간을 조회한다.")
     void findCalendarTimes() {
         // given
-        final List<LocalDateTime> times = List.of(
-                LocalDateTime.of(2022, 7, 7, 14, 0),
-                LocalDateTime.of(2022, 7, 7, 15, 0),
-                LocalDateTime.of(2022, 7, 7, 16, 0));
+        final List<LocalDateTime> times = AVAILABLE_TIMES;
 
         final CalendarRequest calendarRequest = new CalendarRequest(times);
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", calendarRequest);

@@ -48,6 +48,7 @@ public class MemberController {
     @GetMapping("/coaches/{coachId}/calendar/times")
     public ResponseEntity<CalendarResponse> findCalendarTimes(@PathVariable final Long coachId) {
         final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(coachId);
-        return ResponseEntity.ok(CalendarResponse.from(availableDateTimes));
+        final CalendarResponse from = CalendarResponse.from(availableDateTimes);
+        return ResponseEntity.ok(from);
     }
 }

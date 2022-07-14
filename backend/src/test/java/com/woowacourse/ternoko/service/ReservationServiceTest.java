@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST1;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST2;

@@ -10,7 +10,7 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
 
     @Modifying(clearAutomatically = true)
     @Query("delete from AvailableDateTime a where a.coach.id = :coachId and YEAR(a.localDateTime) = :year and MONTH(a.localDateTime) = :month")
-    void deleteAllByCoachAndYearAndMonth(Long coachId, int year, int month);
+    void deleteAllByCoachAndYearAndMonth(final Long coachId, final int year, final int month);
 
-    List<AvailableDateTime> findAvailableDateTimesByCoachId(Long coachId);
+    List<AvailableDateTime> findAvailableDateTimesByCoachId(final Long coachId);
 }

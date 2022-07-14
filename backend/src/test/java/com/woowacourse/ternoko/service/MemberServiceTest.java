@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
