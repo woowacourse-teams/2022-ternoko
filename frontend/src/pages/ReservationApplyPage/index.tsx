@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
@@ -9,6 +9,8 @@ import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
 import Calendar from '../../components/Calendar';
+import ScrollContainer from '../../components/@common/ScrollContainer/styled';
+import Time from '../../components/Time/styled';
 
 import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
@@ -45,7 +47,7 @@ const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const { year, month } = useCalendarState();
   const { getDateStrings } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'multiple' });
+  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
@@ -160,17 +162,17 @@ const ReservationApplyPage = () => {
             <S.DateBox>
               <Calendar rerenderKey={rerenderKey} />
 
-              <S.TimeContainer>
+              <ScrollContainer>
                 {dummyTimes.map((dummyTime, index) => (
-                  <S.Time
+                  <Time
                     key={index}
                     active={selectedTimes[0] === dummyTime}
                     onClick={getHandleClickTime(dummyTime)}
                   >
                     {dummyTime}
-                  </S.Time>
+                  </Time>
                 ))}
-              </S.TimeContainer>
+              </ScrollContainer>
             </S.DateBox>
 
             <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(1)}>

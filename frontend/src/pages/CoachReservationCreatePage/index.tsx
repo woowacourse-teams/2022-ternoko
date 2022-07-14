@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import * as S from './styled';
 
 import TitleBox from '../../components/@common/TitleBox';
-import Calendar from '../../components/Calendar';
 import Button from '../../components/@common/Button/styled';
+import ScrollContainer from '../../components/@common/ScrollContainer/styled';
+import Time from '../../components/Time/styled';
+import Calendar from '../../components/Calendar';
 
 import useTimes from '../../hooks/useTimes';
 
@@ -38,17 +40,17 @@ const CoachReservationCreatePage = () => {
         <S.DateBox>
           <Calendar />
 
-          <S.TimeContainer>
+          <ScrollContainer>
             {defaultTimes.map((defaultTime, index) => (
-              <S.Time
+              <Time
                 key={index}
                 active={selectedTimes.includes(defaultTime)}
                 onClick={getHandleClickTime(defaultTime)}
               >
                 {defaultTime}
-              </S.Time>
+              </Time>
             ))}
-          </S.TimeContainer>
+          </ScrollContainer>
         </S.DateBox>
         <S.ButtonContainer>
           <Link to="/">
