@@ -45,7 +45,6 @@ const isOverMinLength = (text: string) => {
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
-  const { year, month } = useCalendarState();
   const { getDateStrings } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
 
@@ -58,7 +57,11 @@ const ReservationApplyPage = () => {
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
-  const rerenderKey = useMemo(() => Date.now(), [year, month, stepStatus[1]]);
+  const rerenderCondition = useMemo(() => {
+    if (stepStatus[1] === 'show') {
+      return Date.now();
+    }
+  }, [stepStatus[1]]);
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -94,7 +97,6 @@ const ReservationApplyPage = () => {
     const body = {
       interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
       crewNickname: '록바',
-      location: '잠실',
       interviewQuestions: [
         {
           question: '이번 면담을 통해 논의하고 싶은 내용',
@@ -160,7 +162,7 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <S.DateBox>
-              <Calendar rerenderKey={rerenderKey} />
+              <Calendar rerenderCondition={rerenderCondition} />
 
               <ScrollContainer>
                 {dummyTimes.map((dummyTime, index) => (

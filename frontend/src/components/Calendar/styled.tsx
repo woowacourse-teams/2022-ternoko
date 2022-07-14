@@ -91,6 +91,7 @@ const toTop = keyframes`
 type DayProps = {
   today?: boolean;
   active?: boolean;
+  before?: boolean;
 };
 
 export const Day = styled.div<DayProps>`
@@ -114,6 +115,15 @@ export const Day = styled.div<DayProps>`
     active &&
     css`
       border: 1px solid ${({ theme }) => theme.colors.pink_200};
+    `}
+
+  ${({ before }) =>
+    before &&
+    css`
+      background-color: ${({ theme }) => theme.colors.gray_100};
+      color: ${({ theme }) => theme.colors.gray_150};
+      pointer-events: none;
+      cursor: default;
     `}
     
   span {

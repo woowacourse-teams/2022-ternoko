@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { useMemo, memo } from 'react';
 
 import * as S from './styled';
 
@@ -10,10 +10,10 @@ import {
 } from '../../context/CalendarProvider';
 
 export type CalendarProps = {
-  rerenderKey?: number;
+  rerenderCondition?: number;
 };
 
-const Calendar = ({ rerenderKey }: CalendarProps) => {
+const Calendar = ({ rerenderCondition }: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
   const {
     handleClickPrevYear,
@@ -22,7 +22,9 @@ const Calendar = ({ rerenderKey }: CalendarProps) => {
     getSetDay,
     getHandleClickMonth,
   } = useCalendarActions();
-  const { daysLength, isToday, isSelectedDate, isOverFirstDay, getDay } = useCalendarUtils();
+  const { daysLength, isToday, isBeforeToday, isSelectedDate, isOverFirstDay, getDay } =
+    useCalendarUtils();
+  const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (
     <S.Box>
@@ -53,6 +55,14 @@ const Calendar = ({ rerenderKey }: CalendarProps) => {
               if (isToday(day)) {
                 return (
                   <S.Day key={index} active={isSelectedDate(day)} today onClick={getSetDay(day)}>
+                    {day}
+                  </S.Day>
+                );
+              }
+
+              if (isBeforeToday(day)) {
+                return (
+                  <S.Day key={index} before onClick={getSetDay(day)}>
                     {day}
                   </S.Day>
                 );

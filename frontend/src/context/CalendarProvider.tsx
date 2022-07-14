@@ -32,6 +32,7 @@ type CalendarActionsType = {
 type CalendarUtilsType = {
   daysLength: number;
   isToday: (day: number) => boolean;
+  isBeforeToday: (day: number) => boolean;
   isSelectedDate: (day: number) => boolean;
   isOverFirstDay: (index: number) => boolean;
   getDay: (index: number) => number;
@@ -86,6 +87,13 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     return day === date.getDate() && year === date.getFullYear() && month === date.getMonth();
   };
 
+  const isBeforeToday = (day: number) => {
+    const today = new Date().getTime();
+    const date = new Date(`${year}-${month + 1}-${day}`).getTime();
+
+    return date < today;
+  };
+
   const isSelectedDate = (day: number) =>
     selectedDates.some((selectedDate) => isSameDate(selectedDate, day));
 
@@ -134,6 +142,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
   const utils = {
     daysLength,
     isToday,
+    isBeforeToday,
     isSelectedDate,
     isOverFirstDay,
     getDay,
