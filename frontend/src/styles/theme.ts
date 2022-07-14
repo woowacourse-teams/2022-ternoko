@@ -7,12 +7,13 @@ const theme = {
     gray_100: '#e9ebee',
     gray_150: '#c3c2c8',
     pink_50: '#ffe3e3',
+    pink_100: '#ffb7d2',
     pink_200: '#ff385c',
     pink_300: '#f03e3e',
-    orange: 'rgba(255, 210, 77, 0.3)',
+    orange: '#ffd24d4d',
   },
   shadows: {
-    basic: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+    basic: '#64646f33 0px 7px 29px 0px',
   },
 };
 

@@ -14,10 +14,10 @@ const GridContainer = styled.div<GridContainerProps>`
   grid-gap: 3rem;
 
   ${({ pt, pr, pb, pl }) => css`
-    padding-top: ${pt || ''};
-    padding-right: ${pr || ''};
-    padding-bottom: ${pb || ''};
-    padding-left: ${pl || ''};
+    padding-top: ${pt ?? ''};
+    padding-right: ${pr ?? ''};
+    padding-bottom: ${pb ?? ''};
+    padding-left: ${pl ?? ''};
   `}
 `;
 

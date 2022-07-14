@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import * as S from './styled';
+
 import Reservation from '../../components/Reservation';
 import Button from '../../components/@common/Button/styled';
 import GridContainer from '../../components/@common/GridContainer/styled';
-import * as S from './styled';
 
 import { ReservationType } from 'types/domain';
 import { getReservationsAPI } from '../../api';
@@ -15,7 +16,7 @@ const HomePage = () => {
   const [reservations, setReservations] = useState<ReservationType[]>([]);
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
 
-  const handleClickTabMenu = (status: TabMenuStatus) => {
+  const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
   };
 
@@ -34,16 +35,18 @@ const HomePage = () => {
           <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>
+
       <S.TabMenuBox>
-        <S.TabMenu active={tabMenuStatus === 'doing'} onClick={() => handleClickTabMenu('doing')}>
+        <S.TabMenu active={tabMenuStatus === 'doing'} onClick={getHandleClickTabMenu('doing')}>
           진행중 면담
         </S.TabMenu>
-        <S.TabMenu active={tabMenuStatus === 'done'} onClick={() => handleClickTabMenu('done')}>
+        <S.TabMenu active={tabMenuStatus === 'done'} onClick={getHandleClickTabMenu('done')}>
           완료한 면담
         </S.TabMenu>
       </S.TabMenuBox>
+
       <GridContainer minSize="25rem" pt="4rem">
-        {reservations?.map((reservation) => (
+        {reservations.map((reservation) => (
           <Reservation key={reservation.id} {...reservation} />
         ))}
       </GridContainer>

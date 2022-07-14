@@ -1,4 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
+
 import { StepStatus } from '.';
 
 export const Container = styled.div`
