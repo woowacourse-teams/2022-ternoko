@@ -4,12 +4,12 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.domain.Location;
-import com.woowacourse.ternoko.dto.FormItemRequest;
+import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import io.restassured.response.ExtractableResponse;
@@ -40,10 +40,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // given
         final ReservationRequest reservationRequest = new ReservationRequest("수달7",
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                Location.JAMSIL.getValue(),
-                List.of(new FormItemRequest("고정질문1", "답변1"),
-                        new FormItemRequest("고정질문2", "답변2"),
-                        new FormItemRequest("고정질문3", "답변3")));
+                FORM_ITEM_REQUESTS);
 
         final ExtractableResponse<Response> createdResponse = post("/api/reservations/coaches/" + COACH3.getId(),
                 reservationRequest);
@@ -57,13 +54,11 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(reservationResponse.getInterviewDate())
-                        .isEqualTo(reservationDatetime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
                 () -> assertThat(reservationResponse.getInterviewStartTime())
-                        .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
+                        .isEqualTo(reservationDatetime),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-        ));
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME))
+        );
     }
 
     @Test
@@ -82,16 +77,5 @@ class ReservationAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(reservationResponses).hasSize(4);
-    }
-
-    private ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
-        final ReservationRequest reservationRequest = new ReservationRequest(crewName,
-                LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                Location.JAMSIL.getValue(),
-                List.of(new FormItemRequest("고정질문1", "답변1"),
-                        new FormItemRequest("고정질문2", "답변2"),
-                        new FormItemRequest("고정질문3", "답변3")));
-
-        return post("/api/reservations/coaches/" + coachId, reservationRequest);
     }
 }

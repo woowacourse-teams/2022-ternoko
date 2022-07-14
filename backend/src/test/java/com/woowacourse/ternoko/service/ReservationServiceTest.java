@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.ScheduleResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,12 +44,16 @@ class ReservationServiceTest {
                 () -> assertThat(id).isNotNull(),
                 () -> assertThat(reservationResponse.getCoachNickname())
                         .isEqualTo(COACH1.getNickname()),
-                () -> assertThat(reservationResponse.getInterviewDate())
-                        .isEqualTo(reservationDatetime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
                 () -> assertThat(reservationResponse.getInterviewStartTime())
-                        .isEqualTo(reservationDatetime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))),
+                        .isEqualTo(reservationDatetime),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
-                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                        .isEqualTo(reservationDatetime.plusMinutes(INTERVIEW_TIME)),
+                () -> assertThat(reservationResponse.getInterviewQuestions())
+                        .extracting("question")
+                        .contains("고정질문1", "고정질문2", "고정질문3"),
+                () -> assertThat(reservationResponse.getInterviewQuestions())
+                        .extracting("answer")
+                        .contains("답변1", "답변2", "답변3")
         );
     }
 
@@ -66,6 +71,24 @@ class ReservationServiceTest {
 
         // then
         assertThat(reservationResponses).extracting("crewNickname")
+                .hasSize(4)
+                .contains("바니", "열음", "앤지", "애쉬");
+    }
+
+    @Test
+    @DisplayName("코치별로 면담예약 목록을 조회한다.")
+    void findAllByCoach() {
+        // given
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST1);
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST2);
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST3);
+        reservationService.create(COACH4.getId(), RESERVATION_REQUEST4);
+
+        // when
+        final ScheduleResponse scheduleResponses = reservationService.findAllByCoach(COACH4.getId(), 2022, 7);
+
+        // then
+        assertThat(scheduleResponses.getCalendar()).extracting("crewNickname")
                 .hasSize(4)
                 .contains("바니", "열음", "앤지", "애쉬");
     }
