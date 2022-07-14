@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.fixture;
 
+import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.dto.FormItemRequest;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import java.time.LocalDateTime;
@@ -12,6 +13,10 @@ public class ReservationFixture {
     public static final List<FormItemRequest> FORM_ITEM_REQUESTS = List.of(new FormItemRequest("고정질문1", "답변1"),
             new FormItemRequest("고정질문2", "답변2"),
             new FormItemRequest("고정질문3", "답변3"));
+
+    public static final List<FormItem> FORM_ITEMS = List.of(new FormItem("고정질문1", "답변1"),
+            new FormItem("고정질문2", "답변2"),
+            new FormItem("고정질문3", "답변3"));
 
     public static final ReservationRequest RESERVATION_REQUEST1 = new ReservationRequest("바니",
             LocalDateTime.of(2022, 7, 4, 14, 0, 0),
