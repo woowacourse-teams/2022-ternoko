@@ -57,11 +57,7 @@ const ReservationApplyPage = () => {
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
-  const rerenderCondition = useMemo(() => {
-    if (stepStatus[1] === 'show') {
-      return Date.now();
-    }
-  }, [stepStatus[1]]);
+  const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
