@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.controller;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.service.MemberService;
 import java.util.List;
 import lombok.AllArgsConstructor;

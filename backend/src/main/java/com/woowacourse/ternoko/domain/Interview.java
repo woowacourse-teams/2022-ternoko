@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class Interview {
-
-    protected static final String INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE = "면담 예약은 최소 하루 전에 가능 합니다.";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +46,6 @@ public class Interview {
                      Member coach,
                      String crewNickname,
                      List<FormItem> formItems) {
-        validateInterviewStartTime(interviewStartTime);
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
@@ -57,10 +53,4 @@ public class Interview {
         this.formItems = formItems;
     }
 
-    private void validateInterviewStartTime(LocalDateTime localDateTime) {
-        final LocalDate standardDay = LocalDate.now().plusDays(1);
-        if (!standardDay.isBefore(localDateTime.toLocalDate())) {
-            throw new IllegalArgumentException(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);
-        }
-    }
 }

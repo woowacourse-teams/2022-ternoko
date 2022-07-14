@@ -4,10 +4,10 @@ import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.domain.Reservation;
-import com.woowacourse.ternoko.dto.request.FormItemRequest;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.dto.request.FormItemRequest;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
@@ -31,6 +31,8 @@ public class ReservationService {
     private static final int START_MINUTE = 0;
     private static final int END_HOUR = 23;
     private static final int END_MINUTE = 59;
+    public static final String INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE = "면담 예약은 최소 하루 전에 가능 합니다.";
+
     private final MemberRepository memberRepository;
     private final FormItemRepository formItemRepository;
     private final ReservationRepository reservationRepository;
@@ -57,12 +59,20 @@ public class ReservationService {
         final Member coach = memberRepository.findById(coachId)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
+        validateInterviewStartTime(reservationDatetime);
         return new Interview(
                 reservationDatetime,
                 reservationDatetime.plusMinutes(30),
                 coach,
                 reservationRequest.getCrewNickname(),
                 formItems);
+    }
+
+    private void validateInterviewStartTime(LocalDateTime localDateTime) {
+        final LocalDate standardDay = LocalDate.now().plusDays(1);
+        if (!standardDay.isBefore(localDateTime.toLocalDate())) {
+            throw new IllegalArgumentException(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);
+        }
     }
 
     private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
