@@ -34,6 +34,7 @@ const ReservationCompletePage = () => {
         </S.Info>
         <S.Info>
           <p>날짜</p>
+<<<<<<< HEAD
           <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
@@ -43,6 +44,17 @@ const ReservationCompletePage = () => {
         <S.Info>
           <p>종료</p>
           <p>{reservation && getTimeString(reservation.interviewEndTime)}</p>
+=======
+          <p>{reservation && getDateString(reservation?.interviewStartTime)}</p>
+        </S.Info>
+        <S.Info>
+          <p>시작</p>
+          <p>{reservation && getTimeString(reservation?.interviewStartTime)}</p>
+        </S.Info>
+        <S.Info>
+          <p>종료</p>
+          <p>{reservation && getTimeString(reservation?.interviewEndTime)}</p>
+>>>>>>> 93f7821 (fix: 변경된 api 스펙에 맞게 수정)
         </S.Info>
       </S.InfoContainer>
 
