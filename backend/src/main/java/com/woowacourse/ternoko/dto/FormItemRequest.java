@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.dto;
 
 import com.woowacourse.ternoko.domain.FormItem;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder(builderMethodName = "formItemBuilder")
 public class FormItemRequest {
 
+    @NotNull
     private String question;
+    @NotNull
     private String answer;
 
     public static FormItemRequest from(FormItem formItem) {
