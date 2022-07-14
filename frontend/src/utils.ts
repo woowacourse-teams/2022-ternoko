@@ -1,4 +1,4 @@
-const separateFullDate = (fullDate: string) => {
+export const separateFullDate = (fullDate: string) => {
   const [date, time] = fullDate.split(' ');
   const [year, month, day] = date.split('-');
 

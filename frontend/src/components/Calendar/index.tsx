@@ -11,17 +11,13 @@ import {
 
 export type CalendarProps = {
   rerenderCondition?: number;
+  getHandleClickDay: (day: number) => () => void;
 };
 
-const Calendar = ({ rerenderCondition }: CalendarProps) => {
+const Calendar = ({ rerenderCondition, getHandleClickDay }: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
-  const {
-    handleClickPrevYear,
-    handleClickNextYear,
-    handleClickMonthPicker,
-    getSetDay,
-    getHandleClickMonth,
-  } = useCalendarActions();
+  const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
+    useCalendarActions();
   const { daysLength, isToday, isBeforeToday, isSelectedDate, isOverFirstDay, getDay } =
     useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
@@ -54,7 +50,12 @@ const Calendar = ({ rerenderCondition }: CalendarProps) => {
 
               if (isToday(day)) {
                 return (
-                  <S.Day key={index} active={isSelectedDate(day)} today onClick={getSetDay(day)}>
+                  <S.Day
+                    key={index}
+                    active={isSelectedDate(day)}
+                    today
+                    onClick={getHandleClickDay(day)}
+                  >
                     {day}
                   </S.Day>
                 );
@@ -62,14 +63,14 @@ const Calendar = ({ rerenderCondition }: CalendarProps) => {
 
               if (isBeforeToday(day)) {
                 return (
-                  <S.Day key={index} before onClick={getSetDay(day)}>
+                  <S.Day key={index} before onClick={getHandleClickDay(day)}>
                     {day}
                   </S.Day>
                 );
               }
 
               return (
-                <S.Day key={index} active={isSelectedDate(day)} onClick={getSetDay(day)}>
+                <S.Day key={index} active={isSelectedDate(day)} onClick={getHandleClickDay(day)}>
                   {day}
                   <span />
                   <span />

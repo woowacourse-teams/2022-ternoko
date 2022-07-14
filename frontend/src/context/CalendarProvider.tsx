@@ -24,7 +24,7 @@ type CalendarActionsType = {
   handleClickPrevYear: () => void;
   handleClickNextYear: () => void;
   handleClickMonthPicker: () => void;
-  getSetDay: (day: number) => () => void;
+  setDay: (day: number) => () => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
   resetSelectedDates: () => void;
 };
@@ -119,7 +119,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     handleClickMonthPicker: () => {
       setShowMonthPicker(true);
     },
-    getSetDay: (day: number) => () => {
+    setDay: (day: number) => {
       if (isSelectedDate(day)) {
         setSelectedDates((prev) => prev.filter((date) => !isSameDate(date, day)));
 

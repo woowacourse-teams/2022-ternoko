@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styled';
@@ -10,9 +11,15 @@ import Calendar from '../../components/Calendar';
 
 import useTimes from '../../hooks/useTimes';
 
-import { useCalendarState, useCalendarActions } from '../../context/CalendarProvider';
+import {
+  useCalendarState,
+  useCalendarActions,
+  useCalendarUtils,
+} from '../../context/CalendarProvider';
 
-import { postCoachScheduleAPI } from '../../api';
+import { postCoachScheduleAPI, getCoachScheduleAPI } from '../../api';
+
+import { separateFullDate } from '../../utils';
 
 const defaultTimes = [
   '10:00',
@@ -33,13 +40,23 @@ const defaultTimes = [
   '17:30',
 ];
 
+const defaultCoachId = 12;
+
+type CalendarTimes = {
+  [key: string]: string[];
+};
+
 const CoachReservationCreatePage = () => {
-  const { selectedDates } = useCalendarState();
-  const { resetSelectedDates } = useCalendarActions();
-  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'multiple' });
+  const { year, month, selectedDates } = useCalendarState();
+  const { resetSelectedDates, setDay } = useCalendarActions();
+  const { isSelectedDate } = useCalendarUtils();
+  const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
+    selectMode: 'multiple',
+  });
+
+  const [calendarTimes, setCalendarTimes] = useState<CalendarTimes>({});
 
   const handleClickApplyButton = async () => {
-    const coachId = 12;
     const calendarTimes = selectedDates
       .map(({ year, month, day }) =>
         selectedTimes.map(
@@ -57,7 +74,7 @@ const CoachReservationCreatePage = () => {
     };
 
     try {
-      await postCoachScheduleAPI(coachId, body);
+      await postCoachScheduleAPI(defaultCoachId, body);
       resetSelectedDates();
       resetTimes();
 
@@ -67,13 +84,36 @@ const CoachReservationCreatePage = () => {
     }
   };
 
+  const getHandleClickDay = (day: number) => () => {
+    const selectedTimes = isSelectedDate(day) ? [] : calendarTimes[day] ?? [];
+    setSelectedTimes(selectedTimes);
+    setDay(day);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const response = await getCoachScheduleAPI(defaultCoachId, year, month);
+
+      setCalendarTimes(
+        response.data.calendarTimes.reduce((calendarTimes: CalendarTimes, date: string) => {
+          const { day, time } = separateFullDate(date);
+
+          calendarTimes[day] = calendarTimes[day] ?? [];
+          calendarTimes[day].push(time);
+
+          return calendarTimes;
+        }, {}),
+      );
+    })();
+  }, [year, month]);
+
   return (
     <>
       <TitleBox to="/" title="면담 스케쥴 만들기" />
 
       <S.Box>
         <S.DateBox>
-          <Calendar />
+          <Calendar getHandleClickDay={getHandleClickDay} />
 
           <ScrollContainer>
             {defaultTimes.map((defaultTime, index) => (

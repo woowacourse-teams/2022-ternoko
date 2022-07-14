@@ -15,7 +15,11 @@ import Time from '../../components/Time/styled';
 import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
 
-import { useCalendarState, useCalendarUtils } from '../../context/CalendarProvider';
+import {
+  useCalendarActions,
+  useCalendarState,
+  useCalendarUtils,
+} from '../../context/CalendarProvider';
 import useTimes from '../../hooks/useTimes';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
@@ -45,6 +49,7 @@ const isOverMinLength = (text: string) => {
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+  const { setDay } = useCalendarActions();
   const { getDateStrings } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
 
@@ -83,6 +88,10 @@ const ReservationApplyPage = () => {
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setAnswer(e.target.value);
     };
+
+  const getHandleClickDay = (day: number) => () => {
+    setDay(day);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,7 +167,10 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <S.DateBox>
-              <Calendar rerenderCondition={rerenderCondition} />
+              <Calendar
+                rerenderCondition={rerenderCondition}
+                getHandleClickDay={getHandleClickDay}
+              />
 
               <ScrollContainer>
                 {dummyTimes.map((dummyTime, index) => (
