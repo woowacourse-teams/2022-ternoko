@@ -15,6 +15,8 @@ export interface ReservationType {
   location: string;
 }
 
+export type SelectMode = 'single' | 'multiple';
+
 interface InterviewQuestionType {
   question: string;
   answer: string;
@@ -27,4 +29,6 @@ export interface ReservationRequestBodyType {
   interviewQuestions: InterviewQuestionType[];
 }
 
-export type SelectMode = 'single' | 'multiple';
+export interface CoachScheduleRequestBodyType {
+  calendarTimes: string[];
+}

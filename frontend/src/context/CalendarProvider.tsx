@@ -7,9 +7,16 @@ type CalendarProviderProps = {
   children: React.ReactNode;
 };
 
+type Date = {
+  year: number;
+  month: number;
+  day: number;
+};
+
 type CalendarStateType = {
   year: number;
   month: number;
+  selectedDates: Date[];
   showMonthPicker: boolean;
 };
 
@@ -19,6 +26,7 @@ type CalendarActionsType = {
   handleClickMonthPicker: () => void;
   getSetDay: (day: number) => () => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
+  resetSelectedDates: () => void;
 };
 
 type CalendarUtilsType = {
@@ -28,12 +36,6 @@ type CalendarUtilsType = {
   isOverFirstDay: (index: number) => boolean;
   getDay: (index: number) => number;
   getDateStrings: () => string[];
-};
-
-type Date = {
-  year: number;
-  month: number;
-  day: number;
 };
 
 export const monthNames = [
@@ -97,7 +99,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
         `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
     );
 
-  const state = { year, month, showMonthPicker };
+  const state = { year, month, selectedDates, showMonthPicker };
 
   const actions = {
     handleClickPrevYear() {
@@ -123,6 +125,9 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     getHandleClickMonth: (monthIndex: number) => () => {
       setMonth(monthIndex);
       setShowMonthPicker(false);
+    },
+    resetSelectedDates() {
+      setSelectedDates([]);
     },
   };
 

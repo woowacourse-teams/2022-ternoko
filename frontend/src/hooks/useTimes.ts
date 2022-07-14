@@ -24,7 +24,9 @@ const useTimes = ({ selectMode }: useTimesProps) => {
       : setSelectedTimes((prev) => [...prev, time]);
   };
 
-  return { selectedTimes, getHandleClickTime };
+  const resetTimes = () => setSelectedTimes([]);
+
+  return { selectedTimes, getHandleClickTime, resetTimes };
 };
 
 export default useTimes;

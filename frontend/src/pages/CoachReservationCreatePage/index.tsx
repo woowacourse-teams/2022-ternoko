@@ -10,6 +10,10 @@ import Calendar from '../../components/Calendar';
 
 import useTimes from '../../hooks/useTimes';
 
+import { useCalendarState, useCalendarActions } from '../../context/CalendarProvider';
+
+import { postCoachScheduleAPI } from '../../api';
+
 const defaultTimes = [
   '10:00',
   '10:30',
@@ -30,7 +34,38 @@ const defaultTimes = [
 ];
 
 const CoachReservationCreatePage = () => {
-  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'multiple' });
+  const { selectedDates } = useCalendarState();
+  const { resetSelectedDates } = useCalendarActions();
+  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'multiple' });
+
+  const handleClickApplyButton = async () => {
+    const coachId = 12;
+    const calendarTimes = selectedDates
+      .map(({ year, month, day }) =>
+        selectedTimes.map(
+          (selectTime) =>
+            `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(
+              2,
+              '0',
+            )} ${selectTime}`,
+        ),
+      )
+      .flat();
+
+    const body = {
+      calendarTimes,
+    };
+
+    try {
+      await postCoachScheduleAPI(coachId, body);
+      resetSelectedDates();
+      resetTimes();
+
+      alert('등록됐엉~');
+    } catch (error) {
+      alert('실패했엉~');
+    }
+  };
 
   return (
     <>
@@ -59,7 +94,7 @@ const CoachReservationCreatePage = () => {
             </Button>
           </Link>
 
-          <Button width="100%" height="35px">
+          <Button width="100%" height="35px" onClick={handleClickApplyButton}>
             승인하기
           </Button>
         </S.ButtonContainer>
