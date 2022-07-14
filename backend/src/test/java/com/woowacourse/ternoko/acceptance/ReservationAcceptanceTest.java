@@ -4,6 +4,7 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -39,9 +40,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // given
         final ReservationRequest reservationRequest = new ReservationRequest("수달7",
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                List.of(new FormItemDto("고정질문1", "답변1"),
-                        new FormItemDto("고정질문2", "답변2"),
-                        new FormItemDto("고정질문3", "답변3")));
+                FORM_ITEM_REQUESTS);
 
         final ExtractableResponse<Response> createdResponse = post("/api/reservations/coaches/" + COACH3.getId(),
                 reservationRequest);

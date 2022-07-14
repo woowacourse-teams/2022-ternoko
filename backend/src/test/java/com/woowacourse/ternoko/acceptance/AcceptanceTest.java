@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.acceptance;
 
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
+
 import com.woowacourse.ternoko.dto.FormItemDto;
 import com.woowacourse.ternoko.dto.ReservationRequest;
 import io.restassured.RestAssured;
@@ -96,9 +98,7 @@ public class AcceptanceTest {
     protected ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
         final ReservationRequest reservationRequest = new ReservationRequest(crewName,
                 LocalDateTime.of(2022, 7, 4, 14, 0, 0),
-                List.of(new FormItemDto("고정질문1", "답변1"),
-                        new FormItemDto("고정질문2", "답변2"),
-                        new FormItemDto("고정질문3", "답변3")));
+                FORM_ITEM_REQUESTS);
 
         return post("/api/reservations/coaches/" + coachId, reservationRequest);
     }
