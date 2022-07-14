@@ -119,5 +119,3 @@ const S = {
 };
 
 export default AppRoutes;
-
-// 카밋 테스트
