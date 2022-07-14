@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CalendarRequest {
+public class AvailableDateTimesRequest {
 
     private List<LocalDateTime> calendarTimes;
 

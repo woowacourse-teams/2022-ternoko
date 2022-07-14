@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.Member;
-import com.woowacourse.ternoko.dto.CalendarRequest;
+import com.woowacourse.ternoko.dto.AvailableDateTimesRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,7 +40,7 @@ public class MemberServiceTest {
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void putAvailableDateTimesByCoachId() {
         // given
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new CalendarRequest(List.of(
+        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(
                 LocalDateTime.of(2022, 7, 7, 14, 0),
                 LocalDateTime.of(2022, 7, 7, 15, 0),
                 LocalDateTime.of(2022, 7, 7, 16, 0))));
@@ -56,7 +56,7 @@ public class MemberServiceTest {
     @DisplayName("코치의 면담 가능 시간에 빈 리스트를 넣어준다.")
     void putEmptyAvailableDateTimesByCoachId() {
         // given
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new CalendarRequest(List.of()));
+        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of()));
 
         // when
         List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
@@ -68,7 +68,7 @@ public class MemberServiceTest {
     @Test
     @DisplayName("코치의 면담 가능 시간 저장시 존재하지 않는 코치 id를 넣어줄 경우 예외가 발생한다.")
     void putAvailableDateTimesByInvalidCoachId() {
-        assertThatThrownBy(() -> memberService.putAvailableDateTimesByCoachId(-1L, new CalendarRequest(List.of())))
+        assertThatThrownBy(() -> memberService.putAvailableDateTimesByCoachId(-1L, new AvailableDateTimesRequest(List.of())))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -80,7 +80,7 @@ public class MemberServiceTest {
                 LocalDateTime.of(2022, 7, 7, 14, 0),
                 LocalDateTime.of(2022, 7, 7, 15, 0),
                 LocalDateTime.of(2022, 7, 7, 16, 0));
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new CalendarRequest(times));
+        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(times));
 
         // when
         final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(

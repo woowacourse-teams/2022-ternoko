@@ -3,7 +3,7 @@ package com.woowacourse.ternoko.service;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.domain.Type;
-import com.woowacourse.ternoko.dto.CalendarRequest;
+import com.woowacourse.ternoko.dto.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
 import java.time.LocalDateTime;
@@ -27,10 +27,10 @@ public class MemberService {
         return memberRepository.findAllByType(Type.COACH);
     }
 
-    public void putAvailableDateTimesByCoachId(final Long coachId, final CalendarRequest calendarRequest) {
+    public void putAvailableDateTimesByCoachId(final Long coachId, final AvailableDateTimesRequest availableDateTimesRequest) {
         final Member coach = memberRepository.findById(coachId)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
-        final List<AvailableDateTime> availableDateTimes = calendarRequest.toAvailableDateTimes(coach);
+        final List<AvailableDateTime> availableDateTimes = availableDateTimesRequest.toAvailableDateTimes(coach);
 
         if (!availableDateTimes.isEmpty()) {
             final LocalDateTime localDateTime = availableDateTimes.get(0).getLocalDateTime();

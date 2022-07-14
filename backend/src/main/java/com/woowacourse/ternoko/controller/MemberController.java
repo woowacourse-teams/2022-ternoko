@@ -2,8 +2,8 @@ package com.woowacourse.ternoko.controller;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.Member;
-import com.woowacourse.ternoko.dto.CalendarRequest;
-import com.woowacourse.ternoko.dto.CalendarResponse;
+import com.woowacourse.ternoko.dto.AvailableDateTimesRequest;
+import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.service.MemberService;
@@ -40,15 +40,15 @@ public class MemberController {
 
     @PutMapping("/coaches/{coachId}/calendar/times")
     public ResponseEntity<Void> saveCalendarTimes(@PathVariable final Long coachId,
-                                                  @RequestBody final CalendarRequest calendarRequest) {
-        memberService.putAvailableDateTimesByCoachId(coachId, calendarRequest);
+                                                  @RequestBody final AvailableDateTimesRequest availableDateTimesRequest) {
+        memberService.putAvailableDateTimesByCoachId(coachId, availableDateTimesRequest);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/coaches/{coachId}/calendar/times")
-    public ResponseEntity<CalendarResponse> findCalendarTimes(@PathVariable final Long coachId) {
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@PathVariable final Long coachId) {
         final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(coachId);
-        final CalendarResponse from = CalendarResponse.from(availableDateTimes);
+        final AvailableDateTimesResponse from = AvailableDateTimesResponse.from(availableDateTimes);
         return ResponseEntity.ok(from);
     }
 }
