@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.dto.request;
 
 import com.woowacourse.ternoko.domain.FormItem;
 import javax.validation.constraints.NotNull;

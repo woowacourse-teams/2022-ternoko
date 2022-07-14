@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.controller;
 
-import com.woowacourse.ternoko.dto.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.service.ReservationService;
 import java.net.URI;

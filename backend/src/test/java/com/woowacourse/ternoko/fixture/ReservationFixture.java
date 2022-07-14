@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.fixture;
 
 import com.woowacourse.ternoko.domain.FormItem;
-import com.woowacourse.ternoko.dto.FormItemRequest;
-import com.woowacourse.ternoko.dto.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.FormItemRequest;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 

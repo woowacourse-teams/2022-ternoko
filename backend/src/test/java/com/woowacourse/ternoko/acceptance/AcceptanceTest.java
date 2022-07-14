@@ -2,7 +2,7 @@ package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 
-import com.woowacourse.ternoko.dto.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;

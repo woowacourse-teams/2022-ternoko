@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.AVAILABLE_TIMES;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.dto.AvailableDateTimesRequest;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import io.restassured.response.ExtractableResponse;

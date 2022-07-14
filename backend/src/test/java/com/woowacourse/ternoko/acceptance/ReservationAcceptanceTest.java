@@ -9,7 +9,7 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.dto.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
