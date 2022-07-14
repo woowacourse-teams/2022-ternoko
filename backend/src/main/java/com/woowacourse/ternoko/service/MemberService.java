@@ -27,7 +27,8 @@ public class MemberService {
         return memberRepository.findAllByType(Type.COACH);
     }
 
-    public void putAvailableDateTimesByCoachId(final Long coachId, final AvailableDateTimesRequest availableDateTimesRequest) {
+    public void putAvailableDateTimesByCoachId(final Long coachId,
+                                               final AvailableDateTimesRequest availableDateTimesRequest) {
         final Member coach = memberRepository.findById(coachId)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
         final List<AvailableDateTime> availableDateTimes = availableDateTimesRequest.toAvailableDateTimes(coach);
