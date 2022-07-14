@@ -21,7 +21,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
 
-
     @Transactional(readOnly = true)
     public List<Member> findCoaches() {
         return memberRepository.findAllByType(Type.COACH);
