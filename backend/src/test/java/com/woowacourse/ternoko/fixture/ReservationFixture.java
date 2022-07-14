@@ -1,15 +1,15 @@
 package com.woowacourse.ternoko.fixture;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class ReservationFixture {
 
     public static final Long INTERVIEW_TIME = 30L;
-
 
     private static final LocalDateTime NOW = LocalDateTime.now().withNano(0).plusDays(2);
     public static final LocalDateTime AFTER_TWO_DAYS = LocalDateTime.of(NOW.getYear(), NOW.getMonthValue(),
