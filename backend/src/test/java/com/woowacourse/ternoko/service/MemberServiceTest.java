@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.domain.Member;
 import com.woowacourse.ternoko.dto.AvailableDateTimesRequest;
+import com.woowacourse.ternoko.dto.CoachesResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,10 +30,10 @@ public class MemberServiceTest {
     @DisplayName("코치 목록을 조회한다.")
     void findCoaches() {
         // when
-        final List<Member> coaches = memberService.findCoaches();
+        final CoachesResponse coaches = memberService.findCoaches();
 
         // then
-        assertThat(coaches).extracting("nickname")
+        assertThat(coaches.getCoaches()).extracting("nickname")
                 .contains("준", "브리", "토미", "네오");
     }
 
