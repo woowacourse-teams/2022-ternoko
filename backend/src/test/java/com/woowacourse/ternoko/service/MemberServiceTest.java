@@ -1,23 +1,24 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.AVAILABLE_TIMES;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static com.woowacourse.ternoko.fixture.MemberFixture.*;
+import static org.assertj.core.api.Assertions.*;
 
-import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.dto.CoachesResponse;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.woowacourse.ternoko.domain.AvailableDateTime;
+import com.woowacourse.ternoko.dto.CoachesResponse;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -41,7 +42,12 @@ public class MemberServiceTest {
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void putAvailableDateTimesByCoachId() {
         // given
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(AVAILABLE_TIMES));
+        AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
+            TIME2.getYear(),
+            TIME2.getMonthValue(),
+            AVAILABLE_TIMES);
+
+        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
 
         // whenR
         List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
@@ -76,7 +82,12 @@ public class MemberServiceTest {
     void findAvailableDateTimesByCoachId() {
         // given
         final List<LocalDateTime> times = AVAILABLE_TIMES;
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(times));
+        AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
+            TIME2.getYear(),
+            TIME2.getMonthValue(),
+            times);
+
+        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
 
         // when
         final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(
