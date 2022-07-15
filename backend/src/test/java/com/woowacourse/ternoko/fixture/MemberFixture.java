@@ -12,8 +12,15 @@ public class MemberFixture {
     public static final Member COACH3 = new Member(3L, "토미", "test@email.com", Type.COACH, "imageUrl");
     public static final Member COACH4 = new Member(4L, "네오", "test@email.com", Type.COACH, "imageUrl");
 
+    public static final LocalDateTime time2 = LocalDateTime.now().plusDays(2);
+    public static final LocalDateTime time3 = LocalDateTime.now().plusDays(3);
+    public static final LocalDateTime time4 = LocalDateTime.now().plusDays(4);
+
     public static final List<LocalDateTime> AVAILABLE_TIMES = List.of(
-            LocalDateTime.of(2022, 7, 7, 14, 0),
-            LocalDateTime.of(2022, 7, 7, 15, 0),
-            LocalDateTime.of(2022, 7, 7, 16, 0));
+            LocalDateTime.of(time2.getYear(), time2.getMonthValue(),
+                    time2.getDayOfMonth(), time2.getHour(), time2.getMinute()),
+            LocalDateTime.of(time3.getYear(), time3.getMonthValue(),
+                    time3.getDayOfMonth(), time3.getHour(), time3.getMinute()),
+            LocalDateTime.of(time4.getYear(), time4.getMonthValue(),
+                    time4.getDayOfMonth(), time4.getHour(), time4.getMinute()));
 }

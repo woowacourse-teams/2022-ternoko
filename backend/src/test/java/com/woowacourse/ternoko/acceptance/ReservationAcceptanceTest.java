@@ -4,17 +4,17 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.AFTER_TWO_DAYS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.dto.ReservationRequest;
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
-
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     void findReservationById() {
         // given
         final ReservationRequest reservationRequest = new ReservationRequest("수달7",
-                LocalDateTime.of(2022, 7, 4, 14, 0, 0),
+                AFTER_TWO_DAYS,
                 FORM_ITEM_REQUESTS);
 
         final ExtractableResponse<Response> createdResponse = post("/api/reservations/coaches/" + COACH3.getId(),

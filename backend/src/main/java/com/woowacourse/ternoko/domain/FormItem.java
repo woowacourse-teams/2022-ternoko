@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,8 +26,18 @@ public class FormItem {
     @Column(nullable = false)
     private String answer;
 
+    @ManyToOne
+    @JoinColumn(name = "interview_id")
+    private Interview interview;
+
     public FormItem(String question, String answer) {
         this.question = question;
         this.answer = answer;
+    }
+
+    public FormItem(String question, String answer, Interview interview) {
+        this.question = question;
+        this.answer = answer;
+        this.interview = interview;
     }
 }

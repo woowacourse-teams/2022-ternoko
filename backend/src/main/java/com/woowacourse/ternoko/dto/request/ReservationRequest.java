@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ReservationRequest {
 
     private String crewNickname;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewDatetime;
-    private List<FormItemDto> interviewQuestions;
+    private List<FormItemRequest> interviewQuestions;
 }

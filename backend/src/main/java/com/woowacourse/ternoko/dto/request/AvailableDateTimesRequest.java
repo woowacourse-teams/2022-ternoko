@@ -1,5 +1,6 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.Member;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AvailableDateTimesRequest {
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private List<LocalDateTime> calendarTimes;
 
     public List<AvailableDateTime> toAvailableDateTimes(final Member coach) {
