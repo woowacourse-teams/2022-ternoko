@@ -3,8 +3,8 @@ package com.woowacourse.ternoko.fixture;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.woowacourse.ternoko.domain.Coach;
-import com.woowacourse.ternoko.domain.Member;
+import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 
 public class MemberFixture {

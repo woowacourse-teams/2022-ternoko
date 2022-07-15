@@ -9,23 +9,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.domain.Coach;
+import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
+import com.woowacourse.ternoko.repository.CrewRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class CoachService {
 
     private final CoachRepository coachRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
+
+    private final CrewRepository crewRepository;
 
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {

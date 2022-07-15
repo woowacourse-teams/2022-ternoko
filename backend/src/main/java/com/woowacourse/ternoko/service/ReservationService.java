@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.ternoko.domain.Coach;
+import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;

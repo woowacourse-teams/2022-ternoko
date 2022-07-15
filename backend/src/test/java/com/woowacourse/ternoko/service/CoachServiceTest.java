@@ -22,16 +22,16 @@ import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class MemberServiceTest {
+public class CoachServiceTest {
 
     @Autowired
-    private MemberService memberService;
+    private CoachService coachService;
 
     @Test
     @DisplayName("코치 목록을 조회한다.")
     void findCoaches() {
         // when
-        final CoachesResponse coaches = memberService.findCoaches();
+        final CoachesResponse coaches = coachService.findCoaches();
 
         // then
         assertThat(coaches.getCoaches()).extracting("nickname")
@@ -47,10 +47,10 @@ public class MemberServiceTest {
             TIME2.getMonthValue(),
             AVAILABLE_TIMES);
 
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
 
         // whenR
-        final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(COACH3.getId());
 
         // then
         assertThat(availableDateTimes).hasSize(3);
@@ -60,10 +60,10 @@ public class MemberServiceTest {
     @DisplayName("코치의 면담 가능 시간에 빈 리스트를 넣어준다.")
     void putEmptyAvailableDateTimesByCoachId() {
         // given
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of()));
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of()));
 
         // when
-        final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(COACH3.getId());
 
         // then
         assertThat(availableDateTimes).hasSize(0);
@@ -73,7 +73,7 @@ public class MemberServiceTest {
     @DisplayName("코치의 면담 가능 시간 저장시 존재하지 않는 코치 id를 넣어줄 경우 예외가 발생한다.")
     void putAvailableDateTimesByInvalidCoachId() {
         assertThatThrownBy(
-                () -> memberService.putAvailableDateTimesByCoachId(-1L, new AvailableDateTimesRequest(List.of())))
+                () -> coachService.putAvailableDateTimesByCoachId(-1L, new AvailableDateTimesRequest(List.of())))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -87,10 +87,10 @@ public class MemberServiceTest {
             TIME2.getMonthValue(),
             times);
 
-        memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
 
         // when
-        final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(
+        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(
                 COACH3.getId());
 
         // then
