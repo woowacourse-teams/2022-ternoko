@@ -25,12 +25,12 @@ public class AvailableDateTime {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member coach;
+    private Coach coach;
 
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public AvailableDateTime(Member coach, LocalDateTime localDateTime) {
+    public AvailableDateTime(Coach coach, LocalDateTime localDateTime) {
         this.coach = coach;
         this.localDateTime = localDateTime;
     }

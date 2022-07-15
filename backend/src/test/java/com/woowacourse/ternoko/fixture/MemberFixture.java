@@ -3,16 +3,16 @@ package com.woowacourse.ternoko.fixture;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.woowacourse.ternoko.domain.Coach;
 import com.woowacourse.ternoko.domain.Member;
-import com.woowacourse.ternoko.domain.Type;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 
 public class MemberFixture {
 
-    public static final Member COACH1 = new Member(1L, "준", "test@email.com", Type.COACH, "imageUrl");
-    public static final Member COACH2 = new Member(2L, "브리", "test@email.com", Type.COACH, "imageUrl");
-    public static final Member COACH3 = new Member(3L, "토미", "test@email.com", Type.COACH, "imageUrl");
-    public static final Member COACH4 = new Member(4L, "네오", "test@email.com", Type.COACH, "imageUrl");
+    public static final Member COACH1 = new Coach(1L, "준", "test@email.com", "imageUrl");
+    public static final Member COACH2 = new Coach(2L, "브리", "test@email.com", "imageUrl");
+    public static final Member COACH3 = new Coach(3L, "토미", "test@email.com", "imageUrl");
+    public static final Member COACH4 = new Coach(4L, "네오", "test@email.com", "imageUrl");
 
     public static final LocalDateTime TIME2 = LocalDateTime.now().plusDays(2);
     public static final LocalDateTime TIME3 = LocalDateTime.now().plusDays(3);

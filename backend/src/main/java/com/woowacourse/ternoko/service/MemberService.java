@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.domain.Member;
-import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.domain.Coach;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.repository.MemberRepository;
+import com.woowacourse.ternoko.repository.CoachRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,18 +24,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
 
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
-        final List<Member> coaches = memberRepository.findAllByType(Type.COACH);
+        final List<Coach> coaches = coachRepository.findAll();
 
         final List<CoachResponse> coachResponses = coaches.stream()
-                .map(member -> CoachResponse.coachResponseBuilder()
-                        .id(member.getId())
-                        .nickname(member.getNickname())
-                        .imageUrl(member.getImageUrl())
+                .map(coach -> CoachResponse.coachResponseBuilder()
+                        .id(coach.getId())
+                        .nickname(coach.getNickname())
+                        .imageUrl(coach.getImageUrl())
                         .build())
                 .collect(Collectors.toList());
 
@@ -45,16 +44,16 @@ public class MemberService {
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
                                                final AvailableDateTimesRequest availableDateTimesRequest) {
-        final Member coach = memberRepository.findById(coachId)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
+        final Coach coach = coachRepository.findById(coachId)
+            .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
-        List<AvailableDateTimeRequest> availableDateTimes = availableDateTimesRequest.getAvailableDateTimes();
+        final List<AvailableDateTimeRequest> availableDateTimes = availableDateTimesRequest.getAvailableDateTimes();
         for (AvailableDateTimeRequest availableDateTime : availableDateTimes) {
             putAvailableTime(coach, availableDateTime);
         }
     }
 
-    private void putAvailableTime(Member coach, AvailableDateTimeRequest availableDateTime) {
+    private void putAvailableTime(final Coach coach, final AvailableDateTimeRequest availableDateTime) {
         availableDateTimeRepository.deleteAllByCoachAndYearAndMonth(
             coach.getId(),
             availableDateTime.getYear(),
@@ -62,7 +61,7 @@ public class MemberService {
         availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, availableDateTime.getTimes()));
     }
 
-    public List<AvailableDateTime> toAvailableDateTimes(final Member coach, List<LocalDateTime> times) {
+    public List<AvailableDateTime> toAvailableDateTimes(final Coach coach, final List<LocalDateTime> times) {
         return times.stream()
             .map(time -> new AvailableDateTime(coach, time))
             .collect(Collectors.toList());

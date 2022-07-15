@@ -42,7 +42,7 @@ public class MemberServiceTest {
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void putAvailableDateTimesByCoachId() {
         // given
-        AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
+        final AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
             TIME2.getYear(),
             TIME2.getMonthValue(),
             AVAILABLE_TIMES);
@@ -50,7 +50,7 @@ public class MemberServiceTest {
         memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
 
         // whenR
-        List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
 
         // then
         assertThat(availableDateTimes).hasSize(3);
@@ -63,7 +63,7 @@ public class MemberServiceTest {
         memberService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of()));
 
         // when
-        List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = memberService.findAvailableDateTimesByCoachId(COACH3.getId());
 
         // then
         assertThat(availableDateTimes).hasSize(0);
@@ -82,7 +82,7 @@ public class MemberServiceTest {
     void findAvailableDateTimesByCoachId() {
         // given
         final List<LocalDateTime> times = AVAILABLE_TIMES;
-        AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
+        final AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
             TIME2.getYear(),
             TIME2.getMonthValue(),
             times);
