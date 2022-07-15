@@ -1,11 +1,22 @@
 import React, { createContext, useState, useContext } from 'react';
 
+import { SelectMode } from '../types/domain';
+
+type CalendarProviderProps = {
+  selectMode: SelectMode;
+  children: React.ReactNode;
+};
+
+type Date = {
+  year: number;
+  month: number;
+  day: number;
+};
+
 type CalendarStateType = {
   year: number;
   month: number;
-  selectedYear: number;
-  selectedMonth: number;
-  selectedDay: number;
+  selectedDates: Date[];
   showMonthPicker: boolean;
 };
 
@@ -13,21 +24,19 @@ type CalendarActionsType = {
   handleClickPrevYear: () => void;
   handleClickNextYear: () => void;
   handleClickMonthPicker: () => void;
-  getSetDay: (day: number) => () => void;
+  setDay: (day: number) => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
+  resetSelectedDates: () => void;
 };
 
 type CalendarUtilsType = {
   daysLength: number;
-  dateString: string;
   isToday: (day: number) => boolean;
+  isBeforeToday: (day: number) => boolean;
   isSelectedDate: (day: number) => boolean;
   isOverFirstDay: (index: number) => boolean;
   getDay: (index: number) => number;
-};
-
-type CalendarProviderProps = {
-  children: React.ReactNode;
+  getDateStrings: () => string[];
 };
 
 export const monthNames = [
@@ -55,24 +64,22 @@ const CalendarStateContext = createContext<CalendarStateType | null>(null);
 const CalendarActionsContext = createContext<CalendarActionsType | null>(null);
 const CalendarUtilsContext = createContext<CalendarUtilsType | null>(null);
 
-const CalendarProvider = ({ children }: CalendarProviderProps) => {
+const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
   const date = new Date();
 
   const [year, setYear] = useState(date.getFullYear());
   const [month, setMonth] = useState(date.getMonth());
 
-  const [selectedYear, setSelectedYear] = useState(year);
-  const [selectedMonth, setSelectedMonth] = useState(month);
-  const [selectedDay, setSelectedDay] = useState(-1);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
   const firstDay = new Date(`${year}/${month + 1}/1`).getDay();
   const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysLength = daysOfMonth[month] + firstDay;
-  const dateString = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(
-    selectedDay,
-  ).padStart(2, '0')}`;
+
+  const isSameDate = (date: Date, day: number) =>
+    date.year === year && date.month === month && date.day === day;
 
   const isToday = (day: number) => {
     const date = new Date();
@@ -80,14 +87,27 @@ const CalendarProvider = ({ children }: CalendarProviderProps) => {
     return day === date.getDate() && year === date.getFullYear() && month === date.getMonth();
   };
 
+  const isBeforeToday = (day: number) => {
+    const today = new Date().getTime();
+    const date = new Date(`${year}-${month + 1}-${day}`).getTime();
+
+    return date < today;
+  };
+
   const isSelectedDate = (day: number) =>
-    year === selectedYear && month === selectedMonth && day === selectedDay;
+    selectedDates.some((selectedDate) => isSameDate(selectedDate, day));
 
   const isOverFirstDay = (index: number) => index >= firstDay;
 
   const getDay = (index: number) => index - firstDay + 1;
 
-  const state = { year, month, selectedYear, selectedMonth, selectedDay, showMonthPicker };
+  const getDateStrings = () =>
+    selectedDates.map(
+      ({ year, month, day }) =>
+        `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+    );
+
+  const state = { year, month, selectedDates, showMonthPicker };
 
   const actions = {
     handleClickPrevYear() {
@@ -99,24 +119,34 @@ const CalendarProvider = ({ children }: CalendarProviderProps) => {
     handleClickMonthPicker: () => {
       setShowMonthPicker(true);
     },
-    getSetDay: (day: number) => () => {
-      setSelectedYear(year);
-      setSelectedMonth(month);
-      setSelectedDay(day);
+    setDay: (day: number) => {
+      if (isSelectedDate(day)) {
+        setSelectedDates((prev) => prev.filter((date) => !isSameDate(date, day)));
+
+        return;
+      }
+
+      selectMode === 'single'
+        ? setSelectedDates([{ year, month, day }])
+        : setSelectedDates((prev) => [...prev, { year, month, day }]);
     },
     getHandleClickMonth: (monthIndex: number) => () => {
       setMonth(monthIndex);
       setShowMonthPicker(false);
     },
+    resetSelectedDates() {
+      setSelectedDates([]);
+    },
   };
 
   const utils = {
-    dateString,
     daysLength,
     isToday,
+    isBeforeToday,
     isSelectedDate,
     isOverFirstDay,
     getDay,
+    getDateStrings,
   };
 
   return (

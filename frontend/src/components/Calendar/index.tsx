@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { useMemo, memo } from 'react';
 
 import * as S from './styled';
 
@@ -10,19 +10,17 @@ import {
 } from '../../context/CalendarProvider';
 
 export type CalendarProps = {
-  rerenderKey?: number;
+  rerenderCondition?: number;
+  getHandleClickDay: (day: number) => () => void;
 };
 
-const Calendar = ({ rerenderKey }: CalendarProps) => {
+const Calendar = ({ rerenderCondition, getHandleClickDay }: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
-  const {
-    handleClickPrevYear,
-    handleClickNextYear,
-    handleClickMonthPicker,
-    getSetDay,
-    getHandleClickMonth,
-  } = useCalendarActions();
-  const { daysLength, isToday, isSelectedDate, isOverFirstDay, getDay } = useCalendarUtils();
+  const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
+    useCalendarActions();
+  const { daysLength, isToday, isBeforeToday, isSelectedDate, isOverFirstDay, getDay } =
+    useCalendarUtils();
+  const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (
     <S.Box>
@@ -52,14 +50,27 @@ const Calendar = ({ rerenderKey }: CalendarProps) => {
 
               if (isToday(day)) {
                 return (
-                  <S.Day key={index} active={isSelectedDate(day)} today onClick={getSetDay(day)}>
+                  <S.Day
+                    key={index}
+                    active={isSelectedDate(day)}
+                    today
+                    onClick={getHandleClickDay(day)}
+                  >
+                    {day}
+                  </S.Day>
+                );
+              }
+
+              if (isBeforeToday(day)) {
+                return (
+                  <S.Day key={index} before onClick={getHandleClickDay(day)}>
                     {day}
                   </S.Day>
                 );
               }
 
               return (
-                <S.Day key={index} active={isSelectedDate(day)} onClick={getSetDay(day)}>
+                <S.Day key={index} active={isSelectedDate(day)} onClick={getHandleClickDay(day)}>
                   {day}
                   <span />
                   <span />

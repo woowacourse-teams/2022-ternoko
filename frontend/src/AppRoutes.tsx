@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import HomePage from './pages/HomePage';
 import ReservationApplyPage from './pages/ReservationApplyPage';
 import ReservationCompletePage from './pages/ReservationCompletePage';
+import CoachReservationCreatePage from './pages/CoachReservationCreatePage';
 
 import Header from './components/Header';
 
@@ -20,12 +21,20 @@ const AppRoutes = () => {
           <Route
             path="reservation/apply"
             element={
-              <CalendarProvider>
+              <CalendarProvider selectMode="single">
                 <ReservationApplyPage />
               </CalendarProvider>
             }
           />
           <Route path="reservation/complete/:reservationId" element={<ReservationCompletePage />} />
+          <Route
+            path="coach/reservation/create"
+            element={
+              <CalendarProvider selectMode="multiple">
+                <CoachReservationCreatePage />
+              </CalendarProvider>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -9,11 +9,11 @@ export interface ReservationType {
   imageUrl: string;
   crewNickname: string;
   coachNickname: string;
-  interviewDate: string;
   interviewStartTime: string;
   interviewEndTime: string;
-  location: string;
 }
+
+export type SelectMode = 'single' | 'multiple';
 
 interface InterviewQuestionType {
   question: string;
@@ -21,8 +21,11 @@ interface InterviewQuestionType {
 }
 
 export interface ReservationRequestBodyType {
-  interviewDatetime: string;
   crewNickname: string;
-  location: string;
+  interviewDatetime: string;
   interviewQuestions: InterviewQuestionType[];
+}
+
+export interface CoachScheduleRequestBodyType {
+  calendarTimes: string[];
 }

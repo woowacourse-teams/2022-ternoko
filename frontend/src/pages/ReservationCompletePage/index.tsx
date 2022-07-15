@@ -7,6 +7,7 @@ import Button from '../../components/@common/Button/styled';
 
 import { ReservationType } from 'types/domain';
 import { getReservationAPI } from '../../api';
+import { getDateString, getTimeString } from '../../utils';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
@@ -33,15 +34,15 @@ const ReservationCompletePage = () => {
         </S.Info>
         <S.Info>
           <p>날짜</p>
-          <p>{reservation?.interviewDate.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1년 $2월 $3일')}</p>
+          <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>시작</p>
-          <p>{reservation?.interviewStartTime}</p>
+          <p>{reservation && getTimeString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>종료</p>
-          <p>{reservation?.interviewEndTime}</p>
+          <p>{reservation && getTimeString(reservation.interviewEndTime)}</p>
         </S.Info>
       </S.InfoContainer>
 

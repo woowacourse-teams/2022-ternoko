@@ -2,15 +2,14 @@ import * as S from './styled';
 
 import Button from '../../components/@common/Button/styled';
 
-import { ReservationType } from 'types/domain';
+import { ReservationType } from '../../types/domain';
+import { getDateString, getTimeString } from '../../utils';
 
 const Reservation = ({
   coachNickname,
   imageUrl,
-  interviewDate,
   interviewStartTime,
   interviewEndTime,
-  location,
 }: ReservationType) => {
   return (
     <S.Box>
@@ -23,20 +22,13 @@ const Reservation = ({
           src="https://cdn-icons-png.flaticon.com/512/7088/7088625.png"
           alt="달력 아이콘"
         />
-        <p>{interviewDate}</p>
+        <p>{getDateString(interviewStartTime)}</p>
       </S.ImageTextBox>
       <S.ImageTextBox>
         <S.IconImage src="https://cdn-icons-png.flaticon.com/512/88/88291.png" alt="시계 아이콘" />
         <p>
-          {interviewStartTime} ~ {interviewEndTime}
+          {getTimeString(interviewStartTime)} ~ {getTimeString(interviewEndTime)}
         </p>
-      </S.ImageTextBox>
-      <S.ImageTextBox>
-        <S.IconImage
-          src="https://cdn-icons-png.flaticon.com/512/535/535239.png"
-          alt="위치 아이콘"
-        />
-        <p>{location}</p>
       </S.ImageTextBox>
 
       <S.ButtonBox>

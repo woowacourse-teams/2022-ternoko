@@ -1,18 +1,26 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '../../components/@common/Button/styled';
+import TitleBox from '../../components/@common/TitleBox';
 import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
 import Calendar from '../../components/Calendar';
+import ScrollContainer from '../../components/@common/ScrollContainer/styled';
+import Time from '../../components/Time/styled';
 
 import { CoachType } from 'types/domain';
 import { getCoachesAPI, postReservationAPI } from '../../api';
 
-import { useCalendarState, useCalendarUtils } from '../../context/CalendarProvider';
+import {
+  useCalendarActions,
+  useCalendarState,
+  useCalendarUtils,
+} from '../../context/CalendarProvider';
+import useTimes from '../../hooks/useTimes';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -41,20 +49,20 @@ const isOverMinLength = (text: string) => {
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
-  const { year, month } = useCalendarState();
-  const { dateString } = useCalendarUtils();
+  const { setDay } = useCalendarActions();
+  const { getDateStrings } = useCalendarUtils();
+  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [coachId, setCoachId] = useState(-1);
-  const [time, setTime] = useState('');
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
-  const rerenderKey = useMemo(() => Date.now(), [year, month, stepStatus[1]]);
+  const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -76,14 +84,14 @@ const ReservationApplyPage = () => {
     setCoachId(id);
   };
 
-  const getHandleClickTime = (time: string) => () => {
-    setTime(time);
-  };
-
   const getHandleChangeAnswer =
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setAnswer(e.target.value);
     };
+
+  const getHandleClickDay = (day: number) => () => {
+    setDay(day);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,9 +100,8 @@ const ReservationApplyPage = () => {
     if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
 
     const body = {
-      interviewDatetime: `${dateString} ${time}`,
+      interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
       crewNickname: '록바',
-      location: '잠실',
       interviewQuestions: [
         {
           question: '이번 면담을 통해 논의하고 싶은 내용',
@@ -126,11 +133,7 @@ const ReservationApplyPage = () => {
 
   return (
     <>
-      <S.TitleBox>
-        <h2>
-          <Link to="/">{'<'}</Link> 면담 신청하기
-        </h2>
-      </S.TitleBox>
+      <TitleBox to="/" title="면담 신청하기" />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
@@ -164,19 +167,22 @@ const ReservationApplyPage = () => {
 
           <div className="fold-box">
             <S.DateBox>
-              <Calendar rerenderKey={rerenderKey} />
+              <Calendar
+                rerenderCondition={rerenderCondition}
+                getHandleClickDay={getHandleClickDay}
+              />
 
-              <S.TimeContainer>
+              <ScrollContainer>
                 {dummyTimes.map((dummyTime, index) => (
-                  <S.Time
+                  <Time
                     key={index}
-                    active={time === dummyTime}
+                    active={selectedTimes[0] === dummyTime}
                     onClick={getHandleClickTime(dummyTime)}
                   >
                     {dummyTime}
-                  </S.Time>
+                  </Time>
                 ))}
-              </S.TimeContainer>
+              </ScrollContainer>
             </S.DateBox>
 
             <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(1)}>
