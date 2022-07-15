@@ -24,7 +24,7 @@ type CalendarActionsType = {
   handleClickPrevYear: () => void;
   handleClickNextYear: () => void;
   handleClickMonthPicker: () => void;
-  setDay: (day: number) => () => void;
+  setDay: (day: number) => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
   resetSelectedDates: () => void;
 };

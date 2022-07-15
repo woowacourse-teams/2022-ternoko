@@ -34,15 +34,15 @@ const ReservationCompletePage = () => {
         </S.Info>
         <S.Info>
           <p>날짜</p>
-          <p>{reservation && getDateString(reservation?.interviewStartTime)}</p>
+          <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>시작</p>
-          <p>{reservation && getTimeString(reservation?.interviewStartTime)}</p>
+          <p>{reservation && getTimeString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>종료</p>
-          <p>{reservation && getTimeString(reservation?.interviewEndTime)}</p>
+          <p>{reservation && getTimeString(reservation.interviewEndTime)}</p>
         </S.Info>
       </S.InfoContainer>
 
