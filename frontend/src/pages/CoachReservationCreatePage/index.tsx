@@ -19,7 +19,7 @@ import {
 
 import { postCoachScheduleAPI, getCoachScheduleAPI } from '../../api';
 
-import { separateFullDate } from '../../utils';
+import { separateFullDate, getFullDateString } from '../../utils';
 
 const defaultTimes = [
   '10:00',
@@ -42,7 +42,7 @@ const defaultTimes = [
 
 const defaultCoachId = 12;
 
-type CalendarTimes = {
+type FetchCalendarTimes = {
   [key: string]: string[];
 };
 
@@ -54,23 +54,30 @@ const CoachReservationCreatePage = () => {
     selectMode: 'multiple',
   });
 
-  const [calendarTimes, setCalendarTimes] = useState<CalendarTimes>({});
+  const [fetchCalendarTimes, setFetchCalendarTimes] = useState<FetchCalendarTimes>({});
 
   const handleClickApplyButton = async () => {
+    const filteredFetchCalendarTimes = selectedDates.reduce(
+      (acc: FetchCalendarTimes, { day }) => {
+        delete acc[String(day).padStart(2, '0')];
+
+        return acc;
+      },
+      { ...fetchCalendarTimes },
+    );
+
+    const refinedFetchCalendarTimes = Object.entries(filteredFetchCalendarTimes)
+      .map(([day, times]) => times.map((time) => getFullDateString(year, month, day, time)))
+      .flat();
+
     const calendarTimes = selectedDates
       .map(({ year, month, day }) =>
-        selectedTimes.map(
-          (selectTime) =>
-            `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(
-              2,
-              '0',
-            )} ${selectTime}`,
-        ),
+        selectedTimes.map((selectTime) => getFullDateString(year, month, day, selectTime)),
       )
       .flat();
 
     const body = {
-      calendarTimes,
+      calendarTimes: [...refinedFetchCalendarTimes, ...calendarTimes],
     };
 
     try {
@@ -85,8 +92,14 @@ const CoachReservationCreatePage = () => {
   };
 
   const getHandleClickDay = (day: number) => () => {
-    const selectedTimes = isSelectedDate(day) ? [] : calendarTimes[day] ?? [];
-    setSelectedTimes(selectedTimes);
+    if (selectedDates.length === 2 && isSelectedDate(day)) {
+      setSelectedTimes(
+        fetchCalendarTimes[selectedDates.filter((date) => date.day !== day)[0].day] ?? [],
+      );
+    } else {
+      setSelectedTimes(selectedDates.length >= 1 ? [] : fetchCalendarTimes[day] ?? []);
+    }
+
     setDay(day);
   };
 
@@ -94,8 +107,8 @@ const CoachReservationCreatePage = () => {
     (async () => {
       const response = await getCoachScheduleAPI(defaultCoachId, year, month);
 
-      setCalendarTimes(
-        response.data.calendarTimes.reduce((calendarTimes: CalendarTimes, date: string) => {
+      setFetchCalendarTimes(
+        response.data.calendarTimes.reduce((calendarTimes: FetchCalendarTimes, date: string) => {
           const { day, time } = separateFullDate(date);
 
           calendarTimes[day] = calendarTimes[day] ?? [];
