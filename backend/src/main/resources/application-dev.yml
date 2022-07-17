@@ -11,8 +11,8 @@ spring:
         format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
-    username: root
-    password:
+    username: ${TERNOKO_MYSQL_ID}
+    password: ${TERNOKO_MYSQL_PASSWORD}
 logging:
   level:
     org:
