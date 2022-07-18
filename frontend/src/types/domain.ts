@@ -26,6 +26,12 @@ export interface ReservationRequestBodyType {
   interviewQuestions: InterviewQuestionType[];
 }
 
+export interface CalendarTime {
+  year: number;
+  month: number;
+  times: string[];
+}
+
 export interface CoachScheduleRequestBodyType {
-  calendarTimes: string[];
+  availableDateTimes: CalendarTime[];
 }

@@ -17,6 +17,8 @@ import {
   useCalendarUtils,
 } from '../../context/CalendarProvider';
 
+import { CalendarTime } from '../../types/domain';
+
 import { postCoachScheduleAPI, getCoachScheduleAPI } from '../../api';
 
 import { separateFullDate, getFullDateString } from '../../utils';
@@ -42,7 +44,7 @@ const defaultTimes = [
 
 const defaultCoachId = 12;
 
-type FetchCalendarTimes = {
+type StringDictionary = {
   [key: string]: string[];
 };
 
@@ -53,70 +55,105 @@ const CoachReservationCreatePage = () => {
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'multiple',
   });
+  const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
 
-  const [fetchCalendarTimes, setFetchCalendarTimes] = useState<FetchCalendarTimes>({});
+  const compactCalendarTimes = (times: CalendarTime[]) => {
+    const result = times.reduce((acc, { year, month, times }) => {
+      acc[`${year}-${month}`] = acc[`${year}-${month}`]
+        ? [...acc[`${year}-${month}`], ...times]
+        : times;
 
-  const handleClickApplyButton = async () => {
-    const filteredFetchCalendarTimes = selectedDates.reduce(
-      (acc: FetchCalendarTimes, { day }) => {
-        delete acc[String(day).padStart(2, '0')];
+      return acc;
+    }, {} as StringDictionary);
 
-        return acc;
-      },
-      { ...fetchCalendarTimes },
+    return Object.entries(result).map(([yearMonth, times]) => {
+      const [year, month] = yearMonth.split('-');
+
+      return {
+        year: Number(year),
+        month: Number(month),
+        times,
+      };
+    });
+  };
+
+  const getHandleClickDay = (day: number) => () => {
+    const currentCalendarTime = calendarTimes.find(
+      (calendarTime: CalendarTime) => calendarTime.year === year && calendarTime.month === month,
     );
 
-    const refinedFetchCalendarTimes = Object.entries(filteredFetchCalendarTimes)
-      .map(([day, times]) => times.map((time) => getFullDateString(year, month, day, time)))
-      .flat();
+    if (currentCalendarTime) {
+      if (selectedDates.length === 2 && isSelectedDate(day)) {
+        const times = currentCalendarTime.times
+          .filter((time: string) => Number(separateFullDate(time).day) === day)
+          .map((time: string) => separateFullDate(time).time);
 
-    const calendarTimes = selectedDates
-      .map(({ year, month, day }) =>
-        selectedTimes.map((selectTime) => getFullDateString(year, month, day, selectTime)),
-      )
-      .flat();
+        setSelectedTimes(times);
+      } else if (selectedDates.length >= 1) {
+        setSelectedTimes([]);
+      } else {
+        const times = currentCalendarTime.times
+          .filter((time: string) => Number(separateFullDate(time).day) !== day)
+          .map((time: string) => separateFullDate(time).time);
+
+        setSelectedTimes(times);
+      }
+    }
+
+    setDay(day);
+  };
+
+  const handleClickApplyButton = async () => {
+    const legacyCalendarTimes = calendarTimes.filter((calendarTime: CalendarTime) =>
+      selectedDates.some(
+        ({ year, month }) => calendarTime.year === year && calendarTime.month === month,
+      ),
+    );
+
+    const clickedCalendarTimes = compactCalendarTimes(
+      selectedDates
+        .map(({ year, month, day }) => ({
+          year,
+          month,
+          times: selectedTimes.map((selectTime) => getFullDateString(year, month, day, selectTime)),
+        }))
+        .flat(),
+    );
 
     const body = {
-      calendarTimes: [...refinedFetchCalendarTimes, ...calendarTimes],
+      availableDateTimes: [...legacyCalendarTimes, ...clickedCalendarTimes],
     };
 
     try {
       await postCoachScheduleAPI(defaultCoachId, body);
       resetSelectedDates();
       resetTimes();
-
-      alert('등록됐엉~');
+      alert('등록됐습니다.');
     } catch (error) {
-      alert('실패했엉~');
+      alert('실패했습니다.');
     }
-  };
-
-  const getHandleClickDay = (day: number) => () => {
-    if (selectedDates.length === 2 && isSelectedDate(day)) {
-      setSelectedTimes(
-        fetchCalendarTimes[selectedDates.filter((date) => date.day !== day)[0].day] ?? [],
-      );
-    } else {
-      setSelectedTimes(selectedDates.length >= 1 ? [] : fetchCalendarTimes[day] ?? []);
-    }
-
-    setDay(day);
   };
 
   useEffect(() => {
     (async () => {
       const response = await getCoachScheduleAPI(defaultCoachId, year, month);
 
-      setFetchCalendarTimes(
-        response.data.calendarTimes.reduce((calendarTimes: FetchCalendarTimes, date: string) => {
-          const { day, time } = separateFullDate(date);
+      const recentCalendarTimes = compactCalendarTimes(
+        response.data.calendarTimes.map((calendarTime: string) => {
+          const { year, month } = separateFullDate(calendarTime);
 
-          calendarTimes[day] = calendarTimes[day] ?? [];
-          calendarTimes[day].push(time);
-
-          return calendarTimes;
-        }, {}),
+          return { year, month, times: [calendarTime] };
+        }),
       );
+
+      const oldCalendarTimes = calendarTimes.filter(({ year, month }) =>
+        recentCalendarTimes.some(
+          (calendarTime: CalendarTime) =>
+            calendarTime.year === year && calendarTime.month === month,
+        ),
+      );
+
+      setCalendarTimes([...recentCalendarTimes, ...oldCalendarTimes]);
     })();
   }, [year, month]);
 
