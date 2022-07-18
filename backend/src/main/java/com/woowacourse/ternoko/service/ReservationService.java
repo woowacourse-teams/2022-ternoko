@@ -59,7 +59,7 @@ public class ReservationService {
 
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
-        Coach coach = coachRepository.findById(coachId)
+        final Coach coach = coachRepository.findById(coachId)
             .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
         validateInterviewStartTime(reservationDatetime);
