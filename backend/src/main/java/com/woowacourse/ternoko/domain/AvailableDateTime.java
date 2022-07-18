@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.woowacourse.ternoko.domain.member.Coach;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +28,12 @@ public class AvailableDateTime {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member coach;
+    private Coach coach;
 
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public AvailableDateTime(Member coach, LocalDateTime localDateTime) {
+    public AvailableDateTime(Coach coach, LocalDateTime localDateTime) {
         this.coach = coach;
         this.localDateTime = localDateTime;
     }

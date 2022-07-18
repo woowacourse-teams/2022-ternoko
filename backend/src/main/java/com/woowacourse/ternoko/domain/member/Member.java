@@ -1,13 +1,15 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.domain.member;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.*;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "ROLE")
+public abstract class Member {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -27,10 +31,6 @@ public class Member {
 
     @Column(nullable = false)
     private String email;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Type type;
 
     @Column
     private String imageUrl;

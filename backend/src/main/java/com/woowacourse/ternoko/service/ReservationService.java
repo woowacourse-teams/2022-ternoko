@@ -1,25 +1,28 @@
 package com.woowacourse.ternoko.service;
 
-import com.woowacourse.ternoko.domain.FormItem;
-import com.woowacourse.ternoko.domain.Interview;
-import com.woowacourse.ternoko.domain.Member;
-import com.woowacourse.ternoko.domain.Reservation;
-import com.woowacourse.ternoko.dto.ReservationResponse;
-import com.woowacourse.ternoko.dto.ScheduleResponse;
-import com.woowacourse.ternoko.dto.request.FormItemRequest;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
-import com.woowacourse.ternoko.repository.FormItemRepository;
-import com.woowacourse.ternoko.repository.InterviewRepository;
-import com.woowacourse.ternoko.repository.MemberRepository;
-import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.FormItem;
+import com.woowacourse.ternoko.domain.Interview;
+import com.woowacourse.ternoko.domain.Reservation;
+import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.dto.request.FormItemRequest;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import com.woowacourse.ternoko.repository.CoachRepository;
+import com.woowacourse.ternoko.repository.FormItemRepository;
+import com.woowacourse.ternoko.repository.InterviewRepository;
+import com.woowacourse.ternoko.repository.ReservationRepository;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @Transactional
@@ -33,7 +36,7 @@ public class ReservationService {
     private static final int END_MINUTE = 59;
     public static final String INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE = "면담 예약은 최소 하루 전에 가능 합니다.";
 
-    private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
     private final FormItemRepository formItemRepository;
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
@@ -56,8 +59,8 @@ public class ReservationService {
 
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
-        final Member coach = memberRepository.findById(coachId)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
+        final Coach coach = coachRepository.findById(coachId)
+            .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
         validateInterviewStartTime(reservationDatetime);
         return new Interview(
@@ -68,7 +71,7 @@ public class ReservationService {
                 formItems);
     }
 
-    private void validateInterviewStartTime(LocalDateTime localDateTime) {
+    private void validateInterviewStartTime(final LocalDateTime localDateTime) {
         final LocalDate standardDay = LocalDate.now().plusDays(1);
         if (!standardDay.isBefore(localDateTime.toLocalDate())) {
             throw new IllegalArgumentException(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);

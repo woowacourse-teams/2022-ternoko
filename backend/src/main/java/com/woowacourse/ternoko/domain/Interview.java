@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.woowacourse.ternoko.domain.member.Member;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
