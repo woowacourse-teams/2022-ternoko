@@ -12,14 +12,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("COACH")
 public class Coach extends Member{
 
-    private String info;
-
-    public Coach(Long id, String nickname, String email, String imageUrl) {
+    public Coach(final Long id, final String nickname, final String email, final String imageUrl) {
         super(id, nickname, email, imageUrl);
-    }
-
-    public Coach(final Long id, final String nickname, final String email, final String imageUrl, final String info) {
-        super(id, nickname, email, imageUrl);
-        this.info = info;
     }
 }

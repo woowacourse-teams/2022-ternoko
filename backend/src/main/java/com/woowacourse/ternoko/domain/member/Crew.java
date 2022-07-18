@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @DiscriminatorValue("CREW")
 public class Crew extends Member {
+
     public Crew(final Long id, final String nickname, final String email, final String imageUrl) {
         super(id, nickname, email, imageUrl);
     }
