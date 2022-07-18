@@ -16,7 +16,6 @@ import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
-import com.woowacourse.ternoko.repository.CrewRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,8 +26,6 @@ public class CoachService {
 
     private final CoachRepository coachRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
-
-    private final CrewRepository crewRepository;
 
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
@@ -50,8 +47,9 @@ public class CoachService {
         final Coach coach = coachRepository.findById(coachId)
             .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
-        final List<AvailableDateTimeRequest> availableDateTimes = availableDateTimesRequest.getAvailableDateTimes();
-        for (AvailableDateTimeRequest availableDateTime : availableDateTimes) {
+        final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
+            .getAvailableDateTimeRequests();
+        for (AvailableDateTimeRequest availableDateTime : availableDateTimeRequests) {
             putAvailableTime(coach, availableDateTime);
         }
     }
