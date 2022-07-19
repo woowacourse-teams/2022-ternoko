@@ -42,7 +42,7 @@ const defaultTimes = [
   '17:30',
 ];
 
-const defaultCoachId = 12;
+const defaultCoachId = 6;
 
 type StringDictionary = {
   [key: string]: string[];
@@ -85,16 +85,16 @@ const CoachReservationCreatePage = () => {
     if (currentCalendarTime) {
       if (selectedDates.length === 2 && isSelectedDate(day)) {
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) === day)
-          .map((time: string) => separateFullDate(time).time);
+          .filter((time: string) => Number(separateFullDate(time).day) !== day)
+          .map((fullDate: string) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
       } else if (selectedDates.length >= 1) {
         setSelectedTimes([]);
       } else {
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) !== day)
-          .map((time: string) => separateFullDate(time).time);
+          .filter((time: string) => Number(separateFullDate(time).day) === day)
+          .map((fullDate: string) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
       }
@@ -104,24 +104,32 @@ const CoachReservationCreatePage = () => {
   };
 
   const handleClickApplyButton = async () => {
-    const legacyCalendarTimes = calendarTimes.filter((calendarTime: CalendarTime) =>
-      selectedDates.some(
-        ({ year, month }) => calendarTime.year === year && calendarTime.month === month,
-      ),
-    );
+    calendarTimes
+      .filter((calendarTime: CalendarTime) =>
+        selectedDates.some(
+          ({ year, month }) => calendarTime.year === year && calendarTime.month === month,
+        ),
+      )
+      .forEach((calendarTime: CalendarTime) => {
+        calendarTime.times = calendarTime.times.filter((fullDate: string) => {
+          const { day } = separateFullDate(fullDate);
 
-    const clickedCalendarTimes = compactCalendarTimes(
-      selectedDates
-        .map(({ year, month, day }) => ({
-          year,
-          month,
-          times: selectedTimes.map((selectTime) => getFullDateString(year, month, day, selectTime)),
-        }))
-        .flat(),
-    );
+          return selectedDates.every((selectedDate) => selectedDate.day !== Number(day));
+        });
+      });
+
+    const legacyCalendarTimes = calendarTimes.filter(({ times }) => times.length !== 0);
+
+    const clickedCalendarTimes = selectedDates
+      .map(({ year, month, day }) => ({
+        year,
+        month,
+        times: selectedTimes.map((selectTime) => getFullDateString(year, month, day, selectTime)),
+      }))
+      .flat();
 
     const body = {
-      availableDateTimes: [...legacyCalendarTimes, ...clickedCalendarTimes],
+      calendarTimes: compactCalendarTimes([...legacyCalendarTimes, ...clickedCalendarTimes]),
     };
 
     try {

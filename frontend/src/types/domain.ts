@@ -33,5 +33,5 @@ export interface CalendarTime {
 }
 
 export interface CoachScheduleRequestBodyType {
-  availableDateTimes: CalendarTime[];
+  calendarTimes: CalendarTime[];
 }
