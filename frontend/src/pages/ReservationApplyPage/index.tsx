@@ -12,15 +12,16 @@ import Calendar from '../../components/Calendar';
 import ScrollContainer from '../../components/@common/ScrollContainer/styled';
 import Time from '../../components/Time/styled';
 
-import { CoachType } from 'types/domain';
-import { getCoachesAPI, postReservationAPI } from '../../api';
+import { CoachType, StringDictionary } from '../../types/domain';
+import { getCoachesAPI, postReservationAPI, getCoachScheduleAPI } from '../../api';
 
 import {
-  useCalendarActions,
   useCalendarState,
+  useCalendarActions,
   useCalendarUtils,
 } from '../../context/CalendarProvider';
 import useTimes from '../../hooks/useTimes';
+import { separateFullDate } from '../../utils';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -49,6 +50,7 @@ const isOverMinLength = (text: string) => {
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+  const { year, month } = useCalendarState();
   const { setDay } = useCalendarActions();
   const { getDateStrings } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
@@ -56,6 +58,8 @@ const ReservationApplyPage = () => {
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [availableSchedules, setAvaliableSchedules] = useState<StringDictionary>({});
+  const [availableTimes, setAvaliableTimes] = useState<string[]>([]);
 
   const [coachId, setCoachId] = useState(-1);
   const [answer1, setAnswer1] = useState('');
@@ -63,6 +67,8 @@ const ReservationApplyPage = () => {
   const [answer3, setAnswer3] = useState('');
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
+
+  const isActiveDay = (day: number) => !!availableSchedules[day];
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -90,6 +96,8 @@ const ReservationApplyPage = () => {
     };
 
   const getHandleClickDay = (day: number) => () => {
+    const times = isActiveDay(day) ? availableSchedules[day] : [];
+    setAvaliableTimes(times);
     setDay(day);
   };
 
@@ -131,6 +139,29 @@ const ReservationApplyPage = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (stepStatus[1] === 'show') {
+      const defaultCoachId = 12;
+
+      (async () => {
+        const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
+
+        const schedules = response.data.calendarTimes.reduce(
+          (acc: StringDictionary, fullDate: string) => {
+            const { day, time } = separateFullDate(fullDate);
+
+            acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], time] : [time];
+
+            return acc;
+          },
+          {} as StringDictionary,
+        );
+
+        setAvaliableSchedules(schedules);
+      })();
+    }
+  }, [stepStatus, year, month]);
+
   return (
     <>
       <TitleBox to="/" title="면담 신청하기" />
@@ -170,16 +201,17 @@ const ReservationApplyPage = () => {
               <Calendar
                 rerenderCondition={rerenderCondition}
                 getHandleClickDay={getHandleClickDay}
+                isActiveDay={isActiveDay}
               />
 
               <ScrollContainer>
-                {dummyTimes.map((dummyTime, index) => (
+                {availableTimes.map((availableTime, index) => (
                   <Time
                     key={index}
-                    active={selectedTimes[0] === dummyTime}
-                    onClick={getHandleClickTime(dummyTime)}
+                    active={selectedTimes[0] === availableTime}
+                    onClick={getHandleClickTime(availableTime)}
                   >
-                    {dummyTime}
+                    {availableTime}
                   </Time>
                 ))}
               </ScrollContainer>

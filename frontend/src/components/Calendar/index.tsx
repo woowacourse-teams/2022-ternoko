@@ -12,14 +12,14 @@ import {
 export type CalendarProps = {
   rerenderCondition?: number;
   getHandleClickDay: (day: number) => () => void;
+  isActiveDay: (day: number) => boolean;
 };
 
-const Calendar = ({ rerenderCondition, getHandleClickDay }: CalendarProps) => {
+const Calendar = ({ rerenderCondition, getHandleClickDay, isActiveDay }: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
-  const { daysLength, isToday, isBeforeToday, isSelectedDate, isOverFirstDay, getDay } =
-    useCalendarUtils();
+  const { daysLength, isToday, isBeforeToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (
@@ -52,7 +52,7 @@ const Calendar = ({ rerenderCondition, getHandleClickDay }: CalendarProps) => {
                 return (
                   <S.Day
                     key={index}
-                    active={isSelectedDate(day)}
+                    active={isActiveDay(day)}
                     today
                     onClick={getHandleClickDay(day)}
                   >
@@ -70,7 +70,7 @@ const Calendar = ({ rerenderCondition, getHandleClickDay }: CalendarProps) => {
               }
 
               return (
-                <S.Day key={index} active={isSelectedDate(day)} onClick={getHandleClickDay(day)}>
+                <S.Day key={index} active={isActiveDay(day)} onClick={getHandleClickDay(day)}>
                   {day}
                   <span />
                   <span />

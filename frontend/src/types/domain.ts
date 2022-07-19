@@ -35,3 +35,7 @@ export interface CalendarTime {
 export interface CoachScheduleRequestBodyType {
   calendarTimes: CalendarTime[];
 }
+
+export type StringDictionary = {
+  [key: string]: string[];
+};
