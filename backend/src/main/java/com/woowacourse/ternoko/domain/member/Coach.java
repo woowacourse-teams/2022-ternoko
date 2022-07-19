@@ -18,4 +18,5 @@ public class Coach extends Member {
     public Coach(final String nickname, final String email, final String imageUrl) {
         this(null, nickname, email, imageUrl);
     }
+
 }

@@ -2,9 +2,12 @@ package com.woowacourse.ternoko.domain.member;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import com.woowacourse.ternoko.domain.Type;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
