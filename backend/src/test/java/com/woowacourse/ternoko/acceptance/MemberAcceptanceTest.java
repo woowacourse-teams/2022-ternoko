@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.acceptance;
 import static com.woowacourse.ternoko.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -71,13 +70,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치의 면담 가능 시간을 조회한다.")
     void findCalendarTimes() {
         // given
-        final List<LocalDateTime> times = AVAILABLE_TIMES;
-
         final AvailableDateTimesRequest availableDateTimesRequest = new AvailableDateTimesRequest(List.of(
             AVAILABLE_DATE_TIME_REQUEST2));
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", availableDateTimesRequest);
 
-        final ExtractableResponse<Response> calendarResponse = get("/api/coaches/" + COACH3.getId() + "/calendar/times");
+        final ExtractableResponse<Response> calendarResponse = get(
+            "/api/coaches/" + COACH3.getId() + "/calendar/times?year=2022&month=7");
 
         // when
         final AvailableDateTimesResponse response = calendarResponse.body().as(AvailableDateTimesResponse.class);
@@ -85,6 +83,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.getCalendarTimes())
                 .hasSize(3)
-                .containsAnyElementsOf(times);
+                .containsAnyElementsOf(AVAILABLE_DATE_TIME_REQUEST2.getTimes());
     }
 }

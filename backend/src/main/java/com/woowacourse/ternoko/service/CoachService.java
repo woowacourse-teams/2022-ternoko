@@ -69,7 +69,10 @@ public class CoachService {
     }
 
     @Transactional(readOnly = true)
-    public List<AvailableDateTime> findAvailableDateTimesByCoachId(final Long coachId) {
-        return availableDateTimeRepository.findAvailableDateTimesByCoachId(coachId);
+    public List<AvailableDateTime> findAvailableDateTimesByCoachId(
+        final Long coachId,
+        final int year,
+        final int month) {
+        return availableDateTimeRepository.findAvailableDateTimesByCoachId(coachId, year, month);
     }
 }

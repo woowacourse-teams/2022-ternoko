@@ -42,15 +42,18 @@ public class CoachServiceTest {
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void putAvailableDateTimesByCoachId() {
         // given
+        int year = TIME2.getYear();
+        int month = TIME2.getMonthValue();
         final AvailableDateTimeRequest availableDateTimeRequest = new AvailableDateTimeRequest(
-            TIME2.getYear(),
-            TIME2.getMonthValue(),
+            year,
+            month,
             AVAILABLE_TIMES);
 
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
 
         // whenR
-        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = coachService
+            .findAvailableDateTimesByCoachId(COACH3.getId(), year, month);
 
         // then
         assertThat(availableDateTimes).hasSize(3);
@@ -63,7 +66,8 @@ public class CoachServiceTest {
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of()));
 
         // when
-        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = coachService
+            .findAvailableDateTimesByCoachId(COACH3.getId(), TIME2.getYear(), TIME2.getMonthValue());
 
         // then
         assertThat(availableDateTimes).hasSize(0);
@@ -86,18 +90,25 @@ public class CoachServiceTest {
             TIME2.getYear(),
             TIME2.getMonthValue(),
             times);
+        final LocalDateTime nextMonthDatTime = LocalDateTime.now().plusMonths(1);
+        final AvailableDateTimeRequest nextMonthAvailableDateTimeRequest = new AvailableDateTimeRequest(
+            nextMonthDatTime.getYear(),
+            nextMonthDatTime.getMonthValue(),
+            List.of(nextMonthDatTime));
 
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of(availableDateTimeRequest)));
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(
+            List.of(availableDateTimeRequest,
+                nextMonthAvailableDateTimeRequest)));
 
         // when
-        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(
-                COACH3.getId());
+        final List<AvailableDateTime> availableDateTimes = coachService
+            .findAvailableDateTimesByCoachId(COACH3.getId(), TIME2.getYear(), TIME2.getMonthValue());
 
         // then
         assertThat(availableDateTimes.stream()
                 .map(AvailableDateTime::getLocalDateTime)
                 .collect(Collectors.toList()))
-                .hasSize(3)
+                .hasSize(times.size())
                 .containsAnyElementsOf(times);
     }
 }

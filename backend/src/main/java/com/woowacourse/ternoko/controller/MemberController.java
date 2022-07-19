@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.ternoko.domain.AvailableDateTime;
@@ -38,8 +39,12 @@ public class MemberController {
     }
 
     @GetMapping("/coaches/{coachId}/calendar/times")
-    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@PathVariable final Long coachId) {
-        final List<AvailableDateTime> availableDateTimes = coachService.findAvailableDateTimesByCoachId(coachId);
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(
+        @PathVariable final Long coachId,
+        @RequestParam final int year,
+        @RequestParam final int month) {
+        final List<AvailableDateTime> availableDateTimes = coachService
+            .findAvailableDateTimesByCoachId(coachId, year, month);
         final AvailableDateTimesResponse from = AvailableDateTimesResponse.from(availableDateTimes);
         return ResponseEntity.ok(from);
     }

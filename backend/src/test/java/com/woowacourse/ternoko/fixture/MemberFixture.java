@@ -32,12 +32,12 @@ public class MemberFixture {
         AVAILABLE_TIMES);
 
     public static final AvailableDateTimeRequest AVAILABLE_DATE_TIME_REQUEST3 = new AvailableDateTimeRequest(
-        TIME2.getYear(),
-        TIME2.getMonthValue(),
+        TIME3.getYear(),
+        TIME3.getMonthValue(),
         AVAILABLE_TIMES);
 
     public static final AvailableDateTimeRequest AVAILABLE_DATE_TIME_REQUEST4 = new AvailableDateTimeRequest(
-        TIME2.getYear(),
-        TIME2.getMonthValue(),
+        TIME4.getYear(),
+        TIME4.getMonthValue(),
         AVAILABLE_TIMES);
 }
