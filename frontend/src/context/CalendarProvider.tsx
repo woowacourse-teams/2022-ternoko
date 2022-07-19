@@ -79,7 +79,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
   const daysLength = daysOfMonth[month] + firstDay;
 
   const isSameDate = (date: Date, day: number) =>
-    date.year === year && date.month === month && date.day === day;
+    date.year === year && date.month === month + 1 && date.day === day;
 
   const isToday = (day: number) => {
     const date = new Date();
@@ -127,8 +127,8 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
       }
 
       selectMode === 'single'
-        ? setSelectedDates([{ year, month, day }])
-        : setSelectedDates((prev) => [...prev, { year, month, day }]);
+        ? setSelectedDates([{ year, month: month + 1, day }])
+        : setSelectedDates((prev) => [...prev, { year, month: month + 1, day }]);
     },
     getHandleClickMonth: (monthIndex: number) => () => {
       setMonth(monthIndex);

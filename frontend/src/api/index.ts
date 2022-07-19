@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { ReservationRequestBodyType, CoachScheduleRequestBodyType } from '../types/domain';
 
-const SERVER_URL = 'http://192.168.7.160:8080';
+const SERVER_URL = 'http://15.164.218.98:8080';
 
 export const getCoachesAPI = () => axios.get(`${SERVER_URL}/api/reservations/coaches`);
 
