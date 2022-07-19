@@ -7,12 +7,15 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectTokenRequest;
 import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
+import com.woowacourse.ternoko.common.JwtProvider;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
 import java.io.IOException;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
     private final CrewRepository crewRepository;
+    private final JwtProvider jwtProvider;
 
     private final String clientId;
     private final String clientSecret;
@@ -33,12 +37,14 @@ public class AuthService {
     public AuthService(MemberRepository memberRepository,
                        CoachRepository coachRepository,
                        CrewRepository crewRepository,
+                       JwtProvider jwtProvider,
                        @Value("${slack.clientId}") final String clientId,
                        @Value("${slack.clientSecret}") final String clientSecret,
                        @Value("${slack.redirectUrl}") final String redirectUrl) {
         this.memberRepository = memberRepository;
         this.coachRepository = coachRepository;
         this.crewRepository = crewRepository;
+        this.jwtProvider = jwtProvider;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.redirectUrl = redirectUrl;
@@ -47,9 +53,9 @@ public class AuthService {
     public String login(final String code) throws SlackApiException, IOException {
         final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code);
         // 로그인인지, 회원 가입인지 갈래
-        if (memberRepository.findByEmail(userInfoResponse.getEmail()).isPresent()) {
-            // 로그인
-            return "accessToken";
+        final Optional<Member> member = memberRepository.findByEmail(userInfoResponse.getEmail());
+        if (member.isPresent()) {
+            return jwtProvider.createToken(String.valueOf(member.get().getId()));
         }
 
         //회원 가입
@@ -61,13 +67,13 @@ public class AuthService {
         if (userInfoResponse.getEmail().contains("woowahan.com")) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
                     userInfoResponse.getTeamImage230()));
-            return "accessToken";
+            return jwtProvider.createToken(String.valueOf(coach.getId()));
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getTeamImage230()));
 
-        return "accessToken";
+        return jwtProvider.createToken(String.valueOf(crew.getId()));
     }
 
     private OpenIDConnectTokenResponse getOpenIDTokenResponse(String code)
@@ -88,11 +94,9 @@ public class AuthService {
             throws IOException, SlackApiException {
         final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(
                 code);
-
         final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
                 .token(openIDConnectTokenResponse.getAccessToken())
                 .build();
-
         final OpenIDConnectUserInfoResponse userInfoResponse = SLACK_METHODS_CLIENT.openIDConnectUserInfo(
                 userInfoRequest);
         return userInfoResponse;
