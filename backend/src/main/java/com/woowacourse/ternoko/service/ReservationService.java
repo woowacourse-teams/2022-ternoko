@@ -1,18 +1,13 @@
 package com.woowacourse.ternoko.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
+import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
+import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
@@ -21,8 +16,13 @@ import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -34,7 +34,6 @@ public class ReservationService {
     private static final int START_MINUTE = 0;
     private static final int END_HOUR = 23;
     private static final int END_MINUTE = 59;
-    public static final String INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE = "면담 예약은 최소 하루 전에 가능 합니다.";
 
     private final CoachRepository coachRepository;
     private final FormItemRepository formItemRepository;
@@ -60,7 +59,7 @@ public class ReservationService {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)
-            .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
 
         validateInterviewStartTime(reservationDatetime);
         return new Interview(
@@ -75,7 +74,7 @@ public class ReservationService {
         //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
         final LocalDate standardDay = LocalDate.now().plusDays(1);
         if (!standardDay.isBefore(localDateTime.toLocalDate())) {
-            throw new IllegalArgumentException(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);
+            throw new InvalidReservationDateException(ExceptionType.INVALID_RESERVATION_DATE);
         }
     }
 
@@ -89,9 +88,10 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public ReservationResponse findReservationById(final Long id) {
-        final Reservation reservation = reservationRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 면담 예약입니다."));
+    public ReservationResponse findReservationById(final Long reservationId) {
+        final Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(
+                        () -> new ReservationNotFoundException(ExceptionType.RESERVATION_NOT_FOUND, reservationId));
         return ReservationResponse.from(reservation);
     }
 

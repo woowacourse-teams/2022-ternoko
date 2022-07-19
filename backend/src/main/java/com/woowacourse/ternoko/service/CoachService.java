@@ -1,13 +1,7 @@
 package com.woowacourse.ternoko.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.dto.CoachResponse;
@@ -16,8 +10,12 @@ import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -45,7 +43,7 @@ public class CoachService {
     public void putAvailableDateTimesByCoachId(final Long coachId,
                                                final AvailableDateTimesRequest availableDateTimesRequest) {
         final Coach coach = coachRepository.findById(coachId)
-            .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
 
         final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
             .getCalendarTimes();
@@ -56,16 +54,16 @@ public class CoachService {
 
     private void putAvailableTime(final Coach coach, final AvailableDateTimeRequest availableDateTime) {
         availableDateTimeRepository.deleteAllByCoachAndYearAndMonth(
-            coach.getId(),
-            availableDateTime.getYear(),
-            availableDateTime.getMonth());
+                coach.getId(),
+                availableDateTime.getYear(),
+                availableDateTime.getMonth());
         availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, availableDateTime.getTimes()));
     }
 
     public List<AvailableDateTime> toAvailableDateTimes(final Coach coach, final List<LocalDateTime> times) {
         return times.stream()
-            .map(time -> new AvailableDateTime(coach, time))
-            .collect(Collectors.toList());
+                .map(time -> new AvailableDateTime(coach, time))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
