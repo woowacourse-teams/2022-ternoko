@@ -1,3 +1,5 @@
 spring:
   profiles:
-    default: dev
+    default: local
+server:
+  port: 8082
