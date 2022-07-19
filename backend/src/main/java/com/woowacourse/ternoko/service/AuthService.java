@@ -54,6 +54,7 @@ public class AuthService {
         final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code);
         // 로그인인지, 회원 가입인지 갈래
         final Optional<Member> member = memberRepository.findByEmail(userInfoResponse.getEmail());
+
         if (member.isPresent()) {
             return jwtProvider.createToken(String.valueOf(member.get().getId()));
         }
@@ -84,7 +85,6 @@ public class AuthService {
                 .code(code)
                 .redirectUri(redirectUrl)
                 .build();
-
         final OpenIDConnectTokenResponse openIDConnectTokenResponse = SLACK_METHODS_CLIENT.openIDConnectToken(
                 tokenRequest);
         return openIDConnectTokenResponse;
