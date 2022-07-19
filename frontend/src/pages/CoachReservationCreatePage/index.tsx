@@ -56,6 +56,7 @@ const CoachReservationCreatePage = () => {
     selectMode: 'multiple',
   });
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
+  const [isApplied, setIsApplied] = useState(false);
 
   const compactCalendarTimes = (times: CalendarTime[]) => {
     const result = times.reduce((acc, { year, month, times }) => {
@@ -79,13 +80,16 @@ const CoachReservationCreatePage = () => {
 
   const getHandleClickDay = (day: number) => () => {
     const currentCalendarTime = calendarTimes.find(
-      (calendarTime: CalendarTime) => calendarTime.year === year && calendarTime.month === month,
+      (calendarTime: CalendarTime) =>
+        calendarTime.year === year && calendarTime.month === month + 1,
     );
 
     if (currentCalendarTime) {
       if (selectedDates.length === 2 && isSelectedDate(day)) {
+        const finalDay = selectedDates.find((selectedDate) => selectedDate.day !== day)?.day;
+
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) !== day)
+          .filter((time: string) => Number(separateFullDate(time).day) === finalDay)
           .map((fullDate: string) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
@@ -137,6 +141,7 @@ const CoachReservationCreatePage = () => {
       resetSelectedDates();
       resetTimes();
       alert('등록됐습니다.');
+      setIsApplied((prev) => !prev);
     } catch (error) {
       alert('실패했습니다.');
     }
@@ -144,7 +149,7 @@ const CoachReservationCreatePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachScheduleAPI(defaultCoachId, year, month);
+      const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
 
       const recentCalendarTimes = compactCalendarTimes(
         response.data.calendarTimes.map((calendarTime: string) => {
@@ -154,16 +159,17 @@ const CoachReservationCreatePage = () => {
         }),
       );
 
-      const oldCalendarTimes = calendarTimes.filter(({ year, month }) =>
-        recentCalendarTimes.some(
-          (calendarTime: CalendarTime) =>
-            calendarTime.year === year && calendarTime.month === month,
-        ),
+      const oldCalendarTimes = calendarTimes.filter(
+        ({ year, month }) =>
+          !recentCalendarTimes.some(
+            (calendarTime: CalendarTime) =>
+              calendarTime.year === year && calendarTime.month === month,
+          ),
       );
 
       setCalendarTimes([...recentCalendarTimes, ...oldCalendarTimes]);
     })();
-  }, [year, month]);
+  }, [year, month, isApplied]);
 
   return (
     <>
