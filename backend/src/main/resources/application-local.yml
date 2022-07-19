@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
+    username: root
+    password:
+  h2:
+    console:
+      enabled: true
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
