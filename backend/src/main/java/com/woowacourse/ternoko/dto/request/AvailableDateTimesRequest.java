@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AvailableDateTimesRequest {
 
-    private List<AvailableDateTimeRequest> availableDateTimeRequests;
+    private List<AvailableDateTimeRequest> calendarTimes;
 }

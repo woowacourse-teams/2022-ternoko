@@ -48,7 +48,7 @@ public class CoachService {
             .orElseThrow(() -> new NoSuchElementException("해당하는 코치를 찾을 수 없습니다."));
 
         final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
-            .getAvailableDateTimeRequests();
+            .getCalendarTimes();
         for (AvailableDateTimeRequest availableDateTime : availableDateTimeRequests) {
             putAvailableTime(coach, availableDateTime);
         }
