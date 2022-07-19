@@ -1,24 +1,25 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.woowacourse.ternoko.fixture.MemberFixture.AVAILABLE_TIMES;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.TIME2;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.domain.AvailableDateTime;
+import com.woowacourse.ternoko.dto.CoachesResponse;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.dto.CoachesResponse;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -78,7 +79,7 @@ public class CoachServiceTest {
     void putAvailableDateTimesByInvalidCoachId() {
         assertThatThrownBy(
                 () -> coachService.putAvailableDateTimesByCoachId(-1L, new AvailableDateTimesRequest(List.of())))
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(CoachNotFoundException.class);
     }
 
     @Test
