@@ -25,35 +25,16 @@ import { separateFullDate } from '../../utils';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
-const dummyTimes = [
-  '10:00',
-  '10:30',
-  '11:00',
-  '11:30',
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-  '17:30',
-];
-
 const isOverMinLength = (text: string) => {
   return text.length >= 10;
 };
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
-  const { year, month } = useCalendarState();
+  const { year, month, selectedDates } = useCalendarState();
   const { setDay } = useCalendarActions();
-  const { getDateStrings } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
+  const { getDateStrings, isSameDate } = useCalendarUtils();
+  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'single' });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
@@ -68,7 +49,12 @@ const ReservationApplyPage = () => {
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
 
-  const isActiveDay = (day: number) => !!availableSchedules[day];
+  const getDayType = (day: number) =>
+    selectedDates.length && isSameDate(selectedDates[0], day)
+      ? 'active'
+      : availableSchedules[day]
+      ? 'default'
+      : 'disable';
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -96,9 +82,10 @@ const ReservationApplyPage = () => {
     };
 
   const getHandleClickDay = (day: number) => () => {
-    const times = isActiveDay(day) ? availableSchedules[day] : [];
+    const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
     setAvaliableTimes(times);
     setDay(day);
+    resetTimes();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -201,7 +188,7 @@ const ReservationApplyPage = () => {
               <Calendar
                 rerenderCondition={rerenderCondition}
                 getHandleClickDay={getHandleClickDay}
-                isActiveDay={isActiveDay}
+                getDayType={getDayType}
               />
 
               <ScrollContainer>

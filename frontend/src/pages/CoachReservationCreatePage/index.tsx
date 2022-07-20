@@ -56,6 +56,8 @@ const CoachReservationCreatePage = () => {
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
   const [isApplied, setIsApplied] = useState(false);
 
+  const getDayType = (day: number) => (isSelectedDate(day) ? 'active' : 'default');
+
   const compactCalendarTimes = (times: CalendarTime[]) => {
     const result = times.reduce((acc, { year, month, times }) => {
       acc[`${year}-${month}`] = acc[`${year}-${month}`]
@@ -175,7 +177,7 @@ const CoachReservationCreatePage = () => {
 
       <S.Box>
         <S.DateBox>
-          <Calendar getHandleClickDay={getHandleClickDay} isActiveDay={isSelectedDate} />
+          <Calendar getHandleClickDay={getHandleClickDay} getDayType={getDayType} />
 
           <ScrollContainer>
             {defaultTimes.map((defaultTime, index) => (

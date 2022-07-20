@@ -35,6 +35,7 @@ type CalendarUtilsType = {
   isBeforeToday: (day: number) => boolean;
   isSelectedDate: (day: number) => boolean;
   isOverFirstDay: (index: number) => boolean;
+  isSameDate: (date: Date, day: number) => boolean;
   getDay: (index: number) => number;
   getDateStrings: () => string[];
 };
@@ -145,6 +146,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     isBeforeToday,
     isSelectedDate,
     isOverFirstDay,
+    isSameDate,
     getDay,
     getDateStrings,
   };

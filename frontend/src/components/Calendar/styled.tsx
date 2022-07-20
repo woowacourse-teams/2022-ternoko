@@ -1,5 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import { DayType } from '.';
+
 export const Box = styled.div`
   width: max-content;
   height: max-content;
@@ -89,9 +91,8 @@ const toTop = keyframes`
 `;
 
 type DayProps = {
+  type?: DayType;
   today?: boolean;
-  active?: boolean;
-  before?: boolean;
 };
 
 export const Day = styled.div<DayProps>`
@@ -111,14 +112,14 @@ export const Day = styled.div<DayProps>`
       background-color: ${({ theme }) => theme.colors.pink_50};
     `}
 
-  ${({ active }) =>
-    active &&
+  ${({ type }) =>
+    type === 'active' &&
     css`
       border: 1px solid ${({ theme }) => theme.colors.pink_200};
     `}
 
-  ${({ before }) =>
-    before &&
+  ${({ type }) =>
+    type === 'disable' &&
     css`
       background-color: ${({ theme }) => theme.colors.gray_100};
       color: ${({ theme }) => theme.colors.gray_150};

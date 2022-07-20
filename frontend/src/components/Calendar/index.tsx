@@ -9,13 +9,15 @@ import {
   monthNames,
 } from '../../context/CalendarProvider';
 
+export type DayType = 'default' | 'disable' | 'active';
+
 export type CalendarProps = {
   rerenderCondition?: number;
   getHandleClickDay: (day: number) => () => void;
-  isActiveDay: (day: number) => boolean;
+  getDayType: (day: number) => DayType;
 };
 
-const Calendar = ({ rerenderCondition, getHandleClickDay, isActiveDay }: CalendarProps) => {
+const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
@@ -50,12 +52,7 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, isActiveDay }: Calenda
 
               if (isToday(day)) {
                 return (
-                  <S.Day
-                    key={index}
-                    active={isActiveDay(day)}
-                    today
-                    onClick={getHandleClickDay(day)}
-                  >
+                  <S.Day key={index} type={getDayType(day)} today onClick={getHandleClickDay(day)}>
                     {day}
                   </S.Day>
                 );
@@ -63,14 +60,14 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, isActiveDay }: Calenda
 
               if (isBeforeToday(day)) {
                 return (
-                  <S.Day key={index} before onClick={getHandleClickDay(day)}>
+                  <S.Day key={index} type="disable" onClick={getHandleClickDay(day)}>
                     {day}
                   </S.Day>
                 );
               }
 
               return (
-                <S.Day key={index} active={isActiveDay(day)} onClick={getHandleClickDay(day)}>
+                <S.Day key={index} type={getDayType(day)} onClick={getHandleClickDay(day)}>
                   {day}
                   <span />
                   <span />
