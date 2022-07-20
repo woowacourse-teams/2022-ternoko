@@ -1,6 +1,7 @@
 import { useMemo, memo } from 'react';
 
 import * as S from './styled';
+import * as C from '../@common/CalendarStyle/styled';
 
 import {
   useCalendarActions,
@@ -9,7 +10,7 @@ import {
   monthNames,
 } from '../../context/CalendarProvider';
 
-export type DayType = 'default' | 'disable' | 'active';
+import { DayType } from '../../types/domain';
 
 export type CalendarProps = {
   rerenderCondition?: number;
@@ -26,17 +27,17 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: Calendar
 
   return (
     <S.Box>
-      <S.Header>
-        <S.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</S.MonthPicker>
-        <S.YearPicker>
-          <S.YearChange onClick={handleClickPrevYear}>{'<'}</S.YearChange>
+      <C.Header>
+        <C.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</C.MonthPicker>
+        <C.YearPicker>
+          <C.YearChange onClick={handleClickPrevYear}>{'<'}</C.YearChange>
           <p>{year}</p>
-          <S.YearChange onClick={handleClickNextYear}>{'>'}</S.YearChange>
-        </S.YearPicker>
-      </S.Header>
+          <C.YearChange onClick={handleClickNextYear}>{'>'}</C.YearChange>
+        </C.YearPicker>
+      </C.Header>
 
-      <S.Body>
-        <S.WeekDay>
+      <C.Body>
+        <C.WeekDay>
           <div>Sun</div>
           <div>Mon</div>
           <div>Tue</div>
@@ -44,51 +45,56 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: Calendar
           <div>Thu</div>
           <div>Fri</div>
           <div>Sat</div>
-        </S.WeekDay>
-        <S.Days key={rerenderKey}>
+        </C.WeekDay>
+        <C.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
 
               if (isToday(day)) {
                 return (
-                  <S.Day key={index} type={getDayType(day)} today onClick={getHandleClickDay(day)}>
+                  <S.CalendarDay
+                    key={index}
+                    type={getDayType(day)}
+                    today
+                    onClick={getHandleClickDay(day)}
+                  >
                     {day}
-                  </S.Day>
+                  </S.CalendarDay>
                 );
               }
 
               if (isBeforeToday(day)) {
                 return (
-                  <S.Day key={index} type="disable" onClick={getHandleClickDay(day)}>
+                  <S.CalendarDay key={index} type="disable" onClick={getHandleClickDay(day)}>
                     {day}
-                  </S.Day>
+                  </S.CalendarDay>
                 );
               }
 
               return (
-                <S.Day key={index} type={getDayType(day)} onClick={getHandleClickDay(day)}>
+                <S.CalendarDay key={index} type={getDayType(day)} onClick={getHandleClickDay(day)}>
                   {day}
                   <span />
                   <span />
                   <span />
                   <span />
-                </S.Day>
+                </S.CalendarDay>
               );
             }
 
-            return <S.Day key={index} />;
+            return <S.CalendarDay key={index} />;
           })}
-        </S.Days>
-      </S.Body>
+        </C.Days>
+      </C.Body>
 
-      <S.MonthContainer show={showMonthPicker}>
+      <C.MonthContainer show={showMonthPicker}>
         {monthNames.map((monthName, index) => (
           <div key={index} onClick={getHandleClickMonth(index)}>
             {monthName}
           </div>
         ))}
-      </S.MonthContainer>
+      </C.MonthContainer>
     </S.Box>
   );
 };
