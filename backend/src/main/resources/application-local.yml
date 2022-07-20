@@ -10,7 +10,7 @@ spring:
       hibernate:
         format_sql: true
   datasource:
-    url:
+    url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
     username: root
     password:
   h2:
