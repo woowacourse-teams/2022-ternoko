@@ -43,14 +43,24 @@ public class Interview {
     private List<FormItem> formItems = new ArrayList<>();
 
     public Interview(LocalDateTime interviewStartTime,
-                     LocalDateTime interviewEndTime,
-                     Member coach,
-                     String crewNickname,
-                     List<FormItem> formItems) {
+            LocalDateTime interviewEndTime,
+            Member coach,
+            String crewNickname,
+            List<FormItem> formItems) {
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crewNickname = crewNickname;
         this.formItems = formItems;
+    }
+
+    public Interview(LocalDateTime interviewStartTime,
+            LocalDateTime interviewEndTime,
+            Member coach,
+            String crewNickname) {
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crewNickname = crewNickname;
     }
 }

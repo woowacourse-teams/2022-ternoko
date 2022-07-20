@@ -44,37 +44,30 @@ public class ReservationService {
     private final InterviewRepository interviewRepository;
 
     public Long create(final Long coachId, final ReservationRequest reservationRequest) {
-        final List<FormItemRequest> interviewQuestions = reservationRequest.getInterviewQuestions();
+        final Interview interview = convertInterview(coachId, reservationRequest);
+        final Interview savedInterview = interviewRepository.save(interview);
 
-        final Interview interview = convertInterview(coachId, reservationRequest,
-                interviewQuestions);
-
-        final Interview saveInterview = interviewRepository.save(interview);
-
-        for (FormItem formItem : saveInterview.getFormItems()) {
-            formItem.addInterview(saveInterview);
+        final List<FormItem> formItems = convertFormItem(reservationRequest.getInterviewQuestions());
+        for (FormItem formItem : formItems) {
+            formItem.addInterview(savedInterview);
         }
 
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
 
-    private Interview convertInterview(final Long coachId,
-                                       final ReservationRequest reservationRequest,
-                                       final List<FormItemRequest> interviewQuestions) {
-        final List<FormItem> formItems = convertFormItem(interviewQuestions);
-
+    private Interview convertInterview(Long coachId, ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)
                 .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
 
         validateInterviewStartTime(reservationDatetime);
+
         return new Interview(
                 reservationDatetime,
                 reservationDatetime.plusMinutes(30),
                 coach,
-                reservationRequest.getCrewNickname(),
-                formItems);
+                reservationRequest.getCrewNickname());
     }
 
     private void validateInterviewStartTime(final LocalDateTime localDateTime) {
