@@ -1,0 +1,19 @@
+{
+  "crewNickname" : "열음",
+  "interviewDatetime" : "2030-08-30 15:00",
+  "interviewQuestions" :
+  [
+    {
+      "question" : "고정질문1",
+      "answer":"답변1"
+    },
+    {
+      "question" : "고정질문2",
+      "answer":"답변2"
+    },
+    {
+      "question" : "고정질문3",
+      "answer":"답변3"
+    }
+  ]
+}
