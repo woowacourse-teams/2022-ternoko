@@ -35,5 +35,3 @@ export const MenuItem = styled.p`
     text-decoration: underline;
   }
 `;
-
-export const LogoBox = styled.div``;
