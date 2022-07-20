@@ -1,5 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import ScrollContainer from '../../components/@common/ScrollContainer/styled';
+
 import { StepStatus } from '.';
 
 export const Container = styled.div`
@@ -166,4 +168,19 @@ export const DateBox = styled.div`
   display: flex;
   gap: 3rem;
   padding-bottom: 3rem;
+`;
+
+const toLeft = keyframes`
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+export const TimeContainer = styled(ScrollContainer)`
+  animation: ${toLeft} 1s;
 `;

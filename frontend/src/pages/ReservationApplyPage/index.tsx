@@ -12,36 +12,18 @@ import Calendar from '../../components/Calendar';
 import ScrollContainer from '../../components/@common/ScrollContainer/styled';
 import Time from '../../components/Time/styled';
 
-import { CoachType } from 'types/domain';
-import { getCoachesAPI, postReservationAPI } from '../../api';
+import { CoachType, StringDictionary } from '../../types/domain';
+import { getCoachesAPI, postReservationAPI, getCoachScheduleAPI } from '../../api';
 
 import {
-  useCalendarActions,
   useCalendarState,
+  useCalendarActions,
   useCalendarUtils,
 } from '../../context/CalendarProvider';
 import useTimes from '../../hooks/useTimes';
+import { separateFullDate } from '../../utils';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
-
-const dummyTimes = [
-  '10:00',
-  '10:30',
-  '11:00',
-  '11:30',
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-  '17:30',
-];
 
 const isOverMinLength = (text: string) => {
   return text.length >= 10;
@@ -49,13 +31,16 @@ const isOverMinLength = (text: string) => {
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
-  const { setDay } = useCalendarActions();
-  const { getDateStrings } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime } = useTimes({ selectMode: 'single' });
+  const { year, month, selectedDates } = useCalendarState();
+  const { setDay, resetSelectedDates } = useCalendarActions();
+  const { getDateStrings, isSameDate } = useCalendarUtils();
+  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'single' });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [availableSchedules, setAvaliableSchedules] = useState<StringDictionary>({});
+  const [availableTimes, setAvaliableTimes] = useState<string[]>([]);
 
   const [coachId, setCoachId] = useState(-1);
   const [answer1, setAnswer1] = useState('');
@@ -63,6 +48,14 @@ const ReservationApplyPage = () => {
   const [answer3, setAnswer3] = useState('');
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
+  const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
+
+  const getDayType = (day: number) =>
+    selectedDates.length && isSameDate(selectedDates[0], day)
+      ? 'active'
+      : availableSchedules[day]
+      ? 'default'
+      : 'disable';
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -90,7 +83,10 @@ const ReservationApplyPage = () => {
     };
 
   const getHandleClickDay = (day: number) => () => {
+    const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
+    setAvaliableTimes(times);
     setDay(day);
+    resetTimes();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -131,6 +127,35 @@ const ReservationApplyPage = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (stepStatus[1] === 'show') {
+      const defaultCoachId = 12;
+
+      (async () => {
+        const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
+
+        const schedules = response.data.calendarTimes.reduce(
+          (acc: StringDictionary, fullDate: string) => {
+            const { day, time } = separateFullDate(fullDate);
+
+            acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], time] : [time];
+
+            return acc;
+          },
+          {} as StringDictionary,
+        );
+
+        setAvaliableSchedules(schedules);
+      })();
+    }
+  }, [stepStatus, year, month]);
+
+  useEffect(() => {
+    resetTimes();
+    setAvaliableTimes([]);
+    resetSelectedDates();
+  }, [year, month]);
+
   return (
     <>
       <TitleBox to="/" title="면담 신청하기" />
@@ -170,19 +195,20 @@ const ReservationApplyPage = () => {
               <Calendar
                 rerenderCondition={rerenderCondition}
                 getHandleClickDay={getHandleClickDay}
+                getDayType={getDayType}
               />
 
-              <ScrollContainer>
-                {dummyTimes.map((dummyTime, index) => (
+              <S.TimeContainer key={timeRerenderKey}>
+                {availableTimes.map((availableTime, index) => (
                   <Time
                     key={index}
-                    active={selectedTimes[0] === dummyTime}
-                    onClick={getHandleClickTime(dummyTime)}
+                    active={selectedTimes[0] === availableTime}
+                    onClick={getHandleClickTime(availableTime)}
                   >
-                    {dummyTime}
+                    {availableTime}
                   </Time>
                 ))}
-              </ScrollContainer>
+              </S.TimeContainer>
             </S.DateBox>
 
             <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(1)}>

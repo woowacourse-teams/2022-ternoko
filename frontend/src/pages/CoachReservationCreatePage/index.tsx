@@ -23,6 +23,8 @@ import { postCoachScheduleAPI, getCoachScheduleAPI } from '../../api';
 
 import { separateFullDate, getFullDateString } from '../../utils';
 
+import { StringDictionary } from '../../types/domain';
+
 const defaultTimes = [
   '10:00',
   '10:30',
@@ -42,11 +44,7 @@ const defaultTimes = [
   '17:30',
 ];
 
-const defaultCoachId = 6;
-
-type StringDictionary = {
-  [key: string]: string[];
-};
+const defaultCoachId = 12;
 
 const CoachReservationCreatePage = () => {
   const { year, month, selectedDates } = useCalendarState();
@@ -57,6 +55,8 @@ const CoachReservationCreatePage = () => {
   });
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
   const [isApplied, setIsApplied] = useState(false);
+
+  const getDayType = (day: number) => (isSelectedDate(day) ? 'active' : 'default');
 
   const compactCalendarTimes = (times: CalendarTime[]) => {
     const result = times.reduce((acc, { year, month, times }) => {
@@ -177,7 +177,7 @@ const CoachReservationCreatePage = () => {
 
       <S.Box>
         <S.DateBox>
-          <Calendar getHandleClickDay={getHandleClickDay} />
+          <Calendar getHandleClickDay={getHandleClickDay} getDayType={getDayType} />
 
           <ScrollContainer>
             {defaultTimes.map((defaultTime, index) => (
