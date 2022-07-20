@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
 
-import { DayType } from '../../types/domain';
-
 import { Day } from '../@common/CalendarStyle/styled';
 
+import { DayType } from '../../types/domain';
+
 export const Box = styled.div`
-  width: max-content;
+  width: 100%;
   height: max-content;
   position: relative;
 
@@ -19,15 +19,12 @@ type CalendarDayProps = {
 };
 
 export const CalendarDay = styled(Day)<CalendarDayProps>`
-  display: grid;
-  place-items: center;
-  width: 6rem;
-  height: 6rem;
+  text-align: center;
+  height: 10rem;
 
   ${({ today }) =>
     today &&
     css`
-      border-radius: 100%;
       background-color: ${({ theme }) => theme.colors.pink_50};
     `}
 
@@ -45,4 +42,12 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
       pointer-events: none;
       cursor: default;
     `}
+`;
+
+export const Schedule = styled.p`
+  padding: 0.5rem;
+
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.pink_50};
+  font-weight: 600;
 `;

@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import ReservationApplyPage from './pages/ReservationApplyPage';
 import ReservationCompletePage from './pages/ReservationCompletePage';
 import CoachReservationCreatePage from './pages/CoachReservationCreatePage';
+import CoachHomePage from './pages/CoachHomePage';
 
 import Header from './components/Header';
 
@@ -35,6 +36,7 @@ const AppRoutes = () => {
               </CalendarProvider>
             }
           />
+          <Route path="coach/home" element={<CoachHomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

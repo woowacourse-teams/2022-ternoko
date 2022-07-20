@@ -13,6 +13,8 @@ export interface ReservationType {
   interviewEndTime: string;
 }
 
+export type ReservationResponseType = Omit<ReservationType, 'imageUrl' | 'coachNickname'>;
+
 export type SelectMode = 'single' | 'multiple';
 
 interface InterviewQuestionType {
@@ -39,3 +41,5 @@ export interface CoachScheduleRequestBodyType {
 export type StringDictionary = {
   [key: string]: string[];
 };
+
+export type DayType = 'default' | 'disable' | 'active';

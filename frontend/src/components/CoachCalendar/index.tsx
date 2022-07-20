@@ -1,4 +1,4 @@
-import { useMemo, memo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 import * as S from './styled';
 import * as C from '../@common/CalendarStyle/styled';
@@ -10,20 +10,55 @@ import {
   monthNames,
 } from '../../context/CalendarProvider';
 
-import { DayType } from '../../types/domain';
+import { getCoachReservationAPI } from '../../api';
 
-export type CalendarProps = {
-  rerenderCondition?: number;
-  getHandleClickDay: (day: number) => () => void;
-  getDayType: (day: number) => DayType;
+import { ReservationResponseType } from '../../types/domain';
+
+import { separateFullDate } from '../../utils';
+
+const defaultCoachId = 12;
+
+type ScheduleType = {
+  id: number;
+  crewNickname: string;
+  times: string[];
 };
 
-const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: CalendarProps) => {
+type SchedulesType = { [key: number]: ScheduleType[] };
+
+const CoachCalendar = () => {
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
   const { daysLength, isToday, isBeforeToday, isOverFirstDay, getDay } = useCalendarUtils();
-  const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
+
+  const [schedules, setSchedules] = useState<SchedulesType>({});
+
+  const rerenderKey = useMemo(() => Date.now(), [year, month]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getCoachReservationAPI(defaultCoachId, year, month + 1);
+
+      const schedules = response.data.calendar.reduce(
+        (
+          acc: SchedulesType,
+          { id, crewNickname, interviewStartTime, interviewEndTime }: ReservationResponseType,
+        ) => {
+          const { day, time: startTime } = separateFullDate(interviewStartTime);
+          const { time: endTime } = separateFullDate(interviewEndTime);
+          const schedule = { id, crewNickname, times: [startTime, endTime] };
+
+          acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], schedule] : [schedule];
+
+          return acc;
+        },
+        {},
+      );
+
+      setSchedules(schedules);
+    })();
+  }, [year, month]);
 
   return (
     <S.Box>
@@ -50,31 +85,36 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: Calendar
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
+              const reservations = schedules[day]
+                ? schedules[day].map(({ id, crewNickname, times }) => (
+                    <S.Schedule key={id}>
+                      {crewNickname} ({times[0]}~{times[1]})
+                    </S.Schedule>
+                  ))
+                : [];
 
               if (isToday(day)) {
                 return (
-                  <S.CalendarDay
-                    key={index}
-                    type={getDayType(day)}
-                    today
-                    onClick={getHandleClickDay(day)}
-                  >
+                  <S.CalendarDay key={index} today>
                     {day}
+                    {reservations}
                   </S.CalendarDay>
                 );
               }
 
               if (isBeforeToday(day)) {
                 return (
-                  <S.CalendarDay key={index} type="disable" onClick={getHandleClickDay(day)}>
+                  <S.CalendarDay key={index} type="disable">
                     {day}
+                    {reservations}
                   </S.CalendarDay>
                 );
               }
 
               return (
-                <S.CalendarDay key={index} type={getDayType(day)} onClick={getHandleClickDay(day)}>
+                <S.CalendarDay key={index}>
                   {day}
+                  {reservations}
                   <span />
                   <span />
                   <span />
@@ -99,4 +139,4 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: Calendar
   );
 };
 
-export default memo(Calendar);
+export default CoachCalendar;

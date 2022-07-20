@@ -173,7 +173,7 @@ const CoachReservationCreatePage = () => {
 
   return (
     <>
-      <TitleBox to="/" title="면담 스케쥴 만들기" />
+      <TitleBox to="/coach/home" title="면담 스케쥴 만들기" />
 
       <S.Box>
         <S.DateBox>

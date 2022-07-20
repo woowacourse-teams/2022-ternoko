@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { ReservationRequestBodyType, CoachScheduleRequestBodyType } from '../types/domain';
 
-const SERVER_URL = 'http://15.164.218.98:8080';
+// const SERVER_URL = 'http://15.164.218.98:8080';
+const SERVER_URL = 'http://192.168.7.160:8080';
 
 export const getCoachesAPI = () => axios.get(`${SERVER_URL}/api/reservations/coaches`);
 
@@ -18,3 +19,6 @@ export const postCoachScheduleAPI = (coachId: number, body: CoachScheduleRequest
 
 export const getCoachScheduleAPI = (coachId: number, year: number, month: number) =>
   axios.get(`${SERVER_URL}/api/coaches/${coachId}/calendar/times?year=${year}&month=${month}`);
+
+export const getCoachReservationAPI = (coachId: number, year: number, month: number) =>
+  axios.get(`${SERVER_URL}/api/coaches/${coachId}/schedules?year=${year}&month=${month}`);
