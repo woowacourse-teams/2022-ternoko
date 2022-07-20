@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.service;
 
-import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.impl.MethodsClientImpl;
 import com.slack.api.methods.request.openid.connect.OpenIDConnectTokenRequest;
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    private static final MethodsClientImpl SLACK_METHODS_CLIENT = new MethodsClientImpl(new Slack().getHttpClient());
+    private final MethodsClientImpl slackMethodClient;
 
     private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
@@ -34,13 +33,15 @@ public class AuthService {
     private final String clientSecret;
     private final String redirectUrl;
 
-    public AuthService(MemberRepository memberRepository,
+    public AuthService(MethodsClientImpl slackMethodClient,
+                       MemberRepository memberRepository,
                        CoachRepository coachRepository,
                        CrewRepository crewRepository,
                        JwtProvider jwtProvider,
                        @Value("${slack.clientId}") final String clientId,
                        @Value("${slack.clientSecret}") final String clientSecret,
                        @Value("${slack.redirectUrl}") final String redirectUrl) {
+        this.slackMethodClient = slackMethodClient;
         this.memberRepository = memberRepository;
         this.coachRepository = coachRepository;
         this.crewRepository = crewRepository;
@@ -53,14 +54,41 @@ public class AuthService {
     public String login(final String code) throws SlackApiException, IOException {
         final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code);
         // 로그인인지, 회원 가입인지 갈래
+        System.out.println("userInfoResponse Email : "+ userInfoResponse.getEmail());
         final Optional<Member> member = memberRepository.findByEmail(userInfoResponse.getEmail());
-
+        System.out.println("test");
         if (member.isPresent()) {
             return jwtProvider.createToken(String.valueOf(member.get().getId()));
         }
 
         //회원 가입
         return signUp(userInfoResponse);
+    }
+
+    private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(String code)
+            throws IOException, SlackApiException {
+        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(
+                code);
+        System.out.println("accessToken : "+ openIDConnectTokenResponse.getAccessToken());
+        final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
+                .token(openIDConnectTokenResponse.getAccessToken())
+                .build();
+        final OpenIDConnectUserInfoResponse userInfoResponse = slackMethodClient.openIDConnectUserInfo(
+                userInfoRequest);
+        return userInfoResponse;
+    }
+
+    private OpenIDConnectTokenResponse getOpenIDTokenResponse(String code)
+            throws IOException, SlackApiException {
+        final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .code(code)
+                .redirectUri(redirectUrl)
+                .build();
+        final OpenIDConnectTokenResponse openIDConnectTokenResponse = slackMethodClient.openIDConnectToken(
+                tokenRequest);
+        return openIDConnectTokenResponse;
     }
 
     @NotNull
@@ -75,30 +103,5 @@ public class AuthService {
                 userInfoResponse.getTeamImage230()));
 
         return jwtProvider.createToken(String.valueOf(crew.getId()));
-    }
-
-    private OpenIDConnectTokenResponse getOpenIDTokenResponse(String code)
-            throws IOException, SlackApiException {
-        final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
-                .clientId(clientId)
-                .clientSecret(clientSecret)
-                .code(code)
-                .redirectUri(redirectUrl)
-                .build();
-        final OpenIDConnectTokenResponse openIDConnectTokenResponse = SLACK_METHODS_CLIENT.openIDConnectToken(
-                tokenRequest);
-        return openIDConnectTokenResponse;
-    }
-
-    private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(String code)
-            throws IOException, SlackApiException {
-        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(
-                code);
-        final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
-                .token(openIDConnectTokenResponse.getAccessToken())
-                .build();
-        final OpenIDConnectUserInfoResponse userInfoResponse = SLACK_METHODS_CLIENT.openIDConnectUserInfo(
-                userInfoRequest);
-        return userInfoResponse;
     }
 }
