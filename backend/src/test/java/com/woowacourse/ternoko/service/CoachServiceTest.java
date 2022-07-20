@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
@@ -78,7 +78,7 @@ public class CoachServiceTest {
     void putAvailableDateTimesByInvalidCoachId() {
         assertThatThrownBy(
                 () -> coachService.putAvailableDateTimesByCoachId(-1L, new AvailableDateTimesRequest(List.of())))
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(CoachNotFoundException.class);
     }
 
     @Test
