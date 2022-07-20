@@ -1,24 +1,34 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.*;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.*;
-import static com.woowacourse.ternoko.service.ReservationService.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST1;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST2;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST3;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.RESERVATION_REQUEST4;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
+import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
+import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.woowacourse.ternoko.dto.ReservationResponse;
-import com.woowacourse.ternoko.dto.ScheduleResponse;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
 
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -51,6 +61,20 @@ class ReservationServiceTest {
                         .extracting("answer")
                         .contains("답변1", "답변2", "답변3")
         );
+    }
+
+    @Test
+    @DisplayName("없는 코치로 예약할 시 예외가 발생한다.")
+    void create_coachNotFound() {
+        assertThatThrownBy(() -> reservationService.create(-1L, RESERVATION_REQUEST3))
+                .isInstanceOf(CoachNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("없는 면담을 조회할 시 예외가 발생한다.")
+    void find_reservationNotFound() {
+        assertThatThrownBy(() -> reservationService.findReservationById(-1L))
+                .isInstanceOf(ReservationNotFoundException.class);
     }
 
     @Test
@@ -94,8 +118,8 @@ class ReservationServiceTest {
     void createReservationTodayException() {
         final ReservationRequest request = new ReservationRequest("SUDAL", LocalDateTime.now(), FORM_ITEM_REQUESTS);
         assertThatThrownBy(() -> reservationService.create(COACH2.getId(), request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
 
     @Test
@@ -104,7 +128,7 @@ class ReservationServiceTest {
         final ReservationRequest request = new ReservationRequest("SUDAL", LocalDateTime.now().minusDays(1),
                 FORM_ITEM_REQUESTS);
         assertThatThrownBy(() -> reservationService.create(COACH2.getId(), request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
 }
