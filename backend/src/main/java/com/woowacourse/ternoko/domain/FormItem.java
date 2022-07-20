@@ -40,4 +40,8 @@ public class FormItem {
         this.answer = answer;
         this.interview = interview;
     }
+
+    public void addInterview(Interview interview) {
+        this.interview = interview;
+    }
 }

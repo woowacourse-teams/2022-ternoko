@@ -13,12 +13,16 @@ import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.repository.CoachRepository;
-import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +40,6 @@ public class ReservationService {
     private static final int END_MINUTE = 59;
 
     private final CoachRepository coachRepository;
-    private final FormItemRepository formItemRepository;
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
 
@@ -46,7 +49,11 @@ public class ReservationService {
         final Interview interview = convertInterview(coachId, reservationRequest,
                 interviewQuestions);
 
-        interviewRepository.save(interview);
+        final Interview saveInterview = interviewRepository.save(interview);
+
+        for (FormItem formItem : saveInterview.getFormItems()) {
+            formItem.addInterview(saveInterview);
+        }
 
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
@@ -79,12 +86,9 @@ public class ReservationService {
     }
 
     private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
-        final List<FormItem> formItems = interviewQuestions.stream()
+        return interviewQuestions.stream()
                 .map(FormItemRequest::toFormItem)
                 .collect(Collectors.toList());
-
-        formItemRepository.saveAll(formItems);
-        return formItems;
     }
 
     @Transactional(readOnly = true)
