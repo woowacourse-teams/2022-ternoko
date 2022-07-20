@@ -11,6 +11,16 @@ export const Box = styled.div`
     font-family: 'EarlyFontDiary';
     font-size: 3em;
   }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  img {
+    width: 50px;
+  }
 `;
 
 export const MenuBox = styled.div`
