@@ -1,4 +1,0 @@
-[submodule "backend/src/main/resources/dev-submodule"]
-	path = backend/src/main/resources/dev-submodule
-	url = https://github.com/Juhyung990122/ternoko-secrets.git
-	branch = main
