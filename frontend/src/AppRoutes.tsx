@@ -15,7 +15,6 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Header />
-
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="" element={<HomePage />} />
