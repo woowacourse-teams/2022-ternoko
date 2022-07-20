@@ -124,36 +124,36 @@ export const Day = styled.div<DayProps>`
     position: absolute;
   }
 
-  span:nth-child(1),
-  span:nth-child(3) {
+  span:nth-of-type(1),
+  span:nth-of-type(3) {
     width: 2px;
     height: 0;
     background-color: ${({ theme }) => theme.colors.pink_50};
   }
 
-  span:nth-child(1) {
+  span:nth-of-type(1) {
     bottom: 0;
     left: 0;
   }
 
-  span:nth-child(3) {
+  span:nth-of-type(3) {
     top: 0;
     right: 0;
   }
 
-  span:nth-child(2),
-  span:nth-child(4) {
+  span:nth-of-type(2),
+  span:nth-of-type(4) {
     width: 0;
     height: 2px;
     background-color: ${({ theme }) => theme.colors.pink_50};
   }
 
-  span:nth-child(2) {
+  span:nth-of-type(2) {
     top: 0;
     left: 0;
   }
 
-  span:nth-child(4) {
+  span:nth-of-type(4) {
     bottom: 0;
     right: 0;
   }
@@ -162,24 +162,24 @@ export const Day = styled.div<DayProps>`
     transition: width 0.15s ease-in-out, height 0.15s ease-in-out;
   }
 
-  :hover span:nth-child(1),
-  :hover span:nth-child(3) {
+  :hover span:nth-of-type(1),
+  :hover span:nth-of-type(3) {
     height: 100%;
   }
 
-  :hover span:nth-child(2),
-  :hover span:nth-child(4) {
+  :hover span:nth-of-type(2),
+  :hover span:nth-of-type(4) {
     width: 100%;
   }
-  :hover span:nth-child(2) {
+  :hover span:nth-of-type(2) {
     transition-delay: 0.15s;
   }
 
-  :hover span:nth-child(3) {
+  :hover span:nth-of-type(3) {
     transition-delay: 0.3s;
   }
 
-  :hover span:nth-child(4) {
+  :hover span:nth-of-type(4) {
     transition-delay: 0.45s;
   }
 `;
@@ -231,4 +231,12 @@ export const MonthContainer = styled.div<MonthContainerProps>`
       transform: scale(1.2);
     }
   }
+`;
+
+export const Schedule = styled.p`
+  padding: 0.5rem;
+
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.pink_50};
+  font-weight: 600;
 `;

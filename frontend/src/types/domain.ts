@@ -13,6 +13,8 @@ export interface ReservationType {
   interviewEndTime: string;
 }
 
+export type ReservationResponseType = Omit<ReservationType, 'imageUrl' | 'coachNickname'>;
+
 export type SelectMode = 'single' | 'multiple';
 
 interface InterviewQuestionType {
