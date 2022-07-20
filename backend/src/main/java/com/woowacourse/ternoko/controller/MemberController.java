@@ -39,10 +39,9 @@ public class MemberController {
     }
 
     @GetMapping("/coaches/{coachId}/calendar/times")
-    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(
-        @PathVariable final Long coachId,
-        @RequestParam final int year,
-        @RequestParam final int month) {
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@PathVariable final Long coachId,
+                                                                        @RequestParam final int year,
+                                                                        @RequestParam final int month) {
         final List<AvailableDateTime> availableDateTimes = coachService
             .findAvailableDateTimesByCoachId(coachId, year, month);
         final AvailableDateTimesResponse from = AvailableDateTimesResponse.from(availableDateTimes);

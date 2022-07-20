@@ -72,6 +72,7 @@ public class ReservationService {
     }
 
     private void validateInterviewStartTime(final LocalDateTime localDateTime) {
+        //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
         final LocalDate standardDay = LocalDate.now().plusDays(1);
         if (!standardDay.isBefore(localDateTime.toLocalDate())) {
             throw new IllegalArgumentException(INVALID_LOCAL_DATE_TIME_EXCEPTION_MESSAGE);
