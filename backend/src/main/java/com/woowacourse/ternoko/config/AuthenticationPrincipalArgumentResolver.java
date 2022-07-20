@@ -28,13 +28,8 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
                                   final WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String accessToken = AuthorizationExtractor.extract(request);
-        validateToken(accessToken);
+        jwtProvider.validateToken(accessToken);
         return Long.valueOf(jwtProvider.getPayload(accessToken));
     }
 
-    private void validateToken(final String token) {
-        if (!jwtProvider.validateToken(token)) {
-            throw new IllegalArgumentException();
-        }
-    }
 }

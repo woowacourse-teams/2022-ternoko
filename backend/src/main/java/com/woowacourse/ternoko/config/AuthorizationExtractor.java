@@ -19,6 +19,20 @@ public class AuthorizationExtractor {
         return authHeaderValue;
     }
 
+    public static String extract(String request) {
+
+        if ((request.toLowerCase().startsWith(BEARER_TYPE.toLowerCase()))) {
+            String authHeaderValue = request.substring(BEARER_TYPE.length()).trim();
+            int commaIndex = authHeaderValue.indexOf(',');
+            if (commaIndex > 0) {
+                authHeaderValue = authHeaderValue.substring(0, commaIndex);
+            }
+            return authHeaderValue;
+        }
+
+        return null;
+    }
+
     private static String getAuthHeaderValue(final HttpServletRequest request, final String value) {
         if ((value.toLowerCase().startsWith(BEARER_TYPE.toLowerCase()))) {
             request.setAttribute(ACCESS_TOKEN_TYPE, value.substring(0, BEARER_TYPE.length()).trim());

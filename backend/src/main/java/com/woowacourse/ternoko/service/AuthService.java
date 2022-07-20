@@ -7,6 +7,7 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.config.AuthorizationExtractor;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
@@ -18,8 +19,10 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class AuthService {
 
     private final MethodsClientImpl slackMethodClient;
@@ -53,15 +56,10 @@ public class AuthService {
 
     public String login(final String code) throws SlackApiException, IOException {
         final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code);
-        // 로그인인지, 회원 가입인지 갈래
-        System.out.println("userInfoResponse Email : "+ userInfoResponse.getEmail());
         final Optional<Member> member = memberRepository.findByEmail(userInfoResponse.getEmail());
-        System.out.println("test");
         if (member.isPresent()) {
             return jwtProvider.createToken(String.valueOf(member.get().getId()));
         }
-
-        //회원 가입
         return signUp(userInfoResponse);
     }
 
@@ -69,7 +67,6 @@ public class AuthService {
             throws IOException, SlackApiException {
         final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(
                 code);
-        System.out.println("accessToken : "+ openIDConnectTokenResponse.getAccessToken());
         final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
                 .token(openIDConnectTokenResponse.getAccessToken())
                 .build();
@@ -91,7 +88,6 @@ public class AuthService {
         return openIDConnectTokenResponse;
     }
 
-    @NotNull
     private String signUp(OpenIDConnectUserInfoResponse userInfoResponse) {
         if (userInfoResponse.getEmail().contains("woowahan.com")) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
@@ -103,5 +99,11 @@ public class AuthService {
                 userInfoResponse.getTeamImage230()));
 
         return jwtProvider.createToken(String.valueOf(crew.getId()));
+    }
+
+    public boolean isValid(final String header){
+        String token = AuthorizationExtractor.extract(header);
+        jwtProvider.validateToken(token);
+        return true;
     }
 }
