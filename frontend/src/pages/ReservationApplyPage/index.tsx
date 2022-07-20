@@ -32,7 +32,7 @@ const isOverMinLength = (text: string) => {
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const { year, month, selectedDates } = useCalendarState();
-  const { setDay } = useCalendarActions();
+  const { setDay, resetSelectedDates } = useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'single' });
 
@@ -48,6 +48,7 @@ const ReservationApplyPage = () => {
   const [answer3, setAnswer3] = useState('');
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
+  const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
 
   const getDayType = (day: number) =>
     selectedDates.length && isSameDate(selectedDates[0], day)
@@ -149,6 +150,12 @@ const ReservationApplyPage = () => {
     }
   }, [stepStatus, year, month]);
 
+  useEffect(() => {
+    resetTimes();
+    setAvaliableTimes([]);
+    resetSelectedDates();
+  }, [year, month]);
+
   return (
     <>
       <TitleBox to="/" title="면담 신청하기" />
@@ -191,7 +198,7 @@ const ReservationApplyPage = () => {
                 getDayType={getDayType}
               />
 
-              <ScrollContainer>
+              <S.TimeContainer key={timeRerenderKey}>
                 {availableTimes.map((availableTime, index) => (
                   <Time
                     key={index}
@@ -201,7 +208,7 @@ const ReservationApplyPage = () => {
                     {availableTime}
                   </Time>
                 ))}
-              </ScrollContainer>
+              </S.TimeContainer>
             </S.DateBox>
 
             <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(1)}>
