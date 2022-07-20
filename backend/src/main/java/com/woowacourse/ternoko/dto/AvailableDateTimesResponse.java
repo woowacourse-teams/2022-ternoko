@@ -20,6 +20,7 @@ public class AvailableDateTimesResponse {
     public static AvailableDateTimesResponse from(final List<AvailableDateTime> availableDateTimes) {
         return new AvailableDateTimesResponse(availableDateTimes.stream()
                 .map(AvailableDateTime::getLocalDateTime)
+                .sorted()
                 .collect(Collectors.toList()));
     }
 }
