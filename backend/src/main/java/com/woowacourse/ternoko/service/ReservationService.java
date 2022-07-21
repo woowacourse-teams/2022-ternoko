@@ -19,11 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +50,7 @@ public class ReservationService {
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
 
-    private Interview convertInterview(Long coachId, ReservationRequest reservationRequest) {
+    private Interview convertInterview(final Long coachId, final ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)

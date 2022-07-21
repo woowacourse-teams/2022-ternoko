@@ -41,7 +41,7 @@ public class FormItem {
         this.interview = interview;
     }
 
-    public void addInterview(Interview interview) {
+    public void addInterview(final Interview interview) {
         this.interview = interview;
         interview.getFormItems().add(this);
     }
