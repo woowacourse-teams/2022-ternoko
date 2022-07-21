@@ -8,6 +8,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -103,8 +104,17 @@ public class AcceptanceTest {
     }
 
     protected ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
+        final ReservationRequest reservationRequest = new ReservationRequest(crewName, AFTER_TWO_DAYS,
+                FORM_ITEM_REQUESTS);
+
+        return post("/api/reservations/coaches/" + coachId, reservationRequest);
+    }
+
+    protected ExtractableResponse<Response> createReservation(final Long coachId,
+                                                              final String crewName,
+                                                              final LocalDateTime interviewDateTime) {
         final ReservationRequest reservationRequest = new ReservationRequest(crewName,
-                AFTER_TWO_DAYS,
+                interviewDateTime,
                 FORM_ITEM_REQUESTS);
 
         return post("/api/reservations/coaches/" + coachId, reservationRequest);
