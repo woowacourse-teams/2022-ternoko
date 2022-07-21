@@ -13,7 +13,6 @@ import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.repository.CoachRepository;
-import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
@@ -36,38 +35,34 @@ public class ReservationService {
     private static final int END_MINUTE = 59;
 
     private final CoachRepository coachRepository;
-    private final FormItemRepository formItemRepository;
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
 
     public Long create(final Long coachId, final ReservationRequest reservationRequest) {
-        final List<FormItemRequest> interviewQuestions = reservationRequest.getInterviewQuestions();
+        final Interview interview = convertInterview(coachId, reservationRequest);
+        final Interview savedInterview = interviewRepository.save(interview);
 
-        final Interview interview = convertInterview(coachId, reservationRequest,
-                interviewQuestions);
-
-        interviewRepository.save(interview);
+        final List<FormItem> formItems = convertFormItem(reservationRequest.getInterviewQuestions());
+        for (FormItem formItem : formItems) {
+            formItem.addInterview(savedInterview);
+        }
 
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
 
-    private Interview convertInterview(final Long coachId,
-                                       final ReservationRequest reservationRequest,
-                                       final List<FormItemRequest> interviewQuestions) {
-        final List<FormItem> formItems = convertFormItem(interviewQuestions);
-
+    private Interview convertInterview(final Long coachId, final ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)
                 .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
 
         validateInterviewStartTime(reservationDatetime);
+
         return new Interview(
                 reservationDatetime,
                 reservationDatetime.plusMinutes(30),
                 coach,
-                reservationRequest.getCrewNickname(),
-                formItems);
+                reservationRequest.getCrewNickname());
     }
 
     private void validateInterviewStartTime(final LocalDateTime localDateTime) {
@@ -79,12 +74,9 @@ public class ReservationService {
     }
 
     private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
-        final List<FormItem> formItems = interviewQuestions.stream()
+        return interviewQuestions.stream()
                 .map(FormItemRequest::toFormItem)
                 .collect(Collectors.toList());
-
-        formItemRepository.saveAll(formItems);
-        return formItems;
     }
 
     @Transactional(readOnly = true)
