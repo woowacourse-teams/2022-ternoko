@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_4_DAYS;
@@ -39,8 +40,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
         // given
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
         final ExtractableResponse<Response> calendarResponse = get("/api/coaches/" + COACH3.getId()
-                + "/calendar/times?year=" + NOW_PLUS_2_DAYS.getYear()
-                + "&month=" + NOW_PLUS_2_DAYS.getMonthValue());
+                + "/calendar/times?year=" + NOW.getYear()
+                + "&month=" + NOW.getMonthValue());
 
         // when
         final AvailableDateTimesResponse response = calendarResponse.body().as(AvailableDateTimesResponse.class);
@@ -89,6 +90,5 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         LocalDateTime.of(NOW_PLUS_4_DAYS, FIRST_TIME),
                         LocalDateTime.of(NOW_PLUS_4_DAYS, SECOND_TIME),
                         LocalDateTime.of(NOW_PLUS_4_DAYS, THIRD_TIME));
-
     }
 }

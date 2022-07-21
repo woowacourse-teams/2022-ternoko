@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
@@ -55,8 +56,8 @@ public class CoachAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .queryParam("year", NOW_PLUS_2_DAYS.getYear())
-                .queryParam("month", NOW_PLUS_2_DAYS.getMonthValue())
+                .queryParam("year", NOW.getYear())
+                .queryParam("month", NOW.getMonthValue())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/coaches/" + COACH3.getId() + "/schedules")
                 .then().log().all()

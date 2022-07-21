@@ -9,20 +9,22 @@ import java.util.List;
 
 public class CoachAvailableTimeFixture {
 
-    public static final LocalDate NOW = LocalDate.now();
-    public static final LocalDate NOW_PLUS_2_DAYS = LocalDate.now().plusDays(2);
-    public static final LocalDate NOW_PLUS_3_DAYS = LocalDate.now().plusDays(3);
-    public static final LocalDate NOW_PLUS_4_DAYS = LocalDate.now().plusDays(4);
+    public static final LocalDate NOW = LocalDate.
+            now().plusDays(4).getMonthValue() > LocalDate.now().getMonthValue() ?
+            LocalDate.now().plusDays(4) : LocalDate.now();
+    public static final LocalDate NOW_PLUS_2_DAYS = NOW.plusDays(2);
+    public static final LocalDate NOW_PLUS_3_DAYS = NOW.plusDays(3);
+    public static final LocalDate NOW_PLUS_4_DAYS = NOW.plusDays(4);
 
-    public static final LocalDate NOW_PLUS_1_MONTH = LocalDate.now().plusMonths(1);
+    public static final LocalDate NOW_PLUS_1_MONTH = NOW.plusMonths(1);
 
     public static final LocalTime FIRST_TIME = LocalTime.of(11, 0);
     public static final LocalTime SECOND_TIME = LocalTime.of(14, 0);
     public static final LocalTime THIRD_TIME = LocalTime.of(16, 0);
 
     public static final AvailableDateTimeRequest NOW_MONTH_REQUEST = new AvailableDateTimeRequest(
-            NOW_PLUS_2_DAYS.getYear(),
-            NOW_PLUS_2_DAYS.getMonthValue(),
+            NOW.getYear(),
+            NOW.getMonthValue(),
             List.of(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                     LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
                     LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
