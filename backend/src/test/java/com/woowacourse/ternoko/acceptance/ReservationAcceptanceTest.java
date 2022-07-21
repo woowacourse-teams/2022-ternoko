@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
@@ -24,8 +25,10 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("면담 예약을 생성한다.")
     void create() {
-        // given, when
-        final ExtractableResponse<Response> response = createReservation(COACH1.getId(),
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        // when
+        final ExtractableResponse<Response> response = createReservation(COACH3.getId(),
                 "애쉬",
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -35,10 +38,24 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("선택한 일시가 코치의 가능한 시간이 아니라면 면담을 생성할 때 예외가 발생한다.")
+    void create_WhenInvalidAvailableDateTime() {
+        // given
+        // when
+        final ExtractableResponse<Response> response = createReservation(COACH3.getId(),
+                "애쉬",
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findReservationById() {
         // given
-        final ExtractableResponse<Response> createdResponse = createReservation(COACH1.getId(),
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> createdResponse = createReservation(COACH3.getId(),
                 "수달",
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -49,7 +66,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(reservationResponse.getCoachNickname())
-                        .isEqualTo(COACH1.getNickname()),
+                        .isEqualTo(COACH3.getNickname()),
                 () -> assertThat(reservationResponse.getInterviewStartTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
                 () -> assertThat(reservationResponse.getInterviewEndTime())
@@ -61,6 +78,11 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 내역 목록을 조회한다.")
     void findAll() {
         // given
+        put("/api/coaches/" + COACH1.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/coaches/" + COACH2.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/coaches/" + COACH4.getId() + "/calendar/times", MONTHS_REQUEST);
+
         createReservation(COACH1.getId(), "애쉬", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(COACH2.getId(), "바니", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(COACH3.getId(), "앤지", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));

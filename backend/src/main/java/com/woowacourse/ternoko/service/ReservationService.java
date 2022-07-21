@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.service;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
+import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
@@ -50,7 +50,10 @@ public class ReservationService {
             formItem.addInterview(savedInterview);
         }
 
-        availableDateTimeRepository.deleteByCoachIdAndInterviewDateTime(coachId, reservationRequest.getInterviewDatetime());
+        AvailableDateTime availableDateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
+                        coachId, reservationRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidReservationDateException(ExceptionType.INVALID_AVAILABLE_DATE_TIME));
+        availableDateTimeRepository.delete(availableDateTime);
 
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
