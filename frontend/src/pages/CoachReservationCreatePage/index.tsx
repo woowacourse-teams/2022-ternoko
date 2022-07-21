@@ -192,7 +192,7 @@ const CoachReservationCreatePage = () => {
           </ScrollContainer>
         </S.DateBox>
         <S.ButtonContainer>
-          <Link to="/">
+          <Link to="/coach/home">
             <Button width="100%" height="35px" white={true}>
               홈으로
             </Button>
