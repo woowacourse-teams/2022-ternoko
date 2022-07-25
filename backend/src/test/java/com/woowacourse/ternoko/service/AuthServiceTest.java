@@ -36,11 +36,11 @@ public class AuthServiceTest {
 	private AuthService authService;
 	@MockBean
 	MethodsClientImpl slackMethodClient;
-	@SpyBean
+	@Autowired
 	MemberRepository memberRepository;
-	@SpyBean
+	@Autowired
 	CoachRepository coachRepository;
-	@SpyBean
+	@Autowired
 	CrewRepository crewRepository;
 	@SpyBean
 	JwtProvider jwtProvider;
