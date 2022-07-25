@@ -11,6 +11,7 @@ const theme = {
     pink_200: '#ff385c',
     pink_300: '#f03e3e',
     orange: '#ffd24d4d',
+    purple: '#4a154b',
   },
   shadows: {
     basic: '#64646f33 0px 7px 29px 0px',

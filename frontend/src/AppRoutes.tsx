@@ -1,6 +1,7 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
+import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import ReservationApplyPage from './pages/ReservationApplyPage';
 import ReservationCompletePage from './pages/ReservationCompletePage';
@@ -14,8 +15,8 @@ import CalendarProvider from './context/CalendarProvider';
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<Layout />}>
           <Route path="" element={<HomePage />} />
           <Route
@@ -44,9 +45,12 @@ const AppRoutes = () => {
 
 const Layout = () => {
   return (
-    <S.Body>
-      <Outlet />
-    </S.Body>
+    <>
+      <Header />
+      <S.Body>
+        <Outlet />
+      </S.Body>
+    </>
   );
 };
 
