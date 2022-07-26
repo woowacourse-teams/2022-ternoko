@@ -8,6 +8,7 @@ import ReservationApplyPage from './pages/ReservationApplyPage';
 import ReservationCompletePage from './pages/ReservationCompletePage';
 import CoachReservationCreatePage from './pages/CoachReservationCreatePage';
 import CoachHomePage from './pages/CoachHomePage';
+import MyPage from './pages/MyPage';
 
 import Header from './components/Header';
 
@@ -39,6 +40,7 @@ const AppRoutes = () => {
             }
           />
           <Route path="coach/home" element={<CoachHomePage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
