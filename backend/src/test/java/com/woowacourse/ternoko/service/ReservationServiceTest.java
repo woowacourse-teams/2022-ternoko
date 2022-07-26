@@ -3,9 +3,13 @@ package com.woowacourse.ternoko.service;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MINUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_TIME_RESPONSE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.THIRD_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
@@ -22,8 +26,12 @@ import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -152,8 +160,12 @@ class ReservationServiceTest {
     @Test
     @DisplayName("면담 예약시, 당일 예약을 시도하면 에러가 발생한다.")
     void createReservationTodayException() {
-        assertThatThrownBy(() -> reservationService.create(COACH2.getId(),
-                new ReservationRequest("SUDAL", LocalDateTime.now(), FORM_ITEM_REQUESTS)))
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
+
+        // when & then
+        assertThatThrownBy(() -> reservationService.create(COACH4.getId(),
+                new ReservationRequest("SUDAL", LocalDateTime.of(NOW, THIRD_TIME), FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
@@ -161,8 +173,12 @@ class ReservationServiceTest {
     @Test
     @DisplayName("면담 예약시, 과거 기간 예약을 시도하면 에러가 발생한다.")
     void createReservationException() {
-        assertThatThrownBy(() -> reservationService.create(COACH2.getId(),
-                new ReservationRequest("SUDAL", LocalDateTime.now().minusDays(1), FORM_ITEM_REQUESTS)))
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
+
+        // when & then
+        assertThatThrownBy(() -> reservationService.create(COACH4.getId(),
+                new ReservationRequest("SUDAL", LocalDateTime.of(NOW_MINUS_2_DAYS, THIRD_TIME), FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
