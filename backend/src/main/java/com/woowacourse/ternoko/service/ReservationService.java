@@ -1,9 +1,12 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
+import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
@@ -12,6 +15,7 @@ import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
@@ -37,6 +41,7 @@ public class ReservationService {
     private final CoachRepository coachRepository;
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
+    private final AvailableDateTimeRepository availableDateTimeRepository;
 
     public Long create(final Long coachId, final ReservationRequest reservationRequest) {
         final Interview interview = convertInterview(coachId, reservationRequest);
@@ -47,6 +52,11 @@ public class ReservationService {
             formItem.addInterview(savedInterview);
         }
 
+        final AvailableDateTime availableDateTime = availableDateTimeRepository
+                .findByCoachIdAndInterviewDateTime(coachId, reservationRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
+        availableDateTimeRepository.delete(availableDateTime);
+
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
 
@@ -54,7 +64,7 @@ public class ReservationService {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
         validateInterviewStartTime(reservationDatetime);
 
@@ -69,7 +79,7 @@ public class ReservationService {
         //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
         final LocalDate standardDay = LocalDate.now().plusDays(1);
         if (!standardDay.isBefore(localDateTime.toLocalDate())) {
-            throw new InvalidReservationDateException(ExceptionType.INVALID_RESERVATION_DATE);
+            throw new InvalidReservationDateException(INVALID_RESERVATION_DATE);
         }
     }
 
@@ -82,8 +92,7 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public ReservationResponse findReservationById(final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(
-                        () -> new ReservationNotFoundException(ExceptionType.RESERVATION_NOT_FOUND, reservationId));
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
         return ReservationResponse.from(reservation);
     }
 
