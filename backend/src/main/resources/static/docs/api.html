@@ -498,8 +498,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_면담_예약_조회_api_curl_request"><a class="link" href="#_면담_예약_조회_api_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/coaches/1/schedules?year=2030&amp;month=8' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/coaches/1/schedules?year=2030&amp;month=8' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -508,7 +507,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/coaches/1/schedules?year=2030&amp;month=8 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -554,12 +552,11 @@ Content-Length: 307
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/coaches/1/calendar/times' -i -X PUT \
     -H 'Content-Type: application/json;charset=utf-8' \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54' \
     -d '{
   "calendarTimes" : [ {
-    "year" : 2030,
-    "month" : 8,
-    "times" : [ "2030-08-30 15:00", "2030-08-30 14:00" ]
+    "year" : 2022,
+    "month" : 7,
+    "times" : [ "2022-07-20 21:16", "2022-07-21 21:16", "2022-07-22 21:16" ]
   } ]
 }'</code></pre>
 </div>
@@ -571,15 +568,14 @@ Content-Length: 307
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/coaches/1/calendar/times HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
-Content-Length: 126
+Content-Length: 146
 Host: localhost:8080
 
 {
   "calendarTimes" : [ {
-    "year" : 2030,
-    "month" : 8,
-    "times" : [ "2030-08-30 15:00", "2030-08-30 14:00" ]
+    "year" : 2022,
+    "month" : 7,
+    "times" : [ "2022-07-20 21:16", "2022-07-21 21:16", "2022-07-22 21:16" ]
   } ]
 }</code></pre>
 </div>
@@ -603,8 +599,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <h4 id="_면담_가능_시간_목록_조회_api_curl_request"><a class="link" href="#_면담_가능_시간_목록_조회_api_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/coaches/1/calendar/times?year=2022&amp;month=7' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/coaches/1/calendar/times?year=2022&amp;month=7' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -613,7 +608,6 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/coaches/1/calendar/times?year=2022&amp;month=7 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -627,10 +621,10 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 27
+Content-Length: 86
 
 {
-  "calendarTimes" : [ ]
+  "calendarTimes" : [ "2022-07-20 21:16", "2022-07-21 21:16", "2022-07-22 21:16" ]
 }</code></pre>
 </div>
 </div>
@@ -648,8 +642,7 @@ Content-Length: 27
 <h4 id="_코치_목록_조회_api_curl_request"><a class="link" href="#_코치_목록_조회_api_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations/coaches' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations/coaches' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -658,7 +651,6 @@ Content-Length: 27
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/reservations/coaches HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -672,37 +664,25 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 945
+Content-Length: 693
 
 {
   "coaches" : [ {
     "id" : 1,
-    "name" : null,
     "nickname" : "준",
-    "email" : null,
-    "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680212-63242449-1059-450b-96d8-a06b01a1aea5.png",
-    "introduce" : null
+    "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680212-63242449-1059-450b-96d8-a06b01a1aea5.png"
   }, {
     "id" : 2,
-    "name" : null,
     "nickname" : "브리",
-    "email" : null,
-    "imageUrl" : "https://user-images.githubusercontent.com/43205258/177765431-63d39896-c8e1-42e8-a229-08309849f2ff.png",
-    "introduce" : null
+    "imageUrl" : "https://user-images.githubusercontent.com/43205258/177765431-63d39896-c8e1-42e8-a229-08309849f2ff.png"
   }, {
     "id" : 3,
-    "name" : null,
     "nickname" : "토미",
-    "email" : null,
-    "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680217-764aa425-72cb-4b04-adeb-f110121cdf60.png",
-    "introduce" : null
+    "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680217-764aa425-72cb-4b04-adeb-f110121cdf60.png"
   }, {
     "id" : 4,
-    "name" : null,
     "nickname" : "네오",
-    "email" : null,
-    "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680191-a4497404-c4cb-4f86-8c2c-f4f9c70bcaf7.png",
-    "introduce" : null
+    "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680191-a4497404-c4cb-4f86-8c2c-f4f9c70bcaf7.png"
   } ]
 }</code></pre>
 </div>
@@ -717,7 +697,6 @@ Content-Length: 945
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations/coaches/1' -i -X POST \
     -H 'Content-Type: application/json;charset=utf-8' \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54' \
     -d '{
   "crewNickname" : "바니",
   "interviewDatetime" : "2030-08-30 14:00",
@@ -741,7 +720,6 @@ Content-Length: 945
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/reservations/coaches/1 HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
 Content-Length: 302
 Host: localhost:8080
 
@@ -781,8 +759,7 @@ Location: /api/reservations/3</code></pre>
 <h4 id="_면담_예약_목록_조회_api_curl_request"><a class="link" href="#_면담_예약_목록_조회_api_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -791,7 +768,6 @@ Location: /api/reservations/3</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/reservations HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -805,7 +781,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1552
+Content-Length: 2030
 
 [ {
   "id" : 1,
@@ -814,7 +790,16 @@ Content-Length: 1552
   "crewNickname" : "바니",
   "interviewStartTime" : "2030-08-30 14:00",
   "interviewEndTime" : "2030-08-30 14:30",
-  "interviewQuestions" : [ ]
+  "interviewQuestions" : [ {
+    "question" : "고정질문1",
+    "answer" : "답변1"
+  }, {
+    "question" : "고정질문2",
+    "answer" : "답변2"
+  }, {
+    "question" : "고정질문3",
+    "answer" : "답변3"
+  } ]
 }, {
   "id" : 2,
   "coachNickname" : "준",
@@ -822,7 +807,16 @@ Content-Length: 1552
   "crewNickname" : "열음",
   "interviewStartTime" : "2030-08-30 15:00",
   "interviewEndTime" : "2030-08-30 15:30",
-  "interviewQuestions" : [ ]
+  "interviewQuestions" : [ {
+    "question" : "고정질문1",
+    "answer" : "답변1"
+  }, {
+    "question" : "고정질문2",
+    "answer" : "답변2"
+  }, {
+    "question" : "고정질문3",
+    "answer" : "답변3"
+  } ]
 }, {
   "id" : 3,
   "coachNickname" : "준",
@@ -830,7 +824,16 @@ Content-Length: 1552
   "crewNickname" : "바니",
   "interviewStartTime" : "2030-08-30 14:00",
   "interviewEndTime" : "2030-08-30 14:30",
-  "interviewQuestions" : [ ]
+  "interviewQuestions" : [ {
+    "question" : "고정질문1",
+    "answer" : "답변1"
+  }, {
+    "question" : "고정질문2",
+    "answer" : "답변2"
+  }, {
+    "question" : "고정질문3",
+    "answer" : "답변3"
+  } ]
 }, {
   "id" : 4,
   "coachNickname" : "준",
@@ -838,15 +841,16 @@ Content-Length: 1552
   "crewNickname" : "바니",
   "interviewStartTime" : "2030-08-30 14:00",
   "interviewEndTime" : "2030-08-30 14:30",
-  "interviewQuestions" : [ ]
-}, {
-  "id" : 5,
-  "coachNickname" : "준",
-  "imageUrl" : "https://user-images.githubusercontent.com/26570275/177680212-63242449-1059-450b-96d8-a06b01a1aea5.png",
-  "crewNickname" : "열음",
-  "interviewStartTime" : "2030-08-30 15:00",
-  "interviewEndTime" : "2030-08-30 15:30",
-  "interviewQuestions" : [ ]
+  "interviewQuestions" : [ {
+    "question" : "고정질문1",
+    "answer" : "답변1"
+  }, {
+    "question" : "고정질문2",
+    "answer" : "답변2"
+  }, {
+    "question" : "고정질문3",
+    "answer" : "답변3"
+  } ]
 } ]</code></pre>
 </div>
 </div>
@@ -858,8 +862,7 @@ Content-Length: 1552
 <h4 id="_면담_예약_조회_api_2_curl_request"><a class="link" href="#_면담_예약_조회_api_2_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations/1' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reservations/1' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -868,7 +871,6 @@ Content-Length: 1552
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/reservations/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU4OTAxMDYxLCJleHAiOjE2NTg5MDQ2NjF9.6ZQMGpmgvz6vhjm7vxk0dj9v_Na4Fh04am9mDaNIi54
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -882,7 +884,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 308
+Content-Length: 505
 
 {
   "id" : 1,
@@ -891,7 +893,16 @@ Content-Length: 308
   "crewNickname" : "바니",
   "interviewStartTime" : "2030-08-30 14:00",
   "interviewEndTime" : "2030-08-30 14:30",
-  "interviewQuestions" : [ ]
+  "interviewQuestions" : [ {
+    "question" : "고정질문1",
+    "answer" : "답변1"
+  }, {
+    "question" : "고정질문2",
+    "answer" : "답변2"
+  }, {
+    "question" : "고정질문3",
+    "answer" : "답변3"
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -903,7 +914,7 @@ Content-Length: 308
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-27 14:22:45 +0900
+Last updated 2022-07-26 12:15:46 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
