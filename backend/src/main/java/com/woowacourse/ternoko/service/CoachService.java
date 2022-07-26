@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
@@ -43,7 +45,7 @@ public class CoachService {
     public void putAvailableDateTimesByCoachId(final Long coachId,
                                                final AvailableDateTimesRequest availableDateTimesRequest) {
         final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
         final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
             .getCalendarTimes();

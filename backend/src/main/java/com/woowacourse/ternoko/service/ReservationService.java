@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
@@ -52,7 +54,7 @@ public class ReservationService {
 
         AvailableDateTime availableDateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
                         coachId, reservationRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidReservationDateException(ExceptionType.INVALID_AVAILABLE_DATE_TIME));
+                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
         availableDateTimeRepository.delete(availableDateTime);
 
         return reservationRepository.save(new Reservation(interview, false)).getId();
@@ -62,7 +64,7 @@ public class ReservationService {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
         validateInterviewStartTime(reservationDatetime);
 
@@ -77,7 +79,7 @@ public class ReservationService {
         //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
         final LocalDate standardDay = LocalDate.now().plusDays(1);
         if (!standardDay.isBefore(localDateTime.toLocalDate())) {
-            throw new InvalidReservationDateException(ExceptionType.INVALID_RESERVATION_DATE);
+            throw new InvalidReservationDateException(INVALID_RESERVATION_DATE);
         }
     }
 
@@ -91,7 +93,7 @@ public class ReservationService {
     public ReservationResponse findReservationById(final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(
-                        () -> new ReservationNotFoundException(ExceptionType.RESERVATION_NOT_FOUND, reservationId));
+                        () -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
         return ReservationResponse.from(reservation);
     }
 

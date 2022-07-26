@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AvailableDateTimeRepository extends JpaRepository<AvailableDateTime, Long> {
 
-    @Modifying(clearAutomatically = true)
     @Query("delete from AvailableDateTime a where a.coach.id = :coachId and YEAR(a.localDateTime) = :year and MONTH(a.localDateTime) = :month")
     void deleteAllByCoachAndYearAndMonth(final Long coachId, final int year, final int month);
 
