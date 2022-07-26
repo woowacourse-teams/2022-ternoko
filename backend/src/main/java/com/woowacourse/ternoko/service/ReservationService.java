@@ -52,8 +52,8 @@ public class ReservationService {
             formItem.addInterview(savedInterview);
         }
 
-        AvailableDateTime availableDateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
-                        coachId, reservationRequest.getInterviewDatetime())
+        final AvailableDateTime availableDateTime = availableDateTimeRepository
+                .findByCoachIdAndInterviewDateTime(coachId, reservationRequest.getInterviewDatetime())
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
         availableDateTimeRepository.delete(availableDateTime);
 
@@ -92,8 +92,7 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public ReservationResponse findReservationById(final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(
-                        () -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
         return ReservationResponse.from(reservation);
     }
 
