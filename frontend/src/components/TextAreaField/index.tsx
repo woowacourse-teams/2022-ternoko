@@ -5,7 +5,7 @@ import ErrorMessage from '../../components/@common/ErrorMessage/styled';
 export type TextAreaFieldProps = {
   id: string;
   label: string;
-  answer: string;
+  value: string;
   isSubmitted: boolean;
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   checkValidation: (text: string) => boolean;
@@ -14,7 +14,7 @@ export type TextAreaFieldProps = {
 const TextAreaField = ({
   id,
   label,
-  answer,
+  value,
   isSubmitted,
   handleChange,
   checkValidation,
@@ -24,11 +24,11 @@ const TextAreaField = ({
       <S.Label htmlFor={id}>{label}</S.Label>
       <S.TextArea
         id={id}
-        value={answer}
-        isError={isSubmitted && !checkValidation(answer)}
+        value={value}
+        isError={isSubmitted && !checkValidation(value)}
         onChange={handleChange}
       />
-      {isSubmitted && !checkValidation(answer) && (
+      {isSubmitted && !checkValidation(value) && (
         <ErrorMessage>10글자 이상을 입력해주세요.</ErrorMessage>
       )}
     </S.Box>

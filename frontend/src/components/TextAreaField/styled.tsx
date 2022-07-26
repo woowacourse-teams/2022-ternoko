@@ -5,6 +5,7 @@ export const Box = styled.div``;
 export const Label = styled.label`
   display: block;
   font-size: 1.4rem;
+  font-weight: 600;
 
   margin-bottom: 0.7rem;
 `;
