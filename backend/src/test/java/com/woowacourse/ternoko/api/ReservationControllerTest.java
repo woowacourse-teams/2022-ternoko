@@ -12,11 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class ReservationControllerTest extends RestDocsTestSupport {
+public class ReservationControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("면담 예약을 생성한다.")
     void create() throws Exception {
+        createCalendarTimes(COACH1.getId());
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", COACH1.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -37,7 +38,8 @@ public class ReservationControllerTest extends RestDocsTestSupport {
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findReservationById() throws Exception {
         // given
-        createReservation(COACH1.getId());
+        createCalendarTimes(COACH1.getId());
+        createReservations(COACH1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -62,7 +64,8 @@ public class ReservationControllerTest extends RestDocsTestSupport {
     @DisplayName("면담 예약 상세 내역 목록을 조회한다.")
     void findAll() throws Exception {
         // given
-        createReservation(COACH1.getId());
+        createCalendarTimes(COACH1.getId());
+        createReservations(COACH1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -83,14 +86,5 @@ public class ReservationControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("[].interviewQuestions[].answer").type(JsonFieldType.STRING)
                                         .description("면담 내용")
                         )));
-    }
-
-    private void createReservation(final Long coachId) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations/coaches/{coachId}", coachId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(readJson("/json/reservations/create-reservation1.json")))
-                .andExpect(status().isCreated());
     }
 }

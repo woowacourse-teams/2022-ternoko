@@ -7,16 +7,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class CoachControllerTest extends RestDocsTestSupport {
+public class CoachControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllByCoach() throws Exception {
         // given
+        createCalendarTimes(COACH1.getId());
         createReservations(COACH1.getId());
 
         // when, then
@@ -36,21 +36,5 @@ public class CoachControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("calendar[].interviewEndTime").type(JsonFieldType.STRING)
                                         .description("면담 종료 시간")
                         )));
-    }
-
-    private void createReservations(final Long coachId) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations/coaches/{coachId}", coachId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(readJson("/json/reservations/create-reservation1.json")))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations/coaches/{coachId}", coachId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(readJson("/json/reservations/create-reservation2.json")))
-                .andExpect(status().isCreated());
     }
 }
