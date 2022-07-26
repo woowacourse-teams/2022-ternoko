@@ -4,7 +4,7 @@ import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -49,20 +49,14 @@ public class JwtProvider {
 
     public void validateToken(final String token) {
         try {
-            final Jws<Claims> claims = Jwts.parserBuilder()
+            Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            boolean expired = claims.getBody().getExpiration().after(new Date());
-            validateExpired(expired);
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredTokenException(ExceptionType.EXPIRED_TOKEN);
         } catch (Exception e) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
-        }
-    }
-
-    private void validateExpired(boolean expired) {
-        if (expired) {
-            throw new ExpiredTokenException(ExceptionType.EXPIRED_TOKEN);
         }
     }
 }
