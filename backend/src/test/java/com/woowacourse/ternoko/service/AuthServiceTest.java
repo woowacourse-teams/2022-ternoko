@@ -11,7 +11,8 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
-import com.woowacourse.ternoko.domain.member.Member;
+import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.dto.LoginResponse;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
@@ -50,9 +51,9 @@ public class AuthServiceTest {
         // given
         setSlackMockData("sudal@gmail.com");
         // when
-        String accessToken = authService.login("temp_code");
+        final LoginResponse loginResponse = authService.login("temp_code");
         // then
-        assertThat(accessToken).isNotNull();
+        assertThat(loginResponse.getAccessToken()).isNotNull();
     }
 
     @DisplayName("코치가 최초 로그인 시도시, 코치로 회원가입이 된다.")
@@ -62,10 +63,9 @@ public class AuthServiceTest {
         final String coachEmail = "pobi@woowahan.com";
         setSlackMockData(coachEmail);
         // when
-        authService.login("temp_code");
-        final Member coach = memberRepository.findByEmail(coachEmail).get();
+        final LoginResponse loginResponse = authService.login("temp_code");
         // then
-        assertThat(coachRepository.findById(coach.getId()).isPresent()).isTrue();
+        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
     }
 
     @DisplayName("코치가 최초 로그인 시도시, 코치로 회원가입이 된다.")
@@ -75,10 +75,9 @@ public class AuthServiceTest {
         final String crewEmail = "sudal@naver.com";
         setSlackMockData(crewEmail);
         // when
-        authService.login("temp_code");
-        final Member crew = memberRepository.findByEmail(crewEmail).get();
+        final LoginResponse loginResponse = authService.login("temp_code");
         // then
-        assertThat(crewRepository.findById(crew.getId()).isPresent()).isTrue();
+        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.CREW);
     }
 
 
@@ -92,11 +91,10 @@ public class AuthServiceTest {
         userInfoResponse.setName("sudal");
         userInfoResponse.setTeamImage230("testImage");
 
-        given(slackMethodClient.openIDConnectToken(any(OpenIDConnectTokenRequest.class)))
-                .willReturn(openIDConnectTokenResponse);
-        given(slackMethodClient.openIDConnectUserInfo(any(OpenIDConnectUserInfoRequest.class)))
-                .willReturn(userInfoResponse);
+        given(slackMethodClient.openIDConnectToken(any(OpenIDConnectTokenRequest.class))).willReturn(
+                openIDConnectTokenResponse);
+        given(slackMethodClient.openIDConnectUserInfo(any(OpenIDConnectUserInfoRequest.class))).willReturn(
+                userInfoResponse);
         given(jwtProvider.createToken("1")).willReturn("temp_access_token");
     }
-
 }
