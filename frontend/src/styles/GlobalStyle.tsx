@@ -29,6 +29,11 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
   }
 
+  h1, h2, h3, h4 {
+    padding: 0;
+    margin: 0;
+  }
+
   @font-face {
     font-family: 'EarlyFontDiary';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');

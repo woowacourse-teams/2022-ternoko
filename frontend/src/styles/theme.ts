@@ -6,6 +6,7 @@ const theme = {
     gray_50: '#f6f6f6',
     gray_100: '#e9ebee',
     gray_150: '#c3c2c8',
+    gray_200: '#808080',
     pink_50: '#ffe3e3',
     pink_100: '#ffb7d2',
     pink_200: '#ff385c',
