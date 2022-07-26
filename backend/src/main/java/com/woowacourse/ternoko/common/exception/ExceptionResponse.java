@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExceptionResponse {
-	private int code;
-	private String message;
+    private int code;
+    private String message;
 }

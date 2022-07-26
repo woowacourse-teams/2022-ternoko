@@ -2,10 +2,11 @@ package com.woowacourse.ternoko.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
 public class UnauthorizedException extends RuntimeException {
-	private final int code;
-	private final String message;
+    private final HttpStatus code;
+    private final String message;
 }
