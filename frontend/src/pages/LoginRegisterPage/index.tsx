@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import * as S from './styled';
 
@@ -11,6 +12,9 @@ import { isOverNicknameMinLength, isOverIntroduceMinLength } from '../../validat
 const imageURL = 'https://www.tfmedia.co.kr/data/photos/20210730/art_1627367323247_0d08c3.jpg';
 
 const LoginRegisterPage = () => {
+  const { search } = useLocation();
+  const role = new URLSearchParams(search).get('role');
+
   const [nickname, setNickname] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -23,7 +27,7 @@ const LoginRegisterPage = () => {
     setIntroduce(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     isSubmitted || setIsSubmitted(true);
 
@@ -36,8 +40,8 @@ const LoginRegisterPage = () => {
         <S.LeftBox>
           <S.IntroduceBox>
             <h3>장현석님, 환영합니다!</h3>
-            <h3>닉네임과 한 줄 소개를 작성해주세요.</h3>
-            <h4>한 줄 소개는 크루들에게 보여질 정보입니다.</h4>
+            <h3>기본 정보를 작성해주세요.</h3>
+            {role === 'coach' && <h4>한 줄 소개는 크루들에게 보여질 정보입니다.</h4>}
           </S.IntroduceBox>
 
           <S.InputContainer>
@@ -49,22 +53,25 @@ const LoginRegisterPage = () => {
               handleChange={handleChangeNickname}
               checkValidation={isOverNicknameMinLength}
             />
-            <TextAreaField
-              id="introduce"
-              label="한 줄 소개*"
-              value={introduce}
-              isSubmitted={isSubmitted}
-              handleChange={handleChangeIntroduce}
-              checkValidation={isOverIntroduceMinLength}
-            />
+            {role === 'coach' && (
+              <TextAreaField
+                id="introduce"
+                label="한 줄 소개*"
+                value={introduce}
+                isSubmitted={isSubmitted}
+                handleChange={handleChangeIntroduce}
+                checkValidation={isOverIntroduceMinLength}
+              />
+            )}
           </S.InputContainer>
         </S.LeftBox>
         <S.RightBox>
           <S.ProfileBox>
             <img src={imageURL} alt="코치 프로필" />
-
             <S.Nickname>{nickname || '닉네임'}</S.Nickname>
-            <S.Introduce>{introduce || '한 줄 소개를 입력해주세요.'}</S.Introduce>
+            {role === 'coach' && (
+              <S.Introduce>{introduce || '한 줄 소개를 입력해주세요.'}</S.Introduce>
+            )}
           </S.ProfileBox>
           <Button width="100%" height="3.5rem">
             완료하기
