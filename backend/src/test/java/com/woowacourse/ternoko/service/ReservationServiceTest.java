@@ -159,7 +159,6 @@ class ReservationServiceTest {
     void createReservationTodayException() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
-
         // when & then
         assertThatThrownBy(() -> reservationService.create(CREW1.getId(), COACH4.getId(),
                 new ReservationRequest(LocalDateTime.of(LocalDate.now(), THIRD_TIME), FORM_ITEM_REQUESTS)))

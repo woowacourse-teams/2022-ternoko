@@ -1,7 +1,17 @@
 package com.woowacourse.ternoko.config;
 
+import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
+import com.woowacourse.ternoko.repository.CrewRepository;
+import com.woowacourse.ternoko.repository.FormItemRepository;
+import com.woowacourse.ternoko.repository.InterviewRepository;
+import com.woowacourse.ternoko.repository.ReservationRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +37,16 @@ public class DatabaseInitializer {
     @RequiredArgsConstructor
     static class InitService {
         private final CoachRepository coachRepository;
+        private final CrewRepository crewRepository;
+        private final AvailableDateTimeRepository availableDateTimeRepository;
 
         public void dbInit() {
             ArrayList<Coach> coaches = new ArrayList<>(12);
-            coaches.add(new Coach(1L, "이름", "공원", "공원" + TEST_EMAIL,
+            Coach coach1 = new Coach(1L, "이름", "공원", "공원" + TEST_EMAIL,
                     "U123456789",
                     "https://user-images.githubusercontent.com/26570275/177680173-9bb25eac-5922-407b-889b-bb49ac392c2a.png",
-                    "안녕하세요."));
+                    "안녕하세요.");
+            coaches.add(coach1);
             coaches.add(new Coach(2L, "이름", "네오", "네오" + TEST_EMAIL,
                     "U123456789",
                     "https://user-images.githubusercontent.com/26570275/177680191-a4497404-c4cb-4f86-8c2c-f4f9c70bcaf7.png",
@@ -78,7 +91,12 @@ public class DatabaseInitializer {
                     "U123456789",
                     "https://user-images.githubusercontent.com/54317630/177786158-226652b7-7b4a-462c-af3b-775811756c87.png",
                     "안녕하세요."));
+
             coachRepository.saveAll(coaches);
+            crewRepository.save(new Crew(13L, "사현빈", "바니", "shb1833@gmail.com", "U03N6FKQEJX",
+                    "https://a.slack-edge.com/80588/img/avatars-teams/ava_0012-230.png"));
+
+            availableDateTimeRepository.save(new AvailableDateTime(1L, coach1, LocalDateTime.of(LocalDate.of(2022, 8,25), LocalTime.of(11, 0))));
         }
     }
 }

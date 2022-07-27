@@ -28,9 +28,10 @@ public class ReservationController {
     @PostMapping("/coaches/{coachId}")
     public ResponseEntity<Void> createReservation(@AuthenticationPrincipal final Long crewId,
                                                   @PathVariable final Long coachId,
-                                                  @RequestBody final ReservationRequest reservationRequest) {
+                                                  @RequestBody final ReservationRequest reservationRequest) throws Exception {
         final Reservation reservation = reservationService.create(crewId, coachId, reservationRequest);
-
+        slackAlarm.sendAlarmWhenCreatedReservationToCrew(reservation);
+        slackAlarm.sendAlarmWhenCreatedReservationToCoach(reservation);
         return ResponseEntity.created(URI.create("/api/reservations/" + reservation.getId())).build();
     }
 

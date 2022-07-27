@@ -111,11 +111,9 @@ public class CoachServiceTest {
     void findAvailableDateTimesByCoachId() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTHS_REQUEST);
-
         // when
         final List<AvailableDateTime> availableDateTimes = coachService
-                .findAvailableDateTimesByCoachId(COACH3.getId(), NOW_PLUS_1_MONTH.getYear(),
-                        NOW_PLUS_1_MONTH.getMonthValue());
+                .findAvailableDateTimesByCoachId(COACH3.getId(), NOW_PLUS_1_MONTH.getYear(), NOW_PLUS_1_MONTH.getMonthValue());
 
         // then
         assertThat(availableDateTimes.stream()
