@@ -2,7 +2,8 @@ const theme = {
   colors: {
     white_50: '#ffffff',
     white_100: '#edf0f5',
-    black: '#000000',
+    black_50: '#00000090',
+    black_200: '#000000',
     gray_50: '#f6f6f6',
     gray_100: '#e9ebee',
     gray_150: '#c3c2c8',

@@ -29,8 +29,8 @@ const Button = styled.button<ButtonProps>`
     white &&
     css`
       background-color: ${({ theme }) => theme.colors.white_50};
-      color: ${({ theme }) => theme.colors.black};
-      border: 0.5px solid ${({ theme }) => theme.colors.black};
+      color: ${({ theme }) => theme.colors.black_200};
+      border: 0.5px solid ${({ theme }) => theme.colors.black_200};
     `}
 
   ${({ orange }) =>
