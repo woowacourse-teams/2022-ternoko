@@ -33,7 +33,7 @@ class JwtProviderTest {
 
         @DisplayName("토큰이 유효하다면 에러를 발생시키지 않는다.")
         @Test
-        void   validToken() {
+        void validToken() {
             final String payload = "\"email\":\"example@example.com\"";
             final String accessToken = jwtProvider.createToken(payload);
             assertThatNoException().isThrownBy(() -> jwtProvider.validateToken(accessToken));
@@ -45,7 +45,7 @@ class JwtProviderTest {
             final String payload = "\"email\":\"example@example.com\"";
             final String accessToken = invalidJwtTokenProvider.createToken(payload);
             assertThatThrownBy(() -> invalidJwtTokenProvider.validateToken(accessToken))
-                    .isInstanceOf(InvalidTokenException.class);
+                    .isInstanceOf(ExpiredTokenException.class);
         }
 
         @DisplayName("토큰이 발급되지 않은 토큰이면 에러를 던진다.")

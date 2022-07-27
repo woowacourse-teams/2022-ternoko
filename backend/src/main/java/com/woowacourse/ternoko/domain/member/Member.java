@@ -2,12 +2,9 @@ package com.woowacourse.ternoko.domain.member;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import com.woowacourse.ternoko.domain.Type;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -28,7 +25,10 @@ public class Member {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(length = 30)
+    @Column
+    private String name;
+
+    @Column(length = 5, unique = true)
     private String nickname;
 
     @Column(nullable = false, unique = true)

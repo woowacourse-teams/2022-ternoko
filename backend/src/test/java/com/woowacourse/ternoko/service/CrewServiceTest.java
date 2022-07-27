@@ -23,7 +23,7 @@ public class CrewServiceTest {
     @DisplayName("slack 회원가입 후 닉네임과 이미지를 입력받아 partUpdate 한다")
     void partUpdateCrew() {
         // given
-        final Crew savedCrew = crewService.save(new Crew("톰크루즈", "sudal@gmail.com", null));
+        final Crew savedCrew = crewService.save(new Crew("톰크루즈",null, "sudal@gmail.com", null));
         final String nickname = "매버릭";
         final String imageUrl = "탑건2.png";
 
