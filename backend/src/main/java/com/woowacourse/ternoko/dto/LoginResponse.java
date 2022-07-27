@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder(builderMethodName = "loginResponseBuilder")
 public class LoginResponse {
 
-    private boolean isSignup;
+    private boolean hasNickname;
     private Type memberRole;
     private String accessToken;
 
-    public static LoginResponse of(final Type memberRole, final String accessToken, final boolean isSignup) {
+    public static LoginResponse of(final Type memberRole, final String accessToken, final boolean hasNickname) {
         return LoginResponse.loginResponseBuilder()
                 .memberRole(memberRole)
                 .accessToken(accessToken)
-                .isSignup(isSignup)
+                .hasNickname(hasNickname)
                 .build();
     }
 }

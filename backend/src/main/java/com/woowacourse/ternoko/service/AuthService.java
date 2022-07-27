@@ -63,12 +63,13 @@ public class AuthService {
         if (member.isEmpty()) {
             return signUp(userInfoResponse);
         }
-        boolean isSignup = member.get().getNickname().isEmpty();
+        boolean hasNickname = !member.get().getNickname().isEmpty();
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())), isSignup);
+            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
+                    hasNickname);
         }
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), isSignup);
+        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
     }
 
     private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code)
@@ -97,13 +98,13 @@ public class AuthService {
         if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
                     userInfoResponse.getTeamImage230()));
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), true);
+            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getTeamImage230()));
 
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), true);
+        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
     }
 
     public boolean isValid(final String header) {
