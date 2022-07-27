@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class CrewResponse {
 
     private Long id;
-    //    private String name;
+    private String name;
     private String nickname;
     private String email;
     private String imageUrl;
@@ -21,6 +21,7 @@ public class CrewResponse {
     public static CrewResponse from(final Crew crew) {
         return CrewResponse.crewResponseBuilder()
                 .id(crew.getId())
+                .name(crew.getName())
                 .nickname(crew.getNickname())
                 .email(crew.getEmail())
                 .imageUrl(crew.getImageUrl())
