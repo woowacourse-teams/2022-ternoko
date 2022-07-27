@@ -110,14 +110,6 @@ public class AcceptanceTest {
                 .extract();
     }
 
-
-//    protected ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
-//        final ReservationRequest reservationRequest = new ReservationRequest(crewName, AFTER_TWO_DAYS,
-//                FORM_ITEM_REQUESTS);
-//
-//        return post("/api/reservations/coaches/" + coachId, reservationRequest);
-//    }
-
     protected ExtractableResponse<Response> createReservation(final Long coachId,
                                                               final String crewName,
                                                               final LocalDateTime interviewDateTime) {

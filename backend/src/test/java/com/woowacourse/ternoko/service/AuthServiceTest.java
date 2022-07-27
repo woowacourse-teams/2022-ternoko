@@ -29,21 +29,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
+
     @MockBean
-    MethodsClientImpl slackMethodClient;
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    CoachRepository coachRepository;
-    @Autowired
-    CrewRepository crewRepository;
+    private MethodsClientImpl slackMethodClient;
+
     @SpyBean
-    JwtProvider jwtProvider;
+    private JwtProvider jwtProvider;
 
     @Test
     @DisplayName("로그인을 하면 AccessToken 을 발급한다.")
