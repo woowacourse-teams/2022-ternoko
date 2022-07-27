@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.api;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,7 +20,7 @@ public class CoachControllerTest extends ControllerTest {
     void findAllByCoach() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(COACH1.getId());
+        createReservations(CREW1.getId(), COACH1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders

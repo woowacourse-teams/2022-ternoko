@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.api;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -23,7 +24,7 @@ public class ReservationControllerTest extends ControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", COACH1.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/reservations/create-reservation1.json")))
                 .andExpect(status().isCreated())
@@ -42,12 +43,12 @@ public class ReservationControllerTest extends ControllerTest {
     void findReservationById() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(COACH1.getId());
+        createReservations(CREW1.getId(),COACH1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/reservations/{reservationId}", 1)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
@@ -57,7 +58,7 @@ public class ReservationControllerTest extends ControllerTest {
     void findAll() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(COACH1.getId());
+        createReservations(CREW1.getId(),COACH1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders

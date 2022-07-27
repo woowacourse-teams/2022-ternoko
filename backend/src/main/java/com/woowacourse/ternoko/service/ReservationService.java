@@ -13,12 +13,14 @@ import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
+import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
@@ -41,12 +43,13 @@ public class ReservationService {
     private static final int END_MINUTE = 59;
 
     private final CoachRepository coachRepository;
+    private final CrewRepository crewRepository;
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
 
-    public Long create(final Long coachId, final ReservationRequest reservationRequest) {
-        final Interview interview = convertInterview(coachId, reservationRequest);
+    public Reservation create(final Long crewId, final Long coachId, final ReservationRequest reservationRequest) {
+        final Interview interview = convertInterview(crewId, coachId, reservationRequest);
         final Interview savedInterview = interviewRepository.save(interview);
 
         final List<FormItem> formItems = convertFormItem(reservationRequest.getInterviewQuestions());
@@ -59,11 +62,16 @@ public class ReservationService {
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
         availableDateTimeRepository.delete(availableDateTime);
 
-        return reservationRepository.save(new Reservation(interview, false)).getId();
+        return reservationRepository.save(new Reservation(interview, false));
     }
 
-    private Interview convertInterview(final Long coachId, final ReservationRequest reservationRequest) {
+    private Interview convertInterview(final Long crewId, final Long coachId,
+                                       final ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
+
+        // TODO: CREW_NOT_FOUND 만들어야함.
+        final Crew crew = crewRepository.findById(crewId)
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, crewId));
 
         final Coach coach = coachRepository.findById(coachId)
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
@@ -74,7 +82,7 @@ public class ReservationService {
                 reservationDatetime,
                 reservationDatetime.plusMinutes(30),
                 coach,
-                reservationRequest.getCrewNickname());
+                crew);
     }
 
     private void validateInterviewStartTime(final LocalDateTime localDateTime) {

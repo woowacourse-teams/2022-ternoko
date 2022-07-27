@@ -20,11 +20,11 @@ public class ControllerTest extends RestDocsTestSupport {
                 .andExpect(status().isOk());
     }
 
-    public void createReservations(final Long coachId) throws Exception {
+    public void createReservations(final Long crewId, final Long coachId) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", coachId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId)))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/reservations/create-reservation1.json")))
                 .andExpect(status().isCreated());
@@ -32,7 +32,7 @@ public class ControllerTest extends RestDocsTestSupport {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", coachId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId)))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/reservations/create-reservation2.json")))
                 .andExpect(status().isCreated());

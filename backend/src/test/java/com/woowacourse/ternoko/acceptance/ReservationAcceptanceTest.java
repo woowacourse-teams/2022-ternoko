@@ -9,6 +9,10 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -31,8 +35,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // given
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
         // when
-        final ExtractableResponse<Response> response = createReservation(COACH3.getId(),
-                "애쉬",
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         //then
@@ -45,8 +48,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     void create_WhenInvalidAvailableDateTime() {
         // given
         // when
-        final ExtractableResponse<Response> response = createReservation(COACH3.getId(),
-                "애쉬",
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         //then
@@ -60,8 +62,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final Header header = new Header(AUTHORIZATION,
                 BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId())));
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTHS_REQUEST);
-        final ExtractableResponse<Response> createdResponse = createReservation(COACH3.getId(),
-                "수달",
+        final ExtractableResponse<Response> createdResponse = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
@@ -88,10 +89,10 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
         put("/api/coaches/" + COACH4.getId() + "/calendar/times", MONTHS_REQUEST);
 
-        createReservation(COACH1.getId(), "애쉬", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(COACH2.getId(), "바니", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(COACH3.getId(), "앤지", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(COACH4.getId(), "열음", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW2.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW3.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
         final ExtractableResponse<Response> response = get("/api/reservations");

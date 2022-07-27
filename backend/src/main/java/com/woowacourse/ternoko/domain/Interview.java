@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.domain;
 
+import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,34 +35,63 @@ public class Interview {
     private LocalDateTime interviewEndTime;
 
     @OneToOne
-    @JoinColumn(name = "member_id")
-    private Member coach;
+    @JoinColumn(name = "coach_id")
+    private Coach coach;
 
-    @Column(nullable = false)
-    private String crewNickname;
+//    @OneToOne
+//    @JoinColumn(name = "member_id")
+//    private Member coach;
+
+    @OneToOne
+    @JoinColumn(name = "crew_id")
+    private Crew crew;
+
+//    @Column(nullable = false)
+//    private String crewNickname;
 
     @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL)
     private List<FormItem> formItems = new ArrayList<>();
 
-    public Interview(LocalDateTime interviewStartTime,
-            LocalDateTime interviewEndTime,
-            Member coach,
-            String crewNickname,
-            List<FormItem> formItems) {
+    public Interview(final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
+                     final List<FormItem> formItems) {
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
-        this.crewNickname = crewNickname;
+        this.crew = crew;
         this.formItems = formItems;
     }
 
-    public Interview(LocalDateTime interviewStartTime,
-            LocalDateTime interviewEndTime,
-            Member coach,
-            String crewNickname) {
+    public Interview(final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew) {
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
-        this.crewNickname = crewNickname;
+        this.crew = crew;
     }
+//    public Interview(LocalDateTime interviewStartTime,
+//            LocalDateTime interviewEndTime,
+//            Member coach,
+//            String crewNickname,
+//            List<FormItem> formItems) {
+//        this.interviewStartTime = interviewStartTime;
+//        this.interviewEndTime = interviewEndTime;
+//        this.coach = coach;
+//        this.crewNickname = crewNickname;
+//        this.formItems = formItems;
+//    }
+
+//    public Interview(LocalDateTime interviewStartTime,
+//            LocalDateTime interviewEndTime,
+//            Member coach,
+//            String crewNickname) {
+//        this.interviewStartTime = interviewStartTime;
+//        this.interviewEndTime = interviewEndTime;
+//        this.coach = coach;
+//        this.crewNickname = crewNickname;
+//    }
 }

@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.AFTER_TWO_DAYS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 
 import com.woowacourse.ternoko.common.JwtProvider;
@@ -110,14 +109,12 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    protected ExtractableResponse<Response> createReservation(final Long coachId,
-                                                              final String crewName,
+    protected ExtractableResponse<Response> createReservation(final Long crewId,
+                                                              final Long coachId,
                                                               final LocalDateTime interviewDateTime) {
-        final ReservationRequest reservationRequest = new ReservationRequest(crewName,
-                interviewDateTime,
-                FORM_ITEM_REQUESTS);
+        final ReservationRequest reservationRequest = new ReservationRequest(interviewDateTime, FORM_ITEM_REQUESTS);
 
         return post("/api/reservations/coaches/" + coachId, new Header(AUTHORIZATION,
-                BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId))), reservationRequest);
+                BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId))), reservationRequest);
     }
 }
