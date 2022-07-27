@@ -2,37 +2,37 @@ import * as S from './styled';
 
 import ErrorMessage from '../../components/@common/ErrorMessage/styled';
 
-export type TextAreaFieldProps = {
+type InputAreaFieldProps = {
   id: string;
   label: string;
   value: string;
   isSubmitted: boolean;
-  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checkValidation: (text: string) => boolean;
 };
 
-const TextAreaField = ({
+const InputAreaField = ({
   id,
   label,
   value,
   isSubmitted,
   handleChange,
   checkValidation,
-}: TextAreaFieldProps) => {
+}: InputAreaFieldProps) => {
   return (
-    <S.Box>
+    <div>
       <S.Label htmlFor={id}>{label}</S.Label>
-      <S.TextArea
+      <S.Input
         id={id}
         value={value}
         isError={isSubmitted && !checkValidation(value)}
         onChange={handleChange}
       />
       {isSubmitted && !checkValidation(value) && (
-        <ErrorMessage>10글자 이상을 입력해주세요.</ErrorMessage>
+        <ErrorMessage>1글자 이상을 입력해주세요.</ErrorMessage>
       )}
-    </S.Box>
+    </div>
   );
 };
 
-export default TextAreaField;
+export default InputAreaField;

@@ -1,11 +1,14 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
+import LoginPage from './pages/LoginPage';
+import LoginRegisterPage from './pages/LoginRegisterPage';
 import HomePage from './pages/HomePage';
 import ReservationApplyPage from './pages/ReservationApplyPage';
 import ReservationCompletePage from './pages/ReservationCompletePage';
 import CoachReservationCreatePage from './pages/CoachReservationCreatePage';
 import CoachHomePage from './pages/CoachHomePage';
+import MyPage from './pages/MyPage';
 
 import Header from './components/Header';
 
@@ -14,9 +17,10 @@ import CalendarProvider from './context/CalendarProvider';
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<Layout />}>
+          <Route path="/login/register" element={<LoginRegisterPage />} />
           <Route path="" element={<HomePage />} />
           <Route
             path="reservation/apply"
@@ -36,6 +40,7 @@ const AppRoutes = () => {
             }
           />
           <Route path="coach/home" element={<CoachHomePage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -44,9 +49,12 @@ const AppRoutes = () => {
 
 const Layout = () => {
   return (
-    <S.Body>
-      <Outlet />
-    </S.Body>
+    <>
+      <Header />
+      <S.Body>
+        <Outlet />
+      </S.Body>
+    </>
   );
 };
 

@@ -9,7 +9,6 @@ import GridContainer from '../../components/@common/GridContainer/styled';
 import CoachProfile from '../../components/CoachProfile';
 import TextAreaField from '../../components/TextAreaField';
 import Calendar from '../../components/Calendar';
-import ScrollContainer from '../../components/@common/ScrollContainer/styled';
 import Time from '../../components/Time/styled';
 
 import { CoachType, StringDictionary } from '../../types/domain';
@@ -22,12 +21,9 @@ import {
 } from '../../context/CalendarProvider';
 import useTimes from '../../hooks/useTimes';
 import { separateFullDate } from '../../utils';
+import { isOverApplyFormMinLength } from '../../validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
-
-const isOverMinLength = (text: string) => {
-  return text.length >= 10;
-};
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
@@ -39,8 +35,8 @@ const ReservationApplyPage = () => {
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [availableSchedules, setAvaliableSchedules] = useState<StringDictionary>({});
-  const [availableTimes, setAvaliableTimes] = useState<string[]>([]);
+  const [availableSchedules, setAvailableSchedules] = useState<StringDictionary>({});
+  const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
   const [coachId, setCoachId] = useState(-1);
   const [answer1, setAnswer1] = useState('');
@@ -84,7 +80,7 @@ const ReservationApplyPage = () => {
 
   const getHandleClickDay = (day: number) => () => {
     const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
-    setAvaliableTimes(times);
+    setAvailableTimes(times);
     setDay(day);
     resetTimes();
   };
@@ -93,7 +89,12 @@ const ReservationApplyPage = () => {
     e.preventDefault();
     isSubmitted || setIsSubmitted(true);
 
-    if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
+    if (
+      !isOverApplyFormMinLength(answer1) ||
+      !isOverApplyFormMinLength(answer2) ||
+      !isOverApplyFormMinLength(answer3)
+    )
+      return;
 
     const body = {
       interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
@@ -145,14 +146,14 @@ const ReservationApplyPage = () => {
           {} as StringDictionary,
         );
 
-        setAvaliableSchedules(schedules);
+        setAvailableSchedules(schedules);
       })();
     }
   }, [stepStatus, year, month]);
 
   useEffect(() => {
     resetTimes();
-    setAvaliableTimes([]);
+    setAvailableTimes([]);
     resetSelectedDates();
   }, [year, month]);
 
@@ -228,25 +229,25 @@ const ReservationApplyPage = () => {
               <TextAreaField
                 id="example1"
                 label="이번 면담을 통해 논의하고 싶은 내용"
-                answer={answer1}
+                value={answer1}
                 handleChange={getHandleChangeAnswer(setAnswer1)}
-                checkValidation={isOverMinLength}
+                checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
               />
               <TextAreaField
                 id="example2"
                 label="최근에 자신이 긍정적으로 보는 시도와 변화"
-                answer={answer2}
+                value={answer2}
                 handleChange={getHandleChangeAnswer(setAnswer2)}
-                checkValidation={isOverMinLength}
+                checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
               />
               <TextAreaField
                 id="example3"
                 label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
-                answer={answer3}
+                value={answer3}
                 handleChange={getHandleChangeAnswer(setAnswer3)}
-                checkValidation={isOverMinLength}
+                checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
               />
               <Button type="submit" width="100%" height="40px">
