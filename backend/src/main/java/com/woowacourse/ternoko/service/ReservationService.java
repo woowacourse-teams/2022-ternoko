@@ -1,9 +1,14 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_DATE;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.RESERVATION_NOT_FOUND;
+
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
+import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
@@ -12,8 +17,8 @@ import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
-import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
@@ -36,62 +41,60 @@ public class ReservationService {
     private static final int END_MINUTE = 59;
 
     private final CoachRepository coachRepository;
-    private final FormItemRepository formItemRepository;
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
+    private final AvailableDateTimeRepository availableDateTimeRepository;
 
     public Long create(final Long coachId, final ReservationRequest reservationRequest) {
-        final List<FormItemRequest> interviewQuestions = reservationRequest.getInterviewQuestions();
+        final Interview interview = convertInterview(coachId, reservationRequest);
+        final Interview savedInterview = interviewRepository.save(interview);
 
-        final Interview interview = convertInterview(coachId, reservationRequest,
-                interviewQuestions);
+        final List<FormItem> formItems = convertFormItem(reservationRequest.getInterviewQuestions());
+        for (FormItem formItem : formItems) {
+            formItem.addInterview(savedInterview);
+        }
 
-        interviewRepository.save(interview);
+        final AvailableDateTime availableDateTime = availableDateTimeRepository
+                .findByCoachIdAndInterviewDateTime(coachId, reservationRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
+        availableDateTimeRepository.delete(availableDateTime);
 
         return reservationRepository.save(new Reservation(interview, false)).getId();
     }
 
-    private Interview convertInterview(final Long coachId,
-                                       final ReservationRequest reservationRequest,
-                                       final List<FormItemRequest> interviewQuestions) {
-        final List<FormItem> formItems = convertFormItem(interviewQuestions);
-
+    private Interview convertInterview(final Long coachId, final ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
         validateInterviewStartTime(reservationDatetime);
+
         return new Interview(
                 reservationDatetime,
                 reservationDatetime.plusMinutes(30),
                 coach,
-                reservationRequest.getCrewNickname(),
-                formItems);
+                reservationRequest.getCrewNickname());
     }
 
     private void validateInterviewStartTime(final LocalDateTime localDateTime) {
         //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
         final LocalDate standardDay = LocalDate.now().plusDays(1);
         if (!standardDay.isBefore(localDateTime.toLocalDate())) {
-            throw new InvalidReservationDateException(ExceptionType.INVALID_RESERVATION_DATE);
+            throw new InvalidReservationDateException(INVALID_RESERVATION_DATE);
         }
     }
 
     private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
-        final List<FormItem> formItems = interviewQuestions.stream()
+        return interviewQuestions.stream()
                 .map(FormItemRequest::toFormItem)
                 .collect(Collectors.toList());
-
-        formItemRepository.saveAll(formItems);
-        return formItems;
     }
 
     @Transactional(readOnly = true)
     public ReservationResponse findReservationById(final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(
-                        () -> new ReservationNotFoundException(ExceptionType.RESERVATION_NOT_FOUND, reservationId));
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
         return ReservationResponse.from(reservation);
     }
 
