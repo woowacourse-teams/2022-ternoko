@@ -6,6 +6,7 @@ import com.woowacourse.ternoko.dto.request.CrewUpdateRequest;
 import com.woowacourse.ternoko.service.CrewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class CrewController {
 
     private final CrewService crewService;
 
-    @PatchMapping("/me")
+    @GetMapping("/me")
     public ResponseEntity<CrewResponse> updateCrew(@AuthenticationPrincipal final Long crewId) {
         return ResponseEntity.ok(crewService.findCrew(crewId));
     }

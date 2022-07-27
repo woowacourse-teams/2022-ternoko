@@ -1,10 +1,13 @@
 package com.woowacourse.ternoko.controller;
 
 import com.woowacourse.ternoko.dto.CoachesResponse;
+import com.woowacourse.ternoko.dto.NicknameResponse;
 import com.woowacourse.ternoko.service.CoachService;
+import com.woowacourse.ternoko.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,9 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final CoachService coachService;
+    private final MemberService memberService;
 
     @GetMapping("/reservations/coaches")
     public ResponseEntity<CoachesResponse> findCoaches() {
         return ResponseEntity.ok(coachService.findCoaches());
+    }
+
+    @GetMapping("/login/{nickname}")
+    public ResponseEntity<NicknameResponse> checkUniqueNickname(@PathVariable String nickname) {
+        return ResponseEntity.ok(memberService.hasNickname(nickname));
     }
 }
