@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.api;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -22,6 +24,7 @@ public class CoachControllerTest extends ControllerTest {
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/coaches/" + COACH1.getId() + "/schedules")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .queryParam("year", "2030")
                         .queryParam("month", "8"))
                 .andExpect(status().isOk())

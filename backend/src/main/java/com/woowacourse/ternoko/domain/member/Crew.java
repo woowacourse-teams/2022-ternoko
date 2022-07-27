@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.domain.member;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -10,7 +9,15 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("CREW")
 public class Crew extends Member {
 
-    public Crew(final Long id, final String nickname, final String email, final String imageUrl) {
-        super(id, nickname, email, imageUrl);
+    public Crew(final Long id, final String name, final String nickname, final String email, final String imageUrl) {
+        super(id, name, nickname, email, imageUrl);
+    }
+
+    public Crew(final String name, final String nickname, final String email, final String imageUrl) {
+        this(null, name, nickname, email, imageUrl);
+    }
+
+    public Crew(final String name, final String email, final String imageUrl) {
+        this(null, name, null, email, imageUrl);
     }
 }

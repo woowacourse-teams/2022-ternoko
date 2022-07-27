@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.acceptance;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
@@ -12,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
@@ -54,13 +57,15 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findReservationById() {
         // given
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final Header header = new Header(AUTHORIZATION,
+                BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId())));
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTHS_REQUEST);
         final ExtractableResponse<Response> createdResponse = createReservation(COACH3.getId(),
                 "수달",
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
-        final ExtractableResponse<Response> response = get(createdResponse.header("Location"));
+        final ExtractableResponse<Response> response = get(createdResponse.header("Location"), header);
         final ReservationResponse reservationResponse = response.body().as(ReservationResponse.class);
 
         // then

@@ -1,8 +1,11 @@
 package com.woowacourse.ternoko.acceptance;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.AFTER_TWO_DAYS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 
+import com.woowacourse.ternoko.common.JwtProvider;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -10,6 +13,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -20,6 +24,9 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AcceptanceTest {
+
+    @Autowired
+    public JwtProvider jwtProvider;
 
     @LocalServerPort
     private int port;
@@ -103,13 +110,6 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    protected ExtractableResponse<Response> createReservation(final Long coachId, final String crewName) {
-        final ReservationRequest reservationRequest = new ReservationRequest(crewName, AFTER_TWO_DAYS,
-                FORM_ITEM_REQUESTS);
-
-        return post("/api/reservations/coaches/" + coachId, reservationRequest);
-    }
-
     protected ExtractableResponse<Response> createReservation(final Long coachId,
                                                               final String crewName,
                                                               final LocalDateTime interviewDateTime) {
@@ -117,6 +117,7 @@ public class AcceptanceTest {
                 interviewDateTime,
                 FORM_ITEM_REQUESTS);
 
-        return post("/api/reservations/coaches/" + coachId, reservationRequest);
+        return post("/api/reservations/coaches/" + coachId, new Header(AUTHORIZATION,
+                BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId))), reservationRequest);
     }
 }

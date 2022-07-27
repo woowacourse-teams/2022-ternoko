@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.api;
 
+import com.woowacourse.ternoko.common.JwtProvider;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,6 +30,9 @@ class RestDocsTestSupport {
     protected MockMvc mockMvc;
 
     @Autowired
+    public JwtProvider jwtProvider;
+
+    @Autowired
     protected RestDocumentationResultHandler restDocs;
 
     @Autowired
@@ -49,5 +53,4 @@ class RestDocsTestSupport {
     protected static String readJson(final String path) throws IOException {
         return new String(Files.readAllBytes(Paths.get("src/test/resources", path)));
     }
-
 }

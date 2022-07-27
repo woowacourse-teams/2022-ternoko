@@ -1,11 +1,10 @@
 package com.woowacourse.ternoko.fixture;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReservationFixture {
 

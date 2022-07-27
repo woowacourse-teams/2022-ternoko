@@ -7,6 +7,7 @@ import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.dto.CoachResponse;
+import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
@@ -32,15 +33,19 @@ public class CoachService {
         final List<Coach> coaches = coachRepository.findAll();
 
         final List<CoachResponse> coachResponses = coaches.stream()
-                .map(coach -> CoachResponse.coachResponseBuilder()
-                        .id(coach.getId())
-                        .nickname(coach.getNickname())
-                        .imageUrl(coach.getImageUrl())
-                        .build())
+                .map(CoachResponse::from)
                 .collect(Collectors.toList());
 
         return new CoachesResponse(coachResponses);
     }
+
+    @Transactional(readOnly = true)
+    public CoachResponse findCoach(final Long coachId) {
+        final Coach coach = coachRepository.findById(coachId)
+                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
+        return CoachResponse.from(coach);
+    }
+
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
                                                final AvailableDateTimesRequest availableDateTimesRequest) {
@@ -48,7 +53,7 @@ public class CoachService {
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
         final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
-            .getCalendarTimes();
+                .getCalendarTimes();
         for (AvailableDateTimeRequest availableDateTime : availableDateTimeRequests) {
             putAvailableTime(coach, availableDateTime);
         }
@@ -70,9 +75,14 @@ public class CoachService {
 
     @Transactional(readOnly = true)
     public List<AvailableDateTime> findAvailableDateTimesByCoachId(
-        final Long coachId,
-        final int year,
-        final int month) {
+            final Long coachId,
+            final int year,
+            final int month) {
         return availableDateTimeRepository.findAvailableDateTimesByCoachId(coachId, year, month);
+    }
+
+    public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
+        coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId, coachUpdateRequest.getNickname(),
+                coachUpdateRequest.getImagUrl(), coachUpdateRequest.getIntroduce());
     }
 }

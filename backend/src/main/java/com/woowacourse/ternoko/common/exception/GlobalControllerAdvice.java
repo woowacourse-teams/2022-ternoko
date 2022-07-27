@@ -9,6 +9,11 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionResponse> badRequestHandler(BadRequestException e) {
-        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getCode(), e.getMessage()));
+        return ResponseEntity.status(e.getCode()).body(new ExceptionResponse(e.getCode().value(), e.getMessage()));
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionResponse> unauthorizedHandler(UnauthorizedException e) {
+        return ResponseEntity.status(e.getCode()).body(new ExceptionResponse(e.getCode().value(), e.getMessage()));
     }
 }

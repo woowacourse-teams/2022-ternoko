@@ -1,9 +1,11 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_DATE;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.RESERVATION_NOT_FOUND;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.domain.AvailableDateTime;

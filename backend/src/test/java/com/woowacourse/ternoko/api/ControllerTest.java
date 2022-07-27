@@ -1,15 +1,20 @@
 package com.woowacourse.ternoko.api;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class ControllerTest extends RestDocsTestSupport  {
+public class ControllerTest extends RestDocsTestSupport {
+
+
     public void createCalendarTimes(final Long coachId) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/coaches/{coachId}/calendar/times", coachId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/members/save-calendar-times.json")))
                 .andExpect(status().isOk());
@@ -19,6 +24,7 @@ public class ControllerTest extends RestDocsTestSupport  {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", coachId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/reservations/create-reservation1.json")))
                 .andExpect(status().isCreated());
@@ -26,6 +32,7 @@ public class ControllerTest extends RestDocsTestSupport  {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", coachId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/reservations/create-reservation2.json")))
                 .andExpect(status().isCreated());
