@@ -46,7 +46,7 @@ public class AuthServiceTest {
     JwtProvider jwtProvider;
 
     @Test
-    @DisplayName("로그인을 하면 AccessToken을 발급한다.")
+    @DisplayName("로그인을 하면 AccessToken 을 발급한다.")
     void login() throws SlackApiException, IOException {
         // given
         setSlackMockData("sudal@gmail.com");
@@ -64,20 +64,44 @@ public class AuthServiceTest {
         setSlackMockData(coachEmail);
         // when
         final LoginResponse loginResponse = authService.login("temp_code");
-        // then
         assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
     }
 
-    @DisplayName("크루가 최초 로그인 시도시, 코치로 회원가입이 된다.")
+
+    @DisplayName("크루가 최초 로그인 시도시, 크루로 회원가입이 된다.")
     @Test
     void signup_crew() throws SlackApiException, IOException {
+        // given
+        final String crewEmail = "sudal1@naver.com";
+        setSlackMockData(crewEmail);
+        // when
+        final LoginResponse loginResponse = authService.login("temp_code");
+        // then
+        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.CREW);
+    }
+
+    @DisplayName("크루가 최초 회원가입 시, 닉네임을 입력 받아야한다.")
+    @Test
+    void signup_crew_with_nickname() throws SlackApiException, IOException {
         // given
         final String crewEmail = "sudal@naver.com";
         setSlackMockData(crewEmail);
         // when
         final LoginResponse loginResponse = authService.login("temp_code");
         // then
-        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.CREW);
+        assertThat(loginResponse.isHasNickname()).isFalse();
+    }
+
+    @DisplayName("기존에 있는 회원일시, 닉네임을 입력받지 않고 바로 로그인한다.")
+    @Test
+    void direct_login() throws SlackApiException, IOException {
+        // given
+        final String coachEmail = "test1@woowahan.com";
+        setSlackMockData(coachEmail);
+        // when
+        final LoginResponse loginResponse = authService.login("temp_code");
+        // then
+        assertThat(loginResponse.isHasNickname()).isTrue();
     }
 
 
