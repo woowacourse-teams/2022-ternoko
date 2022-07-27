@@ -63,10 +63,12 @@ public class AuthService {
         if (member.isEmpty()) {
             return signUp(userInfoResponse);
         }
+        boolean isSignup = member.get().getNickname().isEmpty();
+
         if (coachRepository.findById(member.get().getId()).isPresent()) {
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())), false);
+            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())), isSignup);
         }
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), false);
+        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), isSignup);
     }
 
     private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code)
