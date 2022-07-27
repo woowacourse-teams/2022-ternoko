@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class CrewUpdateRequest {
 
     private String nickname;
-    private String imagUrl;
+    private String imageUrl;
 }

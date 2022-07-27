@@ -27,6 +27,16 @@ class MemberControllerTest extends RestDocsTestSupport {
     }
 
     @Test
+    @DisplayName("닉네임 중복 검사를 한다. ")
+    void checkUniqueNickname() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/login/check")
+                        .queryParam("nickname", "토미"))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void saveCalendarTimes() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
