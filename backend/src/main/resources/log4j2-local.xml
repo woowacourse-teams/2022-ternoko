@@ -71,17 +71,14 @@
         <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
         <logger name="org.springframework" level="info" additivity="false" >
             <AppenderRef ref="console" />
-            <AppenderRef ref="file" />
         </logger>
 
         <!-- sql 파라미터 표시 설정 -->
         <logger name="org.hibernate.SQL" level="debug" additivity="false">
             <AppenderRef ref="console" />
-            <AppenderRef ref="sql_log" />
         </logger>
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
             <AppenderRef ref="console" />
-            <AppenderRef ref="sql_basicBinder_log" />
         </logger>
 
         <!-- ROOT logger-->
