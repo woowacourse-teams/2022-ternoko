@@ -68,7 +68,7 @@ public class AuthServiceTest {
         assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
     }
 
-    @DisplayName("코치가 최초 로그인 시도시, 코치로 회원가입이 된다.")
+    @DisplayName("크루가 최초 로그인 시도시, 코치로 회원가입이 된다.")
     @Test
     void signup_crew() throws SlackApiException, IOException {
         // given

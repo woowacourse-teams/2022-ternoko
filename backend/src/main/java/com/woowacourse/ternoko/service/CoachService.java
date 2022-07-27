@@ -48,7 +48,7 @@ public class CoachService {
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
         final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
-            .getCalendarTimes();
+                .getCalendarTimes();
         for (AvailableDateTimeRequest availableDateTime : availableDateTimeRequests) {
             putAvailableTime(coach, availableDateTime);
         }
@@ -70,9 +70,9 @@ public class CoachService {
 
     @Transactional(readOnly = true)
     public List<AvailableDateTime> findAvailableDateTimesByCoachId(
-        final Long coachId,
-        final int year,
-        final int month) {
+            final Long coachId,
+            final int year,
+            final int month) {
         return availableDateTimeRepository.findAvailableDateTimesByCoachId(coachId, year, month);
     }
 }
