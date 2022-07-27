@@ -15,7 +15,8 @@ const MyPage = () => {
   const [introduce, setIntroduce] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const defaultUserInfo = useRef({ nickname: '', introduce: '' });
+  const defaultNicknameRef = useRef('');
+  const defaultIntroduceRef = useRef('');
 
   const handleChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -30,10 +31,8 @@ const MyPage = () => {
   };
 
   const handleClickCancelButton = () => {
-    const { nickname, introduce } = defaultUserInfo.current;
-
-    setNickname(nickname);
-    setIntroduce(introduce);
+    setNickname(defaultNicknameRef.current);
+    setIntroduce(defaultIntroduceRef.current);
     setIsEditMode(false);
   };
 
@@ -43,7 +42,9 @@ const MyPage = () => {
 
     setNickname(nickname);
     setIntroduce(introduce);
-    defaultUserInfo.current = { nickname, introduce };
+
+    defaultNicknameRef.current = nickname;
+    defaultIntroduceRef.current = introduce;
   }, []);
 
   return (
