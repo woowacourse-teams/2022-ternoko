@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.controller;
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
+import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
@@ -52,6 +53,11 @@ public class CoachController {
                 .findAvailableDateTimesByCoachId(coachId, year, month);
         final AvailableDateTimesResponse from = AvailableDateTimesResponse.from(availableDateTimes);
         return ResponseEntity.ok(from);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<CoachResponse> findCoach(@AuthenticationPrincipal final Long coachId) {
+        return ResponseEntity.ok(coachService.findCoach(coachId));
     }
 
     @PatchMapping("/me")
