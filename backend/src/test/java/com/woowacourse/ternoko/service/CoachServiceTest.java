@@ -55,8 +55,9 @@ public class CoachServiceTest {
         final String imageUrl = ".png";
         final String nickname = "도깨비";
         final String introduce = "안녕하세요. 도깨비 입니다.";
+        final String userId = "U123456789";
 
-        final Coach savedCoach = coachRepository.save(new Coach("공유", " share@woowahan.com", imageUrl));
+        final Coach savedCoach = coachRepository.save(new Coach("공유", " share@woowahan.com", userId, imageUrl));
 
         //when
         coachService.partUpdateCrew(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));

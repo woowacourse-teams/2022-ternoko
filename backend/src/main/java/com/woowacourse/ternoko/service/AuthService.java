@@ -97,12 +97,12 @@ public class AuthService {
     private LoginResponse signUp(final OpenIDConnectUserInfoResponse userInfoResponse) {
         if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
-                    userInfoResponse.getTeamImage230()));
+                    userInfoResponse.getUserId(), userInfoResponse.getTeamImage230()));
             return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
-                userInfoResponse.getTeamImage230()));
+                userInfoResponse.getUserId(), userInfoResponse.getTeamImage230()));
 
         return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
     }

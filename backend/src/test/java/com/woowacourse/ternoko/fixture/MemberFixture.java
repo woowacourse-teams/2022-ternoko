@@ -9,13 +9,17 @@ import java.util.List;
 
 public class MemberFixture {
 
-    public static final Member COACH1 = new Coach(1L, "이름", "준", "test1@woowahan.com", "imageUr", "안녕하세요.");
-    public static final Member COACH2 = new Coach(2L, "이름", "브리", "test2@woowahan.com", "imageUrl", "안녕하세요.");
-    public static final Member COACH3 = new Coach(3L, "이름", "토미", "test3@woowahan.com", "imageUrl", "안녕하세요.");
-    public static final Member COACH4 = new Coach(4L, "이름", "네오", "test4@woowahan.com", "imageUrl", "안녕하세요.");
-    public static final Member CREW1 = new Crew(5L, "허수진", "수달", "test5@woowahan.com", "imageUrl");
-    public static final Member CREW2 = new Crew(6L, "손수민", "앤지", "test6@email.com", "imageUrl");
-    public static final Member CREW3 = new Crew(7L, "김동호", "애쉬", "test7@email.com", "imageUrl");
+    public static final Member COACH1 = new Coach(1L, "이름", "준", "test1@woowahan.com", "U123456789", "imageUr",
+            "안녕하세요.");
+    public static final Member COACH2 = new Coach(2L, "이름", "브리", "test2@woowahan.com", "U123456789", "imageUrl",
+            "안녕하세요.");
+    public static final Member COACH3 = new Coach(3L, "이름", "토미", "test3@woowahan.com", "U123456789", "imageUrl",
+            "안녕하세요.");
+    public static final Member COACH4 = new Coach(4L, "이름", "네오", "test4@woowahan.com", "U123456789", "imageUrl",
+            "안녕하세요.");
+    public static final Member CREW1 = new Crew(5L, "허수진", "수달", "test5@woowahan.com", "U123456789", "imageUrl");
+    public static final Member CREW2 = new Crew(6L, "손수민", "앤지", "test6@email.com", "U123456789", "imageUrl");
+    public static final Member CREW3 = new Crew(7L, "김동호", "애쉬", "test7@email.com", "U123456789", "imageUrl");
 
     public static final LocalDateTime TIME2 = LocalDateTime.now().plusDays(2);
     public static final LocalDateTime TIME3 = LocalDateTime.now().plusDays(3);

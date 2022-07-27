@@ -35,5 +35,8 @@ public class Member {
     private String email;
 
     @Column
+    private String userId;
+
+    @Column
     private String imageUrl;
 }
