@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.api;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -21,6 +23,7 @@ public class ReservationControllerTest extends ControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/reservations/coaches/{coachId}", COACH1.getId())
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .characterEncoding("utf-8")
                         .content(readJson("/json/reservations/create-reservation1.json")))
                 .andExpect(status().isCreated())
@@ -43,21 +46,10 @@ public class ReservationControllerTest extends ControllerTest {
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/reservations/{reservationId}", 1))
+                        .get("/api/reservations/{reservationId}", 1)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("예약 아이디"),
-                                fieldWithPath("coachNickname").type(JsonFieldType.STRING).description("코치 닉네임"),
-                                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("코치 이미지url"),
-                                fieldWithPath("crewNickname").type(JsonFieldType.STRING).description("크루 닉네임"),
-                                fieldWithPath("interviewStartTime").type(JsonFieldType.STRING).description("면담 시작 시간"),
-                                fieldWithPath("interviewEndTime").type(JsonFieldType.STRING).description("면담 종료 시간"),
-                                fieldWithPath("interviewQuestions[].question").type(JsonFieldType.STRING)
-                                        .description("면담 질문"),
-                                fieldWithPath("interviewQuestions[].answer").type(JsonFieldType.STRING)
-                                        .description("면담 내용")
-                        )));
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -69,22 +61,23 @@ public class ReservationControllerTest extends ControllerTest {
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/reservations"))
+                        .get("/api/reservations")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        responseFields( //response parameter
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("예약 아이디"),
-                                fieldWithPath("[].coachNickname").type(JsonFieldType.STRING).description("코치 닉네임"),
-                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("코치 이미지url"),
-                                fieldWithPath("[].crewNickname").type(JsonFieldType.STRING).description("크루 닉네임"),
-                                fieldWithPath("[].interviewStartTime").type(JsonFieldType.STRING)
-                                        .description("면담 시작 시간"),
-                                fieldWithPath("[].interviewEndTime").type(JsonFieldType.STRING).description("면담 종료 시간"),
-                                fieldWithPath("[].interviewQuestions").type(JsonFieldType.ARRAY).description("면담 내용"),
-                                fieldWithPath("[].interviewQuestions[].question").type(JsonFieldType.STRING)
-                                        .description("면담 질문"),
-                                fieldWithPath("[].interviewQuestions[].answer").type(JsonFieldType.STRING)
-                                        .description("면담 내용")
-                        )));
+                .andDo(restDocs.document());
+//                        responseFields( //response parameter
+//                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("예약 아이디"),
+//                                fieldWithPath("[].coachNickname").type(JsonFieldType.STRING).description("코치 닉네임"),
+//                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("코치 이미지url"),
+//                                fieldWithPath("[].crewNickname").type(JsonFieldType.STRING).description("크루 닉네임"),
+//                                fieldWithPath("[].interviewStartTime").type(JsonFieldType.STRING)
+//                                        .description("면담 시작 시간"),
+//                                fieldWithPath("[].interviewEndTime").type(JsonFieldType.STRING).description("면담 종료 시간"),
+//                                fieldWithPath("[].interviewQuestions").type(JsonFieldType.ARRAY).description("면담 내용"),
+//                                fieldWithPath("[].interviewQuestions[].question").type(JsonFieldType.STRING)
+//                                        .description("면담 질문"),
+//                                fieldWithPath("[].interviewQuestions[].answer").type(JsonFieldType.STRING)
+//                                        .description("면담 내용")
+//                        )));
     }
 }

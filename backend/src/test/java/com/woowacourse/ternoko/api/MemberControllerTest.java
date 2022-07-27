@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.api;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -18,14 +20,10 @@ class MemberControllerTest extends RestDocsTestSupport {
     @DisplayName("코치 목록을 조회한다.")
     void findCoaches() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/reservations/coaches"))
+                        .get("/api/reservations/coaches")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        responseFields(
-                                fieldWithPath("coaches.[].id").type(JsonFieldType.NUMBER).description("코치 아이디"),
-                                fieldWithPath("coaches.[].nickname").type(JsonFieldType.STRING).description("코치 닉네임"),
-                                fieldWithPath("coaches.[].imageUrl").type(JsonFieldType.STRING).description("코치 사진 url")
-                        )));
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -34,6 +32,7 @@ class MemberControllerTest extends RestDocsTestSupport {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/coaches/{coachId}/calendar/times", COACH1.getId())
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .characterEncoding("utf-8")
                         .content(readJson("json/members/save-calendar-times.json")))
                 .andExpect(status().isOk())
@@ -56,6 +55,7 @@ class MemberControllerTest extends RestDocsTestSupport {
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/coaches/{coachId}/calendar/times", COACH1.getId())
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .queryParam("year", "2022")
                         .queryParam("month", "7"))
                 .andExpect(status().isOk())
@@ -69,6 +69,7 @@ class MemberControllerTest extends RestDocsTestSupport {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/coaches/{coachId}/calendar/times", coachId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
                         .characterEncoding("utf-8")
                         .content(readJson("json/members/save-calendar-times.json")))
                 .andExpect(status().isOk());
