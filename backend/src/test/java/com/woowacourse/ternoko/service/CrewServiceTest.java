@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CrewResponse;
@@ -23,7 +24,7 @@ public class CrewServiceTest {
     @DisplayName("slack 회원가입 후 닉네임과 이미지를 입력받아 partUpdate 한다")
     void partUpdateCrew() {
         // given
-        final Crew savedCrew = crewService.save(new Crew("톰크루즈",null, "sudal@gmail.com", null));
+        final Crew savedCrew = crewService.save(new Crew("톰크루즈", null, "sudal@gmail.com", null));
         final String nickname = "매버릭";
         final String imageUrl = "탑건2.png";
 
@@ -32,7 +33,9 @@ public class CrewServiceTest {
         final CrewResponse updatedCrew = crewService.findCrew(savedCrew.getId());
         // then
 
-        assertThat(updatedCrew.getImageUrl()).isEqualTo(imageUrl);
-        assertThat(updatedCrew.getNickname()).isEqualTo(nickname);
+        assertAll(
+                () -> assertThat(updatedCrew.getImageUrl()).isEqualTo(imageUrl),
+                () -> assertThat(updatedCrew.getNickname()).isEqualTo(nickname)
+        );
     }
 }
