@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +46,7 @@ public class Interview {
     @OneToMany(mappedBy = "interview", cascade = CascadeType.DETACH)
     private List<FormItem> formItems = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
 
     public Interview(final LocalDateTime interviewStartTime,
