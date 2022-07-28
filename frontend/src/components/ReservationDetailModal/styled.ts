@@ -4,11 +4,15 @@ type ModalProps = {
   open?: boolean;
 };
 
-export const Dimmer = styled.div<ModalProps>`
+type DimmerProps = ModalProps & {
+  display: boolean;
+};
+
+export const Dimmer = styled.div<DimmerProps>`
   position: fixed;
   left: 0;
-  top: -100%;
-  display: flex;
+  top: 0;
+  display: ${({ display }) => (display ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -16,13 +20,12 @@ export const Dimmer = styled.div<ModalProps>`
 
   background-color: ${({ theme }) => theme.colors.black_50};
   opacity: 0;
-  transition: opacity 0.5s top 0.5s;
+  transition: opacity 0.5s;
 
   ${({ open }) =>
     open &&
     css`
       top: 0;
-      transition: top 0.5s;
 
       opacity: 1;
     `};

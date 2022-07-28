@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as S from './styled';
 
@@ -16,19 +15,20 @@ const coachImageURL =
 
 type ReservationDetailModalProps = {
   role: 'coach' | 'crew';
-  modalOn: boolean;
+  show: boolean;
+  display: boolean;
   handleCloseModal: () => void;
 };
 
 const ReservationDetailModal = ({
   role,
-  modalOn,
+  show,
+  display,
   handleCloseModal,
 }: ReservationDetailModalProps) => {
-  console.log('modalOn', modalOn);
   return ReactDOM.createPortal(
-    <S.Dimmer onClick={handleCloseModal} open={modalOn}>
-      <S.Frame open={modalOn} onClick={(e) => e.stopPropagation()}>
+    <S.Dimmer open={show} display={display} onClick={handleCloseModal}>
+      <S.Frame open={show} onClick={(e) => e.stopPropagation()}>
         <S.IconContainer>
           <S.Icon src={deleteIconURL} alt="삭제 아이콘" active />
           <S.Icon
