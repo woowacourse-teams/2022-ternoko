@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+/logs/
+/src/docs/
+
+/src/main/resources/static/docs/
