@@ -25,14 +25,14 @@ public class CoachAvailableTimeFixture {
     public static final LocalTime THIRD_TIME = LocalTime.of(16, 0);
 
     public static final AvailableDateTimeRequest PAST_TIME_RESPONSE = new AvailableDateTimeRequest(
-            NOW.getYear(),
-            NOW.getMonthValue(),
-            List.of(LocalDateTime.of(NOW_MINUS_2_DAYS, FIRST_TIME),
-                    LocalDateTime.of(NOW_MINUS_2_DAYS, SECOND_TIME),
-                    LocalDateTime.of(NOW_MINUS_2_DAYS, THIRD_TIME),
-                    LocalDateTime.of(NOW, FIRST_TIME),
-                    LocalDateTime.of(NOW, SECOND_TIME),
-                    LocalDateTime.of(NOW, THIRD_TIME)));
+            LocalDate.now().getYear(),
+            LocalDate.now().getMonthValue(),
+            List.of(LocalDateTime.of(LocalDate.now().minusDays(2), FIRST_TIME),
+                    LocalDateTime.of(LocalDate.now().minusDays(2), SECOND_TIME),
+                    LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
+                    LocalDateTime.of(LocalDate.now(), FIRST_TIME),
+                    LocalDateTime.of(LocalDate.now(), SECOND_TIME),
+                    LocalDateTime.of(LocalDate.now(), THIRD_TIME)));
 
     public static final AvailableDateTimeRequest NOW_MONTH_REQUEST = new AvailableDateTimeRequest(
             NOW.getYear(),
@@ -55,7 +55,7 @@ public class CoachAvailableTimeFixture {
                     LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME)));
 
     public static final AvailableDateTimesRequest PAST_REQUEST = new AvailableDateTimesRequest(
-            List.of(NOW_MONTH_REQUEST));
+            List.of(PAST_TIME_RESPONSE));
 
     public static final AvailableDateTimesRequest MONTH_REQUEST = new AvailableDateTimesRequest(
             List.of(NOW_MONTH_REQUEST));

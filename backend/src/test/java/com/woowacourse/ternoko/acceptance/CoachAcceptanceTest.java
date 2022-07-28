@@ -43,8 +43,8 @@ public class CoachAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .queryParam("year", AFTER_TWO_DAYS.getYear())
-                .queryParam("month", AFTER_TWO_DAYS.getMonthValue())
+                .queryParam("year", NOW.getYear())
+                .queryParam("month", NOW.getMonthValue())
                 .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH4.getId())))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/coaches/" + COACH4.getId() + "/schedules")

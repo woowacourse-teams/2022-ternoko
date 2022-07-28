@@ -2,6 +2,8 @@ package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.TIME2;
@@ -49,34 +51,16 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
 		// given
 		//TODO: Fixture 리팩토링 후 수정
-		final AvailableDateTimesRequest availableDateTimesRequest = new AvailableDateTimesRequest(List.of(
-			new AvailableDateTimeRequest(
-				TIME2.getYear(),
-				TIME2.getMonthValue(),
-				List.of(
-					LocalDateTime.of(TIME4.getYear(), TIME4.getMonthValue(),
-						TIME4.getDayOfMonth(), TIME4.getHour(), TIME4.getMinute()),
-					LocalDateTime.of(TIME3.getYear(), TIME3.getMonthValue(),
-						TIME3.getDayOfMonth(), TIME3.getHour(), TIME3.getMinute()),
-					LocalDateTime.of(TIME2.getYear(), TIME4.getMonthValue(),
-						TIME2.getDayOfMonth(), TIME2.getHour(), TIME2.getMinute())))));
-		put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, availableDateTimesRequest);
+		put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTH_REQUEST);
 
 		final ExtractableResponse<Response> calendarResponse = get(
-			"/api/coaches/" + COACH3.getId() + "/calendar/times?year=2022&month=7", header);
+			"/api/coaches/" + COACH3.getId() + "/calendar/times?year="+ NOW.getYear()+"&month="+NOW.getMonthValue(), header);
 
 		// when
 		final AvailableDateTimesResponse response = calendarResponse.body().as(AvailableDateTimesResponse.class);
 
 		// then
 		assertThat(response.getCalendarTimes())
-			.hasSize(3)
-			.containsExactly(LocalDateTime.of(TIME2.getYear(), TIME2.getMonthValue(),
-					TIME2.getDayOfMonth(), TIME2.getHour(), TIME2.getMinute()),
-				LocalDateTime.of(TIME3.getYear(), TIME3.getMonthValue(),
-					TIME3.getDayOfMonth(), TIME3.getHour(), TIME3.getMinute()),
-				LocalDateTime.of(TIME4.getYear(), TIME4.getMonthValue(),
-					TIME4.getDayOfMonth(), TIME4.getHour(), TIME4.getMinute())
-			);
+			.hasSize(9);
 	}
 }

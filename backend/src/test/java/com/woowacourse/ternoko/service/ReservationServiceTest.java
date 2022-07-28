@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.service;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MINUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
@@ -26,6 +25,7 @@ import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -160,7 +160,7 @@ class ReservationServiceTest {
 
         // when & then
         assertThatThrownBy(() -> reservationService.create(COACH4.getId(),
-                new ReservationRequest("SUDAL", LocalDateTime.of(NOW, THIRD_TIME), FORM_ITEM_REQUESTS)))
+                new ReservationRequest("SUDAL", LocalDateTime.of(LocalDate.now(), THIRD_TIME), FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
@@ -173,7 +173,8 @@ class ReservationServiceTest {
 
         // when & then
         assertThatThrownBy(() -> reservationService.create(COACH4.getId(),
-                new ReservationRequest("SUDAL", LocalDateTime.of(NOW_MINUS_2_DAYS, THIRD_TIME), FORM_ITEM_REQUESTS)))
+                new ReservationRequest("SUDAL", LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
+                        FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
