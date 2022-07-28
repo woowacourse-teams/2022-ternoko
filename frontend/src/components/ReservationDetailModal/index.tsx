@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as S from './styled';
 
@@ -5,27 +6,38 @@ import Accordion from '../../components/@common/Accordion';
 
 const deleteIconURL =
   'https://icons-for-free.com/download-icon-delete+remove+trash+trash+bin+trash+can+icon-1320073117929397588_512.png';
-
 const closeIconURL = 'https://icons-for-free.com/download-icon-CLOSE-131994911256789607_512.png';
 const calendarIconURL = 'https://cdn-icons-png.flaticon.com/512/7088/7088625.png';
 const timeIconURL = 'https://cdn-icons-png.flaticon.com/512/88/88291.png';
 const profileImageURL =
   'https://user-images.githubusercontent.com/19251499/181178299-d5c7c4c3-249e-47a5-83fe-99c148c3d84b.jpg';
-
 const coachImageURL =
   'https://cdn-icons.flaticon.com/png/512/4623/premium/4623628.png?token=exp=1658972292~hmac=d7731fb9dea54ad0251f9d08247cf4e7';
 
 type ReservationDetailModalProps = {
   role: 'coach' | 'crew';
+  modalOn: boolean;
+  handleCloseModal: () => void;
 };
 
-const ReservationDetailModal = ({ role }: ReservationDetailModalProps) => {
+const ReservationDetailModal = ({
+  role,
+  modalOn,
+  handleCloseModal,
+}: ReservationDetailModalProps) => {
+  console.log('modalOn', modalOn);
   return ReactDOM.createPortal(
-    <S.Dimmer>
-      <S.Frame>
+    <S.Dimmer onClick={handleCloseModal} open={modalOn}>
+      <S.Frame open={modalOn} onClick={(e) => e.stopPropagation()}>
         <S.IconContainer>
           <S.Icon src={deleteIconURL} alt="삭제 아이콘" active />
-          <S.Icon src={closeIconURL} alt="모달 창 닫기 아이콘" active agg />
+          <S.Icon
+            src={closeIconURL}
+            alt="모달 창 닫기 아이콘"
+            active
+            agg
+            onClick={handleCloseModal}
+          />
         </S.IconContainer>
         <S.Profile>
           <img src={profileImageURL} alt="프로필" />
