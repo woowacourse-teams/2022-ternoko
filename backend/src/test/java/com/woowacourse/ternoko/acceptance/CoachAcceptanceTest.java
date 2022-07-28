@@ -34,7 +34,6 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllByCoaches() {
-        // :todo 현재는 코치 값으로 accessToken 발급 중. 추후 크루 값으로 변경해야 함.
         // given
         put("/api/coaches/" + COACH4.getId() + "/calendar/times", MONTHS_REQUEST);
         createReservation(CREW1.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
