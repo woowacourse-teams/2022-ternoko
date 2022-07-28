@@ -76,6 +76,7 @@ export const InfoContainer = styled.div`
 export const Info = styled.div`
   display: flex;
   align-items: center;
+
   font-size: 1.6rem;
 `;
 
