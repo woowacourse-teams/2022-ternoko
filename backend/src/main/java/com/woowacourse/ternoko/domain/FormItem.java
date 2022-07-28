@@ -35,6 +35,12 @@ public class FormItem {
         this.answer = answer;
     }
 
+    public FormItem(Long id, String question, String answer) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+    }
+
     public FormItem(String question, String answer, Interview interview) {
         this.question = question;
         this.answer = answer;
@@ -44,5 +50,9 @@ public class FormItem {
     public void addInterview(final Interview interview) {
         this.interview = interview;
         interview.getFormItems().add(this);
+    }
+
+    public FormItem update(FormItem formItem) {
+        return new FormItem(this.id,  formItem.question, formItem.answer);
     }
 }

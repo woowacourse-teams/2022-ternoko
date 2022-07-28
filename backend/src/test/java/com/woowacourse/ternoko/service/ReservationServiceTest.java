@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.service;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
@@ -17,6 +18,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_UPDATE_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InvalidReservationCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.domain.Reservation;
@@ -184,6 +187,142 @@ class ReservationServiceTest {
 
         // when & then
         assertThatThrownBy(() -> reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
+                        FORM_ITEM_REQUESTS)))
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 예약을 수정한다.")
+    void update() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        Reservation updateReservation = reservationService.update(CREW1.getId(), reservation.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS));
+
+        // then
+        assertAll(
+                () -> assertThat(updateReservation.getId()).isNotNull(),
+                () -> assertThat(updateReservation.getInterview().getCoach().getNickname())
+                        .isEqualTo(COACH3.getNickname()),
+                () -> assertThat(updateReservation.getInterview().getInterviewStartTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME)),
+                () -> assertThat(updateReservation.getInterview().getInterviewEndTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
+                () -> assertThat(updateReservation.getInterview().getFormItems())
+                        .extracting("question")
+                        .contains("수정질문1", "수정질문2", "수정질문3"),
+                () -> assertThat(updateReservation.getInterview().getFormItems())
+                        .extracting("answer")
+                        .contains("수정답변1", "수정답변2", "수정답변3")
+        );
+    }
+
+    @Test
+    @DisplayName("면담 예약을 수정 시 존재하지 않는 예약이라면 예외를 반환한다.")
+    void update_WhenInvalidReservationId() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        assertThatThrownBy(() -> reservationService.update(CREW2.getId(), 2L,
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS)))
+                .isInstanceOf(ReservationNotFoundException.class)
+                .hasMessage(2L + ExceptionType.RESERVATION_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 예약을 수정 시 크루 본인의 예약이 아니라면 예외를 반환한다.")
+    void update_WhenInvalidCrewId() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        assertThatThrownBy(() -> reservationService.update(CREW2.getId(), reservation.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS)))
+                .isInstanceOf(InvalidReservationCrewIdException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_CREW_ID.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 예약을 수정 시 선택한 코치가 존재하지 않는다면 예외를 반환한다.")
+    void update_WhenCoachNotFound() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        assertThatThrownBy(() -> reservationService.update(CREW1.getId(), reservation.getId(),
+                new ReservationRequest(5L, LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS)))
+                .isInstanceOf(CoachNotFoundException.class)
+                .hasMessage(5L + ExceptionType.COACH_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 예약 수정 시 코치의 가능 시간이 아니라면 예외를 반환한다.")
+    void update_WhenInvalidAvailableDateTime() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when & then
+        assertThatThrownBy(() -> reservationService.update(CREW1.getId(), reservation.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS)))
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_AVAILABLE_DATE_TIME.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 수정 시, 당일 예약을 시도하면 에러가 발생한다.")
+    void updateReservationTodayException() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when & then
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
+        assertThatThrownBy(() -> reservationService.update(CREW1.getId(), reservation.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now(), THIRD_TIME),
+                        FORM_ITEM_REQUESTS)))
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 수정 시, 과거 기간 예약을 시도하면 에러가 발생한다.")
+    void updateReservationException() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when & then
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
+        assertThatThrownBy(() -> reservationService.update(CREW1.getId(), reservation.getId(),
                 new ReservationRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)

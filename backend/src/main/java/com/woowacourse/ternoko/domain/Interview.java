@@ -52,6 +52,7 @@ public class Interview {
     @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL)
     private List<FormItem> formItems = new ArrayList<>();
 
+
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
@@ -64,6 +65,18 @@ public class Interview {
         this.formItems = formItems;
     }
 
+    public Interview(final Long id,
+                     final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew) {
+        this.id = id;
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crew = crew;
+    }
+
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
@@ -72,6 +85,14 @@ public class Interview {
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
+    }
+
+    public Interview update(Interview updateInterview) {
+        return new Interview(this.id,
+                updateInterview.getInterviewStartTime(),
+                updateInterview.getInterviewEndTime(),
+                updateInterview.getCoach(),
+                updateInterview.getCrew());
     }
 //    public Interview(LocalDateTime interviewStartTime,
 //            LocalDateTime interviewEndTime,

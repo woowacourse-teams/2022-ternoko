@@ -1,11 +1,15 @@
 package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.RESERVATION_NOT_FOUND;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
+import com.woowacourse.ternoko.common.exception.InvalidReservationCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.domain.AvailableDateTime;
@@ -21,10 +25,12 @@ import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
+import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -47,6 +53,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
+    private final FormItemRepository formItemRepository;
 
     public Reservation create(final Long crewId, final ReservationRequest reservationRequest) {
         final Interview interview = convertInterview(crewId, reservationRequest);
@@ -57,9 +64,7 @@ public class ReservationService {
             formItem.addInterview(savedInterview);
         }
 
-        final AvailableDateTime availableDateTime = availableDateTimeRepository
-                .findByCoachIdAndInterviewDateTime(reservationRequest.getCoachId(), reservationRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
+        final AvailableDateTime availableDateTime = findAvailableTime(reservationRequest);
         availableDateTimeRepository.delete(availableDateTime);
 
         return reservationRepository.save(new Reservation(interview, false));
@@ -68,9 +73,8 @@ public class ReservationService {
     private Interview convertInterview(final Long crewId, final ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
-        // TODO: CREW_NOT_FOUND 만들어야함.
         final Crew crew = crewRepository.findById(crewId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, crewId));
+                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
 
         final Coach coach = coachRepository.findById(reservationRequest.getCoachId())
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, reservationRequest.getCoachId()));
@@ -124,5 +128,41 @@ public class ReservationService {
                 .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
 
         return ScheduleResponse.from(interviews);
+    }
+
+    public Reservation update(final Long crewId,
+                              final Long reservationId,
+                              final ReservationRequest reservationRequest) {
+        final Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
+        if (!reservation.getInterview().getCrew().getId().equals(crewId)) {
+            throw new InvalidReservationCrewIdException(INVALID_RESERVATION_CREW_ID);
+        }
+
+        Interview updateInterviewRequest = convertInterview(crewId, reservationRequest);
+        List<FormItem> updateInterviewFormItemsRequest = convertFormItem(reservationRequest.getInterviewQuestions());
+
+        final AvailableDateTime availableDateTime = findAvailableTime(reservationRequest);
+
+        Interview originalInterview = reservation.getInterview();
+        List<FormItem> originalInterviewFormItems = originalInterview.getFormItems();
+
+        List<FormItem> updateFormItems = new ArrayList<>();
+        for (int i = 0; i < originalInterviewFormItems.size(); i++) {
+            updateFormItems.add(originalInterviewFormItems.get(i).update(updateInterviewFormItemsRequest.get(i)));
+        }
+        formItemRepository.saveAll(updateFormItems);
+        Interview updatedInterview = interviewRepository.save(originalInterview.update(updateInterviewRequest));
+        for (FormItem formItem : updateFormItems) {
+            formItem.addInterview(updatedInterview);
+        }
+        availableDateTimeRepository.delete(availableDateTime);
+        return reservationRepository.save(reservation.update(updatedInterview));
+    }
+
+    private AvailableDateTime findAvailableTime(ReservationRequest reservationRequest) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(reservationRequest.getCoachId(),
+                        reservationRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 }

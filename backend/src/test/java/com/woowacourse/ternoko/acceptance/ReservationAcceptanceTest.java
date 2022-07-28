@@ -5,6 +5,7 @@ import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
@@ -13,11 +14,13 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -101,5 +104,28 @@ class ReservationAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(reservationResponses).hasSize(4);
+    }
+
+
+    @Test
+    @DisplayName("크루가 면담 예약을 수정한다.")
+    void updateReservation() {
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        String redirectURI = response.header("Location");
+        char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        final ReservationRequest updateRequest = new ReservationRequest(COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS);
+        ExtractableResponse<Response> updateResponse = put("/api/reservations/" + reservationId,
+                new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))),
+                updateRequest);
+
+        //then
+        assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

@@ -20,6 +20,10 @@ public class ReservationFixture {
             new FormItemRequest("고정질문2", "답변2"),
             new FormItemRequest("고정질문3", "답변3"));
 
+    public static final List<FormItemRequest> FORM_ITEM_UPDATE_REQUESTS = List.of(new FormItemRequest("수정질문1", "수정답변1"),
+            new FormItemRequest("수정질문2", "수정답변2"),
+            new FormItemRequest("수정질문3", "수정답변3"));
+
     public static final List<FormItem> FORM_ITEMS = List.of(new FormItem("고정질문1", "답변1"),
             new FormItem("고정질문2", "답변2"),
             new FormItem("고정질문3", "답변3"));

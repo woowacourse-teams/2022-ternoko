@@ -31,4 +31,8 @@ public class Reservation {
         this.interview = interview;
         this.isAccepted = isAccepted;
     }
+
+    public Reservation update(Interview updatedInterview) {
+        return new Reservation(updatedInterview, false);
+    }
 }
