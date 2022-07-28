@@ -12,7 +12,14 @@ const timeIconURL = 'https://cdn-icons-png.flaticon.com/512/88/88291.png';
 const profileImageURL =
   'https://user-images.githubusercontent.com/19251499/181178299-d5c7c4c3-249e-47a5-83fe-99c148c3d84b.jpg';
 
-const ReservationDetailModal = () => {
+const coachImageURL =
+  'https://cdn-icons.flaticon.com/png/512/4623/premium/4623628.png?token=exp=1658972292~hmac=d7731fb9dea54ad0251f9d08247cf4e7';
+
+type ReservationDetailModalProps = {
+  role: 'coach' | 'crew';
+};
+
+const ReservationDetailModal = ({ role }: ReservationDetailModalProps) => {
   return ReactDOM.createPortal(
     <S.Dimmer>
       <S.Frame>
@@ -25,6 +32,14 @@ const ReservationDetailModal = () => {
           <p>수달(허수진)</p>
         </S.Profile>
         <S.InfoContainer>
+          {role === 'crew' && (
+            <S.Info>
+              <S.IconBox>
+                <S.Icon src={coachImageURL} alt="코치 아이콘" />
+              </S.IconBox>
+              <p>포코</p>
+            </S.Info>
+          )}
           <S.Info>
             <S.IconBox>
               <S.Icon src={calendarIconURL} alt="달력 아이콘" />
