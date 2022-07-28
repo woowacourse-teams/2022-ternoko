@@ -7,13 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class FormItem {
 
     @Id
@@ -52,7 +53,7 @@ public class FormItem {
         interview.getFormItems().add(this);
     }
 
-    public FormItem update(FormItem formItem) {
-        return new FormItem(this.id,  formItem.question, formItem.answer);
+    public FormItem update(FormItem formItem, Interview interview) {
+        return new FormItem(this.id, formItem.question, formItem.answer, interview);
     }
 }

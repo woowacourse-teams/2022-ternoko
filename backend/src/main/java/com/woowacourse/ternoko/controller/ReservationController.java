@@ -53,9 +53,11 @@ public class ReservationController {
     @PutMapping("/{reservationId}")
     public ResponseEntity<Void> updateReservation(@AuthenticationPrincipal final Long crewId,
                                                   @PathVariable Long reservationId,
-                                                  @RequestBody final ReservationRequest reservationRequest) {
-        reservationService.update(crewId, reservationId, reservationRequest);
+                                                  @RequestBody final ReservationRequest reservationRequest)
+            throws Exception {
+        Reservation updateReservation = reservationService.update(crewId, reservationId, reservationRequest);
+        slackAlarm.sendAlarmWhenUpdatedReservationToCrew(updateReservation);
+        slackAlarm.sendAlarmWhenUpdatedReservationToCoach(updateReservation);
         return ResponseEntity.ok().build();
     }
 }
-

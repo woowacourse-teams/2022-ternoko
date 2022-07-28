@@ -63,7 +63,8 @@ public class ReservationService {
         for (FormItem formItem : formItems) {
             formItem.addInterview(savedInterview);
         }
-
+        formItemRepository.saveAll(formItems);
+        ;
         final AvailableDateTime availableDateTime = findAvailableTime(reservationRequest);
         availableDateTimeRepository.delete(availableDateTime);
 
@@ -149,14 +150,18 @@ public class ReservationService {
 
         List<FormItem> updateFormItems = new ArrayList<>();
         for (int i = 0; i < originalInterviewFormItems.size(); i++) {
-            updateFormItems.add(originalInterviewFormItems.get(i).update(updateInterviewFormItemsRequest.get(i)));
+            updateFormItems.add(originalInterviewFormItems.get(i)
+                    .update(updateInterviewFormItemsRequest.get(i), originalInterview));
         }
         formItemRepository.saveAll(updateFormItems);
+
         Interview updatedInterview = interviewRepository.save(originalInterview.update(updateInterviewRequest));
+
         for (FormItem formItem : updateFormItems) {
             formItem.addInterview(updatedInterview);
         }
         availableDateTimeRepository.delete(availableDateTime);
+
         return reservationRepository.save(reservation.update(updatedInterview));
     }
 

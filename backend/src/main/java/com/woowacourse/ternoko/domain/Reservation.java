@@ -27,12 +27,18 @@ public class Reservation {
     @Column(nullable = false)
     private boolean isAccepted;
 
+    public Reservation(Long id, Interview interview, boolean isAccepted) {
+        this.id = id;
+        this.interview = interview;
+        this.isAccepted = isAccepted;
+    }
+
     public Reservation(Interview interview, boolean isAccepted) {
         this.interview = interview;
         this.isAccepted = isAccepted;
     }
 
     public Reservation update(Interview updatedInterview) {
-        return new Reservation(updatedInterview, false);
+        return new Reservation(this.id, updatedInterview, false);
     }
 }
