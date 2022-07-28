@@ -22,7 +22,7 @@ public class ReservationControllerTest extends ControllerTest {
     void create() throws Exception {
         createCalendarTimes(COACH1.getId());
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations/coaches/{coachId}", COACH1.getId())
+                        .post("/api/reservations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
                         .characterEncoding("utf-8")
@@ -30,7 +30,7 @@ public class ReservationControllerTest extends ControllerTest {
                 .andExpect(status().isCreated())
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("crewNickname").type(JsonFieldType.STRING).description("크루 닉네임"),
+                                fieldWithPath("coachId").type(JsonFieldType.NUMBER).description("코치 ID"),
                                 fieldWithPath("interviewDatetime").type(JsonFieldType.STRING)
                                         .description("인터뷰 시간"),
                                 fieldWithPath("interviewQuestions.[].question").description("면담질문1"),
@@ -43,7 +43,7 @@ public class ReservationControllerTest extends ControllerTest {
     void findReservationById() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(CREW1.getId(),COACH1.getId());
+        createReservations(CREW1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -58,7 +58,7 @@ public class ReservationControllerTest extends ControllerTest {
     void findAll() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(CREW1.getId(),COACH1.getId());
+        createReservations(CREW1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders

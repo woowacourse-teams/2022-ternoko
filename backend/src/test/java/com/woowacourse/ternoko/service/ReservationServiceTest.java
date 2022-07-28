@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.service;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MINUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
@@ -57,8 +56,9 @@ class ReservationServiceTest {
         // given, when
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Reservation reservation = reservationService.create(CREW1.getId(), COACH3.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS));
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
         final ReservationResponse reservationResponse = reservationService.findReservationById(reservation.getId());
 
         // then
@@ -82,8 +82,9 @@ class ReservationServiceTest {
     @Test
     @DisplayName("면담 예약 선택 일자가 코치의 가능한 시간이 아닌 경우 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
-        assertThatThrownBy(() -> reservationService.create(CREW1.getId(), COACH1.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS)))
+        assertThatThrownBy(() -> reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_AVAILABLE_DATE_TIME.getMessage());
     }
@@ -91,8 +92,8 @@ class ReservationServiceTest {
     @Test
     @DisplayName("없는 코치로 예약할 시 예외가 발생한다.")
     void create_coachNotFound() {
-        assertThatThrownBy(() -> reservationService.create(CREW1.getId(), -1L,
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS)))
+        assertThatThrownBy(() -> reservationService.create(CREW1.getId(),
+                new ReservationRequest(-1L, LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS)))
                 .isInstanceOf(CoachNotFoundException.class);
     }
 
@@ -111,14 +112,18 @@ class ReservationServiceTest {
         coachService.putAvailableDateTimesByCoachId(COACH2.getId(), MONTH_REQUEST);
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
-        reservationService.create(CREW1.getId(), COACH1.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS));
-        reservationService.create(CREW2.getId(), COACH2.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS));
-        reservationService.create(CREW3.getId(), COACH3.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS));
-        reservationService.create(CREW4.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS));
+        reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW2.getId(),
+                new ReservationRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW3.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW4.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
 
         // when
         final List<ReservationResponse> reservationResponses = reservationService.findAllReservations();
@@ -134,14 +139,18 @@ class ReservationServiceTest {
     void findAllByCoach() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
-        reservationService.create(CREW1.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS));
-        reservationService.create(CREW2.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS));
-        reservationService.create(CREW3.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS));
-        reservationService.create(CREW4.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS));
+        reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW2.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW3.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW4.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
 
         // when
         final ScheduleResponse scheduleResponses = reservationService.findAllByCoach(COACH4.getId(),
@@ -160,8 +169,9 @@ class ReservationServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
         // when & then
-        assertThatThrownBy(() -> reservationService.create(CREW1.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(LocalDate.now(), THIRD_TIME), FORM_ITEM_REQUESTS)))
+        assertThatThrownBy(() -> reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now(), THIRD_TIME),
+                        FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
@@ -173,8 +183,9 @@ class ReservationServiceTest {
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
 
         // when & then
-        assertThatThrownBy(() -> reservationService.create(CREW1.getId(), COACH4.getId(),
-                new ReservationRequest(LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME), FORM_ITEM_REQUESTS)))
+        assertThatThrownBy(() -> reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
+                        FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }

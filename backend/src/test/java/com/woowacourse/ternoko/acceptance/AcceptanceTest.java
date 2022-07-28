@@ -112,9 +112,10 @@ public class AcceptanceTest {
     protected ExtractableResponse<Response> createReservation(final Long crewId,
                                                               final Long coachId,
                                                               final LocalDateTime interviewDateTime) {
-        final ReservationRequest reservationRequest = new ReservationRequest(interviewDateTime, FORM_ITEM_REQUESTS);
+        final ReservationRequest reservationRequest = new ReservationRequest(coachId, interviewDateTime,
+                FORM_ITEM_REQUESTS);
 
-        return post("/api/reservations/coaches/" + coachId, new Header(AUTHORIZATION,
+        return post("/api/reservations/", new Header(AUTHORIZATION,
                 BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId))), reservationRequest);
     }
 }

@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.fixture;
 
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
@@ -22,18 +24,14 @@ public class ReservationFixture {
             new FormItem("고정질문2", "답변2"),
             new FormItem("고정질문3", "답변3"));
 
-    public static final ReservationRequest RESERVATION_REQUEST1 = new ReservationRequest(AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST1 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST2 = new ReservationRequest(AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST2 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST3 = new ReservationRequest(AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST3 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST4 = new ReservationRequest(AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST4 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST5 = new ReservationRequest(AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST5 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
 }

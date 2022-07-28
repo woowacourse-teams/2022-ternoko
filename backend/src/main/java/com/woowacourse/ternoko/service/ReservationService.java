@@ -48,8 +48,8 @@ public class ReservationService {
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
 
-    public Reservation create(final Long crewId, final Long coachId, final ReservationRequest reservationRequest) {
-        final Interview interview = convertInterview(crewId, coachId, reservationRequest);
+    public Reservation create(final Long crewId, final ReservationRequest reservationRequest) {
+        final Interview interview = convertInterview(crewId, reservationRequest);
         final Interview savedInterview = interviewRepository.save(interview);
 
         final List<FormItem> formItems = convertFormItem(reservationRequest.getInterviewQuestions());
@@ -58,23 +58,22 @@ public class ReservationService {
         }
 
         final AvailableDateTime availableDateTime = availableDateTimeRepository
-                .findByCoachIdAndInterviewDateTime(coachId, reservationRequest.getInterviewDatetime())
+                .findByCoachIdAndInterviewDateTime(reservationRequest.getCoachId(), reservationRequest.getInterviewDatetime())
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
         availableDateTimeRepository.delete(availableDateTime);
 
         return reservationRepository.save(new Reservation(interview, false));
     }
 
-    private Interview convertInterview(final Long crewId, final Long coachId,
-                                       final ReservationRequest reservationRequest) {
+    private Interview convertInterview(final Long crewId, final ReservationRequest reservationRequest) {
         final LocalDateTime reservationDatetime = reservationRequest.getInterviewDatetime();
 
         // TODO: CREW_NOT_FOUND 만들어야함.
         final Crew crew = crewRepository.findById(crewId)
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, crewId));
 
-        final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+        final Coach coach = coachRepository.findById(reservationRequest.getCoachId())
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, reservationRequest.getCoachId()));
 
         validateInterviewStartTime(reservationDatetime);
 

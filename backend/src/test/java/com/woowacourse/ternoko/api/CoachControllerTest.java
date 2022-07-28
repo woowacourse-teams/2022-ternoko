@@ -20,7 +20,7 @@ public class CoachControllerTest extends ControllerTest {
     void findAllByCoach() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(CREW1.getId(), COACH1.getId());
+        createReservations(CREW1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
