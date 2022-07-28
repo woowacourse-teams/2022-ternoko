@@ -128,4 +128,23 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         //then
         assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @Test
+    @DisplayName("크루가 면담 예약을 삭제한다.")
+    void deleteReservation() {
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        String redirectURI = response.header("Location");
+        char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        ExtractableResponse<Response> deleteResponse = delete("/api/reservations/" + reservationId,
+                new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))));
+
+        //then
+        assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }

@@ -328,4 +328,21 @@ class ReservationServiceTest {
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_RESERVATION_DATE.getMessage());
     }
+
+    @Test
+    @DisplayName("면담 예약을 삭제한다.")
+    void delete() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        Reservation updateReservation = reservationService.delete(CREW1.getId(), reservation.getId());
+
+        // then
+        assertThatThrownBy(() -> reservationService.findReservationById(updateReservation.getId()))
+                .isInstanceOf(ReservationNotFoundException.class);
+    }
 }

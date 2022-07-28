@@ -165,9 +165,30 @@ public class ReservationService {
         return reservationRepository.save(reservation.update(updatedInterview));
     }
 
+    public Reservation delete(Long crewId, Long reservationId) {
+        final Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
+        if (!reservation.getInterview().getCrew().getId().equals(crewId)) {
+            throw new InvalidReservationCrewIdException(INVALID_RESERVATION_CREW_ID);
+        }
+        formItemRepository.deleteAll(reservation.getInterview().getFormItems());
+        interviewRepository.delete(reservation.getInterview());
+        reservationRepository.delete(reservation);
+
+        availableDateTimeRepository.save(new AvailableDateTime(reservation.getInterview().getCoach(),
+                reservation.getInterview().getInterviewStartTime()));
+
+        return reservation;
+    }
+
     private AvailableDateTime findAvailableTime(ReservationRequest reservationRequest) {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(reservationRequest.getCoachId(),
                         reservationRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
+    private AvailableDateTime findAvailableTime(Long coachId, LocalDateTime interviewDatetime) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId, interviewDatetime)
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 }

@@ -74,4 +74,32 @@ public class SlackAlarm {
                 .build();
         slackMethodClient.chatPostMessage(request);
     }
+
+    public void sendAlarmWhenDeletedReservationToCrew(final Reservation reservation) throws Exception {
+        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
+        String coachNickname = reservation.getInterview().getCoach().getNickname();
+        String crewNickname = reservation.getInterview().getCrew().getNickname();
+        String msg = crewNickname + ", " + coachNickname + "과의 면담 예약(" + interviewStartTime + ")이 취소되었습니다.";
+
+        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
+                .text(msg)
+                .channel(reservation.getInterview().getCrew().getUserId())
+                .token(botToken)
+                .build();
+        slackMethodClient.chatPostMessage(request);
+    }
+
+    public void sendAlarmWhenDeletedReservationToCoach(final Reservation reservation) throws Exception {
+        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
+        String coachNickname = reservation.getInterview().getCoach().getNickname();
+        String crewNickname = reservation.getInterview().getCrew().getNickname();
+        String msg = coachNickname + ", " + crewNickname + "과의 면담 예약(" + interviewStartTime + ")이 취소되었습니다.";
+
+        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
+                .text(msg)
+                .channel(reservation.getInterview().getCoach().getUserId())
+                .token(botToken)
+                .build();
+        slackMethodClient.chatPostMessage(request);
+    }
 }
