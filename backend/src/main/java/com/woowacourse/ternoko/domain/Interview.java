@@ -44,29 +44,35 @@ public class Interview {
     @OneToMany(mappedBy = "interview", cascade = CascadeType.DETACH)
     private List<FormItem> formItems = new ArrayList<>();
 
+    @Column(nullable = false)
+    private InterviewStatusType interviewStatusType;
 
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
                      final Crew crew,
-                     final List<FormItem> formItems) {
+                     final List<FormItem> formItems,
+                     final InterviewStatusType interviewStatusType) {
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
         this.formItems = formItems;
+        this.interviewStatusType = interviewStatusType;
     }
 
     public Interview(final Long id,
                      final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
-                     final Crew crew) {
+                     final Crew crew,
+                     final InterviewStatusType interviewStatusType) {
         this.id = id;
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
+        this.interviewStatusType = interviewStatusType;
     }
 
     public Interview(final LocalDateTime interviewStartTime,
@@ -77,6 +83,7 @@ public class Interview {
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
+        this.interviewStatusType = InterviewStatusType.EDITABLE;
     }
 
     public Interview update(Interview updateInterview) {
@@ -84,6 +91,16 @@ public class Interview {
                 updateInterview.getInterviewStartTime(),
                 updateInterview.getInterviewEndTime(),
                 updateInterview.getCoach(),
-                updateInterview.getCrew());
+                updateInterview.getCrew(),
+                updateInterview.interviewStatusType);
+    }
+
+    public Interview cancel() {
+        return new Interview(this.id,
+                this.getInterviewStartTime(),
+                this.getInterviewEndTime(),
+                this.getCoach(),
+                this.getCrew(),
+                InterviewStatusType.CANCELED);
     }
 }

@@ -147,4 +147,23 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         //then
         assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
+
+    @Test
+    @DisplayName("코치가 면담 예약을 취소한다.")
+    void cancelReservation() {
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        String redirectURI = response.header("Location");
+        char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        ExtractableResponse<Response> cancelResponse = patch("/api/reservations/" + reservationId,
+                new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId()))));
+
+        //then
+        assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }

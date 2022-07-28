@@ -3,12 +3,14 @@ package com.woowacourse.ternoko.service;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_COACH_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.RESERVATION_NOT_FOUND;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
+import com.woowacourse.ternoko.common.exception.InvalidReservationCoachIdException;
 import com.woowacourse.ternoko.common.exception.InvalidReservationCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
@@ -64,7 +66,7 @@ public class ReservationService {
             formItem.addInterview(savedInterview);
         }
         formItemRepository.saveAll(formItems);
-        ;
+
         final AvailableDateTime availableDateTime = findAvailableTime(reservationRequest);
         availableDateTimeRepository.delete(availableDateTime);
 
@@ -179,6 +181,18 @@ public class ReservationService {
                 reservation.getInterview().getInterviewStartTime()));
 
         return reservation;
+    }
+
+    public Interview cancel(Long coachId, Long reservationId) {
+        final Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
+        if (!reservation.getInterview().getCoach().getId().equals(coachId)) {
+            throw new InvalidReservationCoachIdException(INVALID_RESERVATION_COACH_ID);
+        }
+        Interview interview = reservation.getInterview().cancel();
+
+        interviewRepository.save(interview);
+        return interview;
     }
 
     private AvailableDateTime findAvailableTime(ReservationRequest reservationRequest) {

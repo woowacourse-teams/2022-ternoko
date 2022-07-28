@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.support;
 
 import com.slack.api.methods.impl.MethodsClientImpl;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
+import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,6 +99,34 @@ public class SlackAlarm {
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .text(msg)
                 .channel(reservation.getInterview().getCoach().getUserId())
+                .token(botToken)
+                .build();
+        slackMethodClient.chatPostMessage(request);
+    }
+
+    public void sendAlarmWhenCanceledReservationToCrew(final Interview interview) throws Exception {
+        LocalDateTime interviewStartTime = interview.getInterviewStartTime();
+        String coachNickname = interview.getCoach().getNickname();
+        String crewNickname = interview.getCrew().getNickname();
+        String msg = crewNickname + ", " + coachNickname + "이(가) 면담 예약(" + interviewStartTime + ")이 취소하였습니다.";
+
+        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
+                .text(msg)
+                .channel(interview.getCrew().getUserId())
+                .token(botToken)
+                .build();
+        slackMethodClient.chatPostMessage(request);
+    }
+
+    public void sendAlarmWhenCanceledReservationToCoach(final Interview interview) throws Exception {
+        LocalDateTime interviewStartTime = interview.getInterviewStartTime();
+        String coachNickname = interview.getCoach().getNickname();
+        String crewNickname = interview.getCrew().getNickname();
+        String msg = coachNickname + ", " + crewNickname + "과의 면담 예약(" + interviewStartTime + ")이 취소 완료되었습니다.";
+
+        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
+                .text(msg)
+                .channel(interview.getCoach().getUserId())
                 .token(botToken)
                 .build();
         slackMethodClient.chatPostMessage(request);

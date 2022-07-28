@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_COACH_ID;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
@@ -26,9 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InvalidReservationCoachIdException;
 import com.woowacourse.ternoko.common.exception.InvalidReservationCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidReservationDateException;
 import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
+import com.woowacourse.ternoko.domain.Interview;
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
@@ -344,5 +348,36 @@ class ReservationServiceTest {
         // then
         assertThatThrownBy(() -> reservationService.findReservationById(updateReservation.getId()))
                 .isInstanceOf(ReservationNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("코치가 면담 예약을 취소한다.")
+    void cancel() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        Interview canceledInterview = reservationService.cancel(COACH3.getId(), reservation.getId());
+
+        // then
+        assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED);
+    }
+
+    @Test
+    @DisplayName("코치가 면담 예약을 취소 시 본인의 면담 예약이 아닌 경우 예외를 반환한다..")
+    void cancel_WhenInvalidCoachId() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when  && then
+        assertThatThrownBy(() -> reservationService.cancel(COACH2.getId(), reservation.getId()))
+                .isInstanceOf(InvalidReservationCoachIdException.class)
+                .hasMessage(INVALID_RESERVATION_COACH_ID.getMessage());
     }
 }

@@ -69,6 +69,7 @@ public class AuthService {
             return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
                     hasNickname);
         }
+        System.out.println("Coach Token : "+ jwtProvider.createToken(String.valueOf(1L)));
         return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
     }
 
