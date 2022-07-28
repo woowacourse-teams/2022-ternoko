@@ -20,6 +20,7 @@ export const Frame = styled.div`
 
   font-size: 1.5rem;
   background-color: ${({ theme }) => theme.colors.white_100};
+  border-radius: 10px;
 `;
 
 export const IconContainer = styled.div`
