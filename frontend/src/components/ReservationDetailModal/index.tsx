@@ -13,7 +13,7 @@ import { getDateString, getTimeString } from '@/utils';
 
 type ReservationDetailModalProps = {
   role: 'coach' | 'crew';
-  reservationId: boolean;
+  reservationId: number;
 };
 
 const ReservationDetailModal = ({ role, reservationId }: ReservationDetailModalProps) => {
