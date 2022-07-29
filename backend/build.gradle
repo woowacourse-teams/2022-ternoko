@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // mail-sender
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     // Slack API
     implementation 'com.slack.api:slack-api-client:1.24.0'
 
