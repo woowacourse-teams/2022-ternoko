@@ -10,26 +10,6 @@ export const Container = styled.div`
   gap: 1rem;
 `;
 
-const slideDown = keyframes`
-  from {
-    max-height: 0;   
-  }
-  
-  to {
-    max-height: 1000px;
-  }
-`;
-
-const slideUp = keyframes`
-  from {
-    max-height: 1000px;  
-  }
-
-  to {
-    max-height: 0;
-  }
-`;
-
 type BoxProps = {
   stepStatus: StepStatus;
 };
@@ -66,10 +46,8 @@ export const Box = styled.div<BoxProps>`
       z-index: 1;
 
       .fold-box {
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-        animation-timing-function: linear;
-        animation-name: ${slideDown};
+        max-height: 1000px;
+        transition: max-height 0.5s cubic-bezier(0.25, 0.25, 0.75, 0.75);
       }
     `}
 
@@ -101,10 +79,8 @@ export const Box = styled.div<BoxProps>`
       }
 
       .fold-box {
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-        animation-timing-function: linear;
-        animation-name: ${slideUp};
+        max-height: 0;
+        transition: max-height 0.4s cubic-bezier(0, 1, 1, 1);
       }
     `}
 `;
