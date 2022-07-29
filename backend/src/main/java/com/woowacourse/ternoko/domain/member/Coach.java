@@ -15,19 +15,31 @@ public class Coach extends Member {
     @Column
     private String introduce;
 
-    public Coach(final Long id, final String name, final String nickname, final String email, final String userId,
-                 final String imageUrl, final String introduce) {
+    public Coach(final Long id,
+                 final String name,
+                 final String nickname,
+                 final String email,
+                 final String userId,
+                 final String imageUrl,
+                 final String introduce) {
         super(id, name, nickname, email, userId, imageUrl);
         this.introduce = introduce;
     }
 
-    public Coach(final String name, final String nickname, final String email, final String userId,
-                 final String imageUrl, final String introduce) {
+    public Coach(final String name,
+                 final String nickname,
+                 final String email,
+                 final String userId,
+                 final String imageUrl,
+                 final String introduce) {
         this(null, name, nickname, email, userId, imageUrl, introduce);
 
     }
 
-    public Coach(final String name, final String email, final String userId, final String imageUrl) {
+    public Coach(final String name,
+                 final String email,
+                 final String userId,
+                 final String imageUrl) {
         this(null, name, null, email, userId, imageUrl, null);
     }
 

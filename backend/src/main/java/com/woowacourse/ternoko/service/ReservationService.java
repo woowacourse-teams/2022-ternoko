@@ -167,7 +167,7 @@ public class ReservationService {
         return reservationRepository.save(reservation.update(updatedInterview));
     }
 
-    public Reservation delete(Long crewId, Long reservationId) {
+    public Reservation delete(final Long crewId, final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
         if (!reservation.getInterview().getCrew().getId().equals(crewId)) {
@@ -183,7 +183,7 @@ public class ReservationService {
         return reservation;
     }
 
-    public Interview cancel(Long coachId, Long reservationId) {
+    public Interview cancel(final Long coachId, final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
         if (!reservation.getInterview().getCoach().getId().equals(coachId)) {
@@ -195,13 +195,13 @@ public class ReservationService {
         return interview;
     }
 
-    private AvailableDateTime findAvailableTime(ReservationRequest reservationRequest) {
+    private AvailableDateTime findAvailableTime(final ReservationRequest reservationRequest) {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(reservationRequest.getCoachId(),
                         reservationRequest.getInterviewDatetime())
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
-    private AvailableDateTime findAvailableTime(Long coachId, LocalDateTime interviewDatetime) {
+    private AvailableDateTime findAvailableTime(final Long coachId, final LocalDateTime interviewDatetime) {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId, interviewDatetime)
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
     }

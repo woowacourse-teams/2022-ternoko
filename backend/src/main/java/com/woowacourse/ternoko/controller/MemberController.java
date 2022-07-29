@@ -25,7 +25,7 @@ public class MemberController {
     }
 
     @GetMapping("/login/check")
-    public ResponseEntity<NicknameResponse> checkUniqueNickname(@RequestParam String nickname) {
+    public ResponseEntity<NicknameResponse> checkUniqueNickname(@RequestParam final String nickname) {
         return ResponseEntity.ok(memberService.hasNickname(nickname));
     }
 }

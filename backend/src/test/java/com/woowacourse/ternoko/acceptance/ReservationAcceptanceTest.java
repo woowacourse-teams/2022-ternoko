@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
@@ -49,8 +47,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("선택한 일시가 코치의 가능한 시간이 아니라면 면담을 생성할 때 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
-        // given
-        // when
+        // given & when
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -62,8 +59,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findReservationById() {
         // given
-        final Header header = new Header(AUTHORIZATION,
-                BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId())));
+        final Header header = generateHeader(COACH3.getId());
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTHS_REQUEST);
         final ExtractableResponse<Response> createdResponse = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
@@ -115,14 +111,14 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
-        String redirectURI = response.header("Location");
-        char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+        final String redirectURI = response.header("Location");
+        final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
 
         // when
         final ReservationRequest updateRequest = new ReservationRequest(COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS);
         ExtractableResponse<Response> updateResponse = put("/api/reservations/" + reservationId,
-                new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))),
+                generateHeader(CREW1.getId()),
                 updateRequest);
 
         //then
@@ -137,12 +133,12 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
-        String redirectURI = response.header("Location");
-        char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+        final String redirectURI = response.header("Location");
+        final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
 
         // when
-        ExtractableResponse<Response> deleteResponse = delete("/api/reservations/" + reservationId,
-                new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))));
+        final ExtractableResponse<Response> deleteResponse = delete("/api/reservations/" + reservationId,
+                generateHeader(CREW1.getId()));
 
         //then
         assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -156,12 +152,12 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
-        String redirectURI = response.header("Location");
-        char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+        final String redirectURI = response.header("Location");
+        final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
 
         // when
-        ExtractableResponse<Response> cancelResponse = patch("/api/reservations/" + reservationId,
-                new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId()))));
+        final ExtractableResponse<Response> cancelResponse = patch("/api/reservations/" + reservationId,
+                generateHeader(COACH3.getId()));
 
         //then
         assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());

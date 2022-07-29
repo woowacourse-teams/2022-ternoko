@@ -11,6 +11,7 @@ import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -124,7 +125,12 @@ public class AcceptanceTest {
         final ReservationRequest reservationRequest = new ReservationRequest(coachId, interviewDateTime,
                 FORM_ITEM_REQUESTS);
 
-        return post("/api/reservations/", new Header(AUTHORIZATION,
-                BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId))), reservationRequest);
+        return post("/api/reservations/", generateHeader(crewId), reservationRequest);
     }
+
+    protected Header generateHeader(final Long id) {
+        return new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(id)));
+    }
+
+
 }

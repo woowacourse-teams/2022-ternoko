@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
@@ -16,7 +14,6 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.AFTER_TWO_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.dto.ScheduleResponse;
@@ -45,7 +42,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .queryParam("year", NOW.getYear())
                 .queryParam("month", NOW.getMonthValue())
-                .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH4.getId())))
+                .header(generateHeader(COACH4.getId()))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/coaches/" + COACH4.getId() + "/schedules")
                 .then().log().all()
@@ -89,7 +86,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .queryParam("year", NOW.getYear())
                 .queryParam("month", NOW.getMonthValue())
-                .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId())))
+                .header(generateHeader(COACH3.getId()))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/coaches/" + COACH3.getId() + "/schedules")
                 .then().log().all()

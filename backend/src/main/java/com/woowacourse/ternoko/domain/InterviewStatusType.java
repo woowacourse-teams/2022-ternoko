@@ -5,5 +5,5 @@ public enum InterviewStatusType {
     FIX,
     FEEDBACK,
     COMPLETED,
-    CANCELED;
+    CANCELED
 }

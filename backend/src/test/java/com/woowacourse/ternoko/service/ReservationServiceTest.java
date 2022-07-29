@@ -207,8 +207,9 @@ class ReservationServiceTest {
                 new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Reservation updateReservation = reservationService.update(CREW1.getId(), reservation.getId(),
-                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+        final Reservation updateReservation = reservationService.update(CREW1.getId(), reservation.getId(),
+                new ReservationRequest(COACH3.getId(),
+                        LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS));
 
         // then
