@@ -4,6 +4,11 @@ export interface CoachType {
   imageUrl: string;
 }
 
+interface InterviewQuestionType {
+  question: string;
+  answer: string;
+}
+
 export interface ReservationType {
   id: number;
   imageUrl: string;
@@ -11,16 +16,12 @@ export interface ReservationType {
   coachNickname: string;
   interviewStartTime: string;
   interviewEndTime: string;
+  interviewQuestions: InterviewQuestionType[];
 }
 
 export type ReservationResponseType = Omit<ReservationType, 'imageUrl' | 'coachNickname'>;
 
 export type SelectMode = 'single' | 'multiple';
-
-interface InterviewQuestionType {
-  question: string;
-  answer: string;
-}
 
 export interface ReservationRequestBodyType {
   crewNickname: string;

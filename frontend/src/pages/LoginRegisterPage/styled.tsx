@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 export const Box = styled.div`
   display: flex;
-  align-items: center;
-  height: calc(100vh - 90px);
 `;
 
 export const Form = styled.form`
@@ -52,6 +50,7 @@ export const ProfileBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1.3rem;
+  margin-bottom: 5rem;
 
   img {
     width: 160px;
