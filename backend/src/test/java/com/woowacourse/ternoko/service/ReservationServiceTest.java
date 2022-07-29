@@ -60,15 +60,15 @@ class ReservationServiceTest {
     @Test
     @DisplayName("면담 예약을 생성한다.")
     void create() {
-        // given, when
+        // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
+        // when
         final Reservation reservation = reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
-        final ReservationResponse reservationResponse = reservationService.findReservationById(reservation.getId());
-
         // then
+        final ReservationResponse reservationResponse = reservationService.findReservationById(reservation.getId());
         assertAll(
                 () -> assertThat(reservation.getId()).isNotNull(),
                 () -> assertThat(reservationResponse.getCoachNickname())
@@ -236,7 +236,7 @@ class ReservationServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Reservation reservation = reservationService.create(CREW1.getId(),
+        reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
@@ -256,7 +256,7 @@ class ReservationServiceTest {
         final Reservation reservation = reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
-        // when
+        // when & then
         assertThatThrownBy(() -> reservationService.update(CREW2.getId(), reservation.getId(),
                 new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
@@ -273,7 +273,7 @@ class ReservationServiceTest {
         final Reservation reservation = reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
-        // when
+        // when & then
         assertThatThrownBy(() -> reservationService.update(CREW1.getId(), reservation.getId(),
                 new ReservationRequest(5L, LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
@@ -368,7 +368,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("코치가 면담 예약을 취소 시 본인의 면담 예약이 아닌 경우 예외를 반환한다..")
+    @DisplayName("코치가 면담 예약을 취소 시 본인의 면담 예약이 아닌 경우 예외를 반환한다.")
     void cancel_WhenInvalidCoachId() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
