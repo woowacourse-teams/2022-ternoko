@@ -6,6 +6,7 @@ import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.service.ReservationService;
+import com.woowacourse.ternoko.support.AlarmMessage;
 import com.woowacourse.ternoko.support.SlackAlarm;
 import java.net.URI;
 import java.util.List;
@@ -34,8 +35,7 @@ public class ReservationController {
                                                   @RequestBody final ReservationRequest reservationRequest)
             throws Exception {
         final Reservation reservation = reservationService.create(crewId, reservationRequest);
-        slackAlarm.sendAlarmWhenCreatedReservationToCrew(reservation);
-        slackAlarm.sendAlarmWhenCreatedReservationToCoach(reservation);
+        slackAlarm.sendMessage(reservation.getInterview(), AlarmMessage.CREW_CREATE.getMessage());
         return ResponseEntity.created(URI.create("/api/reservations/" + reservation.getId())).build();
     }
 
@@ -59,8 +59,7 @@ public class ReservationController {
                                                   @RequestBody final ReservationRequest reservationRequest)
             throws Exception {
         Reservation updateReservation = reservationService.update(crewId, reservationId, reservationRequest);
-        slackAlarm.sendAlarmWhenUpdatedReservationToCrew(updateReservation);
-        slackAlarm.sendAlarmWhenUpdatedReservationToCoach(updateReservation);
+        slackAlarm.sendMessage(updateReservation.getInterview(), AlarmMessage.CREW_UPDATE.getMessage());
         return ResponseEntity.ok().build();
     }
 
@@ -68,8 +67,7 @@ public class ReservationController {
     public ResponseEntity<Void> deleteReservation(@AuthenticationPrincipal final Long crewId,
                                                   @PathVariable Long reservationId) throws Exception {
         Reservation reservation = reservationService.delete(crewId, reservationId);
-        slackAlarm.sendAlarmWhenDeletedReservationToCrew(reservation);
-        slackAlarm.sendAlarmWhenDeletedReservationToCoach(reservation);
+        slackAlarm.sendMessage(reservation.getInterview(), AlarmMessage.CREW_DELETE.getMessage());
         return ResponseEntity.noContent().build();
     }
 
@@ -77,8 +75,7 @@ public class ReservationController {
     public ResponseEntity<Void> cancelReservation(@AuthenticationPrincipal final Long coachId,
                                                   @PathVariable Long reservationId) throws Exception {
         Interview interview = reservationService.cancel(coachId, reservationId);
-        slackAlarm.sendAlarmWhenCanceledReservationToCrew(interview);
-        slackAlarm.sendAlarmWhenCanceledReservationToCoach(interview);
+        slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
         return ResponseEntity.noContent().build();
     }
 }

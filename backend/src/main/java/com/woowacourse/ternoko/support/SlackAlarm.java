@@ -20,115 +20,23 @@ public class SlackAlarm {
         this.botToken = botToken;
     }
 
-    public void sendAlarmWhenCreatedReservationToCrew(final Reservation reservation) throws Exception {
-        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
-        String coachNickname = reservation.getInterview().getCoach().getNickname();
-        String crewNickname = reservation.getInterview().getCrew().getNickname();
-        String msg = crewNickname + ", " + coachNickname + "과의 면담이 " + interviewStartTime + "에 예약되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
-                .channel(reservation.getInterview().getCrew().getUserId())
-                .token(botToken)
-                .build();
-        slackMethodClient.chatPostMessage(request);
-    }
-
-    public void sendAlarmWhenCreatedReservationToCoach(final Reservation reservation) throws Exception {
-        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
-        String coachNickname = reservation.getInterview().getCoach().getNickname();
-        String crewNickname = reservation.getInterview().getCrew().getNickname();
-        String msg = coachNickname + ", " + crewNickname + "과의 면담이 " + interviewStartTime + "에 예약되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
-                .channel(reservation.getInterview().getCoach().getUserId())
-                .token(botToken)
-                .build();
-        slackMethodClient.chatPostMessage(request);
-    }
-
-    public void sendAlarmWhenUpdatedReservationToCrew(final Reservation reservation) throws Exception {
-        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
-        String coachNickname = reservation.getInterview().getCoach().getNickname();
-        String crewNickname = reservation.getInterview().getCrew().getNickname();
-        String msg = crewNickname + ", " + coachNickname + "과의 면담 예약이 " + interviewStartTime + "로 수정되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
-                .channel(reservation.getInterview().getCrew().getUserId())
-                .token(botToken)
-                .build();
-        slackMethodClient.chatPostMessage(request);
-    }
-
-    public void sendAlarmWhenUpdatedReservationToCoach(final Reservation reservation) throws Exception {
-        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
-        String coachNickname = reservation.getInterview().getCoach().getNickname();
-        String crewNickname = reservation.getInterview().getCrew().getNickname();
-        String msg = coachNickname + ", " + crewNickname + "과의 면담 예약이 " + interviewStartTime + "로 수정되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
-                .channel(reservation.getInterview().getCoach().getUserId())
-                .token(botToken)
-                .build();
-        slackMethodClient.chatPostMessage(request);
-    }
-
-    public void sendAlarmWhenDeletedReservationToCrew(final Reservation reservation) throws Exception {
-        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
-        String coachNickname = reservation.getInterview().getCoach().getNickname();
-        String crewNickname = reservation.getInterview().getCrew().getNickname();
-        String msg = crewNickname + ", " + coachNickname + "과의 면담 예약(" + interviewStartTime + ")이 취소되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
-                .channel(reservation.getInterview().getCrew().getUserId())
-                .token(botToken)
-                .build();
-        slackMethodClient.chatPostMessage(request);
-    }
-
-    public void sendAlarmWhenDeletedReservationToCoach(final Reservation reservation) throws Exception {
-        LocalDateTime interviewStartTime = reservation.getInterview().getInterviewStartTime();
-        String coachNickname = reservation.getInterview().getCoach().getNickname();
-        String crewNickname = reservation.getInterview().getCrew().getNickname();
-        String msg = coachNickname + ", " + crewNickname + "과의 면담 예약(" + interviewStartTime + ")이 취소되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
-                .channel(reservation.getInterview().getCoach().getUserId())
-                .token(botToken)
-                .build();
-        slackMethodClient.chatPostMessage(request);
-    }
-
-    public void sendAlarmWhenCanceledReservationToCrew(final Interview interview) throws Exception {
+    public void sendMessage(final Interview interview, final String message) throws Exception {
         LocalDateTime interviewStartTime = interview.getInterviewStartTime();
         String coachNickname = interview.getCoach().getNickname();
         String crewNickname = interview.getCrew().getNickname();
-        String msg = crewNickname + ", " + coachNickname + "이(가) 면담 예약(" + interviewStartTime + ")이 취소하였습니다.";
 
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
+        ChatPostMessageRequest crewRequest = ChatPostMessageRequest.builder()
+                .text(String.format(message, coachNickname, crewNickname, interviewStartTime))
                 .channel(interview.getCrew().getUserId())
                 .token(botToken)
                 .build();
-        slackMethodClient.chatPostMessage(request);
-    }
+        slackMethodClient.chatPostMessage(crewRequest);
 
-    public void sendAlarmWhenCanceledReservationToCoach(final Interview interview) throws Exception {
-        LocalDateTime interviewStartTime = interview.getInterviewStartTime();
-        String coachNickname = interview.getCoach().getNickname();
-        String crewNickname = interview.getCrew().getNickname();
-        String msg = coachNickname + ", " + crewNickname + "과의 면담 예약(" + interviewStartTime + ")이 취소 완료되었습니다.";
-
-        ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                .text(msg)
+        ChatPostMessageRequest coachRequest = ChatPostMessageRequest.builder()
+                .text(String.format(message, crewNickname, coachNickname, interviewStartTime))
                 .channel(interview.getCoach().getUserId())
                 .token(botToken)
                 .build();
-        slackMethodClient.chatPostMessage(request);
+        slackMethodClient.chatPostMessage(coachRequest);
     }
 }
