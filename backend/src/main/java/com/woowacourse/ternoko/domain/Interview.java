@@ -88,13 +88,13 @@ public class Interview {
         this.interviewStatusType = InterviewStatusType.EDITABLE;
     }
 
-    public Interview update(Interview updateInterview) {
-        return new Interview(this.id,
-                updateInterview.getInterviewStartTime(),
-                updateInterview.getInterviewEndTime(),
-                updateInterview.getCoach(),
-                updateInterview.getCrew(),
-                updateInterview.interviewStatusType);
+    public void update(Interview updateInterview) {
+
+        this.interviewStartTime = updateInterview.getInterviewStartTime();
+        this.interviewEndTime = updateInterview.getInterviewEndTime();
+        this.coach = updateInterview.getCoach();
+        this.crew = updateInterview.getCrew();
+        this.interviewStatusType = updateInterview.getInterviewStatusType();
     }
 
     public Interview cancel() {

@@ -152,19 +152,14 @@ public class ReservationService {
 
         List<FormItem> updateFormItems = new ArrayList<>();
         for (int i = 0; i < originalInterviewFormItems.size(); i++) {
-            updateFormItems.add(originalInterviewFormItems.get(i)
-                    .update(updateInterviewFormItemsRequest.get(i), originalInterview));
+            originalInterviewFormItems.get(i).update(updateInterviewFormItemsRequest.get(i), originalInterview);
         }
-        formItemRepository.saveAll(updateFormItems);
-
-        Interview updatedInterview = interviewRepository.save(originalInterview.update(updateInterviewRequest));
-
-        for (FormItem formItem : updateFormItems) {
-            formItem.addInterview(updatedInterview);
-        }
+        originalInterview.update(updateInterviewRequest);
         availableDateTimeRepository.delete(availableDateTime);
+        reservation.update(originalInterview);
 
-        return reservationRepository.save(reservation.update(updatedInterview));
+        return reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
     }
 
     public Reservation delete(final Long crewId, final Long reservationId) {

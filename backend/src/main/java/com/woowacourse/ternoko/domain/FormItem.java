@@ -53,7 +53,9 @@ public class FormItem {
         interview.getFormItems().add(this);
     }
 
-    public FormItem update(FormItem formItem, Interview interview) {
-        return new FormItem(this.id, formItem.question, formItem.answer, interview);
+    public void update(FormItem formItem, Interview interview) {
+        this.question = formItem.question;
+        this.answer = formItem.answer;
+        this.interview = interview;
     }
 }

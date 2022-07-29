@@ -38,8 +38,9 @@ public class Reservation {
         this.isAccepted = isAccepted;
     }
 
-    public Reservation update(Interview updatedInterview) {
-        return new Reservation(this.id, updatedInterview, false);
+    public void update(Interview updatedInterview) {
+        this.interview = updatedInterview;
+        this.isAccepted = false;
     }
 
     public boolean sameCrew(Long crewId) {
