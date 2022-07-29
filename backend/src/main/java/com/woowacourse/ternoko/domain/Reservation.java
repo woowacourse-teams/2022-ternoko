@@ -41,4 +41,12 @@ public class Reservation {
     public Reservation update(Interview updatedInterview) {
         return new Reservation(this.id, updatedInterview, false);
     }
+
+    public boolean sameCrew(Long crewId) {
+        return interview.sameCrew(crewId);
+    }
+
+    public boolean sameCoach(Long coachId) {
+        return interview.sameCoach(coachId);
+    }
 }

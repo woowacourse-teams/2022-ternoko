@@ -39,4 +39,8 @@ public class Member {
 
     @Column
     private String imageUrl;
+
+    public boolean sameMember(Long id) {
+        return this.id.equals(id);
+    }
 }

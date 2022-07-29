@@ -138,7 +138,7 @@ public class ReservationService {
                               final ReservationRequest reservationRequest) {
         final Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
-        if (!reservation.getInterview().getCrew().getId().equals(crewId)) {
+        if (!reservation.sameCrew(crewId)) {
             throw new InvalidReservationCrewIdException(INVALID_RESERVATION_CREW_ID);
         }
 
@@ -170,7 +170,7 @@ public class ReservationService {
     public Reservation delete(final Long crewId, final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
-        if (!reservation.getInterview().getCrew().getId().equals(crewId)) {
+        if (!reservation.sameCrew(crewId)) {
             throw new InvalidReservationCrewIdException(INVALID_RESERVATION_CREW_ID);
         }
         formItemRepository.deleteAll(reservation.getInterview().getFormItems());
@@ -186,7 +186,7 @@ public class ReservationService {
     public Interview cancel(final Long coachId, final Long reservationId) {
         final Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException(RESERVATION_NOT_FOUND, reservationId));
-        if (!reservation.getInterview().getCoach().getId().equals(coachId)) {
+        if (!reservation.sameCoach(coachId)) {
             throw new InvalidReservationCoachIdException(INVALID_RESERVATION_COACH_ID);
         }
         Interview interview = reservation.getInterview().cancel();

@@ -105,4 +105,12 @@ public class Interview {
                 this.getCrew(),
                 InterviewStatusType.CANCELED);
     }
+
+    public boolean sameCrew(Long crewId) {
+        return crew.sameMember(crewId);
+    }
+
+    public boolean sameCoach(Long coachId) {
+        return coach.sameMember(coachId);
+    }
 }
