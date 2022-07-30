@@ -34,7 +34,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path={`${PAGE.RESERVATION_COMPLETE}reservationId`}
+            path={`${PAGE.RESERVATION_COMPLETE}/reservationId`}
             element={<ReservationCompletePage />}
           />
           <Route
