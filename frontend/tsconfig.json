@@ -4,7 +4,10 @@
     "strict": true,
     "allowJs": true,
     "noEmit": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "isolatedModules": true,
