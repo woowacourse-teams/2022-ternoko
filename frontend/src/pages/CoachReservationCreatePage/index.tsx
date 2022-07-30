@@ -3,29 +3,25 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
-import TitleBox from '../../components/@common/TitleBox';
-import Button from '../../components/@common/Button/styled';
-import ScrollContainer from '../../components/@common/ScrollContainer/styled';
-import Time from '../../components/Time/styled';
-import Calendar from '../../components/Calendar';
+import TitleBox from '@/components/@common/TitleBox';
+import Button from '@/components/@common/Button/styled';
+import ScrollContainer from '@/components/@common/ScrollContainer/styled';
+import Time from '@/components/Time/styled';
+import Calendar from '@/components/Calendar';
 
-import useTimes from '../../hooks/useTimes';
+import useTimes from '@/hooks/useTimes';
 
-import {
-  useCalendarState,
-  useCalendarActions,
-  useCalendarUtils,
-} from '../../context/CalendarProvider';
+import { useCalendarState, useCalendarActions, useCalendarUtils } from '@/context/CalendarProvider';
 
-import { CalendarTime } from '../../types/domain';
+import { CalendarTime } from '@/types/domain';
 
-import { postCoachScheduleAPI, getCoachScheduleAPI } from '../../api';
+import { postCoachScheduleAPI, getCoachScheduleAPI } from '@/api';
 
-import { separateFullDate, getFullDateString } from '../../utils';
+import { separateFullDate, getFullDateString } from '@/utils';
 
-import { StringDictionary } from '../../types/domain';
+import { StringDictionary } from '@/types/domain';
 
-import { PAGE } from '../../constants';
+import { PAGE } from '@/constants';
 
 const defaultTimes = [
   '10:00',

@@ -3,27 +3,23 @@ import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
-import Button from '../../components/@common/Button/styled';
-import TitleBox from '../../components/@common/TitleBox';
-import GridContainer from '../../components/@common/GridContainer/styled';
-import CoachProfile from '../../components/CoachProfile';
-import TextAreaField from '../../components/TextAreaField';
-import Calendar from '../../components/Calendar';
-import Time from '../../components/Time/styled';
+import Button from '@/components/@common/Button/styled';
+import TitleBox from '@/components/@common/TitleBox';
+import GridContainer from '@/components/@common/GridContainer/styled';
+import CoachProfile from '@/components/CoachProfile';
+import TextAreaField from '@/components/TextAreaField';
+import Calendar from '@/components/Calendar';
+import Time from '@/components/Time/styled';
 
-import { CoachType, StringDictionary } from '../../types/domain';
-import { getCoachesAPI, postReservationAPI, getCoachScheduleAPI } from '../../api';
+import { CoachType, StringDictionary } from '@/types/domain';
+import { getCoachesAPI, postReservationAPI, getCoachScheduleAPI } from '@/api';
 
-import {
-  useCalendarState,
-  useCalendarActions,
-  useCalendarUtils,
-} from '../../context/CalendarProvider';
-import useTimes from '../../hooks/useTimes';
-import { separateFullDate } from '../../utils';
-import { isOverApplyFormMinLength } from '../../validations';
+import { useCalendarState, useCalendarActions, useCalendarUtils } from '@/context/CalendarProvider';
+import useTimes from '@/hooks/useTimes';
+import { separateFullDate } from '@/utils';
+import { isOverApplyFormMinLength } from '@/validations';
 
-import { PAGE } from '../../constants';
+import { PAGE } from '@/constants';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 

@@ -1,20 +1,20 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
-import LoginPage from './pages/LoginPage';
-import LoginRegisterPage from './pages/LoginRegisterPage';
-import HomePage from './pages/HomePage';
-import ReservationApplyPage from './pages/ReservationApplyPage';
-import ReservationCompletePage from './pages/ReservationCompletePage';
-import CoachReservationCreatePage from './pages/CoachReservationCreatePage';
-import CoachHomePage from './pages/CoachHomePage';
-import MyPage from './pages/MyPage';
+import LoginPage from '@/pages/LoginPage';
+import LoginRegisterPage from '@/pages/LoginRegisterPage';
+import HomePage from '@/pages/HomePage';
+import ReservationApplyPage from '@/pages/ReservationApplyPage';
+import ReservationCompletePage from '@/pages/ReservationCompletePage';
+import CoachReservationCreatePage from '@/pages/CoachReservationCreatePage';
+import CoachHomePage from '@/pages/CoachHomePage';
+import MyPage from '@/pages/MyPage';
 
-import Header from './components/Header';
+import Header from '@/components/Header';
 
-import CalendarProvider from './context/CalendarProvider';
+import CalendarProvider from '@/context/CalendarProvider';
 
-import { PAGE } from './constants';
+import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
   return (

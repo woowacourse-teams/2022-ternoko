@@ -1,16 +1,16 @@
 import { useMemo, memo } from 'react';
 
 import * as S from './styled';
-import * as C from '../@common/CalendarStyle/styled';
+import * as C from '@/components/@common/CalendarStyle/styled';
 
 import {
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
   monthNames,
-} from '../../context/CalendarProvider';
+} from '@/context/CalendarProvider';
 
-import { DayType } from '../../types/domain';
+import { DayType } from '@/types/domain';
 
 export type CalendarProps = {
   rerenderCondition?: number;

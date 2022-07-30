@@ -1,6 +1,6 @@
 import * as S from './styled';
 
-import { PAGE } from '../../constants';
+import { PAGE } from '@/constants';
 
 const LoginPage = () => {
   return (

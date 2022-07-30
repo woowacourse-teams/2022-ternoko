@@ -1,9 +1,9 @@
 import { ThemeProvider } from 'styled-components';
 
-import AppRoutes from './AppRoutes';
+import AppRoutes from '@/AppRoutes';
 
-import GlobalStyle from './styles/GlobalStyle';
-import theme from './styles/theme';
+import GlobalStyle from '@/styles/GlobalStyle';
+import theme from '@/styles/theme';
 
 const App = () => {
   return (

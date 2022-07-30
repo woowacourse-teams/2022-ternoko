@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import * as S from './styled';
 
-import { PAGE } from '../../constants';
+import { PAGE } from '@/constants';
 
 const Header = () => {
   const location = useLocation();

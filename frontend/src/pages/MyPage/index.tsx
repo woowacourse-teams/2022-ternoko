@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import * as S from './styled';
 
-import TitleBox from '../../components/@common/TitleBox';
-import Button from '../../components/@common/Button/styled';
+import TitleBox from '@/components/@common/TitleBox';
+import Button from '@/components/@common/Button/styled';
 
-import { PAGE } from '../../constants';
+import { PAGE } from '@/constants';
 
 const MyPage = () => {
   const { search } = useLocation();

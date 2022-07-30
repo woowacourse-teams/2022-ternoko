@@ -3,11 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 import * as S from './styled';
 
-import Button from '../../components/@common/Button/styled';
-import TextAreaField from '../../components/TextAreaField';
-import InputAreaField from '../../components/InputAreaField';
+import Button from '@/components/@common/Button/styled';
+import TextAreaField from '@/components/TextAreaField';
+import InputAreaField from '@/components/InputAreaField';
 
-import { isOverNicknameMinLength, isOverIntroduceMinLength } from '../../validations';
+import { isOverNicknameMinLength, isOverIntroduceMinLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const { search } = useLocation();

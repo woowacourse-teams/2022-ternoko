@@ -3,13 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 
 import * as S from './styled';
 
-import Button from '../../components/@common/Button/styled';
+import Button from '@/components/@common/Button/styled';
 
-import { ReservationType } from '../../types/domain';
-import { getReservationAPI } from '../../api';
-import { getDateString, getTimeString } from '../../utils';
+import { ReservationType } from '@/types/domain';
+import { getReservationAPI } from '@/api';
+import { getDateString, getTimeString } from '@/utils';
 
-import { PAGE } from '../../constants';
+import { PAGE } from '@/constants';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
