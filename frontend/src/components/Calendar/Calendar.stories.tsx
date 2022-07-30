@@ -1,6 +1,6 @@
-import { Story } from '@storybook/react';
-
 import Calendar, { CalendarProps } from '.';
+
+import { Story } from '@storybook/react';
 
 export default {
   title: 'components/@common/Calendar',

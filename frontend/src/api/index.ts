@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ReservationRequestBodyType, CoachScheduleRequestBodyType } from '@/types/domain';
+import { CoachScheduleRequestBodyType, ReservationRequestBodyType } from '@/types/domain';
 
 const SERVER_URL = 'https://ternoko.site';
 

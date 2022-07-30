@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import * as S from './styled';
@@ -6,10 +6,10 @@ import * as S from './styled';
 import Button from '@/components/@common/Button/styled';
 
 import { ReservationType } from '@/types/domain';
-import { getReservationAPI } from '@/api';
-import { getDateString, getTimeString } from '@/utils';
 
+import { getReservationAPI } from '@/api';
 import { PAGE } from '@/constants';
+import { getDateString, getTimeString } from '@/utils';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();

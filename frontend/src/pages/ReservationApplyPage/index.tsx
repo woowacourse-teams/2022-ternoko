@@ -1,25 +1,27 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
-import TitleBox from '@/components/@common/TitleBox';
 import GridContainer from '@/components/@common/GridContainer/styled';
+import TitleBox from '@/components/@common/TitleBox';
+
+import Calendar from '@/components/Calendar';
 import CoachProfile from '@/components/CoachProfile';
 import TextAreaField from '@/components/TextAreaField';
-import Calendar from '@/components/Calendar';
 import Time from '@/components/Time/styled';
 
-import { CoachType, StringDictionary } from '@/types/domain';
-import { getCoachesAPI, postReservationAPI, getCoachScheduleAPI } from '@/api';
-
-import { useCalendarState, useCalendarActions, useCalendarUtils } from '@/context/CalendarProvider';
 import useTimes from '@/hooks/useTimes';
+
+import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+
+import { CoachType, StringDictionary } from '@/types/domain';
+
+import { getCoachScheduleAPI, getCoachesAPI, postReservationAPI } from '@/api';
+import { PAGE } from '@/constants';
 import { separateFullDate } from '@/utils';
 import { isOverApplyFormMinLength } from '@/validations';
-
-import { PAGE } from '@/constants';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 

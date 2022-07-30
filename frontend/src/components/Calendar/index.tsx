@@ -1,13 +1,14 @@
-import { useMemo, memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import * as S from './styled';
+
 import * as C from '@/components/@common/CalendarStyle/styled';
 
 import {
+  monthNames,
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
-  monthNames,
 } from '@/context/CalendarProvider';
 
 import { DayType } from '@/types/domain';

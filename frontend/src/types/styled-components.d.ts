@@ -1,6 +1,6 @@
 import 'styled-components';
 
-import { Colors, Shadows } from '../styles/theme';
+import { Colors, Shadows } from '@/types/styles/theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme {

@@ -1,14 +1,15 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+
 import styled from 'styled-components';
 
+import CoachHomePage from '@/pages/CoachHomePage';
+import CoachReservationCreatePage from '@/pages/CoachReservationCreatePage';
+import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import LoginRegisterPage from '@/pages/LoginRegisterPage';
-import HomePage from '@/pages/HomePage';
+import MyPage from '@/pages/MyPage';
 import ReservationApplyPage from '@/pages/ReservationApplyPage';
 import ReservationCompletePage from '@/pages/ReservationCompletePage';
-import CoachReservationCreatePage from '@/pages/CoachReservationCreatePage';
-import CoachHomePage from '@/pages/CoachHomePage';
-import MyPage from '@/pages/MyPage';
 
 import Header from '@/components/Header';
 

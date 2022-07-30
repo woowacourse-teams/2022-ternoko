@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { Day } from '../@common/CalendarStyle/styled';
+import { Day } from '@/components/@common/CalendarStyle/styled';
 
-import { DayType } from '../../types/domain';
+import { DayType } from '@/types/domain';
 
 export const Box = styled.div`
   width: 100%;

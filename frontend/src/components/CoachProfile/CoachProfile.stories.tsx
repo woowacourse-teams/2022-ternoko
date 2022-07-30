@@ -1,6 +1,6 @@
-import { Story } from '@storybook/react';
-
 import CoachProfile, { CoachProfileProps } from '.';
+
+import { Story } from '@storybook/react';
 
 export default {
   title: 'components/CoachProfile',

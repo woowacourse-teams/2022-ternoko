@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import * as S from './styled';
 
-import TitleBox from '@/components/@common/TitleBox';
 import Button from '@/components/@common/Button/styled';
+import TitleBox from '@/components/@common/TitleBox';
 
 import { PAGE } from '@/constants';
 

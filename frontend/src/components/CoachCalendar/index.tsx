@@ -1,19 +1,19 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import * as S from './styled';
+
 import * as C from '@/components/@common/CalendarStyle/styled';
 
 import {
+  monthNames,
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
-  monthNames,
 } from '@/context/CalendarProvider';
-
-import { getCoachReservationAPI } from '@/api';
 
 import { ReservationResponseType } from '@/types/domain';
 
+import { getCoachReservationAPI } from '@/api';
 import { separateFullDate } from '@/utils';
 
 const defaultCoachId = 12;

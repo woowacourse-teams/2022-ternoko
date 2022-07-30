@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as S from './styled';
 
-import Modal from '@/components/@common/Modal';
 import Accordion from '@/components/@common/Accordion';
-
+import Modal from '@/components/@common/Modal';
 import useModal from '@/components/@common/Modal/useModal';
 
 import { ReservationType } from '@/types/domain';
+
 import { getReservationAPI } from '@/api';
 import { getDateString, getTimeString } from '@/utils';
 

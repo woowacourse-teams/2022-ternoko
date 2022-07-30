@@ -3,25 +3,23 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
-import TitleBox from '@/components/@common/TitleBox';
 import Button from '@/components/@common/Button/styled';
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
-import Time from '@/components/Time/styled';
+import TitleBox from '@/components/@common/TitleBox';
+
 import Calendar from '@/components/Calendar';
+import Time from '@/components/Time/styled';
 
 import useTimes from '@/hooks/useTimes';
 
-import { useCalendarState, useCalendarActions, useCalendarUtils } from '@/context/CalendarProvider';
+import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
 import { CalendarTime } from '@/types/domain';
-
-import { postCoachScheduleAPI, getCoachScheduleAPI } from '@/api';
-
-import { separateFullDate, getFullDateString } from '@/utils';
-
 import { StringDictionary } from '@/types/domain';
 
+import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
 import { PAGE } from '@/constants';
+import { getFullDateString, separateFullDate } from '@/utils';
 
 const defaultTimes = [
   '10:00',
