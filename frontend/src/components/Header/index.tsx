@@ -2,8 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import * as S from './styled';
 
-const logoURL =
-  'https://user-images.githubusercontent.com/19251499/180158202-4d757b47-d804-45e4-b73b-9d6e13fe844b.png';
+import { PAGE } from '../../constants';
 
 const Header = () => {
   const location = useLocation();
@@ -11,13 +10,13 @@ const Header = () => {
   return (
     <S.Box>
       {location.pathname.includes('coach') ? (
-        <Link to="/coach/home">
-          <img src={logoURL} />
+        <Link to={PAGE.COACH_HOME}>
+          <img src="/assets/logo/mainLogo.png" alt="로고" />
           <h1>코치도 터놓고</h1>
         </Link>
       ) : (
-        <Link to="/">
-          <img src={logoURL} />
+        <Link to={PAGE.CREW_HOME}>
+          <img src="/assets/logo/mainLogo.png" alt="로고" />
           <h1>크루도 터놓고</h1>
         </Link>
       )}

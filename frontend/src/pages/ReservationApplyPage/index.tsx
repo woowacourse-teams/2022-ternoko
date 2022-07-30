@@ -23,6 +23,8 @@ import useTimes from '../../hooks/useTimes';
 import { separateFullDate } from '../../utils';
 import { isOverApplyFormMinLength } from '../../validations';
 
+import { PAGE } from '../../constants';
+
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
@@ -118,7 +120,7 @@ const ReservationApplyPage = () => {
     const response = await postReservationAPI(coachId, body);
     const location = response.headers.location;
 
-    navigate(`/reservation/complete/${location.split('/').pop()}`);
+    navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
   };
 
   useEffect(() => {
@@ -159,7 +161,7 @@ const ReservationApplyPage = () => {
 
   return (
     <>
-      <TitleBox to="/" title="면담 신청하기" />
+      <TitleBox to={PAGE.CREW_HOME} title="면담 신청하기" />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>

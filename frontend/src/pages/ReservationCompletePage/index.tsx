@@ -9,6 +9,8 @@ import { ReservationType } from '../../types/domain';
 import { getReservationAPI } from '../../api';
 import { getDateString, getTimeString } from '../../utils';
 
+import { PAGE } from '../../constants';
+
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
   const [reservation, setReservation] = useState<ReservationType | null>(null);
@@ -47,12 +49,12 @@ const ReservationCompletePage = () => {
       </S.InfoContainer>
 
       <S.ButtonContainer>
-        <Link to="/">
+        <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px" white={true}>
             면담확인
           </Button>
         </Link>
-        <Link to="/">
+        <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px">
             홈으로
           </Button>

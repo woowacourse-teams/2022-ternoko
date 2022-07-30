@@ -25,6 +25,8 @@ import { separateFullDate, getFullDateString } from '../../utils';
 
 import { StringDictionary } from '../../types/domain';
 
+import { PAGE } from '../../constants';
+
 const defaultTimes = [
   '10:00',
   '10:30',
@@ -173,7 +175,7 @@ const CoachReservationCreatePage = () => {
 
   return (
     <>
-      <TitleBox to="/coach/home" title="면담 스케쥴 만들기" />
+      <TitleBox to={PAGE.COACH_HOME} title="면담 스케쥴 만들기" />
 
       <S.Box>
         <S.DateBox>
@@ -192,7 +194,7 @@ const CoachReservationCreatePage = () => {
           </ScrollContainer>
         </S.DateBox>
         <S.ButtonContainer>
-          <Link to="/coach/home">
+          <Link to={PAGE.COACH_HOME}>
             <Button width="100%" height="35px" white={true}>
               홈으로
             </Button>

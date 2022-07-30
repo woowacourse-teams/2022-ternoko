@@ -9,8 +9,6 @@ import InputAreaField from '../../components/InputAreaField';
 
 import { isOverNicknameMinLength, isOverIntroduceMinLength } from '../../validations';
 
-const imageURL = 'https://www.tfmedia.co.kr/data/photos/20210730/art_1627367323247_0d08c3.jpg';
-
 const LoginRegisterPage = () => {
   const { search } = useLocation();
   const role = new URLSearchParams(search).get('role');
@@ -67,7 +65,7 @@ const LoginRegisterPage = () => {
         </S.LeftBox>
         <S.RightBox>
           <S.ProfileBox>
-            <img src={imageURL} alt="코치 프로필" />
+            <img src="/assets/image/sudal.png" alt="코치 프로필" />
             <S.Nickname>{nickname || '닉네임'}</S.Nickname>
             {role === 'coach' && (
               <S.Introduce>{introduce || '한 줄 소개를 입력해주세요.'}</S.Introduce>
