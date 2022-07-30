@@ -7,5 +7,20 @@
   "printWidth": 100,
   "arrowParens": "always",
   "endOfLine": "auto",
-  "jsxBracketSameLine": false
+  "jsxBracketSameLine": false,
+
+  "importOrder": [
+    "^(react)(.*|$)",
+    "^(styled-components)(.*|$)",
+    "^(./styled)(.*|$)",
+    "^(@/pages)(.*|$)",
+    "^(@/components/@common)(.*|$)",
+    "^(@/components)(.*|$)",
+    "^(@/hooks)(.*|$)",
+    "^(@/context)(.*|$)",
+    "^(@/types)(.*|$)",
+    "^(@|(constants|utils|api))(.*|$)"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
