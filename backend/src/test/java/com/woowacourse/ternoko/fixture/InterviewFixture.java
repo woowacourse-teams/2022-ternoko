@@ -26,8 +26,17 @@ public class InterviewFixture {
             new FormItemRequest("수정질문2", "수정답변2"),
             new FormItemRequest("수정질문3", "수정답변3"));
 
-    public static final List<FormItem> FORM_ITEMS = List.of(new FormItem("고정질문1", "답변1"),
+    public static final List<FormItem> FORM_ITEMS = List.of(new FormItem("고정질문1", "답변1"));
+    public static final List<FormItem> FORM_ITEMS1 = List.of(new FormItem("고정질문1", "답변1"),
+            new FormItem("고정질문1", "답변1"),
+            new FormItem("고정질문1", "답변1"));
+
+    public static final List<FormItem> FORM_ITEMS2 = List.of(new FormItem("고정질문2", "답변2"),
             new FormItem("고정질문2", "답변2"),
+            new FormItem("고정질문2", "답변2"));
+
+    public static final List<FormItem> FORM_ITEMS3 = List.of(new FormItem("고정질문3", "답변3"),
+            new FormItem("고정질문3", "답변3"),
             new FormItem("고정질문3", "답변3"));
 
     public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),
