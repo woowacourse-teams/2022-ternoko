@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import * as S from './styled';
 
-import Button from '../../components/@common/Button/styled';
+import Button from '@/components/@common/Button/styled';
 
-import { ReservationType } from '../../types/domain';
-import { getReservationAPI } from '../../api';
-import { getDateString, getTimeString } from '../../utils';
+import { ReservationType } from '@/types/domain';
+
+import { getReservationAPI } from '@/api';
+import { PAGE } from '@/constants';
+import { getDateString, getTimeString } from '@/utils';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
@@ -47,12 +49,12 @@ const ReservationCompletePage = () => {
       </S.InfoContainer>
 
       <S.ButtonContainer>
-        <Link to="/">
+        <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px" white={true}>
             면담확인
           </Button>
         </Link>
-        <Link to="/">
+        <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px">
             홈으로
           </Button>

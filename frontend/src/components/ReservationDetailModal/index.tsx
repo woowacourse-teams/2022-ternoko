@@ -1,23 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as S from './styled';
 
-import Modal from '../../components/@common/Modal';
-import Accordion from '../../components/@common/Accordion';
+import Accordion from '@/components/@common/Accordion';
+import Modal from '@/components/@common/Modal';
+import useModal from '@/components/@common/Modal/useModal';
 
-import useModal from '../../components/@common/Modal/useModal';
+import { ReservationType } from '@/types/domain';
 
-import { ReservationType } from '../../types/domain';
-import { getReservationAPI } from '../../api';
-import { getDateString, getTimeString } from '../../utils';
-
-const deleteIconURL =
-  'https://icons-for-free.com/download-icon-delete+remove+trash+trash+bin+trash+can+icon-1320073117929397588_512.png';
-const closeIconURL = 'https://icons-for-free.com/download-icon-CLOSE-131994911256789607_512.png';
-const calendarIconURL = 'https://cdn-icons-png.flaticon.com/512/7088/7088625.png';
-const timeIconURL = 'https://cdn-icons-png.flaticon.com/512/88/88291.png';
-const coachImageURL =
-  'https://cdn-icons.flaticon.com/png/512/4623/premium/4623628.png?token=exp=1658972292~hmac=d7731fb9dea54ad0251f9d08247cf4e7';
+import { getReservationAPI } from '@/api';
+import { getDateString, getTimeString } from '@/utils';
 
 type ReservationDetailModalProps = {
   role: 'coach' | 'crew';
@@ -45,9 +37,9 @@ const ReservationDetailModal = ({ role, reservationId }: ReservationDetailModalP
       handleCloseModal={handleCloseModal}
     >
       <S.IconContainer>
-        <S.Icon src={deleteIconURL} alt="삭제 아이콘" active />
+        <S.Icon src="/assets/icon/delete.png" alt="삭제 아이콘" active />
         <S.Icon
-          src={closeIconURL}
+          src="/assets/icon/close.png"
           alt="모달 창 닫기 아이콘"
           active
           agg
@@ -62,20 +54,20 @@ const ReservationDetailModal = ({ role, reservationId }: ReservationDetailModalP
         {role === 'crew' && (
           <S.Info>
             <S.IconBox>
-              <S.Icon src={coachImageURL} alt="코치 아이콘" />
+              <S.Icon src="/assets/icon/human.png" alt="코치 아이콘" />
             </S.IconBox>
             <p>{reservation?.coachNickname}</p>
           </S.Info>
         )}
         <S.Info>
           <S.IconBox>
-            <S.Icon src={calendarIconURL} alt="달력 아이콘" />
+            <S.Icon src="/assets/icon/calendar.png" alt="달력 아이콘" />
           </S.IconBox>
           <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <S.IconBox>
-            <S.Icon src={timeIconURL} alt="시간 아이콘" />
+            <S.Icon src="/assets/icon/clock.png" alt="시간 아이콘" />
           </S.IconBox>
           <p>
             {reservation &&

@@ -1,6 +1,6 @@
-import { Story } from '@storybook/react';
-
 import TextAreaField, { TextAreaFieldProps } from '.';
+
+import { Story } from '@storybook/react';
 
 export default {
   title: 'components/TextAreaField',

@@ -3,27 +3,23 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
-import TitleBox from '../../components/@common/TitleBox';
-import Button from '../../components/@common/Button/styled';
-import ScrollContainer from '../../components/@common/ScrollContainer/styled';
-import Time from '../../components/Time/styled';
-import Calendar from '../../components/Calendar';
+import Button from '@/components/@common/Button/styled';
+import ScrollContainer from '@/components/@common/ScrollContainer/styled';
+import TitleBox from '@/components/@common/TitleBox';
 
-import useTimes from '../../hooks/useTimes';
+import Calendar from '@/components/Calendar';
+import Time from '@/components/Time/styled';
 
-import {
-  useCalendarState,
-  useCalendarActions,
-  useCalendarUtils,
-} from '../../context/CalendarProvider';
+import useTimes from '@/hooks/useTimes';
 
-import { CalendarTime } from '../../types/domain';
+import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
-import { postCoachScheduleAPI, getCoachScheduleAPI } from '../../api';
+import { CalendarTime } from '@/types/domain';
+import { StringDictionary } from '@/types/domain';
 
-import { separateFullDate, getFullDateString } from '../../utils';
-
-import { StringDictionary } from '../../types/domain';
+import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
+import { PAGE } from '@/constants';
+import { getFullDateString, separateFullDate } from '@/utils';
 
 const defaultTimes = [
   '10:00',
@@ -43,8 +39,6 @@ const defaultTimes = [
   '17:00',
   '17:30',
 ];
-
-const defaultCoachId = 12;
 
 const CoachReservationCreatePage = () => {
   const { year, month, selectedDates } = useCalendarState();
@@ -137,7 +131,7 @@ const CoachReservationCreatePage = () => {
     };
 
     try {
-      await postCoachScheduleAPI(defaultCoachId, body);
+      await postCoachScheduleAPI(body);
       resetSelectedDates();
       resetTimes();
       alert('등록됐습니다.');
@@ -149,7 +143,8 @@ const CoachReservationCreatePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
+      // 추후 response 타입 필요
+      const response = await getCoachScheduleAPI(year, month + 1);
 
       const recentCalendarTimes = compactCalendarTimes(
         response.data.calendarTimes.map((calendarTime: string) => {
@@ -173,7 +168,7 @@ const CoachReservationCreatePage = () => {
 
   return (
     <>
-      <TitleBox to="/coach/home" title="면담 스케쥴 만들기" />
+      <TitleBox to={PAGE.COACH_HOME} title="면담 스케쥴 만들기" />
 
       <S.Box>
         <S.DateBox>
@@ -192,7 +187,7 @@ const CoachReservationCreatePage = () => {
           </ScrollContainer>
         </S.DateBox>
         <S.ButtonContainer>
-          <Link to="/coach/home">
+          <Link to={PAGE.COACH_HOME}>
             <Button width="100%" height="35px" white={true}>
               홈으로
             </Button>

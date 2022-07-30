@@ -1,8 +1,8 @@
-import { Story } from '@storybook/react';
-
 import Reservation from '.';
 
-import { ReservationType } from 'types/domain';
+import { ReservationType } from '@/types/domain';
+
+import { Story } from '@storybook/react';
 
 export default {
   title: 'components/Reservation',

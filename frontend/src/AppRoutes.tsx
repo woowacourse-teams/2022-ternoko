@@ -1,46 +1,52 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+
 import styled from 'styled-components';
 
-import LoginPage from './pages/LoginPage';
-import LoginRegisterPage from './pages/LoginRegisterPage';
-import HomePage from './pages/HomePage';
-import ReservationApplyPage from './pages/ReservationApplyPage';
-import ReservationCompletePage from './pages/ReservationCompletePage';
-import CoachReservationCreatePage from './pages/CoachReservationCreatePage';
-import CoachHomePage from './pages/CoachHomePage';
-import MyPage from './pages/MyPage';
+import CoachHomePage from '@/pages/CoachHomePage';
+import CoachReservationCreatePage from '@/pages/CoachReservationCreatePage';
+import HomePage from '@/pages/HomePage';
+import LoginPage from '@/pages/LoginPage';
+import LoginRegisterPage from '@/pages/LoginRegisterPage';
+import MyPage from '@/pages/MyPage';
+import ReservationApplyPage from '@/pages/ReservationApplyPage';
+import ReservationCompletePage from '@/pages/ReservationCompletePage';
 
-import Header from './components/Header';
+import Header from '@/components/Header';
 
-import CalendarProvider from './context/CalendarProvider';
+import CalendarProvider from '@/context/CalendarProvider';
+
+import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path={PAGE.LOGIN} element={<LoginPage />} />
         <Route path="/" element={<Layout />}>
-          <Route path="/login/register" element={<LoginRegisterPage />} />
-          <Route path="" element={<HomePage />} />
+          <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
+          <Route path={PAGE.CREW_HOME} element={<HomePage />} />
           <Route
-            path="reservation/apply"
+            path={PAGE.RESERVATION_APPLY}
             element={
               <CalendarProvider selectMode="single">
                 <ReservationApplyPage />
               </CalendarProvider>
             }
           />
-          <Route path="reservation/complete/:reservationId" element={<ReservationCompletePage />} />
           <Route
-            path="coach/reservation/create"
+            path={`${PAGE.RESERVATION_COMPLETE}/reservationId`}
+            element={<ReservationCompletePage />}
+          />
+          <Route
+            path={PAGE.COACH_RESERVATION_CREATE}
             element={
               <CalendarProvider selectMode="multiple">
                 <CoachReservationCreatePage />
               </CalendarProvider>
             }
           />
-          <Route path="coach/home" element={<CoachHomePage />} />
-          <Route path="/mypage" element={<MyPage />} />
+          <Route path={PAGE.COACH_HOME} element={<CoachHomePage />} />
+          <Route path={PAGE.MY_PAGE} element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

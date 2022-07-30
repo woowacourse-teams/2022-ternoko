@@ -1,8 +1,8 @@
+import { StepStatus } from '.';
+
 import styled, { css, keyframes } from 'styled-components';
 
-import ScrollContainer from '../../components/@common/ScrollContainer/styled';
-
-import { StepStatus } from '.';
+import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 
 export const Container = styled.div`
   display: flex;

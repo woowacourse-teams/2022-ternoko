@@ -1,22 +1,20 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import * as S from './styled';
-import * as C from '../@common/CalendarStyle/styled';
+
+import * as C from '@/components/@common/CalendarStyle/styled';
 
 import {
+  monthNames,
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
-  monthNames,
-} from '../../context/CalendarProvider';
+} from '@/context/CalendarProvider';
 
-import { getCoachReservationAPI } from '../../api';
+import { ReservationType } from '@/types/domain';
 
-import { ReservationResponseType } from '../../types/domain';
-
-import { separateFullDate } from '../../utils';
-
-const defaultCoachId = 12;
+import { getCoachReservationAPI } from '@/api';
+import { separateFullDate } from '@/utils';
 
 type ScheduleType = {
   id: number;
@@ -38,12 +36,12 @@ const CoachCalendar = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachReservationAPI(defaultCoachId, year, month + 1);
+      const response = await getCoachReservationAPI(year, month + 1);
 
       const schedules = response.data.calendar.reduce(
         (
           acc: SchedulesType,
-          { id, crewNickname, interviewStartTime, interviewEndTime }: ReservationResponseType,
+          { id, crewNickname, interviewStartTime, interviewEndTime }: ReservationType,
         ) => {
           const { day, time: startTime } = separateFullDate(interviewStartTime);
           const { time: endTime } = separateFullDate(interviewEndTime);

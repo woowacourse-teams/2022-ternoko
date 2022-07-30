@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import * as S from './styled';
 
-import TitleBox from '../../components/@common/TitleBox';
-import Button from '../../components/@common/Button/styled';
+import Button from '@/components/@common/Button/styled';
+import TitleBox from '@/components/@common/TitleBox';
 
-const imageURL = 'https://www.tfmedia.co.kr/data/photos/20210730/art_1627367323247_0d08c3.jpg';
+import { PAGE } from '@/constants';
 
 const MyPage = () => {
   const { search } = useLocation();
@@ -53,7 +54,7 @@ const MyPage = () => {
 
       <S.Box>
         <S.ProfileBox>
-          <img src={imageURL} alt="코치 프로필" />
+          <img src="/assets/image/sudal.png" alt="코치 프로필" />
           <S.InfoBox>
             <S.Info>
               <label htmlFor="nickname">닉네임</label>
@@ -85,7 +86,7 @@ const MyPage = () => {
           </S.ButtonContainer>
         ) : (
           <S.ButtonContainer>
-            <Link to="/">
+            <Link to={role === 'coach' ? PAGE.COACH_HOME : PAGE.CREW_HOME}>
               <Button width="100%" white={true}>
                 홈으로
               </Button>

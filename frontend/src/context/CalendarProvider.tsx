@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 
-import { SelectMode } from '../types/domain';
+import { SelectMode } from '@/types/domain';
 
 type CalendarProviderProps = {
   selectMode: SelectMode;

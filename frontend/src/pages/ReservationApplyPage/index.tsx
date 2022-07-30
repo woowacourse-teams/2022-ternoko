@@ -1,27 +1,27 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
-import Button from '../../components/@common/Button/styled';
-import TitleBox from '../../components/@common/TitleBox';
-import GridContainer from '../../components/@common/GridContainer/styled';
-import CoachProfile from '../../components/CoachProfile';
-import TextAreaField from '../../components/TextAreaField';
-import Calendar from '../../components/Calendar';
-import Time from '../../components/Time/styled';
+import Button from '@/components/@common/Button/styled';
+import GridContainer from '@/components/@common/GridContainer/styled';
+import TitleBox from '@/components/@common/TitleBox';
 
-import { CoachType, StringDictionary } from '../../types/domain';
-import { getCoachesAPI, postReservationAPI, getCoachScheduleAPI } from '../../api';
+import Calendar from '@/components/Calendar';
+import CoachProfile from '@/components/CoachProfile';
+import TextAreaField from '@/components/TextAreaField';
+import Time from '@/components/Time/styled';
 
-import {
-  useCalendarState,
-  useCalendarActions,
-  useCalendarUtils,
-} from '../../context/CalendarProvider';
-import useTimes from '../../hooks/useTimes';
-import { separateFullDate } from '../../utils';
-import { isOverApplyFormMinLength } from '../../validations';
+import useTimes from '@/hooks/useTimes';
+
+import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+
+import { CoachType, StringDictionary } from '@/types/domain';
+
+import { getCoachScheduleAPI, getCoachesAPI, postReservationAPI } from '@/api';
+import { PAGE } from '@/constants';
+import { separateFullDate } from '@/utils';
+import { isOverApplyFormMinLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -97,8 +97,8 @@ const ReservationApplyPage = () => {
       return;
 
     const body = {
+      coachId,
       interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
-      crewNickname: '록바',
       interviewQuestions: [
         {
           question: '이번 면담을 통해 논의하고 싶은 내용',
@@ -115,10 +115,10 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await postReservationAPI(coachId, body);
+    const response = await postReservationAPI(body);
     const location = response.headers.location;
 
-    navigate(`/reservation/complete/${location.split('/').pop()}`);
+    navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
   };
 
   useEffect(() => {
@@ -130,10 +130,8 @@ const ReservationApplyPage = () => {
 
   useEffect(() => {
     if (stepStatus[1] === 'show') {
-      const defaultCoachId = 12;
-
       (async () => {
-        const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
+        const response = await getCoachScheduleAPI(year, month + 1);
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, fullDate: string) => {
@@ -159,7 +157,7 @@ const ReservationApplyPage = () => {
 
   return (
     <>
-      <TitleBox to="/" title="면담 신청하기" />
+      <TitleBox to={PAGE.CREW_HOME} title="면담 신청하기" />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>

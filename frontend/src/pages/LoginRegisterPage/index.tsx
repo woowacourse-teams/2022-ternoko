@@ -3,13 +3,12 @@ import { useLocation } from 'react-router-dom';
 
 import * as S from './styled';
 
-import Button from '../../components/@common/Button/styled';
-import TextAreaField from '../../components/TextAreaField';
-import InputAreaField from '../../components/InputAreaField';
+import Button from '@/components/@common/Button/styled';
 
-import { isOverNicknameMinLength, isOverIntroduceMinLength } from '../../validations';
+import InputAreaField from '@/components/InputAreaField';
+import TextAreaField from '@/components/TextAreaField';
 
-const imageURL = 'https://www.tfmedia.co.kr/data/photos/20210730/art_1627367323247_0d08c3.jpg';
+import { isOverIntroduceMinLength, isOverNicknameMinLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const { search } = useLocation();
@@ -67,7 +66,7 @@ const LoginRegisterPage = () => {
         </S.LeftBox>
         <S.RightBox>
           <S.ProfileBox>
-            <img src={imageURL} alt="코치 프로필" />
+            <img src="/assets/image/sudal.png" alt="코치 프로필" />
             <S.Nickname>{nickname || '닉네임'}</S.Nickname>
             {role === 'coach' && (
               <S.Introduce>{introduce || '한 줄 소개를 입력해주세요.'}</S.Introduce>

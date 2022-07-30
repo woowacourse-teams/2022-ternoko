@@ -1,6 +1,6 @@
 import * as S from './styled';
 
-import ErrorMessage from '../../components/@common/ErrorMessage/styled';
+import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 
 export type TextAreaFieldProps = {
   id: string;

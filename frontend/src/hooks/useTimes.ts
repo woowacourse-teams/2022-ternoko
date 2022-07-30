@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { SelectMode } from '../types/domain';
+import { SelectMode } from '@/types/domain';
 
 type useTimesProps = {
   selectMode: SelectMode;
