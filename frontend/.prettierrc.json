@@ -8,7 +8,6 @@
   "arrowParens": "always",
   "endOfLine": "auto",
   "jsxBracketSameLine": false,
-
   "importOrder": [
     "^(react)(.*|$)",
     "^(styled-components)(.*|$)",
