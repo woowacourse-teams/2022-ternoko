@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { ReservationRequestBodyType, CoachScheduleRequestBodyType } from '../types/domain';
 
-const SERVER_URL = 'http://15.164.218.98:8080';
+const SERVER_URL = 'https://ternoko.site';
 
 export const getCoachesAPI = () => axios.get(`${SERVER_URL}/api/reservations/coaches`);
 
