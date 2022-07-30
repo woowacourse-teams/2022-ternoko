@@ -97,8 +97,8 @@ const ReservationApplyPage = () => {
       return;
 
     const body = {
+      coachId,
       interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
-      crewNickname: '록바',
       interviewQuestions: [
         {
           question: '이번 면담을 통해 논의하고 싶은 내용',
@@ -115,7 +115,7 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await postReservationAPI(coachId, body);
+    const response = await postReservationAPI(body);
     const location = response.headers.location;
 
     navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
@@ -130,10 +130,8 @@ const ReservationApplyPage = () => {
 
   useEffect(() => {
     if (stepStatus[1] === 'show') {
-      const defaultCoachId = 12;
-
       (async () => {
-        const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
+        const response = await getCoachScheduleAPI(year, month + 1);
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, fullDate: string) => {

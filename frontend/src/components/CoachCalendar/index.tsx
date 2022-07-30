@@ -11,12 +11,10 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { ReservationResponseType } from '@/types/domain';
+import { ReservationType } from '@/types/domain';
 
 import { getCoachReservationAPI } from '@/api';
 import { separateFullDate } from '@/utils';
-
-const defaultCoachId = 12;
 
 type ScheduleType = {
   id: number;
@@ -38,12 +36,12 @@ const CoachCalendar = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachReservationAPI(defaultCoachId, year, month + 1);
+      const response = await getCoachReservationAPI(year, month + 1);
 
       const schedules = response.data.calendar.reduce(
         (
           acc: SchedulesType,
-          { id, crewNickname, interviewStartTime, interviewEndTime }: ReservationResponseType,
+          { id, crewNickname, interviewStartTime, interviewEndTime }: ReservationType,
         ) => {
           const { day, time: startTime } = separateFullDate(interviewStartTime);
           const { time: endTime } = separateFullDate(interviewEndTime);

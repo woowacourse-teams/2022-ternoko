@@ -40,8 +40,6 @@ const defaultTimes = [
   '17:30',
 ];
 
-const defaultCoachId = 12;
-
 const CoachReservationCreatePage = () => {
   const { year, month, selectedDates } = useCalendarState();
   const { resetSelectedDates, setDay } = useCalendarActions();
@@ -133,7 +131,7 @@ const CoachReservationCreatePage = () => {
     };
 
     try {
-      await postCoachScheduleAPI(defaultCoachId, body);
+      await postCoachScheduleAPI(body);
       resetSelectedDates();
       resetTimes();
       alert('등록됐습니다.');
@@ -145,7 +143,8 @@ const CoachReservationCreatePage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachScheduleAPI(defaultCoachId, year, month + 1);
+      // 추후 response 타입 필요
+      const response = await getCoachScheduleAPI(year, month + 1);
 
       const recentCalendarTimes = compactCalendarTimes(
         response.data.calendarTimes.map((calendarTime: string) => {
