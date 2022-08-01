@@ -1,45 +1,44 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
-import useCalendar from './useCalendar';
 import * as S from './styled';
 
-import { StepStatus } from '../../pages/ReservationApplyPage';
+import * as C from '@/components/@common/CalendarStyle/styled';
+
+import {
+  monthNames,
+  useCalendarActions,
+  useCalendarState,
+  useCalendarUtils,
+} from '@/context/CalendarProvider';
+
+import { DayType } from '@/types/domain';
 
 export type CalendarProps = {
-  currentDay: number;
-  stepStatus: StepStatus[];
-  handleClickDay: (date: number) => () => void;
+  rerenderCondition?: number;
+  getHandleClickDay: (day: number) => () => void;
+  getDayType: (day: number) => DayType;
 };
 
-const Calendar = ({ currentDay, stepStatus, handleClickDay }: CalendarProps) => {
-  const {
-    daysKey,
-    daysLength,
-    monthNames,
-    month,
-    year,
-    showMonthPicker,
-    getHandleClickMonth,
-    handleClickPrevYear,
-    handleClickNextYear,
-    handleClickMonthPicker,
-    getDay,
-    isToday,
-    isOverFirstDay,
-  } = useCalendar({ stepStatus });
+const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: CalendarProps) => {
+  const { year, month, showMonthPicker } = useCalendarState();
+  const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
+    useCalendarActions();
+  const { daysLength, isToday, isBeforeToday, isOverFirstDay, getDay } = useCalendarUtils();
+  const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (
     <S.Box>
-      <S.Header>
-        <S.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</S.MonthPicker>
-        <S.YearPicker>
-          <S.YearChange onClick={handleClickPrevYear}>{'<'}</S.YearChange>
+      <C.Header>
+        <C.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</C.MonthPicker>
+        <C.YearPicker>
+          <C.YearChange onClick={handleClickPrevYear}>{'<'}</C.YearChange>
           <p>{year}</p>
-          <S.YearChange onClick={handleClickNextYear}>{'>'}</S.YearChange>
-        </S.YearPicker>
-      </S.Header>
-      <S.Body>
-        <S.WeekDay>
+          <C.YearChange onClick={handleClickNextYear}>{'>'}</C.YearChange>
+        </C.YearPicker>
+      </C.Header>
+
+      <C.Body>
+        <C.WeekDay>
           <div>Sun</div>
           <div>Mon</div>
           <div>Tue</div>
@@ -47,48 +46,56 @@ const Calendar = ({ currentDay, stepStatus, handleClickDay }: CalendarProps) => 
           <div>Thu</div>
           <div>Fri</div>
           <div>Sat</div>
-        </S.WeekDay>
-        <S.Days key={daysKey}>
+        </C.WeekDay>
+        <C.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
 
               if (isToday(day)) {
                 return (
-                  <S.Day
+                  <S.CalendarDay
                     key={index}
+                    type={getDayType(day)}
                     today
-                    onClick={handleClickDay(day)}
-                    active={currentDay === day}
+                    onClick={getHandleClickDay(day)}
                   >
                     {day}
-                  </S.Day>
+                  </S.CalendarDay>
+                );
+              }
+
+              if (isBeforeToday(day)) {
+                return (
+                  <S.CalendarDay key={index} type="disable" onClick={getHandleClickDay(day)}>
+                    {day}
+                  </S.CalendarDay>
                 );
               }
 
               return (
-                <S.Day key={index} onClick={handleClickDay(day)} active={currentDay === day}>
+                <S.CalendarDay key={index} type={getDayType(day)} onClick={getHandleClickDay(day)}>
                   {day}
                   <span />
                   <span />
                   <span />
                   <span />
-                </S.Day>
+                </S.CalendarDay>
               );
             }
 
-            return <S.Day key={index} />;
+            return <S.CalendarDay key={index} />;
           })}
-        </S.Days>
-      </S.Body>
+        </C.Days>
+      </C.Body>
 
-      <S.MonthContainer show={showMonthPicker}>
+      <C.MonthContainer show={showMonthPicker}>
         {monthNames.map((monthName, index) => (
           <div key={index} onClick={getHandleClickMonth(index)}>
             {monthName}
           </div>
         ))}
-      </S.MonthContainer>
+      </C.MonthContainer>
     </S.Box>
   );
 };

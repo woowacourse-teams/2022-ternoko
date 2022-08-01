@@ -27,8 +27,27 @@ public class Reservation {
     @Column(nullable = false)
     private boolean isAccepted;
 
+    public Reservation(Long id, Interview interview, boolean isAccepted) {
+        this.id = id;
+        this.interview = interview;
+        this.isAccepted = isAccepted;
+    }
+
     public Reservation(Interview interview, boolean isAccepted) {
         this.interview = interview;
         this.isAccepted = isAccepted;
+    }
+
+    public void update(Interview updatedInterview) {
+        this.interview = updatedInterview;
+        this.isAccepted = false;
+    }
+
+    public boolean sameCrew(Long crewId) {
+        return interview.sameCrew(crewId);
+    }
+
+    public boolean sameCoach(Long coachId) {
+        return interview.sameCoach(coachId);
     }
 }

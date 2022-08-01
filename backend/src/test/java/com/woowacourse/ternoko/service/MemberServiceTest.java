@@ -1,9 +1,7 @@
 package com.woowacourse.ternoko.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.woowacourse.ternoko.domain.Member;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class MemberServiceTest {
+class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
 
     @Test
-    @DisplayName("코치 목록을 조회한다.")
-    void findCoaches() {
-        // when
-        final List<Member> coaches = memberService.findCoaches();
+    @DisplayName("회원 가입시, 이름 중복 검사")
+    void checkUniqueNickname() {
+        final String duplicateNickname = "토미";
 
-        // then
-        assertThat(coaches).extracting("nickname")
-                .contains("준", "브리", "토미", "네오");
+        assertTrue(memberService.hasNickname(duplicateNickname).isExists());
     }
 }

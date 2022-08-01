@@ -1,30 +1,13 @@
-import styled, { css, keyframes } from 'styled-components';
 import { StepStatus } from '.';
+
+import styled, { css, keyframes } from 'styled-components';
+
+import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`;
-
-const slideDown = keyframes`
-  from {
-    max-height: 0;   
-  }
-  
-  to {
-    max-height: 1000px;
-  }
-`;
-
-const slideUp = keyframes`
-  from {
-    max-height: 1000px;  
-  }
-
-  to {
-    max-height: 0;
-  }
 `;
 
 type BoxProps = {
@@ -63,10 +46,8 @@ export const Box = styled.div<BoxProps>`
       z-index: 1;
 
       .fold-box {
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-        animation-timing-function: linear;
-        animation-name: ${slideDown};
+        max-height: 1000px;
+        transition: max-height 0.5s cubic-bezier(0.25, 0.25, 0.75, 0.75);
       }
     `}
 
@@ -98,10 +79,8 @@ export const Box = styled.div<BoxProps>`
       }
 
       .fold-box {
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-        animation-timing-function: linear;
-        animation-name: ${slideUp};
+        max-height: 0;
+        transition: max-height 0.4s cubic-bezier(0, 1, 1, 1);
       }
     `}
 `;
@@ -167,37 +146,17 @@ export const DateBox = styled.div`
   padding-bottom: 3rem;
 `;
 
-export const TimeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  height: 42rem;
-  overflow-y: scroll;
-  padding-right: 3rem;
+const toLeft = keyframes`
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 `;
 
-type TimeProps = {
-  active: boolean;
-};
-
-export const Time = styled.div<TimeProps>`
-  padding: 1.5rem 5rem;
-  color: ${({ theme }) => theme.colors.pink_200};
-  border: 1px solid ${({ theme }) => theme.colors.gray_150};
-  color: black;
-  font-weight: 600;
-  font-size: 1.4rem;
-  cursor: pointer;
-
-  :hover {
-    background-color: ${({ theme }) => theme.colors.pink_50};
-    border: 1px solid ${({ theme }) => theme.colors.pink_200};
-  }
-
-  ${({ active }) =>
-    active &&
-    css`
-      background-color: ${({ theme }) => theme.colors.pink_50};
-      border: 1px solid ${({ theme }) => theme.colors.pink_200};
-    `}
+export const TimeContainer = styled(ScrollContainer)`
+  animation: ${toLeft} 1s;
 `;

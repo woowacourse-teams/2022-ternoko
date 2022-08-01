@@ -2,17 +2,7 @@ export interface CoachType {
   id: number;
   nickname: string;
   imageUrl: string;
-}
-
-export interface ReservationType {
-  id: number;
-  imageUrl: string;
-  crewNickname: string;
-  coachNickname: string;
-  interviewDate: string;
-  interviewStartTime: string;
-  interviewEndTime: string;
-  location: string;
+  introduce: string;
 }
 
 interface InterviewQuestionType {
@@ -21,8 +11,38 @@ interface InterviewQuestionType {
 }
 
 export interface ReservationRequestBodyType {
+  coachId: number;
   interviewDatetime: string;
-  crewNickname: string;
-  location: string;
   interviewQuestions: InterviewQuestionType[];
 }
+
+type ReservationStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
+
+export interface ReservationType {
+  id: number;
+  coachNickname: string;
+  imageUrl: string;
+  crewNickname: string;
+  interviewStartTime: string;
+  interviewEndTime: string;
+  status: ReservationStatus;
+  interviewQuestions: InterviewQuestionType[];
+}
+
+export interface CalendarTime {
+  year: number;
+  month: number;
+  times: string[];
+}
+
+export interface CoachScheduleRequestBodyType {
+  calendarTimes: CalendarTime[];
+}
+
+export type StringDictionary = {
+  [key: string]: string[];
+};
+
+export type SelectMode = 'single' | 'multiple';
+
+export type DayType = 'default' | 'disable' | 'active';

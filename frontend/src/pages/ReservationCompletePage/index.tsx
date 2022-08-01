@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import Button from '../../components/@common/Button/styled';
 import * as S from './styled';
 
-import { ReservationType } from 'types/domain';
-import { getReservationAPI } from '../../api';
+import Button from '@/components/@common/Button/styled';
+
+import { ReservationType } from '@/types/domain';
+
+import { getReservationAPI } from '@/api';
+import { PAGE } from '@/constants';
+import { getDateString, getTimeString } from '@/utils';
 
 const ReservationCompletePage = () => {
   const { reservationId } = useParams();
@@ -32,25 +36,25 @@ const ReservationCompletePage = () => {
         </S.Info>
         <S.Info>
           <p>날짜</p>
-          <p>{reservation?.interviewDate.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1년 $2월 $3일')}</p>
+          <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>시작</p>
-          <p>{reservation?.interviewStartTime}</p>
+          <p>{reservation && getTimeString(reservation.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>종료</p>
-          <p>{reservation?.interviewEndTime}</p>
+          <p>{reservation && getTimeString(reservation.interviewEndTime)}</p>
         </S.Info>
       </S.InfoContainer>
 
       <S.ButtonContainer>
-        <Link to="/">
+        <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px" white={true}>
             면담확인
           </Button>
         </Link>
-        <Link to="/">
+        <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px">
             홈으로
           </Button>

@@ -1,9 +1,11 @@
 package com.woowacourse.ternoko.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.member.Crew;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,41 +30,87 @@ public class Interview {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate interviewDate;
+    private LocalDateTime interviewStartTime;
 
     @Column(nullable = false)
-    private LocalTime interviewStartTime;
-
-    @Column(nullable = false)
-    private LocalTime interviewEndTime;
+    private LocalDateTime interviewEndTime;
 
     @OneToOne
-    @JoinColumn(name = "member_id")
-    private Member coach;
+    @JoinColumn(name = "coach_id")
+    private Coach coach;
 
-    @Column(nullable = false)
-    private String crewNickname;
+    @OneToOne
+    @JoinColumn(name = "crew_id")
+    private Crew crew;
 
-    @Enumerated(EnumType.STRING)
-    private Location location;
-
-    @OneToMany
-    @JoinColumn(name = "formItem_id")
+    @OneToMany(mappedBy = "interview", cascade = CascadeType.DETACH)
     private List<FormItem> formItems = new ArrayList<>();
 
-    public Interview(LocalDate interviewDate,
-                     LocalTime interviewStartTime,
-                     LocalTime interviewEndTime,
-                     Member coach,
-                     String crewNickname,
-                     Location location,
-                     List<FormItem> formItems) {
-        this.interviewDate = interviewDate;
+    @Enumerated(EnumType.STRING)
+    private InterviewStatusType interviewStatusType;
+
+    public Interview(final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
+                     final List<FormItem> formItems,
+                     final InterviewStatusType interviewStatusType) {
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
-        this.crewNickname = crewNickname;
-        this.location = location;
+        this.crew = crew;
         this.formItems = formItems;
+        this.interviewStatusType = interviewStatusType;
+    }
+
+    public Interview(final Long id,
+                     final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
+                     final InterviewStatusType interviewStatusType) {
+        this.id = id;
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crew = crew;
+        this.interviewStatusType = interviewStatusType;
+    }
+
+    public Interview(final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew) {
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crew = crew;
+        this.interviewStatusType = InterviewStatusType.EDITABLE;
+    }
+
+    public void update(Interview updateInterview) {
+
+        this.interviewStartTime = updateInterview.getInterviewStartTime();
+        this.interviewEndTime = updateInterview.getInterviewEndTime();
+        this.coach = updateInterview.getCoach();
+        this.crew = updateInterview.getCrew();
+        this.interviewStatusType = updateInterview.getInterviewStatusType();
+    }
+
+    public Interview cancel() {
+        return new Interview(this.id,
+                this.getInterviewStartTime(),
+                this.getInterviewEndTime(),
+                this.getCoach(),
+                this.getCrew(),
+                InterviewStatusType.CANCELED);
+    }
+
+    public boolean sameCrew(Long crewId) {
+        return crew.sameMember(crewId);
+    }
+
+    public boolean sameCoach(Long coachId) {
+        return coach.sameMember(coachId);
     }
 }

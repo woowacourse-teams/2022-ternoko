@@ -1,15 +1,16 @@
-import Button from '../../components/@common/Button/styled';
-
 import * as S from './styled';
-import { ReservationType } from 'types/domain';
+
+import Button from '@/components/@common/Button/styled';
+
+import { ReservationType } from '@/types/domain';
+
+import { getDateString, getTimeString } from '@/utils';
 
 const Reservation = ({
   coachNickname,
   imageUrl,
-  interviewDate,
   interviewStartTime,
   interviewEndTime,
-  location,
 }: ReservationType) => {
   return (
     <S.Box>
@@ -17,24 +18,20 @@ const Reservation = ({
         <S.ProfileImage src={imageUrl} alt="코치 프로필" />
         <S.CoachName>{coachNickname}</S.CoachName>
       </S.ImageTextBox>
-
       <S.ImageTextBox>
-        <S.IconImage src="https://cdn-icons-png.flaticon.com/512/7088/7088625.png" alt="" />
-        <p>{interviewDate}</p>
+        <S.IconImage src="/assets/icon/calendar.png" alt="달력 아이콘" />
+        <p>{getDateString(interviewStartTime)}</p>
       </S.ImageTextBox>
       <S.ImageTextBox>
-        <S.IconImage src="https://cdn-icons-png.flaticon.com/512/88/88291.png" alt="" />
+        <S.IconImage src="/assets/icon/clock" alt="시계 아이콘" />
         <p>
-          {interviewStartTime} ~ {interviewEndTime}
+          {getTimeString(interviewStartTime)} ~ {getTimeString(interviewEndTime)}
         </p>
       </S.ImageTextBox>
-      <S.ImageTextBox>
-        <S.IconImage src="https://cdn-icons-png.flaticon.com/512/535/535239.png" alt="" />
-        <p>{location}</p>
-      </S.ImageTextBox>
+
       <S.ButtonBox>
         <Button orange={true}>
-          <S.ButtonImage src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="" />
+          <S.ButtonImage src="/assets/icon/edit" alt="편집 아이콘" />
           편집
         </Button>
       </S.ButtonBox>

@@ -1,0 +1,60 @@
+= TERNOKO API Document
+2022-ternoko
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[introduction]]
+== 소개
+터놓고 API 문서 입니다.
+
+//[[introduction]]
+//== 서비스환경
+//해당 API서비스의 서버 도메인 환경은 다음과 같습니다.
+//
+//
+//== Domain
+//|===
+//| 환경 | URI
+//
+//| 개발서버
+//| `todo`
+//
+//| 운영서버
+//| `todo`
+//|===
+
+
+= 코치 API
+== 면담 예약 API
+=== 면담 예약 조회 API
+operation::coach-controller-test/find-all-by-coach[snippets='curl-request,http-request,http-response']
+
+
+== 면담 가능 시간 API
+=== 면담 가능 시간 저장 API
+operation::member-controller-test/save-calendar-times[snippets='curl-request,http-request,http-response']
+
+=== 면담 가능 시간 목록 조회 API
+operation::member-controller-test/find-calendar-times[snippets='curl-request,http-request,http-response']
+
+= 크루 API
+== 면담 예약 API
+=== 코치 목록 조회 API
+
+operation::member-controller-test/find-coaches[snippets='curl-request,http-request,http-response']
+
+=== 면담 예약 신청 API
+
+operation::reservation-controller-test/create[snippets='curl-request,http-request,http-response']
+
+=== 면담 예약 목록 조회 API
+
+operation::reservation-controller-test/find-all[snippets='curl-request,http-request,http-response']
+
+=== 면담 예약 조회 API
+
+operation::reservation-controller-test/find-reservation-by-id[snippets='curl-request,http-request,http-response']

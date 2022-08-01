@@ -2,17 +2,21 @@ const theme = {
   colors: {
     white_50: '#ffffff',
     white_100: '#edf0f5',
-    black: '#000000',
+    black_50: '#00000090',
+    black_200: '#000000',
     gray_50: '#f6f6f6',
     gray_100: '#e9ebee',
     gray_150: '#c3c2c8',
+    gray_200: '#808080',
     pink_50: '#ffe3e3',
+    pink_100: '#ffb7d2',
     pink_200: '#ff385c',
     pink_300: '#f03e3e',
-    orange: 'rgba(255, 210, 77, 0.3)',
+    orange: '#ffd24d4d',
+    purple: '#4a154b',
   },
   shadows: {
-    basic: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+    basic: '#64646f33 0px 7px 29px 0px',
   },
 };
 

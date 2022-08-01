@@ -1,22 +1,52 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+
 import styled from 'styled-components';
 
-import HomePage from './pages/HomePage';
-import ReservationApplyPage from './pages/ReservationApplyPage';
-import ReservationCompletePage from './pages/ReservationCompletePage';
+import CoachHomePage from '@/pages/CoachHomePage';
+import CoachReservationCreatePage from '@/pages/CoachReservationCreatePage';
+import HomePage from '@/pages/HomePage';
+import LoginPage from '@/pages/LoginPage';
+import LoginRegisterPage from '@/pages/LoginRegisterPage';
+import MyPage from '@/pages/MyPage';
+import ReservationApplyPage from '@/pages/ReservationApplyPage';
+import ReservationCompletePage from '@/pages/ReservationCompletePage';
 
-import Header from './components/Header';
+import Header from '@/components/Header';
+
+import CalendarProvider from '@/context/CalendarProvider';
+
+import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Header />
-
       <Routes>
+        <Route path={PAGE.LOGIN} element={<LoginPage />} />
         <Route path="/" element={<Layout />}>
-          <Route path="" element={<HomePage />} />
-          <Route path="reservation/apply" element={<ReservationApplyPage />} />
-          <Route path="reservation/complete/:reservationId" element={<ReservationCompletePage />} />
+          <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
+          <Route path={PAGE.CREW_HOME} element={<HomePage />} />
+          <Route
+            path={PAGE.RESERVATION_APPLY}
+            element={
+              <CalendarProvider selectMode="single">
+                <ReservationApplyPage />
+              </CalendarProvider>
+            }
+          />
+          <Route
+            path={`${PAGE.RESERVATION_COMPLETE}/reservationId`}
+            element={<ReservationCompletePage />}
+          />
+          <Route
+            path={PAGE.COACH_RESERVATION_CREATE}
+            element={
+              <CalendarProvider selectMode="multiple">
+                <CoachReservationCreatePage />
+              </CalendarProvider>
+            }
+          />
+          <Route path={PAGE.COACH_HOME} element={<CoachHomePage />} />
+          <Route path={PAGE.MY_PAGE} element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -25,9 +55,12 @@ const AppRoutes = () => {
 
 const Layout = () => {
   return (
-    <S.Body>
-      <Outlet />
-    </S.Body>
+    <>
+      <Header />
+      <S.Body>
+        <Outlet />
+      </S.Body>
+    </>
   );
 };
 

@@ -1,35 +1,57 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-
-import Button from '../../components/@common/Button/styled';
-import GridContainer from '../../components/@common/GridContainer/styled';
-import CoachProfile from '../../components/CoachProfile';
-import TextAreaField from '../../components/TextAreaField';
-import Calendar from '../../components/Calendar';
-import useCalendar from '../../components/Calendar/useCalendar';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
-import { CoachType } from 'types/domain';
-import { getCoachesAPI, postReservationAPI } from '../../api';
+import Button from '@/components/@common/Button/styled';
+import GridContainer from '@/components/@common/GridContainer/styled';
+import TitleBox from '@/components/@common/TitleBox';
+
+import Calendar from '@/components/Calendar';
+import CoachProfile from '@/components/CoachProfile';
+import TextAreaField from '@/components/TextAreaField';
+import Time from '@/components/Time/styled';
+
+import useTimes from '@/hooks/useTimes';
+
+import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+
+import { CoachType, StringDictionary } from '@/types/domain';
+
+import { getCoachScheduleAPI, getCoachesAPI, postReservationAPI } from '@/api';
+import { PAGE } from '@/constants';
+import { separateFullDate } from '@/utils';
+import { isOverApplyFormMinLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+  const { year, month, selectedDates } = useCalendarState();
+  const { setDay, resetSelectedDates } = useCalendarActions();
+  const { getDateStrings, isSameDate } = useCalendarUtils();
+  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'single' });
+
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
-  const { year: currentYear, month: currentMonth } = useCalendar({ stepStatus });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [availableSchedules, setAvailableSchedules] = useState<StringDictionary>({});
+  const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
-  const [currentDay, setCurrentDay] = useState(-1);
-  const [currentTime, setCurrentTime] = useState('');
-  const [currentCoachId, setCurrentCoachId] = useState(-1);
-
+  const [coachId, setCoachId] = useState(-1);
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
+  const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
+
+  const getDayType = (day: number) =>
+    selectedDates.length && isSameDate(selectedDates[0], day)
+      ? 'active'
+      : availableSchedules[day]
+      ? 'default'
+      : 'disable';
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -47,44 +69,36 @@ const ReservationApplyPage = () => {
     );
   };
 
-  const handleClickProfile = (id: number) => {
-    setCurrentCoachId(id);
+  const getHandleClickProfile = (id: number) => () => {
+    setCoachId(id);
   };
 
-  const handleClickDay = useCallback(
-    (day: number) => () => {
-      setCurrentDay(day);
-    },
-    [stepStatus[1]],
-  );
-
-  const handleClickTime = (time: string) => () => {
-    setCurrentTime(time);
-  };
-
-  const handleChangeAnswer =
+  const getHandleChangeAnswer =
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setAnswer(e.target.value);
     };
 
-  const isOverMinLength = (text: string) => {
-    return text.length >= 10;
+  const getHandleClickDay = (day: number) => () => {
+    const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
+    setAvailableTimes(times);
+    setDay(day);
+    resetTimes();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     isSubmitted || setIsSubmitted(true);
 
-    if (!isOverMinLength(answer1) || !isOverMinLength(answer2) || !isOverMinLength(answer3)) return;
-
-    const month = String(currentMonth).padStart(2, '0');
-    const day = String(currentDay).padStart(2, '0');
-    const interviewDatetime = `${currentYear}-${month}-${day} ${currentTime}`;
+    if (
+      !isOverApplyFormMinLength(answer1) ||
+      !isOverApplyFormMinLength(answer2) ||
+      !isOverApplyFormMinLength(answer3)
+    )
+      return;
 
     const body = {
-      interviewDatetime,
-      crewNickname: '록바',
-      location: '잠실',
+      coachId,
+      interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
       interviewQuestions: [
         {
           question: '이번 면담을 통해 논의하고 싶은 내용',
@@ -101,10 +115,10 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await postReservationAPI(currentCoachId, body);
+    const response = await postReservationAPI(body);
     const location = response.headers.location;
 
-    navigate(`/reservation/complete/${location.split('/')[3]}`);
+    navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
   };
 
   useEffect(() => {
@@ -114,13 +128,36 @@ const ReservationApplyPage = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (stepStatus[1] === 'show') {
+      (async () => {
+        const response = await getCoachScheduleAPI(year, month + 1);
+
+        const schedules = response.data.calendarTimes.reduce(
+          (acc: StringDictionary, fullDate: string) => {
+            const { day, time } = separateFullDate(fullDate);
+
+            acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], time] : [time];
+
+            return acc;
+          },
+          {} as StringDictionary,
+        );
+
+        setAvailableSchedules(schedules);
+      })();
+    }
+  }, [stepStatus, year, month]);
+
+  useEffect(() => {
+    resetTimes();
+    setAvailableTimes([]);
+    resetSelectedDates();
+  }, [year, month]);
+
   return (
     <>
-      <S.TitleBox>
-        <h2>
-          <Link to="/">{'<'}</Link> 면담 신청하기
-        </h2>
-      </S.TitleBox>
+      <TitleBox to={PAGE.CREW_HOME} title="면담 신청하기" />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
@@ -134,8 +171,8 @@ const ReservationApplyPage = () => {
                 <CoachProfile
                   key={coach.id}
                   {...coach}
-                  currentCoachId={currentCoachId}
-                  handleClickProfile={handleClickProfile}
+                  currentCoachId={coachId}
+                  getHandleClickProfile={getHandleClickProfile}
                 />
               ))}
             </GridContainer>
@@ -155,41 +192,21 @@ const ReservationApplyPage = () => {
           <div className="fold-box">
             <S.DateBox>
               <Calendar
-                currentDay={currentDay}
-                stepStatus={stepStatus}
-                handleClickDay={handleClickDay}
+                rerenderCondition={rerenderCondition}
+                getHandleClickDay={getHandleClickDay}
+                getDayType={getDayType}
               />
-              <S.TimeContainer>
-                <S.Time active={currentTime === '10:00'} onClick={handleClickTime('10:00')}>
-                  10 : 00
-                </S.Time>
-                <S.Time active={currentTime === '10:30'} onClick={handleClickTime('10:30')}>
-                  10 : 30
-                </S.Time>
-                <S.Time active={currentTime === '11:00'} onClick={handleClickTime('11:00')}>
-                  11 : 00
-                </S.Time>
-                <S.Time active={currentTime === '11:30'} onClick={handleClickTime('11:30')}>
-                  11 : 30
-                </S.Time>
-                <S.Time active={currentTime === '12:00'} onClick={handleClickTime('12:00')}>
-                  12 : 00
-                </S.Time>
-                <S.Time active={currentTime === '12:30'} onClick={handleClickTime('12:30')}>
-                  12 : 30
-                </S.Time>
-                <S.Time active={currentTime === '13:00'} onClick={handleClickTime('13:00')}>
-                  13 : 00
-                </S.Time>
-                <S.Time active={currentTime === '13:30'} onClick={handleClickTime('13:30')}>
-                  13 : 30
-                </S.Time>
-                <S.Time active={currentTime === '14:00'} onClick={handleClickTime('14:00')}>
-                  14 : 00
-                </S.Time>
-                <S.Time active={currentTime === '14:30'} onClick={handleClickTime('14:30')}>
-                  14 : 30
-                </S.Time>
+
+              <S.TimeContainer key={timeRerenderKey}>
+                {availableTimes.map((availableTime, index) => (
+                  <Time
+                    key={index}
+                    active={selectedTimes[0] === availableTime}
+                    onClick={getHandleClickTime(availableTime)}
+                  >
+                    {availableTime}
+                  </Time>
+                ))}
               </S.TimeContainer>
             </S.DateBox>
 
@@ -210,25 +227,25 @@ const ReservationApplyPage = () => {
               <TextAreaField
                 id="example1"
                 label="이번 면담을 통해 논의하고 싶은 내용"
-                answer={answer1}
-                handleChange={handleChangeAnswer(setAnswer1)}
-                checkValidation={isOverMinLength}
+                value={answer1}
+                handleChange={getHandleChangeAnswer(setAnswer1)}
+                checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
               />
               <TextAreaField
                 id="example2"
                 label="최근에 자신이 긍정적으로 보는 시도와 변화"
-                answer={answer2}
-                handleChange={handleChangeAnswer(setAnswer2)}
-                checkValidation={isOverMinLength}
+                value={answer2}
+                handleChange={getHandleChangeAnswer(setAnswer2)}
+                checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
               />
               <TextAreaField
                 id="example3"
                 label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
-                answer={answer3}
-                handleChange={handleChangeAnswer(setAnswer3)}
-                checkValidation={isOverMinLength}
+                value={answer3}
+                handleChange={getHandleChangeAnswer(setAnswer3)}
+                checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
               />
               <Button type="submit" width="100%" height="40px">

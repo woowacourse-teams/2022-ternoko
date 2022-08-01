@@ -1,6 +1,6 @@
-import { Story } from '@storybook/react';
-
 import Calendar, { CalendarProps } from '.';
+
+import { Story } from '@storybook/react';
 
 export default {
   title: 'components/@common/Calendar',
@@ -12,6 +12,5 @@ const Template = (args: CalendarProps) => <Calendar {...args} />;
 export const Basic: Story<CalendarProps> = Template.bind({});
 
 Basic.args = {
-  currentDay: 7,
-  handleClickDay: () => () => {},
+  rerenderKey: 1,
 };
