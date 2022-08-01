@@ -58,7 +58,7 @@ public class ReservationController {
                                                   @PathVariable final Long reservationId,
                                                   @RequestBody final ReservationRequest reservationRequest)
             throws Exception {
-        Reservation updateReservation = reservationService.update(crewId, reservationId, reservationRequest);
+        final Reservation updateReservation = reservationService.update(crewId, reservationId, reservationRequest);
         slackAlarm.sendMessage(updateReservation.getInterview(), AlarmMessage.CREW_UPDATE.getMessage());
         return ResponseEntity.ok().build();
     }
@@ -66,7 +66,7 @@ public class ReservationController {
     @DeleteMapping("/{reservationId}")
     public ResponseEntity<Void> deleteReservation(@AuthenticationPrincipal final Long crewId,
                                                   @PathVariable final Long reservationId) throws Exception {
-        Reservation reservation = reservationService.delete(crewId, reservationId);
+        final Reservation reservation = reservationService.delete(crewId, reservationId);
         slackAlarm.sendMessage(reservation.getInterview(), AlarmMessage.CREW_DELETE.getMessage());
         return ResponseEntity.noContent().build();
     }
@@ -74,7 +74,7 @@ public class ReservationController {
     @PatchMapping("/{reservationId}")
     public ResponseEntity<Void> cancelReservation(@AuthenticationPrincipal final Long coachId,
                                                   @PathVariable final Long reservationId) throws Exception {
-        Interview interview = reservationService.cancel(coachId, reservationId);
+        final Interview interview = reservationService.cancel(coachId, reservationId);
         slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
         return ResponseEntity.noContent().build();
     }

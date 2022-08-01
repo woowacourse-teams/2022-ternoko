@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class ControllerTest extends RestDocsTestSupport {
@@ -24,6 +25,19 @@ public class ControllerTest extends RestDocsTestSupport {
                         .characterEncoding("utf-8")
                         .content(objectMapper.writeValueAsString(MONTH_REQUEST)))
                 .andExpect(status().isOk());
+    }
+
+    public Long createReservation(final Long crewId) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/reservations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId)))
+                        .characterEncoding("utf-8")
+                        .content(objectMapper.writeValueAsString(COACH1_RESERVATION_REQUEST1)))
+                .andExpect(status().isCreated())
+                .andReturn();
+        String redirectURI = mvcResult.getResponse().getHeader("Location");
+        return Long.valueOf(redirectURI.split("/reservations/")[1]);
     }
 
     public void createReservations(final Long crewId) throws Exception {
