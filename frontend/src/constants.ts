@@ -9,6 +9,7 @@ export const PAGE = {
   COACH_RESERVATION_CREATE: '/coach/reservation/create',
   COACH_HOME: '/coach/home',
   MY_PAGE: '/mypage',
+  OAUTH_REDIRECT: '/api/login',
 };
 
 export const CREW_APPLY_FORM_MIN_LENGTH = 10;
