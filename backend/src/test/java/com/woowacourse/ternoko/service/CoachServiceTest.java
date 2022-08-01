@@ -38,6 +38,23 @@ public class CoachServiceTest {
     private CoachRepository coachRepository;
 
     @Test
+    @DisplayName("코치 정보를 조회한다.")
+    void findCoach() {
+        Coach coach = new Coach("박재성", "포비", "pobi@woowahan.com", ".png", "반란군을 키우는 포비");
+        Coach savedCoach = coachRepository.save(coach);
+        final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
+
+        assertAll(
+                () -> assertThat(foundCoach.getId()).isEqualTo(savedCoach.getId()),
+                () -> assertThat(foundCoach.getName()).isEqualTo(savedCoach.getName()),
+                () -> assertThat(foundCoach.getNickname()).isEqualTo(savedCoach.getNickname()),
+                () -> assertThat(foundCoach.getEmail()).isEqualTo(savedCoach.getEmail()),
+                () -> assertThat(foundCoach.getImageUrl()).isEqualTo(savedCoach.getImageUrl()),
+                () -> assertThat(foundCoach.getIntroduce()).isEqualTo(savedCoach.getIntroduce())
+        );
+    }
+
+    @Test
     @DisplayName("코치 목록을 조회한다.")
     void findCoaches() {
         // when
@@ -45,6 +62,7 @@ public class CoachServiceTest {
 
         // then
         assertThat(coaches.getCoaches()).extracting("nickname")
+                .hasSize(4)
                 .contains("준", "브리", "토미", "네오");
     }
 

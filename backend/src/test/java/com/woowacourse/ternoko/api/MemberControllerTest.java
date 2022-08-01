@@ -20,7 +20,7 @@ class MemberControllerTest extends RestDocsTestSupport {
     @DisplayName("코치 목록을 조회한다.")
     void findCoaches() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/reservations/coaches")
+                        .get("/api/coaches")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
