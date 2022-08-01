@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.fixture;
 
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
@@ -18,27 +20,22 @@ public class ReservationFixture {
             new FormItemRequest("고정질문2", "답변2"),
             new FormItemRequest("고정질문3", "답변3"));
 
+    public static final List<FormItemRequest> FORM_ITEM_UPDATE_REQUESTS = List.of(new FormItemRequest("수정질문1", "수정답변1"),
+            new FormItemRequest("수정질문2", "수정답변2"),
+            new FormItemRequest("수정질문3", "수정답변3"));
+
     public static final List<FormItem> FORM_ITEMS = List.of(new FormItem("고정질문1", "답변1"),
             new FormItem("고정질문2", "답변2"),
             new FormItem("고정질문3", "답변3"));
 
-    public static final ReservationRequest RESERVATION_REQUEST1 = new ReservationRequest("바니",
-            AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST1 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST2 = new ReservationRequest("열음",
-            AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST2 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST3 = new ReservationRequest("앤지",
-            AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST3 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST4 = new ReservationRequest("애쉬",
-            AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST4 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
-
-    public static final ReservationRequest RESERVATION_REQUEST5 = new ReservationRequest("수달",
-            AFTER_TWO_DAYS,
+    public static final ReservationRequest RESERVATION_REQUEST5 = new ReservationRequest(COACH3.getId(), AFTER_TWO_DAYS,
             FORM_ITEM_REQUESTS);
 }

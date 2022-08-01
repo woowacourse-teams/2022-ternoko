@@ -63,46 +63,44 @@ public class AuthService {
         if (member.isEmpty()) {
             return signUp(userInfoResponse);
         }
-        boolean hasNickname = !member.get().getNickname().isEmpty();
+        boolean hasNickname = member.get().getNickname() != null;
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {
             return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
                     hasNickname);
         }
+
         return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
     }
 
     private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code)
             throws IOException, SlackApiException {
-        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(
-                code);
+        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(code);
         final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
                 .token(openIDConnectTokenResponse.getAccessToken())
                 .build();
         return slackMethodClient.openIDConnectUserInfo(userInfoRequest);
     }
 
-    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code)
-            throws IOException, SlackApiException {
+    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code) throws IOException, SlackApiException {
         final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .code(code)
                 .redirectUri(redirectUrl)
                 .build();
-        return slackMethodClient.openIDConnectToken(
-                tokenRequest);
+        return slackMethodClient.openIDConnectToken(tokenRequest);
     }
 
     private LoginResponse signUp(final OpenIDConnectUserInfoResponse userInfoResponse) {
         if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
-                    userInfoResponse.getTeamImage230()));
+                    userInfoResponse.getUserId(), userInfoResponse.getTeamImage230()));
             return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
-                userInfoResponse.getTeamImage230()));
+                userInfoResponse.getUserId(), userInfoResponse.getTeamImage230()));
 
         return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
     }

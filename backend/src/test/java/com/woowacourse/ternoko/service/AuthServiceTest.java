@@ -13,9 +13,6 @@ import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoRespon
 import com.woowacourse.ternoko.common.JwtProvider;
 import com.woowacourse.ternoko.domain.Type;
 import com.woowacourse.ternoko.dto.LoginResponse;
-import com.woowacourse.ternoko.repository.CoachRepository;
-import com.woowacourse.ternoko.repository.CrewRepository;
-import com.woowacourse.ternoko.repository.MemberRepository;
 import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ActiveProfiles;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -102,7 +98,7 @@ public class AuthServiceTest {
 
     private void setSlackMockData(String userEmail) throws IOException, SlackApiException {
 
-        OpenIDConnectTokenResponse openIDConnectTokenResponse = new OpenIDConnectTokenResponse();
+        final OpenIDConnectTokenResponse openIDConnectTokenResponse = new OpenIDConnectTokenResponse();
         openIDConnectTokenResponse.setAccessToken("temp_accessToken");
 
         final OpenIDConnectUserInfoResponse userInfoResponse = new OpenIDConnectUserInfoResponse();

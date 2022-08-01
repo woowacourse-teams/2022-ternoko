@@ -24,6 +24,16 @@ public class CoachAvailableTimeFixture {
     public static final LocalTime SECOND_TIME = LocalTime.of(14, 0);
     public static final LocalTime THIRD_TIME = LocalTime.of(16, 0);
 
+    public static final AvailableDateTimeRequest PAST_TIME_REQUEST = new AvailableDateTimeRequest(
+            LocalDate.now().getYear(),
+            LocalDate.now().getMonthValue(),
+            List.of(LocalDateTime.of(LocalDate.now().minusDays(2), FIRST_TIME),
+                    LocalDateTime.of(LocalDate.now().minusDays(2), SECOND_TIME),
+                    LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
+                    LocalDateTime.of(LocalDate.now(), FIRST_TIME),
+                    LocalDateTime.of(LocalDate.now(), SECOND_TIME),
+                    LocalDateTime.of(LocalDate.now(), THIRD_TIME)));
+
     public static final AvailableDateTimeRequest PAST_TIME_RESPONSE = new AvailableDateTimeRequest(
             LocalDate.now().getYear(),
             LocalDate.now().getMonthValue(),

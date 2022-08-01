@@ -42,7 +42,7 @@ public class ReservationResponse {
                 .id(reservation.getId())
                 .coachNickname(interview.getCoach().getNickname())
                 .imageUrl(interview.getCoach().getImageUrl())
-                .crewNickname(interview.getCrewNickname())
+                .crewNickname(interview.getCrew().getNickname())
                 .interviewStartTime(interview.getInterviewStartTime())
                 .interviewEndTime(interview.getInterviewEndTime())
                 .interviewQuestions(formItemResponses)

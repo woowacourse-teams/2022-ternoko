@@ -24,7 +24,7 @@ public class CalendarResponse {
     public static CalendarResponse from(final Interview interview) {
         return CalendarResponse.calenderResponseBuilder()
                 .id(interview.getId())
-                .crewNickname(interview.getCrewNickname())
+                .crewNickname(interview.getCrew().getNickname())
                 .interviewStartTime(
                         interview.getInterviewStartTime())
                 .interviewEndTime(

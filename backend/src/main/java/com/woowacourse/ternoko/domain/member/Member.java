@@ -34,6 +34,13 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(unique = true)
+    private String userId;
+
     @Column
     private String imageUrl;
+
+    public boolean sameMember(Long id) {
+        return this.id.equals(id);
+    }
 }

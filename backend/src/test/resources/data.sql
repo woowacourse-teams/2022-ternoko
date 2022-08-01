@@ -20,6 +20,9 @@ VALUES ('test1@woowahan.com',
         'CREW'),
        ('test7@woowahan.com',
         'https://user-images.githubusercontent.com/26570275/177680191-a4497404-c4cb-4f86-8c2c-f4f9c70bcaf7.png', '애쉬',
+        'CREW'),
+        ('test8@woowahan.com',
+        'https://user-images.githubusercontent.com/26570275/177680191-a4497404-c4cb-4f86-8c2c-f4f9c70bcaf7.png', '록바',
         'CREW');
 INSERT INTO COACH (id)
 VALUES (1),
@@ -30,4 +33,5 @@ VALUES (1),
 INSERT INTO CREW (id)
 VALUES (5),
        (6),
-       (7);
+       (7),
+       (8);

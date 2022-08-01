@@ -55,8 +55,9 @@ public class CoachServiceTest {
         final String imageUrl = ".png";
         final String nickname = "도깨비";
         final String introduce = "안녕하세요. 도깨비 입니다.";
+        final String userId = "U123456789";
 
-        final Coach savedCoach = coachRepository.save(new Coach("공유", " share@woowahan.com", imageUrl));
+        final Coach savedCoach = coachRepository.save(new Coach("공유", " share@woowahan.com", userId, imageUrl));
 
         //when
         coachService.partUpdateCrew(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
@@ -110,11 +111,9 @@ public class CoachServiceTest {
     void findAvailableDateTimesByCoachId() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTHS_REQUEST);
-
         // when
         final List<AvailableDateTime> availableDateTimes = coachService
-                .findAvailableDateTimesByCoachId(COACH3.getId(), NOW_PLUS_1_MONTH.getYear(),
-                        NOW_PLUS_1_MONTH.getMonthValue());
+                .findAvailableDateTimesByCoachId(COACH3.getId(), NOW_PLUS_1_MONTH.getYear(), NOW_PLUS_1_MONTH.getMonthValue());
 
         // then
         assertThat(availableDateTimes.stream()

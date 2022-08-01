@@ -1,19 +1,24 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
+import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.dto.ReservationResponse;
+import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -31,8 +36,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         // given
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
         // when
-        final ExtractableResponse<Response> response = createReservation(COACH3.getId(),
-                "애쉬",
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         //then
@@ -43,10 +47,8 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("선택한 일시가 코치의 가능한 시간이 아니라면 면담을 생성할 때 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
-        // given
-        // when
-        final ExtractableResponse<Response> response = createReservation(COACH3.getId(),
-                "애쉬",
+        // given & when
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         //then
@@ -57,11 +59,9 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findReservationById() {
         // given
-        final Header header = new Header(AUTHORIZATION,
-                BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH3.getId())));
+        final Header header = generateHeader(COACH3.getId());
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTHS_REQUEST);
-        final ExtractableResponse<Response> createdResponse = createReservation(COACH3.getId(),
-                "수달",
+        final ExtractableResponse<Response> createdResponse = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
@@ -88,10 +88,10 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
         put("/api/coaches/" + COACH4.getId() + "/calendar/times", MONTHS_REQUEST);
 
-        createReservation(COACH1.getId(), "애쉬", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(COACH2.getId(), "바니", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(COACH3.getId(), "앤지", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(COACH4.getId(), "열음", LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW2.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW3.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
         final ExtractableResponse<Response> response = get("/api/reservations");
@@ -100,5 +100,66 @@ class ReservationAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(reservationResponses).hasSize(4);
+    }
+
+
+    @Test
+    @DisplayName("크루가 면담 예약을 수정한다.")
+    void updateReservation() {
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        final String redirectURI = response.header("Location");
+        final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        final ReservationRequest updateRequest = new ReservationRequest(COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS);
+        ExtractableResponse<Response> updateResponse = put("/api/reservations/" + reservationId,
+                generateHeader(CREW1.getId()),
+                updateRequest);
+
+        //then
+        assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("크루가 면담 예약을 삭제한다.")
+    void deleteReservation() {
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        final String redirectURI = response.header("Location");
+        final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        final ExtractableResponse<Response> deleteResponse = delete("/api/reservations/" + reservationId,
+                generateHeader(CREW1.getId()));
+
+        //then
+        assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("코치가 면담 예약을 취소한다.")
+    void cancelReservation() {
+        // given
+        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+
+        final String redirectURI = response.header("Location");
+        final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        final ExtractableResponse<Response> cancelResponse = patch("/api/reservations/" + reservationId,
+                generateHeader(COACH3.getId()));
+
+        //then
+        assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

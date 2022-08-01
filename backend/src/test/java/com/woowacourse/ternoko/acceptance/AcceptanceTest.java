@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.acceptance;
 
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.AFTER_TWO_DAYS;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 
 import com.woowacourse.ternoko.common.JwtProvider;
@@ -12,6 +11,7 @@ import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,6 +91,15 @@ public class AcceptanceTest {
                 .extract();
     }
 
+    protected ExtractableResponse<Response> patch(final String uri, final Header header) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(header)
+                .when().patch(uri)
+                .then().log().all()
+                .extract();
+    }
+
     protected ExtractableResponse<Response> patch(final String uri, final Header header, final Object body) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -110,14 +119,18 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    protected ExtractableResponse<Response> createReservation(final Long coachId,
-                                                              final String crewName,
+    protected ExtractableResponse<Response> createReservation(final Long crewId,
+                                                              final Long coachId,
                                                               final LocalDateTime interviewDateTime) {
-        final ReservationRequest reservationRequest = new ReservationRequest(crewName,
-                interviewDateTime,
+        final ReservationRequest reservationRequest = new ReservationRequest(coachId, interviewDateTime,
                 FORM_ITEM_REQUESTS);
 
-        return post("/api/reservations/coaches/" + coachId, new Header(AUTHORIZATION,
-                BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId))), reservationRequest);
+        return post("/api/reservations/", generateHeader(crewId), reservationRequest);
     }
+
+    protected Header generateHeader(final Long id) {
+        return new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(id)));
+    }
+
+
 }
