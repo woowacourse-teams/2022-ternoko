@@ -31,13 +31,15 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치의 면담 가능 시간을 조회한다.")
     void findCalendarTimes() {
         // given
-        final Header header = generateHeader(CREW1.getId());
-        //TODO: Fixture 리팩토링 후 수정
         put("/api/calendar/times", generateHeader(COACH3.getId()), MONTH_REQUEST);
 
+        final Header crewHeader = generateHeader(CREW1.getId());
         final ExtractableResponse<Response> calendarResponse = get(
-                "/api/coaches/" + COACH3.getId() + "/calendar/times?year=" + NOW.getYear() + "&month="
-                        + NOW.getMonthValue(), header);
+                "/api/calendar/times?"
+                        + "coachId=" + COACH3.getId()
+                        + "&year=" + NOW.getYear()
+                        + "&month=" + NOW.getMonthValue(),
+                crewHeader);
 
         // when
         final AvailableDateTimesResponse response = calendarResponse.body().as(AvailableDateTimesResponse.class);

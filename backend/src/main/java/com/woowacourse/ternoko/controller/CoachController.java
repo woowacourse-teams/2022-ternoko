@@ -45,8 +45,8 @@ public class CoachController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/coaches/{coachId}/calendar/times")
-    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@PathVariable final Long coachId,
+    @GetMapping("/calendar/times")
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@RequestParam final Long coachId,
                                                                         @RequestParam final int year,
                                                                         @RequestParam final int month) {
         final List<AvailableDateTime> availableDateTimes = coachService

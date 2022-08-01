@@ -70,8 +70,9 @@ class MemberControllerTest extends RestDocsTestSupport {
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/coaches/{coachId}/calendar/times", COACH1.getId())
+                        .get("/api/calendar/times")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .queryParam("coachId", String.valueOf(COACH1.getId()))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
                 .andExpect(status().isOk())
