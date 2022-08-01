@@ -25,7 +25,7 @@ public class CoachControllerTest extends ControllerTest {
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/coaches/" + COACH1.getId() + "/schedules")
+                        .get("/api/schedules")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))

@@ -45,7 +45,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
                 .queryParam("month", NOW.getMonthValue())
                 .header(generateHeader(COACH4.getId()))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/coaches/" + COACH4.getId() + "/schedules")
+                .when().get("/api/schedules")
                 .then().log().all()
                 .extract();
         final ScheduleResponse scheduleResponse = response.body().as(ScheduleResponse.class);
@@ -67,18 +67,6 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("코치의 면담 가능 시간을 저장한다. - 여러 달")
-    void saveCalendarsTimes() {
-        // given & when
-        final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
-                generateHeader(COACH3.getId()),
-                MONTHS_REQUEST);
-
-        // then
-        assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @Test
     @DisplayName("선택한 년, 월의 면담 예약 내역 목록을 조회한다.")
     void findAllByCoach() {
         // given
@@ -91,12 +79,24 @@ public class CoachAcceptanceTest extends AcceptanceTest {
                 .queryParam("month", NOW.getMonthValue())
                 .header(generateHeader(COACH3.getId()))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/coaches/" + COACH3.getId() + "/schedules")
+                .when().get("/api/schedules")
                 .then().log().all()
                 .extract();
         final ScheduleResponse scheduleResponse = response.body().as(ScheduleResponse.class);
 
         // then
         assertThat(scheduleResponse.getCalendar()).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("코치의 면담 가능 시간을 저장한다. - 여러 달")
+    void saveCalendarsTimes() {
+        // given & when
+        final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
+                generateHeader(COACH3.getId()),
+                MONTHS_REQUEST);
+
+        // then
+        assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

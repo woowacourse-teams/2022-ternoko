@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +28,8 @@ public class CoachController {
     private final ReservationService reservationService;
     private final CoachService coachService;
 
-    @GetMapping("/coaches/{coachId}/schedules")
-    public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@AuthenticationPrincipal final Long id,
-                                                                      @PathVariable final Long coachId,
+    @GetMapping("/schedules")
+    public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@AuthenticationPrincipal final Long coachId,
                                                                       @RequestParam final Integer year,
                                                                       @RequestParam final Integer month) {
         final ScheduleResponse schedules = reservationService.findAllByCoach(coachId, year, month);
