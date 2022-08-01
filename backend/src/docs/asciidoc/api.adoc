@@ -58,3 +58,7 @@ operation::reservation-controller-test/find-all[snippets='curl-request,http-requ
 === 면담 예약 조회 API
 
 operation::reservation-controller-test/find-reservation-by-id[snippets='curl-request,http-request,http-response']
+
+=== 면담 예약 취소 API
+
+operation::reservation-controller-test/delete[snippets='curl-request,http-request,http-response']

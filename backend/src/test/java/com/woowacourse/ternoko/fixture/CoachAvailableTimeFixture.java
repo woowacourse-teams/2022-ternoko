@@ -44,18 +44,25 @@ public class CoachAvailableTimeFixture {
                     LocalDateTime.of(LocalDate.now(), SECOND_TIME),
                     LocalDateTime.of(LocalDate.now(), THIRD_TIME)));
 
-    public static final AvailableDateTimeRequest NOW_MONTH_REQUEST = new AvailableDateTimeRequest(
-            NOW.getYear(),
-            NOW.getMonthValue(),
-            List.of(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                    LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
-                    LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
-                    LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
-                    LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
-                    LocalDateTime.of(NOW_PLUS_3_DAYS, THIRD_TIME),
-                    LocalDateTime.of(NOW_PLUS_4_DAYS, FIRST_TIME),
-                    LocalDateTime.of(NOW_PLUS_4_DAYS, SECOND_TIME),
-                    LocalDateTime.of(NOW_PLUS_4_DAYS, THIRD_TIME)));
+    public static final AvailableDateTimeRequest NOW_MONTH_REQUEST;
+
+    public static final LocalDateTime NOW_PLUS_2_DAYS_FIRST_TIME = LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME);
+    public static final LocalDateTime NOW_PLUS_2_DAYS_SECOND_TIME = LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME);
+
+    static {
+        NOW_MONTH_REQUEST = new AvailableDateTimeRequest(
+                NOW.getYear(),
+                NOW.getMonthValue(),
+                List.of(NOW_PLUS_2_DAYS_FIRST_TIME,
+                        NOW_PLUS_2_DAYS_SECOND_TIME,
+                        LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
+                        LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+                        LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        LocalDateTime.of(NOW_PLUS_3_DAYS, THIRD_TIME),
+                        LocalDateTime.of(NOW_PLUS_4_DAYS, FIRST_TIME),
+                        LocalDateTime.of(NOW_PLUS_4_DAYS, SECOND_TIME),
+                        LocalDateTime.of(NOW_PLUS_4_DAYS, THIRD_TIME)));
+    }
 
     public static final AvailableDateTimeRequest NEXT_MONTH_REQUEST = new AvailableDateTimeRequest(
             NOW_PLUS_1_MONTH.getYear(),

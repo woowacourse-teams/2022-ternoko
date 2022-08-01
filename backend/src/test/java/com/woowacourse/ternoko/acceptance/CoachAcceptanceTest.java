@@ -8,6 +8,7 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.THIRD_TIME;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
@@ -32,7 +33,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllByCoaches() {
         // given
-        put("/api/coaches/" + COACH4.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
         createReservation(CREW1.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(CREW2.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
         createReservation(CREW3.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME));
@@ -44,7 +45,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
                 .queryParam("month", NOW.getMonthValue())
                 .header(generateHeader(COACH4.getId()))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/coaches/" + COACH4.getId() + "/schedules")
+                .when().get("/api/schedules")
                 .then().log().all()
                 .extract();
         final ScheduleResponse scheduleResponse = response.body().as(ScheduleResponse.class);
@@ -57,19 +58,9 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치의 면담 가능 시간을 저장한다.")
     void saveCalendarTimes() {
         // given & when
-        final ExtractableResponse<Response> calendarResponse = put("/api/coaches/" + COACH3.getId() + "/calendar/times",
+        final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
+                generateHeader(COACH1.getId()),
                 MONTH_REQUEST);
-
-        // then
-        assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    @Test
-    @DisplayName("코치의 면담 가능 시간을 저장한다. - 여러 달")
-    void saveCalendarsTimes() {
-        // given & when
-        final ExtractableResponse<Response> calendarResponse = put("/api/coaches/" + COACH3.getId() + "/calendar/times",
-                MONTHS_REQUEST);
 
         // then
         assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -79,7 +70,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     @DisplayName("선택한 년, 월의 면담 예약 내역 목록을 조회한다.")
     void findAllByCoach() {
         // given
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         createReservation(CREW1.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
 
         // when
@@ -88,12 +79,24 @@ public class CoachAcceptanceTest extends AcceptanceTest {
                 .queryParam("month", NOW.getMonthValue())
                 .header(generateHeader(COACH3.getId()))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/coaches/" + COACH3.getId() + "/schedules")
+                .when().get("/api/schedules")
                 .then().log().all()
                 .extract();
         final ScheduleResponse scheduleResponse = response.body().as(ScheduleResponse.class);
 
         // then
         assertThat(scheduleResponse.getCalendar()).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("코치의 면담 가능 시간을 저장한다. - 여러 달")
+    void saveCalendarsTimes() {
+        // given & when
+        final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
+                generateHeader(COACH3.getId()),
+                MONTHS_REQUEST);
+
+        // then
+        assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,30 +22,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/coaches")
+@RequestMapping("/api")
 public class CoachController {
 
     private final ReservationService reservationService;
     private final CoachService coachService;
 
-    @GetMapping("/{coachId}/schedules")
-    public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@AuthenticationPrincipal final Long id,
-                                                                      @PathVariable final Long coachId,
+    @GetMapping("/schedules")
+    public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@AuthenticationPrincipal final Long coachId,
                                                                       @RequestParam final Integer year,
                                                                       @RequestParam final Integer month) {
         final ScheduleResponse schedules = reservationService.findAllByCoach(coachId, year, month);
         return ResponseEntity.ok(schedules);
     }
 
-    @PutMapping("/{coachId}/calendar/times")
-    public ResponseEntity<Void> saveCalendarTimes(@PathVariable final Long coachId,
+    @PutMapping("/calendar/times")
+    public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
                                                   @RequestBody final AvailableDateTimesRequest availableDateTimesRequest) {
         coachService.putAvailableDateTimesByCoachId(coachId, availableDateTimesRequest);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{coachId}/calendar/times")
-    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@PathVariable final Long coachId,
+    @GetMapping("/calendar/times")
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@RequestParam final Long coachId,
                                                                         @RequestParam final int year,
                                                                         @RequestParam final int month) {
         final List<AvailableDateTime> availableDateTimes = coachService
@@ -55,12 +53,12 @@ public class CoachController {
         return ResponseEntity.ok(from);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/coaches/me")
     public ResponseEntity<CoachResponse> findCoach(@AuthenticationPrincipal final Long coachId) {
         return ResponseEntity.ok(coachService.findCoach(coachId));
     }
 
-    @PatchMapping("/me")
+    @PatchMapping("/coaches/me")
     public ResponseEntity<Void> updateCoach(@AuthenticationPrincipal final Long coachId,
                                             @RequestBody final CoachUpdateRequest coachUpdateRequest) {
         coachService.partUpdateCrew(coachId, coachUpdateRequest);

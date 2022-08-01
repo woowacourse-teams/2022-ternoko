@@ -81,4 +81,18 @@ public class ReservationControllerTest extends ControllerTest {
                                         .description("면담 내용")
                         );
     }
+
+    @Test
+    @DisplayName("크루가 면담 예약을 취소한다.")
+    void delete() throws Exception {
+        createCalendarTimes(COACH1.getId());
+        Long reservationId = createReservation(CREW1.getId());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/reservations/{reservationId}", reservationId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document());
+    }
 }

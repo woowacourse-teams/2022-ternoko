@@ -19,7 +19,7 @@ public class MemberController {
     private final CoachService coachService;
     private final MemberService memberService;
 
-    @GetMapping("/reservations/coaches")
+    @GetMapping("/coaches")
     public ResponseEntity<CoachesResponse> findCoaches() {
         return ResponseEntity.ok(coachService.findCoaches());
     }

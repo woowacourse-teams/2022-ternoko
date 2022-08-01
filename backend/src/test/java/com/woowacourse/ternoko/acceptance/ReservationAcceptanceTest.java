@@ -34,7 +34,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약을 생성한다.")
     void create() {
         // given
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         // when
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
@@ -60,7 +60,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     void findReservationById() {
         // given
         final Header header = generateHeader(COACH3.getId());
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         final ExtractableResponse<Response> createdResponse = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -83,10 +83,10 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 내역 목록을 조회한다.")
     void findAll() {
         // given
-        put("/api/coaches/" + COACH1.getId() + "/calendar/times", MONTHS_REQUEST);
-        put("/api/coaches/" + COACH2.getId() + "/calendar/times", MONTHS_REQUEST);
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
-        put("/api/coaches/" + COACH4.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH1.getId()), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH2.getId()), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
 
         createReservation(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(CREW2.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
@@ -107,7 +107,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("크루가 면담 예약을 수정한다.")
     void updateReservation() {
         // given
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -129,7 +129,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("크루가 면담 예약을 삭제한다.")
     void deleteReservation() {
         // given
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -148,7 +148,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치가 면담 예약을 취소한다.")
     void cancelReservation() {
         // given
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         final ExtractableResponse<Response> response = createReservation(CREW1.getId(), COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 

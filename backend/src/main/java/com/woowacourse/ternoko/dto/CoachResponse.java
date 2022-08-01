@@ -1,7 +1,6 @@
 package com.woowacourse.ternoko.dto;
 
 import com.woowacourse.ternoko.domain.member.Coach;
-import com.woowacourse.ternoko.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +23,7 @@ public class CoachResponse {
         return coachResponseBuilder()
                 .id(coach.getId())
                 .name(coach.getName())
+                .email(coach.getEmail())
                 .nickname(coach.getNickname())
                 .imageUrl(coach.getImageUrl())
                 .introduce(coach.getIntroduce())
