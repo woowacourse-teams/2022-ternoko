@@ -3,10 +3,9 @@ spring:
     default: local
 
 slack:
-  redirectUrl: 'https://ternoko.site/api/login'
+  redirectUrl: 'https://localhost:8080/api/login'
   clientId: '3756998338916.3821665111344'
   clientSecret: '7db0d45bf9ae307a3a93522aa0cc4131'
-  botToken: 'xoxb-3756998338916-3842314970982-U836E93jZbDLX4qxj25mybQV'
 
 server:
   ssl:

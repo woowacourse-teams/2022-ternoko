@@ -63,7 +63,7 @@ public class AuthService {
         if (member.isEmpty()) {
             return signUp(userInfoResponse);
         }
-        boolean hasNickname = !member.get().getNickname().isEmpty();
+        boolean hasNickname = member.get().getNickname() != null;
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {
             return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
@@ -75,24 +75,21 @@ public class AuthService {
 
     private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code)
             throws IOException, SlackApiException {
-        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(
-                code);
+        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(code);
         final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
                 .token(openIDConnectTokenResponse.getAccessToken())
                 .build();
         return slackMethodClient.openIDConnectUserInfo(userInfoRequest);
     }
 
-    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code)
-            throws IOException, SlackApiException {
+    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code) throws IOException, SlackApiException {
         final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .code(code)
                 .redirectUri(redirectUrl)
                 .build();
-        return slackMethodClient.openIDConnectToken(
-                tokenRequest);
+        return slackMethodClient.openIDConnectToken(tokenRequest);
     }
 
     private LoginResponse signUp(final OpenIDConnectUserInfoResponse userInfoResponse) {
