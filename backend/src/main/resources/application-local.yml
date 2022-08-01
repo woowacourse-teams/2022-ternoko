@@ -13,7 +13,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
     username: root
-    password:
+    password: root1234
   h2:
     console:
       enabled: true

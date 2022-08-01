@@ -65,7 +65,7 @@ public class CoachServiceTest {
 
         //then
         assertAll(
-                () -> assertThat(foundCoach.getNickname()+"test").isEqualTo(nickname),
+                () -> assertThat(foundCoach.getNickname()+"test22").isEqualTo(nickname),
                 () -> assertThat(foundCoach.getIntroduce()).isEqualTo(introduce)
         );
     }
