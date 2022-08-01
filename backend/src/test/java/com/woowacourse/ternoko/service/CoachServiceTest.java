@@ -40,7 +40,7 @@ public class CoachServiceTest {
     @Test
     @DisplayName("코치 정보를 조회한다.")
     void findCoach() {
-        Coach coach = new Coach("박재성", "포비", "pobi@woowahan.com", ".png", "반란군을 키우는 포비");
+        Coach coach = new Coach("박재성", "포비", "pobi@woowahan.com", "U1234567898", ".png", "반란군을 키우는 포비");
         Coach savedCoach = coachRepository.save(coach);
         final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
 
