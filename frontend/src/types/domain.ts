@@ -1,9 +1,12 @@
 export interface CoachType {
   id: number;
+  name: string;
   nickname: string;
   imageUrl: string;
   introduce: string;
 }
+
+export type CrewType = Omit<CoachType, 'introduce'>;
 
 interface InterviewQuestionType {
   question: string;
@@ -14,6 +17,11 @@ export interface ReservationRequestBodyType {
   coachId: number;
   interviewDatetime: string;
   interviewQuestions: InterviewQuestionType[];
+}
+
+export interface UserRequestBodyType {
+  nickname: string;
+  introduce?: string;
 }
 
 type ReservationStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
@@ -37,6 +45,18 @@ export interface CalendarTime {
 
 export interface CoachScheduleRequestBodyType {
   calendarTimes: CalendarTime[];
+}
+
+export type MemberRole = 'CREW' | 'COACH';
+
+export interface UserStatusType {
+  accessToken: string;
+  hasNickname: boolean;
+  memberRole: MemberRole;
+}
+
+export interface DuplicatedNicknameStatusType {
+  exists: boolean;
 }
 
 export type StringDictionary = {
