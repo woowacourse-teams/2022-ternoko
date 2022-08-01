@@ -4,25 +4,15 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_RE
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.TIME2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.TIME3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.TIME4;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
-
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -43,7 +33,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
         // given
         final Header header = generateHeader(CREW1.getId());
         //TODO: Fixture 리팩토링 후 수정
-        put("/api/coaches/" + COACH3.getId() + "/calendar/times", header, MONTH_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTH_REQUEST);
 
         final ExtractableResponse<Response> calendarResponse = get(
                 "/api/coaches/" + COACH3.getId() + "/calendar/times?year=" + NOW.getYear() + "&month="

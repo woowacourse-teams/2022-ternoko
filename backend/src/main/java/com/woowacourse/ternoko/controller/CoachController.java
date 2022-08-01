@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/coaches")
+@RequestMapping("/api")
 public class CoachController {
 
     private final ReservationService reservationService;
     private final CoachService coachService;
 
-    @GetMapping("/{coachId}/schedules")
+    @GetMapping("/coaches/{coachId}/schedules")
     public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@AuthenticationPrincipal final Long id,
                                                                       @PathVariable final Long coachId,
                                                                       @RequestParam final Integer year,
@@ -38,14 +38,14 @@ public class CoachController {
         return ResponseEntity.ok(schedules);
     }
 
-    @PutMapping("/{coachId}/calendar/times")
-    public ResponseEntity<Void> saveCalendarTimes(@PathVariable final Long coachId,
+    @PutMapping("/calendar/times")
+    public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
                                                   @RequestBody final AvailableDateTimesRequest availableDateTimesRequest) {
         coachService.putAvailableDateTimesByCoachId(coachId, availableDateTimesRequest);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{coachId}/calendar/times")
+    @GetMapping("/coaches/{coachId}/calendar/times")
     public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@PathVariable final Long coachId,
                                                                         @RequestParam final int year,
                                                                         @RequestParam final int month) {
@@ -55,12 +55,12 @@ public class CoachController {
         return ResponseEntity.ok(from);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/coaches/me")
     public ResponseEntity<CoachResponse> findCoach(@AuthenticationPrincipal final Long coachId) {
         return ResponseEntity.ok(coachService.findCoach(coachId));
     }
 
-    @PatchMapping("/me")
+    @PatchMapping("/coaches/me")
     public ResponseEntity<Void> updateCoach(@AuthenticationPrincipal final Long coachId,
                                             @RequestBody final CoachUpdateRequest coachUpdateRequest) {
         coachService.partUpdateCrew(coachId, coachUpdateRequest);
