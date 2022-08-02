@@ -1,0 +1,49 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  mail:
+    port: 587
+    host: smtp.gmail.com
+    username: 'ternoko.official@gmail.com'
+    password: 'password'
+    properties:
+      mail:
+        smtp:
+        auth: true
+        starttls:
+        enable: true
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
+    username: root
+    password:
+
+slack:
+  redirectUrl: 'https://localhost:8080/api/login'
+  clientId: '3756998338916.3821665111344'
+  clientSecret: '7db0d45bf9ae307a3a93522aa0cc4131'
+  botToken: 'botToken'
+
+security:
+  jwt:
+    token:
+      secret-key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ih1aovtQShabQ7l0cINw4k1fagApg3qLWiB8Kt59Lno'
+      expire-length: 3600000
+
+server:
+  ssl:
+    key-store: classpath:ternoko-keystore.p12
+    key-store-type: PKCS12
+    key-store-password: 980807
+    key-alias: ternoko-keystore
+
+logging:
+  config: classpath:log4j2-local.xml

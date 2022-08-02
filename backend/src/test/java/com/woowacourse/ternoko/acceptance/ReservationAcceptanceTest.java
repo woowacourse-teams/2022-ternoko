@@ -94,7 +94,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         createReservation(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
-        final ExtractableResponse<Response> response = get("/api/reservations");
+        final ExtractableResponse<Response> response = get("/api/reservations", generateHeader(CREW1.getId()));
         final List<ReservationResponse> reservationResponses = response.body().jsonPath()
                 .getList(".", ReservationResponse.class);
 
