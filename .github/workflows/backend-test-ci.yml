@@ -8,12 +8,16 @@ on:
     branches:
       - main
       - feat/*
+      - fix/*
+      - refactor/*
       - develop
     paths: 'backend/**' # backend dir 하위에 변경 지점이 있어야한다.
   pull_request:  # main, feat, develop 브랜치에  PR event 가 일어났을때
     branches:
       - main
       - feat/*
+      - fix/*
+      - refactor/*
       - develop
     paths: 'backend/**'
 
