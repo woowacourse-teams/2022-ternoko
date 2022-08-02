@@ -12,7 +12,7 @@ type ModalProps = {
 
 const Modal = ({ show, display, additionalFrameStyle, children, handleCloseModal }: ModalProps) => {
   return ReactDOM.createPortal(
-    <S.Dimmer show={show} display={display} onClick={handleCloseModal}>
+    <S.Dimmer show={show} display={display ? 1 : 0} onClick={handleCloseModal}>
       <S.Frame
         show={show}
         additionalFrameStyle={additionalFrameStyle}
