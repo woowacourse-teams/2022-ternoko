@@ -24,10 +24,12 @@ const Header = () => {
           <h1>크루도 터놓고</h1>
         </Link>
       )}
-      <S.MenuBox>
-        <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
-        <S.ProfileImage src={imageUrl} alt="프로필" />
-      </S.MenuBox>
+      {nickname?.length && (
+        <S.MenuBox>
+          <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
+          <S.ProfileImage src={imageUrl} alt="프로필" />
+        </S.MenuBox>
+      )}
     </S.Box>
   );
 };
