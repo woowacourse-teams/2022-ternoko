@@ -101,7 +101,6 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         assertThat(InterviewResponses).hasSize(2);
     }
 
-
     @Test
     @DisplayName("크루가 면담 예약을 수정한다.")
     void updateInterview() {

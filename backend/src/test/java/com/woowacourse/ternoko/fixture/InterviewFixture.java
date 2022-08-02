@@ -27,23 +27,29 @@ public class InterviewFixture {
             new FormItemRequest("수정질문2", "수정답변2"),
             new FormItemRequest("수정질문3", "수정답변3"));
 
-    public static final ArrayList<FormItem> FORM_ITEMS1 = new ArrayList<>() {{
-        add(new FormItem("고정질문1", "답변1"));
-        add(new FormItem("고정질문1", "답변1"));
-        add(new FormItem("고정질문1", "답변1"));
-    }};
+    public static final ArrayList<FormItem> FORM_ITEMS1 = new ArrayList<>() {
+        {
+            add(new FormItem("고정질문1", "답변1"));
+            add(new FormItem("고정질문1", "답변1"));
+            add(new FormItem("고정질문1", "답변1"));
+        }
+    };
 
-    public static final ArrayList<FormItem> FORM_ITEMS2 = new ArrayList<>() {{
-        add(new FormItem("고정질문2", "답변2"));
-        add(new FormItem("고정질문2", "답변2"));
-        add(new FormItem("고정질문2", "답변2"));
-    }};
+    public static final ArrayList<FormItem> FORM_ITEMS2 = new ArrayList<>() {
+        {
+            add(new FormItem("고정질문2", "답변2"));
+            add(new FormItem("고정질문2", "답변2"));
+            add(new FormItem("고정질문2", "답변2"));
+        }
+    };
 
-    public static final ArrayList<FormItem> FORM_ITEMS3 = new ArrayList<>() {{
-        add(new FormItem("고정질문3", "답변3"));
-        add(new FormItem("고정질문3", "답변3"));
-        add(new FormItem("고정질문3", "답변3"));
-    }};
+    public static final ArrayList<FormItem> FORM_ITEMS3 = new ArrayList<>() {
+        {
+            add(new FormItem("고정질문3", "답변3"));
+            add(new FormItem("고정질문3", "답변3"));
+            add(new FormItem("고정질문3", "답변3"));
+        }
+    };
 
     public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),
             NOW_PLUS_2_DAYS_FIRST_TIME,

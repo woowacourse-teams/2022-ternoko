@@ -135,7 +135,6 @@ public class AuthServiceTest {
     }
 
     private void setSlackMockData(String userEmail) throws IOException, SlackApiException {
-
         final OpenIDConnectTokenResponse openIDConnectTokenResponse = new OpenIDConnectTokenResponse();
         openIDConnectTokenResponse.setAccessToken("temp_accessToken");
 
