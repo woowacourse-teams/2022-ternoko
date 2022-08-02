@@ -1,0 +1,111 @@
+# Action명
+name: 터놓고 백엔드 CI 테스트 자동화
+
+# on 은 이벤트 감지 명령어
+# 아래 명령어는 PUSH, PR 요청에 대해서 이벤트를 감지한다.
+on:
+  push:  # main, feat, develop 브랜치에  PUSH event 가 일어났을때
+    branches:
+      - main
+      - feat/*
+      - develop
+    paths: 'backend/**' # backend dir 하위에 변경 지점이 있어야한다.
+  pull_request:  # main, feat, develop 브랜치에  PR event 가 일어났을때
+    branches:
+      - main
+      - feat/*
+      - develop
+    paths: 'backend/**'
+
+defaults:
+  run:
+    working-directory: backend
+
+# 어떤 작업을 수행할 것인지 명시하는 곳
+# 실질적인 github action을 설정한다.
+jobs:
+  build:
+    runs-on: ubuntu-latest # 가상 머신 OS 설정
+    steps:
+      - name: 리포지토리를 가져옵니다
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+          submodules: recursive
+
+      - name: JDK 11을 설치합니다
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Gradle 명령 실행을 위한 권한을 부여합니다
+        run: chmod +x gradlew
+
+      - name: Gradle build를 수행합니다
+        run: ./gradlew build -x checkstyleMain -x checkstyleTest # 코드 스타일을 제외한 나머지 build 에 대해서 수행합니다.
+        
+      - name: 테스트 결과를 PR에 코멘트로 등록합니다
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: '**/build/test-results/test/TEST-*.xml'
+
+      - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          token: ${{ github.token }}
+
+      - name: build 실패 시 Slack으로 알립니다
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 백엔드 빌드 실패 알림
+          fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+        
+        
+  Backend-checkstyle:
+      runs-on: ubuntu-18.04
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            submodules: true
+            token: ${{ secrets.SUBMODULE_TOKEN }}
+        - name: Set up JDK 11
+          uses: actions/setup-java@v3
+          with:
+            java-version: "11"
+            distribution: "temurin"
+        - name: Grant execute permission for gradlew
+          run: chmod +x gradlew # 권한 부여
+          
+        - name: Checkstyle with Gradle # 코딩 컨벤션 확인 
+          run: ./gradlew checkstyleMain
+          
+        - name: 테스트 결과를 PR에 코멘트로 등록합니다
+          uses: EnricoMi/publish-unit-test-result-action@v1
+          if: always()
+          with:
+            files: '**/build/test-results/test/TEST-*.xml'
+
+        - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다
+          uses: mikepenz/action-junit-report@v3
+          if: always()
+          with:
+            report_paths: '**/build/test-results/test/TEST-*.xml'
+            token: ${{ github.token }}
+
+        - name: build 실패 시 Slack으로 알립니다
+          uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            author_name: 백엔드 빌드 실패 알림
+            fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          if: failure()
