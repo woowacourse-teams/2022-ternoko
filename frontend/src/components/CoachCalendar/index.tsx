@@ -24,7 +24,11 @@ type ScheduleType = {
 
 type SchedulesType = { [key: number]: ScheduleType[] };
 
-const CoachCalendar = () => {
+type CoachCalendarProps = {
+  getHandleClickSchedule: (id: number) => () => void;
+};
+
+const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
@@ -85,7 +89,7 @@ const CoachCalendar = () => {
               const day = getDay(index);
               const reservations = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times }) => (
-                    <S.Schedule key={id}>
+                    <S.Schedule key={id} onClick={getHandleClickSchedule(id)}>
                       {crewNickname} ({times[0]}~{times[1]})
                     </S.Schedule>
                   ))
