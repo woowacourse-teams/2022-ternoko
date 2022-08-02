@@ -53,19 +53,19 @@ operation::coach-controller-test/find-calendar-times[snippets='http-request,http
 
 == 면담 예약 API
 === [크루] 코치 목록 조회 API
-operation::member-controller-test/find-coaches[snippets='curl-request,http-request,http-response']
+operation::member-controller-test/find-coaches[snippets='http-request,http-response']
 
 === [크루] 면담 예약 신청 API
-operation::reservation-controller-test/create-reservation[snippets='curl-request,http-request,http-response']
+operation::reservation-controller-test/create-reservation[snippets='http-request,http-response']
 
 === [코치] 면담 예약 목록 조회 API
 operation::coach-controller-test/find-all-reservation-by-coach[snippets='http-request,http-response']
 
 === [크루] 면담 예약 목록 조회 API
-operation::reservation-controller-test/find-all-reservations[snippets='curl-request,http-request,http-response']
+operation::reservation-controller-test/find-all-reservations[snippets='http-request,http-response']
 
 === [크루] 면담 예약 단건 조회 API
-operation::reservation-controller-test/find-reservation-by-id[snippets='curl-request,http-request,http-response']
+operation::reservation-controller-test/find-reservation-by-id[snippets='http-request,http-response']
 
 === [크루] 면담 예약 수정 PAI
 operation::reservation-controller-test/update-reservation[snippets='http-request,http-response']
@@ -74,4 +74,4 @@ operation::reservation-controller-test/update-reservation[snippets='http-request
 operation::reservation-controller-test/cancel-reservation[snippets='http-request,http-response']
 
 === [크루] 면담 예약 취소 API
-operation::reservation-controller-test/delete-reservation[snippets='curl-request,http-request,http-response']
+operation::reservation-controller-test/delete-reservation[snippets='http-request,http-response']
