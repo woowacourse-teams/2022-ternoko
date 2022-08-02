@@ -113,4 +113,8 @@ public class Interview {
     public boolean sameCoach(Long coachId) {
         return coach.sameMember(coachId);
     }
+
+    public void updateStatus(final InterviewStatusType interviewStatusType) {
+        this.interviewStatusType = interviewStatusType;
+    }
 }
