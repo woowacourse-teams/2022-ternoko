@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class ControllerTest extends RestDocsTestSupport {
 
-    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    protected final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public void createCalendarTimes(final Long coachId) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders

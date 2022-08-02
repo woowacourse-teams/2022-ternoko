@@ -6,7 +6,6 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_RE
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,16 +49,9 @@ class MemberControllerTest extends RestDocsTestSupport {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .characterEncoding("utf-8")
-                        .content(readJson("json/members/save-calendar-times.json")))
+                        .content(objectMapper.writeValueAsString(MONTH_REQUEST)))
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        requestFields(fieldWithPath("calendarTimes.[].year").type(JsonFieldType.NUMBER)
-                                        .description("년도"),
-                                fieldWithPath("calendarTimes.[].month").type(JsonFieldType.NUMBER)
-                                        .description("달"),
-                                fieldWithPath("calendarTimes.[].times").type(JsonFieldType.ARRAY)
-                                        .description("면담 가능 시간")
-                        )));
+                .andDo(restDocs.document());
     }
 
     @Test
