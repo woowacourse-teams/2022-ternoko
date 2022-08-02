@@ -3,7 +3,7 @@ package com.woowacourse.ternoko.service;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.dto.EmailDto;
 import com.woowacourse.ternoko.repository.InterviewRepository;
-import com.woowacourse.ternoko.util.EmailSender;
+import com.woowacourse.ternoko.support.EmailSender;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +28,13 @@ public class EmailService {
                 localDateTimeOfNextDay.getMonthValue(),
                 localDateTimeOfNextDay.getDayOfMonth());
 
-        final List<EmailDto> emailDtos = EmailDto.from(interviews);
-        emailSender.send(emailDtos.stream()
-                .map(EmailDto::toEmailDto)
-                .collect(Collectors.toList()));
+        final List<EmailDto> emailDtos = interviews.stream()
+                .map(EmailDto::from)
+                .collect(Collectors.toList());
+
+        for (final EmailDto emailDto : emailDtos) {
+            emailSender.send(emailDto);
+        }
     }
+
 }

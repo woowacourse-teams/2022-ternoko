@@ -24,8 +24,4 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     List<Interview> findAllByInterviewStartDay(final int year,
                                                final int month,
                                                final int day);
-//
-//    localDatetime now = 2022-08-01.00:00. minusDay(1) and 2022-08-01 23.59;
-//    localDatetime interviewStartTime1 = 2022-07-29-18:10
-//    localDatetime interviewStartTime2 = 2022-07-30-18:10
 }
