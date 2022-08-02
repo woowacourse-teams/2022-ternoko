@@ -23,7 +23,7 @@ const Reservation = ({
         <p>{getDateString(interviewStartTime)}</p>
       </S.ImageTextBox>
       <S.ImageTextBox>
-        <S.IconImage src="/assets/icon/clock" alt="시계 아이콘" />
+        <S.IconImage src="/assets/icon/clock.png" alt="시계 아이콘" />
         <p>
           {getTimeString(interviewStartTime)} ~ {getTimeString(interviewEndTime)}
         </p>
@@ -31,7 +31,7 @@ const Reservation = ({
 
       <S.ButtonBox>
         <Button orange={true}>
-          <S.ButtonImage src="/assets/icon/edit" alt="편집 아이콘" />
+          <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
           편집
         </Button>
       </S.ButtonBox>

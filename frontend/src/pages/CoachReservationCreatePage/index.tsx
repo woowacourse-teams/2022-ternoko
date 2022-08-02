@@ -13,6 +13,7 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useUserState } from '@/context/UserProvider';
 
 import { CalendarTime } from '@/types/domain';
 import { StringDictionary } from '@/types/domain';
@@ -41,6 +42,7 @@ const defaultTimes = [
 ];
 
 const CoachReservationCreatePage = () => {
+  const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
   const { resetSelectedDates, setDay } = useCalendarActions();
   const { isSelectedDate } = useCalendarUtils();
@@ -144,7 +146,7 @@ const CoachReservationCreatePage = () => {
   useEffect(() => {
     (async () => {
       // 추후 response 타입 필요
-      const response = await getCoachScheduleAPI(year, month + 1);
+      const response = await getCoachScheduleAPI(id, year, month + 1);
 
       const recentCalendarTimes = compactCalendarTimes(
         response.data.calendarTimes.map((calendarTime: string) => {

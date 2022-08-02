@@ -29,7 +29,7 @@ const OAuthRedirectHandlerPage = () => {
       if (memberRole === 'CREW') {
         navigate(hasNickname ? PAGE.CREW_HOME : PAGE.LOGIN_REGISTER);
       } else {
-        navigate(hasNickname ? PAGE.COACH_HOME : `${PAGE.LOGIN_REGISTER}/?role='coach`);
+        navigate(hasNickname ? PAGE.COACH_HOME : PAGE.LOGIN_REGISTER);
       }
     });
   })();

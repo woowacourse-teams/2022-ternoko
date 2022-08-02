@@ -10,6 +10,7 @@ type UserProviderProps = {
 };
 
 type UserStateType = {
+  id: number;
   nickname: string;
   imageUrl: string;
 };
@@ -22,10 +23,11 @@ const UserStateContext = createContext<UserStateType | null>(null);
 const UserActionsContext = createContext<UserActionsType | null>(null);
 
 const UserProvider = ({ children }: UserProviderProps) => {
+  const [id, setId] = useState(-1);
   const [nickname, setNickname] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
-  const state = { nickname, imageUrl };
+  const state = { id, nickname, imageUrl };
 
   const actions = {
     initializeUser: async (callback: (() => void) | null) => {
@@ -37,6 +39,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
       const response = await (memberRole === 'CREW' ? getCrewInfoAPI() : getCoachInfoAPI());
       const user: UserType = response.data;
 
+      setId(user.id);
       setNickname(user.nickname);
       setImageUrl(user.imageUrl);
 
