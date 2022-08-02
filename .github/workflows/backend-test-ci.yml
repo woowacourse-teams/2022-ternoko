@@ -90,18 +90,21 @@ jobs:
           
         - name: Checkstyle with Gradle # 코딩 컨벤션 확인 
           run: ./gradlew checkstyleMain
+        - uses: jwgmeligmeyling/checkstyle-github-action@master # 코딩 스타일 검사 결과를 xml 파일로 추출
+          with:
+              path: '**/build/reports/checkstyle-result.xml' 
           
-        - name: 테스트 결과를 PR에 코멘트로 등록합니다
+        - name: 코딩 스타일 검사 결과를 PR에 코멘트로 등록합니다
           uses: EnricoMi/publish-unit-test-result-action@v1
           if: always()
           with:
-            files: '**/build/test-results/test/TEST-*.xml'
+            files: '**/build/reports/checkstyle-result.xml'
 
-        - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다
+        - name: 코딩 스타일 검사 결과 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다
           uses: mikepenz/action-junit-report@v3
           if: always()
           with:
-            report_paths: '**/build/test-results/test/TEST-*.xml'
+            report_paths: '**/build/reports/checkstyle-result.xml'
             token: ${{ github.token }}
 
         - name: build 실패 시 Slack으로 알립니다
