@@ -5,13 +5,10 @@ import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class CoachControllerTest extends ControllerTest {
@@ -30,16 +27,6 @@ public class CoachControllerTest extends ControllerTest {
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        responseFields(
-                                fieldWithPath("calendar[]").type(JsonFieldType.ARRAY).description("코치 면담 예약 리스트"),
-                                fieldWithPath("calendar[].id").type(JsonFieldType.NUMBER).description("면담 예약 아이디"),
-                                fieldWithPath("calendar[].crewNickname").type(JsonFieldType.STRING)
-                                        .description("면담 예약한 크루 닉네임"),
-                                fieldWithPath("calendar[].interviewStartTime").type(JsonFieldType.STRING)
-                                        .description("면담 시작 시간"),
-                                fieldWithPath("calendar[].interviewEndTime").type(JsonFieldType.STRING)
-                                        .description("면담 종료 시간")
-                        )));
+                .andDo(restDocs.document());
     }
 }

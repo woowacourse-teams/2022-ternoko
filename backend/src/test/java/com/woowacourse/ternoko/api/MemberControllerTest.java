@@ -5,8 +5,7 @@ import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +13,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class MemberControllerTest extends RestDocsTestSupport {
@@ -36,7 +34,7 @@ class MemberControllerTest extends RestDocsTestSupport {
     void checkUniqueNickname() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/login/check")
-                        .queryParam("nickname", "토미"))
+                        .queryParam("nickname", COACH3.getNickname()))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
@@ -47,8 +45,8 @@ class MemberControllerTest extends RestDocsTestSupport {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/calendar/times")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .characterEncoding("utf-8")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
                         .content(objectMapper.writeValueAsString(MONTH_REQUEST)))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -68,18 +66,15 @@ class MemberControllerTest extends RestDocsTestSupport {
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        responseFields(fieldWithPath("calendarTimes[]").type(JsonFieldType.ARRAY)
-                                .description("면담 가능 시간 목록")
-                        )));
+                .andDo(restDocs.document());
     }
 
     private void createCalendarTimes(Long coachId) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/calendar/times")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
                         .characterEncoding("utf-8")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(coachId)))
                         .content(objectMapper.writeValueAsString(MONTH_REQUEST)))
                 .andExpect(status().isOk());
     }
