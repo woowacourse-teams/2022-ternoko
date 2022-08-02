@@ -1,5 +1,3 @@
-import OAuthRedirectHandler from './pages/OAuthRedirectHandler';
-
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -10,6 +8,7 @@ import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import LoginRegisterPage from '@/pages/LoginRegisterPage';
 import MyPage from '@/pages/MyPage';
+import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
 import ReservationApplyPage from '@/pages/ReservationApplyPage';
 import ReservationCompletePage from '@/pages/ReservationCompletePage';
 
@@ -25,7 +24,7 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path={PAGE.LOGIN} element={<LoginPage />} />
-        <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandler />} />
+        <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
 
         <Route path="/" element={<Layout />}>
           <Route element={<PrivateRoute />}>

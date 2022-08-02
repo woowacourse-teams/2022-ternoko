@@ -7,7 +7,7 @@ import { UserStatusType } from '@/types/domain';
 import { getUserStatusAPI } from '@/api';
 import { PAGE } from '@/constants';
 
-const OAuthRedirectHandler = () => {
+const OAuthRedirectHandlerPage = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
 
@@ -18,6 +18,7 @@ const OAuthRedirectHandler = () => {
     const { accessToken, hasNickname, memberRole }: UserStatusType = response.data;
 
     localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('memberRole', memberRole);
     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     if (memberRole === 'CREW') {
@@ -27,7 +28,7 @@ const OAuthRedirectHandler = () => {
     }
   })();
 
-  return <p></p>;
+  return <p>로딩중....</p>;
 };
 
-export default OAuthRedirectHandler;
+export default OAuthRedirectHandlerPage;
