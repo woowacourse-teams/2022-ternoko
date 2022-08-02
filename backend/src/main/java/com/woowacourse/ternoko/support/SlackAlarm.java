@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.support;
 import com.slack.api.methods.impl.MethodsClientImpl;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import com.woowacourse.ternoko.domain.Interview;
-import com.woowacourse.ternoko.domain.Reservation;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

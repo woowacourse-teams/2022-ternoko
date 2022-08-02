@@ -1,13 +1,11 @@
 package com.woowacourse.ternoko.dto;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
