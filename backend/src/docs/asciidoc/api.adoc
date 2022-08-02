@@ -11,23 +11,37 @@
 == 소개
 터놓고 API 문서 입니다.
 
-//[[introduction]]
-//== 서비스환경
-//해당 API서비스의 서버 도메인 환경은 다음과 같습니다.
-//
-//
-//== Domain
-//|===
-//| 환경 | URI
+== 서비스환경
+해당 API서비스의 서버 도메인 환경은 다음과 같습니다.
+
+=== Domain
+|===
+| 환경 | URI
+
+| 로컬서버
+| `localhost:8080`
+
+|배포서버
+|`ternoko.site`
+
 //
 //| 개발서버
 //| `todo`
-//
-//| 운영서버
-//| `todo`
-//|===
+
+|===
 
 == 회원 API
+=== [코치/크루] 회원가입/로그인 API
+operation::auth-controller-test/login[snippets='http-request,http-response']
+==== Error Response
+|===
+| statusCode | message
+
+|
+|
+
+|===
+
 === [코치] 내 정보 조회 API
 operation::coach-controller-test/find-coach[snippets='http-request,http-response']
 ==== Error Response
