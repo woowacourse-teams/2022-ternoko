@@ -66,20 +66,20 @@ public class ReservationControllerTest extends ControllerTest {
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
-                        responseFields( //response parameter
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("예약 아이디"),
-                                fieldWithPath("[].coachNickname").type(JsonFieldType.STRING).description("코치 닉네임"),
-                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("코치 이미지url"),
-                                fieldWithPath("[].crewNickname").type(JsonFieldType.STRING).description("크루 닉네임"),
-                                fieldWithPath("[].interviewStartTime").type(JsonFieldType.STRING)
-                                        .description("면담 시작 시간"),
-                                fieldWithPath("[].interviewEndTime").type(JsonFieldType.STRING).description("면담 종료 시간"),
-                                fieldWithPath("[].interviewQuestions").type(JsonFieldType.ARRAY).description("면담 내용"),
-                                fieldWithPath("[].interviewQuestions[].question").type(JsonFieldType.STRING)
-                                        .description("면담 질문"),
-                                fieldWithPath("[].interviewQuestions[].answer").type(JsonFieldType.STRING)
-                                        .description("면담 내용")
-                        );
+        responseFields(
+                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("예약 아이디"),
+                fieldWithPath("[].coachNickname").type(JsonFieldType.STRING).description("코치 닉네임"),
+                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("코치 이미지url"),
+                fieldWithPath("[].crewNickname").type(JsonFieldType.STRING).description("크루 닉네임"),
+                fieldWithPath("[].interviewStartTime").type(JsonFieldType.STRING)
+                        .description("면담 시작 시간"),
+                fieldWithPath("[].interviewEndTime").type(JsonFieldType.STRING).description("면담 종료 시간"),
+                fieldWithPath("[].interviewQuestions").type(JsonFieldType.ARRAY).description("면담 내용"),
+                fieldWithPath("[].interviewQuestions[].question").type(JsonFieldType.STRING)
+                        .description("면담 질문"),
+                fieldWithPath("[].interviewQuestions[].answer").type(JsonFieldType.STRING)
+                        .description("면담 내용")
+        );
     }
 
     @Test

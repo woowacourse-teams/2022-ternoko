@@ -9,9 +9,9 @@ import java.util.List;
 
 public class CoachAvailableTimeFixture {
 
-    public static final LocalDate NOW = LocalDate.
-            now().plusDays(4).getMonthValue() > LocalDate.now().getMonthValue() ?
-            LocalDate.now().plusDays(4) : LocalDate.now();
+    public static final LocalDate NOW = LocalDate.now()
+            .plusDays(4).getMonthValue() > LocalDate.now().getMonthValue()
+            ? LocalDate.now().plusDays(4) : LocalDate.now();
 
     public static final LocalDate NOW_MINUS_2_DAYS = NOW.minusDays(2);
     public static final LocalDate NOW_PLUS_2_DAYS = NOW.plusDays(2);

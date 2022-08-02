@@ -8,10 +8,14 @@ import java.util.List;
 
 public class MemberFixture {
 
-    public static final Coach COACH1 = new Coach(1L, "이름", "준", "test1@woowahan.com", "U1234567891", "imageUrl", "안녕하세요.");
-    public static final Coach COACH2 = new Coach(2L, "이름", "브리", "test2@woowahan.com", "U1234567892", "imageUrl", "안녕하세요.");
-    public static final Coach COACH3 = new Coach(3L, "이름", "토미", "test3@woowahan.com", "U1234567893", "imageUrl", "안녕하세요.");
-    public static final Coach COACH4 = new Coach(4L, "이름", "네오", "test4@woowahan.com", "U1234567894", "imageUrl", "안녕하세요.");
+    public static final Coach COACH1 = new Coach(1L, "이름", "준", "test1@woowahan.com", "U1234567891", "imageUrl",
+            "안녕하세요.");
+    public static final Coach COACH2 = new Coach(2L, "이름", "브리", "test2@woowahan.com", "U1234567892", "imageUrl",
+            "안녕하세요.");
+    public static final Coach COACH3 = new Coach(3L, "이름", "토미", "test3@woowahan.com", "U1234567893", "imageUrl",
+            "안녕하세요.");
+    public static final Coach COACH4 = new Coach(4L, "이름", "네오", "test4@woowahan.com", "U1234567894", "imageUrl",
+            "안녕하세요.");
     public static final Crew CREW1 = new Crew(5L, "허수진", "수달", "test5@woowahan.com", "U1234567895", "imageUrl");
     public static final Crew CREW2 = new Crew(6L, "손수민", "앤지", "test6@email.com", "U1234567896", "imageUrl");
     public static final Crew CREW3 = new Crew(7L, "김동호", "애쉬", "test7@email.com", "U1234567897", "imageUrl");

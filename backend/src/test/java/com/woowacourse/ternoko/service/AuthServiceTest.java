@@ -58,7 +58,6 @@ public class AuthServiceTest {
         assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
     }
 
-
     @DisplayName("크루가 최초 로그인 시도시, 크루로 회원가입이 된다.")
     @Test
     void signup_crew() throws SlackApiException, IOException {
@@ -95,9 +94,7 @@ public class AuthServiceTest {
         assertThat(loginResponse.isHasNickname()).isTrue();
     }
 
-
     private void setSlackMockData(String userEmail) throws IOException, SlackApiException {
-
         final OpenIDConnectTokenResponse openIDConnectTokenResponse = new OpenIDConnectTokenResponse();
         openIDConnectTokenResponse.setAccessToken("temp_accessToken");
 

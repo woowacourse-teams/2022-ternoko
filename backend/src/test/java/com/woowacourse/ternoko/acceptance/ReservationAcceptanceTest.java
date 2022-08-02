@@ -102,7 +102,6 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         assertThat(reservationResponses).hasSize(4);
     }
 
-
     @Test
     @DisplayName("크루가 면담 예약을 수정한다.")
     void updateReservation() {
