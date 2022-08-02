@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Box = styled.div`
   position: relative;
   width: 25rem;
-  padding: 1rem 1.5rem 1.5rem;
+  padding: 1rem 1.5rem 5rem;
 
   border: 1px solid ${({ theme }) => theme.colors.gray_100};
   border-radius: 5px;
@@ -13,7 +13,7 @@ export const Box = styled.div`
   cursor: pointer;
 
   :hover {
-    transform: translateY(-2rem);
+    transform: translateY(-0.5rem);
   }
 `;
 
@@ -44,6 +44,8 @@ export const ButtonBox = styled.div`
   position: absolute;
   right: 0.7rem;
   bottom: 0.7rem;
+  display: flex;
+  gap: 1rem;
 `;
 
 export const ButtonImage = styled.img`

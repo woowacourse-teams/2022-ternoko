@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
@@ -18,12 +18,13 @@ import {
   patchCrewInfoAPI,
 } from '@/api';
 import { PAGE } from '@/constants';
+import LocalStorage from '@/localStorage';
 import { isOverIntroduceMinLength, isOverNicknameMinLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const role = new URLSearchParams(search).get('role');
+
+  const memberRole = LocalStorage.getMemberRole();
 
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
@@ -45,7 +46,7 @@ const LoginRegisterPage = () => {
 
     if (
       !isOverNicknameMinLength(nickname) ||
-      (role === 'coach' && !isOverIntroduceMinLength(introduce))
+      (memberRole === 'COACH' && !isOverIntroduceMinLength(introduce))
     )
       return;
 
@@ -59,7 +60,7 @@ const LoginRegisterPage = () => {
         return;
       }
 
-      if (role === 'coach') {
+      if (memberRole === 'COACH') {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
         navigate(PAGE.COACH_HOME);
       } else {
@@ -71,7 +72,7 @@ const LoginRegisterPage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await (role === 'coach' ? getCoachInfoAPI() : getCrewInfoAPI());
+      const response = await (memberRole === 'COACH' ? getCoachInfoAPI() : getCrewInfoAPI());
       const { name, imageUrl }: UserType = response.data;
 
       setName(name);
@@ -86,7 +87,7 @@ const LoginRegisterPage = () => {
           <S.IntroduceBox>
             <h3>{name}님, 환영합니다!</h3>
             <h3>기본 정보를 작성해주세요.</h3>
-            {role === 'coach' && <h4>한 줄 소개는 크루들에게 보여질 정보입니다.</h4>}
+            {memberRole === 'COACH' && <h4>한 줄 소개는 크루들에게 보여질 정보입니다.</h4>}
           </S.IntroduceBox>
 
           <S.InputContainer>
@@ -98,7 +99,7 @@ const LoginRegisterPage = () => {
               handleChange={handleChangeNickname}
               checkValidation={isOverNicknameMinLength}
             />
-            {role === 'coach' && (
+            {memberRole === 'COACH' && (
               <TextAreaField
                 id="introduce"
                 label="한 줄 소개*"
@@ -114,7 +115,7 @@ const LoginRegisterPage = () => {
           <S.ProfileBox>
             <img src={imageUrl} alt="코치 프로필" />
             <S.Nickname>{nickname || '닉네임'}</S.Nickname>
-            {role === 'coach' && (
+            {memberRole === 'COACH' && (
               <S.Introduce>{introduce || '한 줄 소개를 입력해주세요.'}</S.Introduce>
             )}
           </S.ProfileBox>

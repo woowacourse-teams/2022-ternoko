@@ -1,16 +1,29 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import useModal from '@/components/@common/Modal/useModal';
 
 import CoachCalendar from '@/components/CoachCalendar';
+import ReservationDetailModal from '@/components/ReservationDetailModal';
 
 import CalendarProvider from '@/context/CalendarProvider';
 
 import { PAGE } from '@/constants';
+import LocalStorage from '@/localStorage';
 
 const CoachHomePage = () => {
+  const memberRole = LocalStorage.getMemberRole();
+  const { show, display, handleOpenModal, handleCloseModal } = useModal();
+  const [clickedReservationId, setClickedReservationId] = useState(-1);
+
+  const getHandleClickSchedule = (id: number) => () => {
+    setClickedReservationId(id);
+    handleOpenModal();
+  };
+
   return (
     <>
       <S.TitleBox>
@@ -20,8 +33,15 @@ const CoachHomePage = () => {
         </Link>
       </S.TitleBox>
       <CalendarProvider selectMode="single">
-        <CoachCalendar />
+        <CoachCalendar getHandleClickSchedule={getHandleClickSchedule} />
       </CalendarProvider>
+      <ReservationDetailModal
+        show={show}
+        display={display}
+        role={memberRole}
+        reservationId={clickedReservationId}
+        handleCloseModal={handleCloseModal}
+      />
     </>
   );
 };
