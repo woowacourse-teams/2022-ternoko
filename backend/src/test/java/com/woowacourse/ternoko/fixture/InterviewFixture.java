@@ -27,11 +27,6 @@ public class InterviewFixture {
             new FormItemRequest("수정질문2", "수정답변2"),
             new FormItemRequest("수정질문3", "수정답변3"));
 
-    public static final List<FormItem> FORM_ITEMS = List.of(new FormItem("고정질문1", "답변1"));
-//    public static final List<FormItem> FORM_ITEMS1 = List.of(new FormItem("고정질문1", "답변1"),
-//            new FormItem("고정질문1", "답변1"),
-//            new FormItem("고정질문1", "답변1"));
-
     public static final ArrayList<FormItem> FORM_ITEMS1 = new ArrayList<>() {{
         add(new FormItem("고정질문1", "답변1"));
         add(new FormItem("고정질문1", "답변1"));
