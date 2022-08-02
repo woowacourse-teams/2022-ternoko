@@ -7,6 +7,8 @@ export const Box = styled.div`
   height: 60px;
   padding: 0 30rem;
 
+  border: 1px solid red;
+
   h1 {
     font-family: 'EarlyFontDiary';
     font-size: 3em;
@@ -16,22 +18,27 @@ export const Box = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
 
-  img {
-    width: 50px;
+    > img {
+      width: 50px;
+    }
   }
 `;
 
 export const MenuBox = styled.div`
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.5rem;
 `;
 
-export const MenuItem = styled.p`
-  cursor: pointer;
+export const ProfileImage = styled.img`
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
 
-  &:hover {
-    text-decoration: underline;
-  }
+  border-radius: 100%;
+`;
+
+export const Nickname = styled.p`
+  font-size: 1.3rem;
 `;

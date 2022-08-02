@@ -1,15 +1,19 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
+import { useUserState } from '@/context/UserProvider';
+
 import { PAGE } from '@/constants';
+import LocalStorage from '@/localStorage';
 
 const Header = () => {
-  const location = useLocation();
+  const { nickname, imageUrl } = useUserState();
+  const memberRole = LocalStorage.getMemberRole();
 
   return (
     <S.Box>
-      {location.pathname.includes('coach') ? (
+      {memberRole === 'COACH' ? (
         <Link to={PAGE.COACH_HOME}>
           <img src="/assets/logo/mainLogo.png" alt="로고" />
           <h1>코치도 터놓고</h1>
@@ -21,8 +25,8 @@ const Header = () => {
         </Link>
       )}
       <S.MenuBox>
-        <S.MenuItem>로그인</S.MenuItem>
-        <S.MenuItem>회원가입</S.MenuItem>
+        <S.ProfileImage src={imageUrl} alt="프로필" />
+        <S.Nickname>{nickname}</S.Nickname>
       </S.MenuBox>
     </S.Box>
   );
