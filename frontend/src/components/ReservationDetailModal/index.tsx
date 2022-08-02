@@ -7,13 +7,14 @@ import Modal from '@/components/@common/Modal';
 import useModal from '@/components/@common/Modal/useModal';
 
 import { ReservationType } from '@/types/domain';
+import { MemberRole } from '@/types/domain';
 
 import { getReservationAPI } from '@/api';
 import { getDateString, getTimeString } from '@/utils';
 
 type ReservationDetailModalProps = {
-  role: 'coach' | 'crew';
-  reservationId: boolean;
+  role: MemberRole;
+  reservationId: number;
 };
 
 const ReservationDetailModal = ({ role, reservationId }: ReservationDetailModalProps) => {
@@ -51,7 +52,7 @@ const ReservationDetailModal = ({ role, reservationId }: ReservationDetailModalP
         <p>{reservation?.crewNickname}</p>
       </S.Profile>
       <S.InfoContainer>
-        {role === 'crew' && (
+        {role === 'CREW' && (
           <S.Info>
             <S.IconBox>
               <S.Icon src="/assets/icon/human.png" alt="코치 아이콘" />

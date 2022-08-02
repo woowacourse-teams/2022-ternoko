@@ -131,7 +131,7 @@ const ReservationApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await getCoachScheduleAPI(year, month + 1);
+        const response = await getCoachScheduleAPI(coachId, year, month + 1);
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, fullDate: string) => {

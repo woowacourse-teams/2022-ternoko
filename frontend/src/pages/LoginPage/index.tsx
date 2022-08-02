@@ -13,7 +13,7 @@ const LoginPage = () => {
             <h1>터놓고</h1>
             <img src="/assets/logo/mainLogo.png" alt="프로필 로고" />
           </S.LogoBox>
-          <a target="_blank" href={PAGE.SLACK_LOGIN_SERVER}>
+          <a href={PAGE.SLACK_LOGIN_SERVER}>
             <S.LoginButton>
               <img src="/assets/icon/slack.png" alt="슬랙 로고" />
               슬랙 로그인
