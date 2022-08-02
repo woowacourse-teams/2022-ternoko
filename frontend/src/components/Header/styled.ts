@@ -26,17 +26,19 @@ export const Box = styled.div`
 export const MenuBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
+`;
+
+export const Nickname = styled.p`
+  font-size: 1.5rem;
+  font-weight: 500;
 `;
 
 export const ProfileImage = styled.img`
   width: 45px;
   height: 45px;
+
   object-fit: cover;
-
   border-radius: 100%;
-`;
-
-export const Nickname = styled.p`
-  font-size: 1.3rem;
+  cursor: pointer;
 `;

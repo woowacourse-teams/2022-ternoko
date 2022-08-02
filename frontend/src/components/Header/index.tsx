@@ -25,8 +25,8 @@ const Header = () => {
         </Link>
       )}
       <S.MenuBox>
+        <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
         <S.ProfileImage src={imageUrl} alt="프로필" />
-        <S.Nickname>{nickname}</S.Nickname>
       </S.MenuBox>
     </S.Box>
   );
