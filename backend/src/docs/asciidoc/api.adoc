@@ -27,6 +27,22 @@
 //| `todo`
 //|===
 
+== 회원 API
+=== [코치] 내 정보 조회 API
+operation::coach-controller-test/find-coach[snippets='http-request,http-response']
+
+=== [코치] 내 정보 수정 API
+operation::coach-controller-test/update-coach[snippets='http-request,http-response']
+
+=== [크루] 내 정보 조회 API
+operation::crew-controller-test/find-coach[snippets='http-request,http-response']
+
+=== [크루] 내 정보 수정 API
+operation::crew-controller-test/update-coach[snippets='http-request,http-response']
+
+=== [코치/크루] 닉네임 중복 검사 API
+operation::member-controller-test/check-unique-nickname[snippets='http-request,http-response']
+
 == 면담 가능 시간 API
 === [코치] 면담 가능 시간 저장 API
 operation::coach-controller-test/save-calendar-times[snippets='http-request,http-response']
@@ -59,16 +75,3 @@ operation::reservation-controller-test/cancel-reservation[snippets='http-request
 
 === [크루] 면담 예약 취소 API
 operation::reservation-controller-test/delete-reservation[snippets='curl-request,http-request,http-response']
-
-== 회원 API
-=== [코치] 내 정보 조회 API
-operation::coach-controller-test/find-coach[snippets='http-request,http-response']
-
-=== [코치] 내 정보 수정 API
-operation::coach-controller-test/update-coach[snippets='http-request,http-response']
-
-=== [크루] 내 정보 조회 API
-operation::crew-controller-test/find-coach[snippets='http-request,http-response']
-
-=== [크루] 내 정보 수정 API
-operation::crew-controller-test/update-coach[snippets='http-request,http-response']
