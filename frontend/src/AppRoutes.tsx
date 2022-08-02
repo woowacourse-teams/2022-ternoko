@@ -93,7 +93,7 @@ const S = {
     padding: 3rem 30rem 0;
 
     @media ${({ theme }) => theme.devices.laptopL} {
-      padding: 3rem 20rem 0;
+      padding: 3rem 25rem 0;
     }
 
     @media ${({ theme }) => theme.devices.laptop} {

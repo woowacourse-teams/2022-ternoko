@@ -24,7 +24,7 @@ const Header = () => {
           <h1>크루도 터놓고</h1>
         </Link>
       )}
-      {nickname?.length && (
+      {nickname && nickname.length && (
         <S.MenuBox>
           <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
           <Link to={PAGE.MY_PAGE}>
