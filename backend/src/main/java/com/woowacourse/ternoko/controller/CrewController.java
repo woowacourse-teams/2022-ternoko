@@ -23,14 +23,12 @@ public class CrewController {
 
     @GetMapping("/me")
     public ResponseEntity<CrewResponse> findCrew(@AuthenticationPrincipal final Long crewId) {
-        log.info("findCrew");
         return ResponseEntity.ok(crewService.findCrew(crewId));
     }
 
     @PatchMapping("/me")
     public ResponseEntity<Void> updateCrew(@AuthenticationPrincipal final Long crewId,
                                            @RequestBody final CrewUpdateRequest crewUpdateRequest) {
-        log.info("updateCrew");
         crewService.partUpdateCrew(crewId, crewUpdateRequest);
         return ResponseEntity.ok().build();
     }

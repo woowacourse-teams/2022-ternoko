@@ -20,7 +20,6 @@ public class CrewService {
     private final CrewRepository crewRepository;
 
     public void partUpdateCrew(final Long crewId, final CrewUpdateRequest request) {
-        log.info("updateCrew");
         crewRepository.updateNickNameAndImageUrl(crewId, request.getNickname(), request.getImageUrl());
     }
 
