@@ -144,6 +144,10 @@ export const DateBox = styled.div`
   display: flex;
   gap: 3rem;
   padding-bottom: 3rem;
+
+  @media ${({ theme }) => theme.devices.tabletM} {
+    flex-direction: column;
+  }
 `;
 
 const toLeft = keyframes`
@@ -157,6 +161,12 @@ const toLeft = keyframes`
   }
 `;
 
-export const TimeContainer = styled(ScrollContainer)`
+type TimeContainerProps = {
+  heightUnit: number;
+};
+
+export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
   animation: ${toLeft} 1s;
+
+  height: ${({ heightUnit }) => Math.min(47, heightUnit * 3.7)}rem;
 `;

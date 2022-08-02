@@ -15,6 +15,21 @@ export const CoachProfileImage = styled.img`
   border: 1px solid ${({ theme }) => theme.colors.gray_100};
   border-radius: 25px;
   margin-bottom: 0.5rem;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media ${({ theme }) => theme.devices.mobileL} {
+    width: 80px;
+    height: 80px;
+  }
+
+  @media ${({ theme }) => theme.devices.mobileM} {
+    width: 67px;
+    height: 67px;
+  }
 `;
 
 type BoxProps = {

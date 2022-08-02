@@ -205,7 +205,7 @@ const ReservationApplyPage = () => {
           </div>
 
           <div className="fold-box">
-            <GridContainer minSize="110px" pb="3rem">
+            <GridContainer minSize="110px" isCenter={true} pb="3rem">
               {coaches.map((coach) => (
                 <CoachProfile
                   key={coach.id}
@@ -236,7 +236,7 @@ const ReservationApplyPage = () => {
                 getDayType={getDayType}
               />
 
-              <S.TimeContainer key={timeRerenderKey}>
+              <S.TimeContainer key={timeRerenderKey} heightUnit={availableTimes.length}>
                 {availableTimes.map((availableTime, index) => (
                   <Time
                     key={index}

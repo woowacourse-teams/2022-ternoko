@@ -7,6 +7,11 @@ const ScrollContainer = styled.div`
   height: 47rem;
   overflow-y: scroll;
   padding-right: 3rem;
+
+  @media ${({ theme }) => theme.devices.tabletM} {
+    flex-direction: column;
+    width: 160px;
+  }
 `;
 
 export default ScrollContainer;

@@ -9,10 +9,19 @@ export const Form = styled.form`
   justify-content: space-between;
   width: 100%;
   min-height: calc(100% - 35rem);
+
+  @media ${({ theme }) => theme.devices.tabletM} {
+    flex-direction: column;
+    gap: 5rem;
+  }
 `;
 
 export const LeftBox = styled.div`
   width: 44%;
+
+  @media ${({ theme }) => theme.devices.tabletM} {
+    width: 100%;
+  }
 `;
 
 export const IntroduceBox = styled.div`
@@ -43,6 +52,10 @@ export const RightBox = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 44%;
+
+  @media ${({ theme }) => theme.devices.tabletM} {
+    width: 100%;
+  }
 `;
 
 export const ProfileBox = styled.div`

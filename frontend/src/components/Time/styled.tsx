@@ -11,6 +11,7 @@ const Time = styled.div<TimeProps>`
   color: black;
   font-weight: 600;
   font-size: 1.4rem;
+  text-align: center;
   cursor: pointer;
 
   :hover {

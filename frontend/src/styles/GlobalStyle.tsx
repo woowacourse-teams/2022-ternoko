@@ -8,6 +8,24 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  @media ${({ theme }) => theme.devices.laptop} {
+    html {
+      font-size: 57%;
+    }
+  }
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    html {
+      font-size: 52%;
+    }
+  }
+
+  @media ${({ theme }) => theme.devices.mobileL} {
+    html {
+      font-size: 45%;
+    }
+  }
+
   body {
     width: 100%;
     height: 100%;

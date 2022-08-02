@@ -6,7 +6,7 @@ type ModalProps = {
 };
 
 type DimmerProps = Pick<ModalProps, 'show'> & {
-  display: boolean;
+  display: number;
 };
 
 export const Dimmer = styled.div<DimmerProps>`

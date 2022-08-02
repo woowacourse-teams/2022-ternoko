@@ -8,6 +8,10 @@ export const DateBox = styled.div`
   display: flex;
   gap: 3rem;
   padding-bottom: 3rem;
+
+  @media ${({ theme }) => theme.devices.tabletM} {
+    flex-direction: column;
+  }
 `;
 
 export const ButtonContainer = styled.div`
