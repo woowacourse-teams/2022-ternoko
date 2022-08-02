@@ -23,7 +23,7 @@ import { PAGE } from '@/constants';
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
 
-  initializeUser();
+  initializeUser(null);
 
   return (
     <BrowserRouter>

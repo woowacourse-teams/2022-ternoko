@@ -25,12 +25,13 @@ const OAuthRedirectHandlerPage = () => {
     LocalStorage.setMemberRole(memberRole);
     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
-    initializeUser();
-    if (memberRole === 'CREW') {
-      navigate(hasNickname ? PAGE.CREW_HOME : PAGE.LOGIN_REGISTER);
-    } else {
-      navigate(hasNickname ? PAGE.COACH_HOME : `${PAGE.LOGIN_REGISTER}/?role='coach`);
-    }
+    initializeUser(() => {
+      if (memberRole === 'CREW') {
+        navigate(hasNickname ? PAGE.CREW_HOME : PAGE.LOGIN_REGISTER);
+      } else {
+        navigate(hasNickname ? PAGE.COACH_HOME : `${PAGE.LOGIN_REGISTER}/?role='coach`);
+      }
+    });
   })();
 
   return <p>로딩중....</p>;

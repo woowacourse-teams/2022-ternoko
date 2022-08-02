@@ -15,7 +15,7 @@ type UserStateType = {
 };
 
 type UserActionsType = {
-  initializeUser: () => void;
+  initializeUser: (callback: (() => void) | null) => void;
 };
 
 const UserStateContext = createContext<UserStateType | null>(null);
@@ -28,7 +28,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const state = { nickname, imageUrl };
 
   const actions = {
-    initializeUser: async () => {
+    initializeUser: async (callback: (() => void) | null) => {
       const accessToken = LocalStorage.getAccessToken();
       const memberRole = LocalStorage.getMemberRole();
 
@@ -39,6 +39,8 @@ const UserProvider = ({ children }: UserProviderProps) => {
 
       setNickname(user.nickname);
       setImageUrl(user.imageUrl);
+
+      if (typeof callback === 'function') callback();
     },
   };
 
