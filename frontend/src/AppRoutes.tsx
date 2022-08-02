@@ -16,10 +16,15 @@ import Header from '@/components/Header';
 import PrivateRoute from '@/components/PrivateRoute';
 
 import CalendarProvider from '@/context/CalendarProvider';
+import { useUserActions } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
+  const { initialize } = useUserActions();
+
+  initialize();
+
   return (
     <BrowserRouter>
       <Routes>
