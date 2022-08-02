@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class ClassConfig {
 
     @Bean
-    public MethodsClientImpl getMethodsClientImpl(){
+    public MethodsClientImpl getMethodsClientImpl() {
         return new MethodsClientImpl(new Slack().getHttpClient());
     }
 }

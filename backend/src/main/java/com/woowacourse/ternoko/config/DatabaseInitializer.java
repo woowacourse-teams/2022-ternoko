@@ -98,8 +98,10 @@ public class DatabaseInitializer {
             crewRepository.save(new Crew(13L, "사현빈", "바니", "shb1833@gmail.com", "U03N6FKQEJX",
                     "https://a.slack-edge.com/80588/img/avatars-teams/ava_0012-230.png"));
 
-            availableDateTimeRepository.save(new AvailableDateTime(1L, coach1, LocalDateTime.of(LocalDate.of(2022, 8,25), LocalTime.of(11, 0))));
-            availableDateTimeRepository.save(new AvailableDateTime(2L, coach1, LocalDateTime.of(LocalDate.of(2022, 8,25), LocalTime.of(13, 0))));
+            availableDateTimeRepository.save(new AvailableDateTime(1L, coach1,
+                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0))));
+            availableDateTimeRepository.save(new AvailableDateTime(2L, coach1,
+                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0))));
         }
     }
 }

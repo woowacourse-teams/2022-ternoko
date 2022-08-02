@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
@@ -45,7 +45,6 @@ public class CoachService {
                 .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
         return CoachResponse.from(coach);
     }
-
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
                                                final AvailableDateTimesRequest availableDateTimesRequest) {
