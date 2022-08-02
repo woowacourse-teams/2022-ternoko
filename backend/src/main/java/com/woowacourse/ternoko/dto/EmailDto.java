@@ -36,7 +36,7 @@ public class EmailDto {
     public static List<EmailDto> from(final List<Interview> interviews) {
         return interviews.stream()
                 .map(interview -> new EmailDto(interview.getCoach(),
-                        interview.getCrewNickname(),
+                        interview.getCrew().getNickname(),
                         interview.getInterviewStartTime(),
                         interview.getFormItems()))
                 .collect(Collectors.toList());

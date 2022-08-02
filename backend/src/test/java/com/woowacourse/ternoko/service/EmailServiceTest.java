@@ -2,6 +2,9 @@ package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEMS1;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEMS2;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEMS3;
@@ -11,7 +14,8 @@ import static org.mockito.Mockito.verify;
 
 import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.domain.Interview;
-import com.woowacourse.ternoko.domain.member.Member;
+import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.repository.FormItemRepository;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import java.time.LocalDateTime;
@@ -44,9 +48,9 @@ class EmailServiceTest {
     @DisplayName("다음날 면담이 2개 존재할때 메일 전송은 2번 일어나야 한다.")
     void sendEmail() {
         // given
-        saveInterview(LocalDateTime.now().plusDays(1), COACH1, "애쉬", FORM_ITEMS1);
-        saveInterview(LocalDateTime.now().plusDays(1), COACH2, "열음", FORM_ITEMS2);
-        saveInterview(LocalDateTime.now().plusDays(2), COACH2, "바니", FORM_ITEMS3);
+        saveInterview(LocalDateTime.now().plusDays(1), COACH1, CREW1, FORM_ITEMS1);
+        saveInterview(LocalDateTime.now().plusDays(1), COACH2, CREW2, FORM_ITEMS2);
+        saveInterview(LocalDateTime.now().plusDays(2), COACH2, CREW3, FORM_ITEMS3);
 
         // when
         emailService.sendEmail();
@@ -56,14 +60,14 @@ class EmailServiceTest {
     }
 
     private Long saveInterview(final LocalDateTime localDateTime,
-                               final Member coach,
-                               final String crewNickname,
+                               final Coach coach,
+                               final Crew crew,
                                final List<FormItem> formItems) {
         final Interview interview = interviewRepository.save(new Interview(
                 localDateTime,
                 localDateTime.plusMinutes(30),
                 coach,
-                crewNickname
+                crew
         ));
         for (FormItem formItem : formItems) {
             formItem.addInterview(interview);
