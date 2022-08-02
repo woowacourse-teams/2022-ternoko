@@ -24,7 +24,7 @@ public class EmailSender {
         final String content = generateContent(emailDto);
 
         final SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(coachNickname);
+        message.setFrom(emailDto.getFrom());
         message.setTo(emailDto.getCoachEmail());
         message.setSubject(subject);
         message.setText(content);
