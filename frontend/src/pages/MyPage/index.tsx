@@ -51,6 +51,7 @@ const MyPage = () => {
       ? patchCrewInfoAPI({ nickname, imageUrl })
       : patchCoachInfoAPI({ nickname, introduce, imageUrl }));
     initializeUser(null);
+    setIsEditMode(false);
   };
 
   useEffect(() => {
