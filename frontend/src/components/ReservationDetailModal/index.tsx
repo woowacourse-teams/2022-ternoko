@@ -13,22 +13,30 @@ import { getReservationAPI } from '@/api';
 import { getDateString, getTimeString } from '@/utils';
 
 type ReservationDetailModalProps = {
+  show: boolean;
+  display: boolean;
   role: MemberRole;
   reservationId: number;
+  handleCloseModal: () => void;
 };
 
-const ReservationDetailModal = ({ role, reservationId }: ReservationDetailModalProps) => {
-  const { show, handleOpenModal, display, handleCloseModal } = useModal();
+const ReservationDetailModal = ({
+  show,
+  display,
+  role,
+  reservationId,
+  handleCloseModal,
+}: ReservationDetailModalProps) => {
   const [reservation, setReservation] = useState<ReservationType | null>(null);
 
   useEffect(() => {
-    handleOpenModal();
+    if (!show) return;
 
     (async () => {
       const response = await getReservationAPI(Number(reservationId));
       setReservation(response.data);
     })();
-  }, []);
+  }, [show]);
 
   return (
     <Modal

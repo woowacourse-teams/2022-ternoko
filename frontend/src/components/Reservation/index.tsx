@@ -6,12 +6,17 @@ import { ReservationType } from '@/types/domain';
 
 import { getDateString, getTimeString } from '@/utils';
 
+type ReservationProps = ReservationType & {
+  handleClickDetailButton: () => void;
+};
+
 const Reservation = ({
   coachNickname,
   imageUrl,
   interviewStartTime,
   interviewEndTime,
-}: ReservationType) => {
+  handleClickDetailButton,
+}: ReservationProps) => {
   return (
     <S.Box>
       <S.ImageTextBox>
@@ -30,6 +35,10 @@ const Reservation = ({
       </S.ImageTextBox>
 
       <S.ButtonBox>
+        <Button orange={true} onClick={handleClickDetailButton}>
+          <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
+          상세보기
+        </Button>
         <Button orange={true}>
           <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
           편집
