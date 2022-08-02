@@ -1,18 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
+import { useUserActions } from '@/context/UserProvider';
+
+import { CoachType as UserType } from '@/types/domain';
+
+import { getCoachInfoAPI, getCrewInfoAPI, patchCoachInfoAPI, patchCrewInfoAPI } from '@/api';
 import { PAGE } from '@/constants';
+import LocalStorage from '@/localStorage';
 
 const MyPage = () => {
-  const { search } = useLocation();
-  const role = new URLSearchParams(search).get('role');
+  const memberRole = LocalStorage.getMemberRole();
+
+  const { initializeUser } = useUserActions();
 
   const [nickname, setNickname] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -37,15 +45,25 @@ const MyPage = () => {
     setIsEditMode(false);
   };
 
+  const handleClickConfirmButton = async () => {
+    await (memberRole === 'CREW'
+      ? patchCrewInfoAPI({ nickname, imageUrl })
+      : patchCoachInfoAPI({ nickname, introduce, imageUrl }));
+    initializeUser(null);
+  };
+
   useEffect(() => {
-    const nickname = '포코';
-    const introduce = '매운 맛을 느끼고 싶으면 저한테 찾아오시오.';
+    (async () => {
+      const response = await (memberRole === 'CREW' ? getCrewInfoAPI() : getCoachInfoAPI());
+      const user: UserType = response.data;
 
-    setNickname(nickname);
-    setIntroduce(introduce);
+      setNickname(user.nickname);
+      setImageUrl(user.imageUrl);
+      setIntroduce(user.introduce);
 
-    defaultNicknameRef.current = nickname;
-    defaultIntroduceRef.current = introduce;
+      defaultNicknameRef.current = user.nickname;
+      defaultIntroduceRef.current = user.introduce;
+    })();
   }, []);
 
   return (
@@ -54,7 +72,7 @@ const MyPage = () => {
 
       <S.Box>
         <S.ProfileBox>
-          <img src="/assets/image/sudal.png" alt="코치 프로필" />
+          <img src={imageUrl} alt="사용자 프로필" />
           <S.InfoBox>
             <S.Info>
               <label htmlFor="nickname">닉네임</label>
@@ -64,7 +82,7 @@ const MyPage = () => {
                 <p>{nickname}</p>
               )}
             </S.Info>
-            {role === 'coach' && (
+            {memberRole === 'COACH' && (
               <S.Info>
                 <label htmlFor="introduce">한 줄 소개</label>
                 {isEditMode ? (
@@ -82,11 +100,13 @@ const MyPage = () => {
             <Button width="47%" white={true} onClick={handleClickCancelButton}>
               취소하기
             </Button>
-            <Button width="47%">확인하기</Button>
+            <Button width="47%" onClick={handleClickConfirmButton}>
+              확인하기
+            </Button>
           </S.ButtonContainer>
         ) : (
           <S.ButtonContainer>
-            <Link to={role === 'coach' ? PAGE.COACH_HOME : PAGE.CREW_HOME}>
+            <Link to={memberRole === 'COACH' ? PAGE.COACH_HOME : PAGE.CREW_HOME}>
               <Button width="100%" white={true}>
                 홈으로
               </Button>

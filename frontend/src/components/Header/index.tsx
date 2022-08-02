@@ -27,7 +27,9 @@ const Header = () => {
       {nickname?.length && (
         <S.MenuBox>
           <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
-          <S.ProfileImage src={imageUrl} alt="프로필" />
+          <Link to={PAGE.MY_PAGE}>
+            <S.ProfileImage src={imageUrl} alt="프로필" />
+          </Link>
         </S.MenuBox>
       )}
     </S.Box>
