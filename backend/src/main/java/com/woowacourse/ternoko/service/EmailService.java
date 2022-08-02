@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.service;
 
 import com.woowacourse.ternoko.domain.Interview;
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.EmailDto;
 import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.support.EmailSender;
@@ -19,8 +20,8 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
-    private EmailSender emailSender;
-    private InterviewRepository interviewRepository;
+    private final EmailSender emailSender;
+    private final InterviewRepository interviewRepository;
 
     public EmailService(final EmailSender emailSender, final InterviewRepository interviewRepository) {
         this.emailSender = emailSender;
@@ -39,8 +40,20 @@ public class EmailService {
                 .map(interview -> EmailDto.of(interview, from))
                 .collect(Collectors.toList());
 
+        sendEmails(emailDtos);
+        changeInterviewStatus(interviews);
+    }
+
+    private void sendEmails(final List<EmailDto> emailDtos) {
         for (final EmailDto emailDto : emailDtos) {
             emailSender.send(emailDto);
         }
+    }
+
+    private void changeInterviewStatus(final List<Interview> interviews) {
+        for (Interview interview : interviews) {
+            interview.updateStatus(InterviewStatusType.FIX);
+        }
+        interviewRepository.saveAll(interviews);
     }
 }
