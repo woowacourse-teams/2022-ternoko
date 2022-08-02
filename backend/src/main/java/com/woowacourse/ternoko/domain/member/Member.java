@@ -28,7 +28,7 @@ public class Member {
     @Column
     private String name;
 
-    @Column(length = 5, unique = true)
+    @Column(unique = true)
     private String nickname;
 
     @Column(nullable = false, unique = true)
