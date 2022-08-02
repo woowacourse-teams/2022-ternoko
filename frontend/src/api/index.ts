@@ -45,4 +45,4 @@ export const patchCoachInfoAPI = (body: UserRequestBodyType) =>
   axios.patch(`${SERVER_URL}/api/coach/me`, body);
 
 export const getDuplicatedNicknameStatusAPI = (nickname: string) =>
-  axios.get(`${SERVER_URL}/api/login?nickname=${nickname}`);
+  axios.get(`${SERVER_URL}/api/login/check?nickname=${nickname}`);
