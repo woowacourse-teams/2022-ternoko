@@ -1,12 +1,10 @@
 package com.woowacourse.ternoko.common.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@AllArgsConstructor
-public class BadRequestException extends RuntimeException {
-    private final HttpStatus code;
-    private final String message;
+public class BadRequestException extends CommonException {
+
+    public BadRequestException(final HttpStatus code, final String message) {
+        super(code, message);
+    }
 }
