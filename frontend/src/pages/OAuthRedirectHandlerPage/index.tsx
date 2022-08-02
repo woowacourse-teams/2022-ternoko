@@ -6,6 +6,7 @@ import { UserStatusType } from '@/types/domain';
 
 import { getUserStatusAPI } from '@/api';
 import { PAGE } from '@/constants';
+import LocalStorage from '@/localStorage';
 
 const OAuthRedirectHandlerPage = () => {
   const navigate = useNavigate();
@@ -17,8 +18,8 @@ const OAuthRedirectHandlerPage = () => {
     const response = await getUserStatusAPI(code as string);
     const { accessToken, hasNickname, memberRole }: UserStatusType = response.data;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('memberRole', memberRole);
+    LocalStorage.setAccessToken(accessToken);
+    LocalStorage.setMemberRole(memberRole);
     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
     if (memberRole === 'CREW') {

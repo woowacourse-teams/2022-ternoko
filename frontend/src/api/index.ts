@@ -6,9 +6,11 @@ import {
   UserRequestBodyType,
 } from '@/types/domain';
 
+import LocalStorage from '@/localStorage';
+
 const SERVER_URL = 'https://ternoko.site';
 
-const accessToken = localStorage.getItem('accessToken');
+const accessToken = LocalStorage.getAccessToken();
 
 if (accessToken) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
