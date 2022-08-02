@@ -29,7 +29,7 @@ public class EmailService {
     }
 
     @Scheduled(cron = "0 59 23 * * ?")
-    public void sendEmail(){
+    public void sendEmail() {
         final LocalDateTime localDateTimeOfNextDay = LocalDateTime.now().plusDays(1);
         final List<Interview> interviews = interviewRepository.findAllByInterviewStartDay(
                 localDateTimeOfNextDay.getYear(),
