@@ -1,6 +1,11 @@
 package com.woowacourse.ternoko.interview.domain;
 
 import com.woowacourse.ternoko.domain.InterviewStatusType;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
+import static com.woowacourse.ternoko.domain.InterviewStatusType.FIX;
+
+import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import java.time.LocalDateTime;
@@ -90,7 +95,7 @@ public class Interview {
     }
 
     public void update(Interview updateInterview) {
-
+        validateInterviewStatus(FIX, CANNOT_EDIT_INTERVIEW);
         this.interviewStartTime = updateInterview.getInterviewStartTime();
         this.interviewEndTime = updateInterview.getInterviewEndTime();
         this.coach = updateInterview.getCoach();
@@ -112,5 +117,12 @@ public class Interview {
 
     public void updateStatus(final InterviewStatusType interviewStatusType) {
         this.interviewStatusType = interviewStatusType;
+    }
+
+    private void validateInterviewStatus(final InterviewStatusType interviewStatusType,
+                                         final ExceptionType exceptionType) {
+        if (this.interviewStatusType == interviewStatusType) {
+            throw new InterviewStatusException(exceptionType);
+        }
     }
 }
