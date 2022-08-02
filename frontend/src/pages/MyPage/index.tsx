@@ -46,6 +46,7 @@ const MyPage = () => {
   };
 
   const handleClickConfirmButton = async () => {
+    //추후 중복 검사 로직
     await (memberRole === 'CREW'
       ? patchCrewInfoAPI({ nickname, imageUrl })
       : patchCoachInfoAPI({ nickname, introduce, imageUrl }));
