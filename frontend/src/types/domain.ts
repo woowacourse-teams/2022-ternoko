@@ -21,6 +21,7 @@ export interface ReservationRequestBodyType {
 
 export interface UserRequestBodyType {
   nickname: string;
+  imageUrl: string;
   introduce?: string;
 }
 

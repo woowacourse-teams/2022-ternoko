@@ -60,10 +60,10 @@ const LoginRegisterPage = () => {
       }
 
       if (role === 'coach') {
-        await patchCoachInfoAPI({ nickname, introduce });
+        await patchCoachInfoAPI({ nickname, introduce, imageUrl });
         navigate(PAGE.COACH_HOME);
       } else {
-        await patchCrewInfoAPI({ nickname });
+        await patchCrewInfoAPI({ nickname, imageUrl });
         navigate(PAGE.CREW_HOME);
       }
     })();
