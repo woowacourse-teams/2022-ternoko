@@ -27,6 +27,7 @@ type CalendarActionsType = {
   setDay: (day: number) => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
   resetSelectedDates: () => void;
+  initializeYearMonth: (year: number, month: number) => void;
 };
 
 type CalendarUtilsType = {
@@ -137,6 +138,10 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     },
     resetSelectedDates() {
       setSelectedDates([]);
+    },
+    initializeYearMonth(year: number, month: number) {
+      setYear(year);
+      setMonth(month);
     },
   };
 

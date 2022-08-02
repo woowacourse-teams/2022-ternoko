@@ -25,6 +25,9 @@ export const getReservationAPI = (id: number) => axios.get(`${SERVER_URL}/api/re
 export const postReservationAPI = (body: ReservationRequestBodyType) =>
   axios.post(`${SERVER_URL}/api/reservations`, body);
 
+export const putReservationAPI = (reservationId: number, body: ReservationRequestBodyType) =>
+  axios.put(`${SERVER_URL}/api/reservations/${reservationId}`, body);
+
 export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
   axios.put(`${SERVER_URL}/api/calendar/times`, body);
 

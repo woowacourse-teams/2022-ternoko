@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
@@ -16,9 +16,15 @@ import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
-import { CoachType, StringDictionary } from '@/types/domain';
+import { CoachType, ReservationType, StringDictionary } from '@/types/domain';
 
-import { getCoachScheduleAPI, getCoachesAPI, postReservationAPI } from '@/api';
+import {
+  getCoachScheduleAPI,
+  getCoachesAPI,
+  getReservationAPI,
+  postReservationAPI,
+  putReservationAPI,
+} from '@/api';
 import { PAGE } from '@/constants';
 import { separateFullDate } from '@/utils';
 import { isOverApplyFormMinLength } from '@/validations';
@@ -27,10 +33,16 @@ export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+
+  const { search } = useLocation();
+  const reservationId = new URLSearchParams(search).get('reservationId');
+
   const { year, month, selectedDates } = useCalendarState();
-  const { setDay, resetSelectedDates } = useCalendarActions();
+  const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({ selectMode: 'single' });
+  const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
+    selectMode: 'single',
+  });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
@@ -115,16 +127,41 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    const response = await postReservationAPI(body);
-    const location = response.headers.location;
+    if (reservationId) {
+      await putReservationAPI(Number(reservationId), body);
+      navigate(`${PAGE.RESERVATION_COMPLETE}/${reservationId}`);
+    } else {
+      const response = await postReservationAPI(body);
+      const location = response.headers.location;
 
-    navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
+      navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
+    }
   };
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachesAPI();
-      setCoaches(response.data.coaches);
+      const coachResponse = await getCoachesAPI();
+      setCoaches(coachResponse.data.coaches);
+
+      if (!reservationId) return;
+
+      const reservationResponse = await getReservationAPI(Number(reservationId));
+      const { coachNickname, interviewQuestions, interviewStartTime }: ReservationType =
+        reservationResponse.data;
+
+      const coach = coachResponse.data.coaches.find(
+        ({ nickname }: CoachType) => nickname === coachNickname,
+      );
+      setCoachId(coach.id);
+
+      setAnswer1(interviewQuestions[0].answer);
+      setAnswer2(interviewQuestions[1].answer);
+      setAnswer3(interviewQuestions[2].answer);
+
+      const { year, month, day } = separateFullDate(interviewStartTime);
+
+      initializeYearMonth(Number(year), Number(month) - 1);
+      setDay(Number(day));
     })();
   }, []);
 
@@ -145,6 +182,8 @@ const ReservationApplyPage = () => {
         );
 
         setAvailableSchedules(schedules);
+
+        reservationId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
       })();
     }
   }, [stepStatus, year, month]);
@@ -157,7 +196,7 @@ const ReservationApplyPage = () => {
 
   return (
     <>
-      <TitleBox to={PAGE.CREW_HOME} title="면담 신청하기" />
+      <TitleBox to={PAGE.CREW_HOME} title={reservationId ? '면담 수정하기' : '면담 신청하기'} />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
@@ -249,7 +288,7 @@ const ReservationApplyPage = () => {
                 isSubmitted={isSubmitted}
               />
               <Button type="submit" width="100%" height="40px">
-                신청 완료
+                {reservationId ? '수정 완료' : '신청 완료'}
               </Button>
             </S.Form>
           </div>

@@ -1,9 +1,12 @@
+import { Link } from 'react-router-dom';
+
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
 
 import { ReservationType } from '@/types/domain';
 
+import { PAGE } from '@/constants';
 import { getDateString, getTimeString } from '@/utils';
 
 type ReservationProps = ReservationType & {
@@ -11,6 +14,7 @@ type ReservationProps = ReservationType & {
 };
 
 const Reservation = ({
+  id,
   coachNickname,
   imageUrl,
   interviewStartTime,
@@ -39,10 +43,12 @@ const Reservation = ({
           <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
           상세보기
         </Button>
-        <Button orange={true}>
-          <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
-          편집
-        </Button>
+        <Link to={`${PAGE.RESERVATION_APPLY}?reservationId=${id}`}>
+          <Button orange={true}>
+            <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
+            편집
+          </Button>
+        </Link>
       </S.ButtonBox>
     </S.Box>
   );
