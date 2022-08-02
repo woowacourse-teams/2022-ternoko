@@ -15,7 +15,7 @@ type UserStateType = {
 };
 
 type UserActionsType = {
-  initialize: () => void;
+  initializeUser: () => void;
 };
 
 const UserStateContext = createContext<UserStateType | null>(null);
@@ -28,7 +28,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const state = { nickname, imageUrl };
 
   const actions = {
-    initialize: async () => {
+    initializeUser: async () => {
       const accessToken = LocalStorage.getAccessToken();
       const memberRole = LocalStorage.getMemberRole();
 

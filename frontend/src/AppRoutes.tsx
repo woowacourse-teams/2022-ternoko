@@ -21,9 +21,9 @@ import { useUserActions } from '@/context/UserProvider';
 import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
-  const { initialize } = useUserActions();
+  const { initializeUser } = useUserActions();
 
-  initialize();
+  initializeUser();
 
   return (
     <BrowserRouter>
