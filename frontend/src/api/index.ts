@@ -28,8 +28,8 @@ export const postReservationAPI = (body: ReservationRequestBodyType) =>
 export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
   axios.put(`${SERVER_URL}/api/calendar/times`, body);
 
-export const getCoachScheduleAPI = (year: number, month: number) =>
-  axios.get(`${SERVER_URL}/api/calendar/times?year=${year}&month=${month}`);
+export const getCoachScheduleAPI = (coachId: number, year: number, month: number) =>
+  axios.get(`${SERVER_URL}/api/calendar/times?coachId=${coachId}&year=${year}&month=${month}`);
 
 export const getCoachReservationAPI = (year: number, month: number) =>
   axios.get(`${SERVER_URL}/api/schedules?year=${year}&month=${month}`);
