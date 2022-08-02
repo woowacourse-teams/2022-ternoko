@@ -28,6 +28,12 @@ export const postReservationAPI = (body: ReservationRequestBodyType) =>
 export const putReservationAPI = (reservationId: number, body: ReservationRequestBodyType) =>
   axios.put(`${SERVER_URL}/api/reservations/${reservationId}`, body);
 
+export const deleteCrewReservationAPI = (reservationId: number) =>
+  axios.delete(`${SERVER_URL}/api/reservations/${reservationId}`);
+
+export const deleteCoachReservationAPI = (reservationId: number) =>
+  axios.patch(`${SERVER_URL}/api/reservations/${reservationId}`);
+
 export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
   axios.put(`${SERVER_URL}/api/calendar/times`, body);
 

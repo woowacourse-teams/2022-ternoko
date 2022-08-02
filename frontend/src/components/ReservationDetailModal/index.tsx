@@ -9,7 +9,7 @@ import useModal from '@/components/@common/Modal/useModal';
 import { ReservationType } from '@/types/domain';
 import { MemberRole } from '@/types/domain';
 
-import { getReservationAPI } from '@/api';
+import { deleteCoachReservationAPI, deleteCrewReservationAPI, getReservationAPI } from '@/api';
 import { getDateString, getTimeString } from '@/utils';
 
 type ReservationDetailModalProps = {
@@ -29,6 +29,14 @@ const ReservationDetailModal = ({
 }: ReservationDetailModalProps) => {
   const [reservation, setReservation] = useState<ReservationType | null>(null);
 
+  const handleClickDeleteButton = () => {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      role === 'CREW'
+        ? deleteCrewReservationAPI(reservationId)
+        : deleteCoachReservationAPI(reservationId);
+    }
+  };
+
   useEffect(() => {
     if (!show) return;
 
@@ -46,7 +54,12 @@ const ReservationDetailModal = ({
       handleCloseModal={handleCloseModal}
     >
       <S.IconContainer>
-        <S.Icon src="/assets/icon/delete.png" alt="삭제 아이콘" active />
+        <S.Icon
+          src="/assets/icon/delete.png"
+          alt="삭제 아이콘"
+          active
+          onClick={handleClickDeleteButton}
+        />
         <S.Icon
           src="/assets/icon/close.png"
           alt="모달 창 닫기 아이콘"
@@ -88,7 +101,7 @@ const ReservationDetailModal = ({
       </S.InfoContainer>
       <S.AccordionContainer>
         {reservation?.interviewQuestions.map(({ question, answer }) => (
-          <Accordion title={question} description={answer} />
+          <Accordion key={question} title={question} description={answer} />
         ))}
       </S.AccordionContainer>
     </Modal>
