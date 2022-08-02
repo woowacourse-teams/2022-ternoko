@@ -39,7 +39,7 @@ public class EmailSenderTest {
                 COACH1.getNickname(),
                 COACH1.getEmail(),
                 CREW1.getNickname(),
-                LocalDateTime.of(2022,8,2,0,0),
+                LocalDateTime.of(2022, 8, 2, 0, 0),
                 List.of(formItemDto)
         );
 
