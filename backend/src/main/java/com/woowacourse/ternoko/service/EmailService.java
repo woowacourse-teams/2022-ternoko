@@ -7,18 +7,25 @@ import com.woowacourse.ternoko.support.EmailSender;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class EmailService {
+
+    @Value("${spring.mail.username}")
+    private String from;
 
     private EmailSender emailSender;
     private InterviewRepository interviewRepository;
+
+    public EmailService(final EmailSender emailSender, final InterviewRepository interviewRepository) {
+        this.emailSender = emailSender;
+        this.interviewRepository = interviewRepository;
+    }
 
     @Scheduled(cron = "0 59 23 * * ?")
     public void sendEmail(){
@@ -29,12 +36,11 @@ public class EmailService {
                 localDateTimeOfNextDay.getDayOfMonth());
 
         final List<EmailDto> emailDtos = interviews.stream()
-                .map(EmailDto::from)
+                .map(interview -> EmailDto.of(interview, from))
                 .collect(Collectors.toList());
 
         for (final EmailDto emailDto : emailDtos) {
             emailSender.send(emailDto);
         }
     }
-
 }
