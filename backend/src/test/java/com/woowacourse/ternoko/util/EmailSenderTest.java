@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.util;
 
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -32,13 +34,14 @@ public class EmailSenderTest {
                 .answer("없어용")
                 .build();
 
-        final EmailDto emailDto = EmailDto.emailDtoBuilder()
-                .coachNickname("포비")
-                .coachEmail("test@email.com")
-                .crewNickname("수달")
-                .interviewStartTime(LocalDateTime.of(2022, 8, 2, 12, 0))
-                .formItems(List.of(formItemDto))
-                .build();
+        final EmailDto emailDto = new EmailDto(
+                "testFromEmail@test.com",
+                COACH1.getNickname(),
+                COACH1.getEmail(),
+                CREW1.getNickname(),
+                LocalDateTime.of(2022,8,2,0,0),
+                List.of(formItemDto)
+        );
 
         // when
         mailSender.send(emailDto);
