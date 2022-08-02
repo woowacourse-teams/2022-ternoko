@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.fixture;
 
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,4 +44,7 @@ public class MemberFixture {
             TIME4.getYear(),
             TIME4.getMonthValue(),
             AVAILABLE_TIMES);
+
+    public static final CoachUpdateRequest COACH1_UPDATE_REQUEST = new CoachUpdateRequest(COACH1.getNickname(),
+            COACH1.getImageUrl(), "행복하세요.");
 }
