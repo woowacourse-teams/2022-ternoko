@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.support;
 
 import com.woowacourse.ternoko.dto.EmailDto;
 import com.woowacourse.ternoko.dto.FormItemDto;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class EmailSender {
+
+    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 (E) hh시 mm분");
 
     private JavaMailSender mailSender;
 
@@ -38,7 +41,7 @@ public class EmailSender {
                                 emailDto.getCoachNickname(),
                                 emailDto.getCrewNickname()))
                 .append(System.lineSeparator())
-                .append(String.format("면담 일시 : %s", emailDto.getInterviewStartTime()))
+                .append(String.format("면담 일시 : %s", dateFormat.format(emailDto.getInterviewStartTime())))
                 .append(System.lineSeparator())
                 .append("사전 질문 내용")
                 .append(System.lineSeparator());
