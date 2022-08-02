@@ -20,7 +20,7 @@ public class CrewController {
     private final CrewService crewService;
 
     @GetMapping("/me")
-    public ResponseEntity<CrewResponse> updateCrew(@AuthenticationPrincipal final Long crewId) {
+    public ResponseEntity<CrewResponse> findCrew(@AuthenticationPrincipal final Long crewId) {
         return ResponseEntity.ok(crewService.findCrew(crewId));
     }
 
