@@ -7,8 +7,6 @@ export const Box = styled.div`
   height: 60px;
   padding: 0 30rem;
 
-  border: 1px solid red;
-
   h1 {
     font-family: 'EarlyFontDiary';
     font-size: 3em;
