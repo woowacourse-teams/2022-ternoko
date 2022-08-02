@@ -91,6 +91,26 @@ const S = {
   Body: styled.div`
     min-height: calc(100% - 60px);
     padding: 3rem 30rem 0;
+
+    @media ${({ theme }) => theme.devices.laptopL} {
+      padding: 3rem 20rem 0;
+    }
+
+    @media ${({ theme }) => theme.devices.laptop} {
+      padding: 3rem 5rem 0;
+    }
+
+    @media ${({ theme }) => theme.devices.tablet} {
+      padding: 2rem 5rem 0;
+    }
+
+    @media ${({ theme }) => theme.devices.mobileL} {
+      padding: 2rem 2rem 0;
+    }
+
+    @media ${({ theme }) => theme.devices.mobileM} {
+      padding: 2rem 1rem 0;
+    }
   `,
 };
 

@@ -1,3 +1,13 @@
+const sizes = {
+  mobileS: '320px',
+  mobileM: '375px',
+  mobileL: '425px',
+  tablet: '768px',
+  laptop: '1024px',
+  laptopL: '1440px',
+  desktop: '2560px',
+};
+
 const theme = {
   colors: {
     white_50: '#ffffff',
@@ -18,9 +28,19 @@ const theme = {
   shadows: {
     basic: '#64646f33 0px 7px 29px 0px',
   },
+  devices: {
+    mobileS: `(max-width: ${sizes.mobileS})`,
+    mobileM: `(max-width: ${sizes.mobileM})`,
+    mobileL: `(max-width: ${sizes.mobileL})`,
+    tablet: `(max-width: ${sizes.tablet})`,
+    laptop: `(max-width: ${sizes.laptop})`,
+    laptopL: `(max-width: ${sizes.laptopL})`,
+    desktop: `(max-width: ${sizes.desktop})`,
+  },
 };
 
 export type Colors = typeof theme.colors;
 export type Shadows = typeof theme.shadows;
+export type Devices = typeof theme.devices;
 
 export default theme;
