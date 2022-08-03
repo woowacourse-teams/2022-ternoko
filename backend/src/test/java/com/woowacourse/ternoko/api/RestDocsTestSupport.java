@@ -1,16 +1,11 @@
 package com.woowacourse.ternoko.api;
 
 import com.woowacourse.ternoko.common.JwtProvider;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
@@ -22,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @ExtendWith(value = {RestDocumentationExtension.class, SpringExtension.class})
 @Import(RestDocsConfiguration.class)
 class RestDocsTestSupport {
@@ -35,9 +29,6 @@ class RestDocsTestSupport {
     @Autowired
     protected RestDocumentationResultHandler restDocs;
 
-    @Autowired
-    private ResourceLoader resourceLoader;
-
     @BeforeEach
     void setUp(
             final WebApplicationContext context,
@@ -48,9 +39,5 @@ class RestDocsTestSupport {
                 .alwaysDo(MockMvcResultHandlers.print())
                 .alwaysDo(restDocs)
                 .build();
-    }
-
-    protected static String readJson(final String path) throws IOException {
-        return new String(Files.readAllBytes(Paths.get("src/test/resources", path)));
     }
 }
