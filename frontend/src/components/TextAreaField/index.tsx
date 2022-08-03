@@ -36,5 +36,3 @@ const TextAreaField = ({
 };
 
 export default TextAreaField;
-
-// 10글자 이상을 입력해주세요.

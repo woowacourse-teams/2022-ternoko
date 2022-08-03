@@ -25,6 +25,8 @@ const theme = {
     pink_300: '#f03e3e',
     orange: '#ffd24d4d',
     purple: '#4a154b',
+    green_100: '#37b24d',
+    red_100: '#c74244',
   },
   shadows: {
     basic: '#64646f33 0px 7px 29px 0px',
