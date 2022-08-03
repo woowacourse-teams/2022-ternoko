@@ -10,7 +10,9 @@ on:
       - feat/*
       - fix/*
       - refactor/*
+      - build/*
       - develop
+
     paths: "frontend/**" # frontend dir 하위에 변경 지점이 있어야한다.
   pull_request: # main, feat, develop 브랜치에  PR event 가 일어났을때
     branches:
@@ -18,6 +20,7 @@ on:
       - feat/*
       - fix/*
       - refactor/*
+      - build/*
       - develop
     paths: "frontend/**"
 
