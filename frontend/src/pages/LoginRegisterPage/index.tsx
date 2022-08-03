@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
-import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 
 import InputAreaField from '@/components/InputAreaField';
 import TextAreaField from '@/components/TextAreaField';
+
+import { useToastActions } from '@/context/ToastProvider';
 
 import { DuplicatedNicknameStatusType, CoachType as UserType } from '@/types/domain';
 
@@ -18,12 +19,14 @@ import {
   patchCoachInfoAPI,
   patchCrewInfoAPI,
 } from '@/api';
-import { ERROR_MESSAGE, PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 import { isOverIntroduceMinLength, isValidNicknameLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const navigate = useNavigate();
+
+  const { showToast } = useToastActions();
 
   const memberRole = LocalStorage.getMemberRole();
 
@@ -56,16 +59,19 @@ const LoginRegisterPage = () => {
       const { exists }: DuplicatedNicknameStatusType = response.data;
 
       if (exists) {
-        alert('닉네임이 중복되었습니다.');
+        showToast('ERROR', ERROR_MESSAGE.DUPLICATED_NICKNAME);
 
         return;
       }
 
       if (memberRole === 'COACH') {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
         navigate(PAGE.COACH_HOME);
       } else {
         await patchCrewInfoAPI({ nickname, imageUrl });
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
         navigate(PAGE.CREW_HOME);
       }
     })();

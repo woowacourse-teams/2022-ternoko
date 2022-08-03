@@ -13,13 +13,14 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useToastActions } from '@/context/ToastProvider';
 import { useUserState } from '@/context/UserProvider';
 
 import { CalendarTime } from '@/types/domain';
 import { StringDictionary } from '@/types/domain';
 
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
-import { PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { getFullDateString, separateFullDate } from '@/utils';
 
 const defaultTimes = [
@@ -49,6 +50,8 @@ const CoachReservationCreatePage = () => {
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'multiple',
   });
+  const { showToast } = useToastActions();
+
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
   const [isApplied, setIsApplied] = useState(false);
 
@@ -136,10 +139,11 @@ const CoachReservationCreatePage = () => {
       await postCoachScheduleAPI(body);
       resetSelectedDates();
       resetTimes();
-      alert('등록됐습니다.');
+      showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_SCHEDULE);
       setIsApplied((prev) => !prev);
     } catch (error) {
       alert('실패했습니다.');
+      showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
     }
   };
 

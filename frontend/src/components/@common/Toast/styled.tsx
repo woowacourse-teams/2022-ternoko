@@ -58,7 +58,7 @@ type ToastProps = ToastBoxProps & {
 export const ToastBox = styled.div<ToastBoxProps>`
   position: relative;
   width: 36rem;
-  min-height: 12rem;
+  min-height: 11.4rem;
 
   ${({ toastStatus }) =>
     toastStatus === 'ALIVE' &&

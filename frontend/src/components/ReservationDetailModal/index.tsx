@@ -6,10 +6,13 @@ import Accordion from '@/components/@common/Accordion';
 import Modal from '@/components/@common/Modal';
 import useModal from '@/components/@common/Modal/useModal';
 
+import { useToastActions } from '@/context/ToastProvider';
+
 import { ReservationType } from '@/types/domain';
 import { MemberRole } from '@/types/domain';
 
 import { deleteCoachReservationAPI, deleteCrewReservationAPI, getReservationAPI } from '@/api';
+import { SUCCESS_MESSAGE } from '@/constants';
 import { getDateString, getTimeString } from '@/utils';
 
 type ReservationDetailModalProps = {
@@ -29,11 +32,17 @@ const ReservationDetailModal = ({
 }: ReservationDetailModalProps) => {
   const [reservation, setReservation] = useState<ReservationType | null>(null);
 
+  const { showToast } = useToastActions();
+
   const handleClickDeleteButton = () => {
     if (confirm('정말로 삭제하시겠습니까?')) {
-      role === 'CREW'
-        ? deleteCrewReservationAPI(reservationId)
-        : deleteCoachReservationAPI(reservationId);
+      if (role === 'CREW') {
+        deleteCrewReservationAPI(reservationId);
+        showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_RESERVATION);
+      } else {
+        deleteCoachReservationAPI(reservationId);
+        showToast('SUCCESS', SUCCESS_MESSAGE.COACH_DELETE_RESERVATION);
+      }
     }
   };
 

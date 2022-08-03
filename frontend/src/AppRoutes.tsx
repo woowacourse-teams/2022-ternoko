@@ -12,6 +12,8 @@ import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
 import ReservationApplyPage from '@/pages/ReservationApplyPage';
 import ReservationCompletePage from '@/pages/ReservationCompletePage';
 
+import Toast from '@/components/@common/Toast';
+
 import Header from '@/components/Header';
 import PrivateRoute from '@/components/PrivateRoute';
 
@@ -80,8 +82,10 @@ const Layout = () => {
   return (
     <>
       <Header />
+
       <S.Body>
         <Outlet />
+        <Toast />
       </S.Body>
     </>
   );

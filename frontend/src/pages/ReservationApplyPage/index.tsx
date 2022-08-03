@@ -15,6 +15,7 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useToastActions } from '@/context/ToastProvider';
 
 import { CoachType, ReservationType, StringDictionary } from '@/types/domain';
 
@@ -25,7 +26,7 @@ import {
   postReservationAPI,
   putReservationAPI,
 } from '@/api';
-import { ERROR_MESSAGE, PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { separateFullDate } from '@/utils';
 import { isOverApplyFormMinLength } from '@/validations';
 
@@ -33,6 +34,7 @@ export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+  const { showToast } = useToastActions();
 
   const { search } = useLocation();
   const reservationId = new URLSearchParams(search).get('reservationId');
@@ -40,7 +42,7 @@ const ReservationApplyPage = () => {
   const { year, month, selectedDates } = useCalendarState();
   const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
+  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({
     selectMode: 'single',
   });
 
@@ -84,6 +86,9 @@ const ReservationApplyPage = () => {
   };
 
   const getHandleClickProfile = (id: number) => () => {
+    const coach = coaches.find((coach) => coach.id === id);
+
+    showToast('SUCCESS', SUCCESS_MESSAGE.SELECT_COACH((coach as CoachType).nickname));
     setCoachId(id);
   };
 
@@ -131,11 +136,13 @@ const ReservationApplyPage = () => {
 
     if (reservationId) {
       await putReservationAPI(Number(reservationId), body);
+      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_RESERVATION);
       navigate(`${PAGE.RESERVATION_COMPLETE}/${reservationId}`);
     } else {
       const response = await postReservationAPI(body);
-      const location = response.headers.location;
+      showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_RESERVATION);
 
+      const location = response.headers.location;
       navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
     }
   };

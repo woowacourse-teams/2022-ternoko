@@ -6,17 +6,19 @@ import * as S from './styled';
 import Button from '@/components/@common/Button/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
+import { useToastActions } from '@/context/ToastProvider';
 import { useUserActions } from '@/context/UserProvider';
 
 import { CoachType as UserType } from '@/types/domain';
 
 import { getCoachInfoAPI, getCrewInfoAPI, patchCoachInfoAPI, patchCrewInfoAPI } from '@/api';
-import { PAGE } from '@/constants';
+import { PAGE, SUCCESS_MESSAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 
 const MyPage = () => {
   const memberRole = LocalStorage.getMemberRole();
 
+  const { showToast } = useToastActions();
   const { initializeUser } = useUserActions();
 
   const [nickname, setNickname] = useState('');
@@ -47,9 +49,15 @@ const MyPage = () => {
 
   const handleClickConfirmButton = async () => {
     //추후 중복 검사 로직
-    await (memberRole === 'CREW'
-      ? patchCrewInfoAPI({ nickname, imageUrl })
-      : patchCoachInfoAPI({ nickname, introduce, imageUrl }));
+
+    if (memberRole === 'CREW') {
+      await patchCrewInfoAPI({ nickname, imageUrl });
+      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
+    } else {
+      await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
+    }
+
     initializeUser(null);
     setIsEditMode(false);
   };
