@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
-import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
@@ -55,6 +54,8 @@ const ReservationApplyPage = () => {
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
+
+  const initRef = useRef(false);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
@@ -184,10 +185,13 @@ const ReservationApplyPage = () => {
 
         setAvailableSchedules(schedules);
 
-        reservationId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+        if (!initRef.current) {
+          initRef.current = true;
+          reservationId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+        }
       })();
     }
-  }, [stepStatus, year, month]);
+  }, [stepStatus, year, month, initRef.current]);
 
   useEffect(() => {
     resetTimes();
