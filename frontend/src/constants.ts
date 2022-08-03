@@ -19,3 +19,9 @@ export const NICKNAME_MIN_LENGTH = 1;
 export const NICKNAME_MAX_LENGTH = 5;
 
 export const INTRODUCE_MIN_LENGTH = 10;
+
+export const ERROR_MESSAGE = {
+  ENTER_MINIMUM_APPLY_FORM_LENGTH: `면담 입력폼은 ${CREW_APPLY_FORM_MIN_LENGTH}글자 이상 입력해주세요*`,
+  ENTER_IN_RANGE_NICKNAME: `닉네임은 ${NICKNAME_MIN_LENGTH}글자 이상 ${NICKNAME_MAX_LENGTH}글자 이하를 입력해주세요*`,
+  ENTER_MINIMUM_INTRODUCE_LENGTH: `한 줄 소개는 ${INTRODUCE_MIN_LENGTH}글자 이상 입력해주세요*`,
+};

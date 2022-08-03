@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
@@ -25,7 +26,7 @@ import {
   postReservationAPI,
   putReservationAPI,
 } from '@/api';
-import { PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE } from '@/constants';
 import { separateFullDate } from '@/utils';
 import { isOverApplyFormMinLength } from '@/validations';
 
@@ -267,6 +268,7 @@ const ReservationApplyPage = () => {
                 id="example1"
                 label="이번 면담을 통해 논의하고 싶은 내용"
                 value={answer1}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer1)}
                 checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
@@ -275,6 +277,7 @@ const ReservationApplyPage = () => {
                 id="example2"
                 label="최근에 자신이 긍정적으로 보는 시도와 변화"
                 value={answer2}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer2)}
                 checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
@@ -283,6 +286,7 @@ const ReservationApplyPage = () => {
                 id="example3"
                 label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
                 value={answer3}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer3)}
                 checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}

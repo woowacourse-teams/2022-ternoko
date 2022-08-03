@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 
 import InputAreaField from '@/components/InputAreaField';
 import TextAreaField from '@/components/TextAreaField';
@@ -17,7 +18,7 @@ import {
   patchCoachInfoAPI,
   patchCrewInfoAPI,
 } from '@/api';
-import { PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 import { isOverIntroduceMinLength, isValidNicknameLength } from '@/validations';
 
@@ -95,6 +96,7 @@ const LoginRegisterPage = () => {
               id="nickname"
               label="닉네임*"
               value={nickname}
+              message={ERROR_MESSAGE.ENTER_IN_RANGE_NICKNAME}
               isSubmitted={isSubmitted}
               handleChange={handleChangeNickname}
               checkValidation={isValidNicknameLength}
@@ -104,6 +106,7 @@ const LoginRegisterPage = () => {
                 id="introduce"
                 label="한 줄 소개*"
                 value={introduce}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_INTRODUCE_LENGTH}
                 isSubmitted={isSubmitted}
                 handleChange={handleChangeIntroduce}
                 checkValidation={isOverIntroduceMinLength}
