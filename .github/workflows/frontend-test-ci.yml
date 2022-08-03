@@ -1,0 +1,65 @@
+# Action명
+name: 터놓고 프론트엔드 CI 테스트 자동화
+
+# on 은 이벤트 감지 명령어
+# 아래 명령어는 PUSH, PR 요청에 대해서 이벤트를 감지한다.
+on:
+  push: # main, feat, develop 브랜치에  PUSH event 가 일어났을때
+    branches:
+      - main
+      - feat/*
+      - fix/*
+      - refactor/*
+      - develop
+    paths: "frontend/**" # frontend dir 하위에 변경 지점이 있어야한다.
+  pull_request: # main, feat, develop 브랜치에  PR event 가 일어났을때
+    branches:
+      - main
+      - feat/*
+      - fix/*
+      - refactor/*
+      - develop
+    paths: "frontend/**"
+
+defaults:
+  run:
+    working-directory: frontend
+
+# 어떤 작업을 수행할 것인지 명시하는 곳
+# 실질적인 github action을 설정한다.
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ env.working-directory }}
+
+      - name: Build with webpack
+        run: npm run build:prod
+        working-directory: ${{ env.working-directory }}
+
+  unit-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ env.working-directory }}
+
+      - name: Test with Jest
+        run: npm run test
+        working-directory: ${{ env.working-directory }}
