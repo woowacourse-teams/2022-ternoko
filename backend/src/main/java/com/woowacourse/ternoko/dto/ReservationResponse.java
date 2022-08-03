@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.domain.Interview;
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.Reservation;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ReservationResponse {
     private String coachNickname;
     private String imageUrl;
     private String crewNickname;
+    private InterviewStatusType status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewStartTime;
@@ -44,6 +46,7 @@ public class ReservationResponse {
                 .interviewStartTime(interview.getInterviewStartTime())
                 .interviewEndTime(interview.getInterviewEndTime())
                 .interviewQuestions(formItemResponses)
+                .status(interview.getInterviewStatusType())
                 .build();
     }
 }
