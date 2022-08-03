@@ -16,4 +16,6 @@ export const CREW_APPLY_FORM_MIN_LENGTH = 10;
 
 export const NICKNAME_MIN_LENGTH = 1;
 
+export const NICKNAME_MAX_LENGTH = 5;
+
 export const INTRODUCE_MIN_LENGTH = 10;

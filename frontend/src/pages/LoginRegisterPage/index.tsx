@@ -19,7 +19,7 @@ import {
 } from '@/api';
 import { PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
-import { isOverIntroduceMinLength, isOverNicknameMinLength } from '@/validations';
+import { isOverIntroduceMinLength, isValidNicknameLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const LoginRegisterPage = () => {
     isSubmitted || setIsSubmitted(true);
 
     if (
-      !isOverNicknameMinLength(nickname) ||
+      !isValidNicknameLength(nickname) ||
       (memberRole === 'COACH' && !isOverIntroduceMinLength(introduce))
     )
       return;
@@ -97,7 +97,7 @@ const LoginRegisterPage = () => {
               value={nickname}
               isSubmitted={isSubmitted}
               handleChange={handleChangeNickname}
-              checkValidation={isOverNicknameMinLength}
+              checkValidation={isValidNicknameLength}
             />
             {memberRole === 'COACH' && (
               <TextAreaField
