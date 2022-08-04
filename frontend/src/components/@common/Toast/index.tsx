@@ -9,17 +9,17 @@ const Toast = () => {
   const { toasts } = useToastState();
   const { hideToast } = useToastActions();
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (toasts.length) {
-  //       hideToast(toasts[0].id);
-  //     }
-  //   }, 3000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (toasts.length) {
+        hideToast(toasts[0].id);
+      }
+    }, 3000);
 
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [toasts]);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [toasts]);
 
   return ReactDOM.createPortal(
     <S.Box length={toasts.length} isReduction={toasts.some(({ status }) => status === 'DEAD')}>
