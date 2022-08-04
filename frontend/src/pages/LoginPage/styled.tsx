@@ -1,4 +1,4 @@
-import { TernokoMemberNickname, TernokoMemberStatus } from '.';
+import { TernokoMemberNickname } from '.';
 
 import styled, { css, keyframes } from 'styled-components';
 
@@ -159,7 +159,6 @@ const toTopToTop = keyframes`
 `;
 
 type ProfileProps = {
-  status: TernokoMemberStatus;
   nickname: TernokoMemberNickname;
 };
 
@@ -175,8 +174,7 @@ export const TernokoProfile = styled.div<ProfileProps>`
     height: 25rem;
   }
 
-  ${({ status, nickname }) =>
-    status === 'ALIVE' &&
+  ${({ nickname }) =>
     css`
       animation: ${['앤지', '애쉬', '열음'].includes(nickname) ? toTopToTop : toTopToBottom} 5s
         infinite;
