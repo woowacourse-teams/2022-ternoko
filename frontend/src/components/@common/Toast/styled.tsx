@@ -3,34 +3,87 @@ import styled, { css, keyframes } from 'styled-components';
 import { TitleType, ToastStatus } from '@/context/ToastProvider';
 
 const toastToLeft = keyframes`
- from {
+  0%,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
     transform: translateX(100%);
   }
+  60% {
+    transform: translateX(-25px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+  90% {
+    transform: translateX(-5px);
+  }
   to {
-    transform: translateX(0);
+    transform: none;
   }
 `;
 
 const toastToRight = keyframes`
-  from {
-    transform: translate(0, 0);   
+  40% {
+    transform: translateX(-20px);
+    
+
   }
   to {
-    transform: translate(100%, -140%);
+    transform: translateX(100%);
+    
   }
 `;
 
-export const Box = styled.div`
+type ToastBoxProps = {
+  toastStatus: ToastStatus;
+};
+
+type ToastProps = ToastBoxProps & {
+  title: TitleType;
+};
+
+export const ToastFrame = styled.div<ToastBoxProps>`
+  width: 36rem;
+  min-height: 11.4rem;
+
+  ${({ toastStatus }) =>
+    toastStatus === 'DEAD' &&
+    css`
+      min-height: 0;
+      transition: min-height 0.5s;
+    `};
+`;
+
+type BoxProps = {
+  length: number;
+  isReduction: boolean;
+};
+
+export const Box = styled.div<BoxProps>`
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-
   display: flex;
   flex-direction: column;
-  z-index: 10;
+  height: ${({ length }) => (length - 1) * 11.4}rem;
+  transition: all 0.2s linear;
 
   font-size: 14px;
-  transition: all 0.4s ease-in-out;
+
+  ${({ isReduction }) =>
+    isReduction &&
+    css`
+      height: unset;
+    `};
+
+  ${ToastFrame}:nth-child(1) {
+    display: none;
+  }
 `;
 
 export const DeleteButton = styled.button`
@@ -47,35 +100,14 @@ export const DeleteButton = styled.button`
   }
 `;
 
-type ToastBoxProps = {
-  toastStatus: ToastStatus;
-};
-
-type ToastProps = ToastBoxProps & {
-  title: TitleType;
-};
-
 export const ToastBox = styled.div<ToastBoxProps>`
   position: relative;
   width: 36rem;
-  min-height: 11.4rem;
-
-  ${({ toastStatus }) =>
-    toastStatus === 'ALIVE' &&
-    css`
-      animation: ${toastToLeft} 0.7s;
-    `};
-
-  ${({ toastStatus }) =>
-    toastStatus === 'DEAD' &&
-    css`
-      min-height: 0;
-      transition: min-height 0.5s;
-    `};
 `;
 
 export const Toast = styled.div<ToastProps>`
   position: absolute;
+  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -83,7 +115,6 @@ export const Toast = styled.div<ToastProps>`
   padding: 1.5rem 2rem;
 
   border-radius: 10px;
-
   box-shadow: ${({ theme }) => theme.shadows.basic};
   opacity: 0.9;
   transition: 0.3s ease;
@@ -97,6 +128,12 @@ export const Toast = styled.div<ToastProps>`
     background-color: ${({ theme, title }) =>
       title === 'SUCCESS' ? theme.colors.green_100 : theme.colors.red_100};
   }
+
+  ${({ toastStatus }) =>
+    toastStatus === 'ALIVE' &&
+    css`
+      animation: ${toastToLeft} 0.7s;
+    `};
 
   ${({ toastStatus }) =>
     toastStatus === 'DEAD' &&

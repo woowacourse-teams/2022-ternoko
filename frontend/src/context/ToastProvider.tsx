@@ -53,7 +53,7 @@ const ToastProvider = ({ children }: ToastProviderProps) => {
 
       setTimeout(() => {
         setToasts(nextToasts.filter((toast) => toast.status === 'ALIVE'));
-      }, 700);
+      }, 400);
     },
   };
 

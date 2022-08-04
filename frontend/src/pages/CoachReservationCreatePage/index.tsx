@@ -142,7 +142,6 @@ const CoachReservationCreatePage = () => {
       showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_SCHEDULE);
       setIsApplied((prev) => !prev);
     } catch (error) {
-      alert('실패했습니다.');
       showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
     }
   };
