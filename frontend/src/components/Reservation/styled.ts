@@ -1,6 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Box = styled.div`
+import { ReservationStatus } from '@/types/domain';
+
+type BoxProps = {
+  status: ReservationStatus;
+};
+
+export const Box = styled.div<BoxProps>`
   position: relative;
   width: 25rem;
   padding: 1rem 1.5rem 5rem;
@@ -11,6 +17,12 @@ export const Box = styled.div`
 
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
+
+  ${({ theme, status }) =>
+    status === 'CANCELED' &&
+    css`
+      background: ${theme.colors.pink_100};
+    `}
 
   :hover {
     transform: translateY(-0.5rem);

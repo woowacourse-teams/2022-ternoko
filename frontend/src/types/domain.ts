@@ -25,7 +25,7 @@ export interface UserRequestBodyType {
   introduce?: string;
 }
 
-type ReservationStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
+export type ReservationStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
 
 export interface ReservationType {
   id: number;

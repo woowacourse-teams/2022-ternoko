@@ -17,12 +17,13 @@ const Reservation = ({
   id,
   coachNickname,
   imageUrl,
+  status,
   interviewStartTime,
   interviewEndTime,
   handleClickDetailButton,
 }: ReservationProps) => {
   return (
-    <S.Box>
+    <S.Box status={status}>
       <S.ImageTextBox>
         <S.ProfileImage src={imageUrl} alt="코치 프로필" />
         <S.CoachName>{coachNickname}</S.CoachName>
