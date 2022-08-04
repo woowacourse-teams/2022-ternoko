@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.controller;
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
+import com.woowacourse.ternoko.dto.InterviewResponse;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
 import com.woowacourse.ternoko.service.ReservationService;
@@ -47,10 +48,9 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReservationResponse>> findAllReservations() {
-        final List<ReservationResponse> reservationResponses = reservationService.findAllReservations();
-
-        return ResponseEntity.ok(reservationResponses);
+    public ResponseEntity<List<InterviewResponse>> findAllReservationsByCrewId(@AuthenticationPrincipal final Long crewId) {
+        final List<InterviewResponse> interviewResponses = reservationService.findAllByCrewId(crewId);
+        return ResponseEntity.ok(interviewResponses);
     }
 
     @PutMapping("/{reservationId}")

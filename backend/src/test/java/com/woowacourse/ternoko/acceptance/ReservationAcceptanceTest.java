@@ -9,7 +9,6 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
@@ -80,8 +79,8 @@ class ReservationAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("면담 예약 내역 목록을 조회한다.")
-    void findAll() {
+    @DisplayName("크루 - 면담 예약 내역 목록을 조회한다.")
+    void findAllByCrewId() {
         // given
         put("/api/calendar/times", generateHeader(COACH1.getId()), MONTHS_REQUEST);
         put("/api/calendar/times", generateHeader(COACH2.getId()), MONTHS_REQUEST);
@@ -89,7 +88,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
 
         createReservation(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(CREW2.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW1.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(CREW3.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
@@ -99,7 +98,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
                 .getList(".", ReservationResponse.class);
 
         // then
-        assertThat(reservationResponses).hasSize(4);
+        assertThat(reservationResponses).hasSize(2);
     }
 
 
