@@ -8,7 +8,7 @@ import {
 
 import LocalStorage from '@/localStorage';
 
-const SERVER_URL = 'https://ternoko.site';
+const SERVER_URL = 'https://dev.ternoko.site';
 
 const accessToken = LocalStorage.getAccessToken();
 
