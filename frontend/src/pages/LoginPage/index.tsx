@@ -43,8 +43,6 @@ const ternokoMembers = [
 ] as TernokoMember[];
 
 const LoginPage = () => {
-  const [members, setMembers] = useState<TernokoMember[]>(ternokoMembers);
-
   return (
     <S.Box>
       <S.LeftBox>
@@ -64,7 +62,7 @@ const LoginPage = () => {
         </div>
       </S.LeftBox>
       <S.RightBox>
-        {members.map(({ nickname, imageUrl }) => (
+        {ternokoMembers.map(({ nickname, imageUrl }) => (
           <S.TernokoProfile key={nickname} nickname={nickname}>
             <img src={imageUrl} alt="터놓고 프로필" />
           </S.TernokoProfile>
