@@ -12,5 +12,5 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     List<Interview> findAllByCoachIdAndDateRange(final LocalDateTime start, final LocalDateTime end,
                                                  final Long coachId);
 
-    List<Interview> findAllByCrewId(final Long crewId);
+    List<Interview> findAllByCrewIdOrderByInterviewStartTime(final Long crewId);
 }

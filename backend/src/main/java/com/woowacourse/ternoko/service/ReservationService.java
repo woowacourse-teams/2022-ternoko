@@ -123,7 +123,7 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public List<InterviewResponse> findAllByCrewId(final Long crewId) {
-        final List<Interview> interviews = interviewRepository.findAllByCrewId(crewId);
+        final List<Interview> interviews = interviewRepository.findAllByCrewIdOrderByInterviewStartTime(crewId);
 
         return interviews.stream()
                 .map(InterviewResponse::from)

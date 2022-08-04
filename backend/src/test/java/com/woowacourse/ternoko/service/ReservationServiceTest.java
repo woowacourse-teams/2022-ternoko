@@ -113,7 +113,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("크루 - 면담 예약 목록을 조회한다.")
+    @DisplayName("크루 - 정렬된 면담 예약 목록을 조회한다.")
     void findAllReservations() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH1.getId(), MONTH_REQUEST);
@@ -121,13 +121,13 @@ class ReservationServiceTest {
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
         reservationService.create(CREW1.getId(),
-                new ReservationRequest(COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                new ReservationRequest(COACH1.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
                         FORM_ITEM_REQUESTS));
-        reservationService.create(CREW3.getId(),
-                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+        reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         reservationService.create(CREW4.getId(),
                 new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
@@ -137,8 +137,9 @@ class ReservationServiceTest {
         final List<InterviewResponse> interviewResponses = reservationService.findAllByCrewId(CREW1.getId());
 
         // then
-        assertThat(interviewResponses).extracting("crewNickname")
-                .hasSize(2);
+        assertThat(interviewResponses.stream()
+                    .map(InterviewResponse::getCoachNickname))
+                .containsExactly(COACH3.getNickname(), COACH2.getNickname(), COACH1.getNickname());
     }
 
     @Test
