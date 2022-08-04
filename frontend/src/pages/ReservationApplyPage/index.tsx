@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
@@ -15,6 +15,7 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useToastActions } from '@/context/ToastProvider';
 
 import { CoachType, ReservationType, StringDictionary } from '@/types/domain';
 
@@ -25,7 +26,7 @@ import {
   postReservationAPI,
   putReservationAPI,
 } from '@/api';
-import { PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { separateFullDate } from '@/utils';
 import { isOverApplyFormMinLength } from '@/validations';
 
@@ -33,6 +34,7 @@ export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
+  const { showToast } = useToastActions();
 
   const { search } = useLocation();
   const reservationId = new URLSearchParams(search).get('reservationId');
@@ -40,7 +42,7 @@ const ReservationApplyPage = () => {
   const { year, month, selectedDates } = useCalendarState();
   const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
+  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({
     selectMode: 'single',
   });
 
@@ -54,6 +56,8 @@ const ReservationApplyPage = () => {
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
+
+  const initRef = useRef(false);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
@@ -82,6 +86,9 @@ const ReservationApplyPage = () => {
   };
 
   const getHandleClickProfile = (id: number) => () => {
+    const coach = coaches.find((coach) => coach.id === id);
+
+    showToast('SUCCESS', SUCCESS_MESSAGE.SELECT_COACH((coach as CoachType).nickname));
     setCoachId(id);
   };
 
@@ -129,11 +136,13 @@ const ReservationApplyPage = () => {
 
     if (reservationId) {
       await putReservationAPI(Number(reservationId), body);
+      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_RESERVATION);
       navigate(`${PAGE.RESERVATION_COMPLETE}/${reservationId}`);
     } else {
       const response = await postReservationAPI(body);
-      const location = response.headers.location;
+      showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_RESERVATION);
 
+      const location = response.headers.location;
       navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
     }
   };
@@ -183,10 +192,13 @@ const ReservationApplyPage = () => {
 
         setAvailableSchedules(schedules);
 
-        reservationId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+        if (!initRef.current) {
+          initRef.current = true;
+          reservationId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+        }
       })();
     }
-  }, [stepStatus, year, month]);
+  }, [stepStatus, year, month, initRef.current]);
 
   useEffect(() => {
     resetTimes();
@@ -267,6 +279,7 @@ const ReservationApplyPage = () => {
                 id="example1"
                 label="이번 면담을 통해 논의하고 싶은 내용"
                 value={answer1}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer1)}
                 checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
@@ -275,6 +288,7 @@ const ReservationApplyPage = () => {
                 id="example2"
                 label="최근에 자신이 긍정적으로 보는 시도와 변화"
                 value={answer2}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer2)}
                 checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}
@@ -283,6 +297,7 @@ const ReservationApplyPage = () => {
                 id="example3"
                 label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
                 value={answer3}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer3)}
                 checkValidation={isOverApplyFormMinLength}
                 isSubmitted={isSubmitted}

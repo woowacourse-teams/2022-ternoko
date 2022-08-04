@@ -8,6 +8,8 @@ import Button from '@/components/@common/Button/styled';
 import InputAreaField from '@/components/InputAreaField';
 import TextAreaField from '@/components/TextAreaField';
 
+import { useToastActions } from '@/context/ToastProvider';
+
 import { DuplicatedNicknameStatusType, CoachType as UserType } from '@/types/domain';
 
 import {
@@ -17,12 +19,14 @@ import {
   patchCoachInfoAPI,
   patchCrewInfoAPI,
 } from '@/api';
-import { PAGE } from '@/constants';
+import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 import { isOverIntroduceMinLength, isValidNicknameLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const navigate = useNavigate();
+
+  const { showToast } = useToastActions();
 
   const memberRole = LocalStorage.getMemberRole();
 
@@ -55,16 +59,19 @@ const LoginRegisterPage = () => {
       const { exists }: DuplicatedNicknameStatusType = response.data;
 
       if (exists) {
-        alert('닉네임이 중복되었습니다.');
+        showToast('ERROR', ERROR_MESSAGE.DUPLICATED_NICKNAME);
 
         return;
       }
 
       if (memberRole === 'COACH') {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
         navigate(PAGE.COACH_HOME);
       } else {
         await patchCrewInfoAPI({ nickname, imageUrl });
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
         navigate(PAGE.CREW_HOME);
       }
     })();
@@ -95,6 +102,7 @@ const LoginRegisterPage = () => {
               id="nickname"
               label="닉네임*"
               value={nickname}
+              message={ERROR_MESSAGE.ENTER_IN_RANGE_NICKNAME}
               isSubmitted={isSubmitted}
               handleChange={handleChangeNickname}
               checkValidation={isValidNicknameLength}
@@ -104,6 +112,7 @@ const LoginRegisterPage = () => {
                 id="introduce"
                 label="한 줄 소개*"
                 value={introduce}
+                message={ERROR_MESSAGE.ENTER_MINIMUM_INTRODUCE_LENGTH}
                 isSubmitted={isSubmitted}
                 handleChange={handleChangeIntroduce}
                 checkValidation={isOverIntroduceMinLength}

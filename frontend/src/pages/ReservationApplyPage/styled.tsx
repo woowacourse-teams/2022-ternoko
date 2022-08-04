@@ -168,5 +168,5 @@ type TimeContainerProps = {
 export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
   animation: ${toLeft} 1s;
 
-  height: ${({ heightUnit }) => Math.min(47, heightUnit * 3.7)}rem;
+  height: ${({ heightUnit }) => Math.min(47, heightUnit * 8)}rem;
 `;

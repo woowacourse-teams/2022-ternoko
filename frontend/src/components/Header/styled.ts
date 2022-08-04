@@ -23,15 +23,15 @@ export const Box = styled.div`
   }
 
   @media ${({ theme }) => theme.devices.laptopL} {
-    padding: 3rem 25rem 0;
+    padding: 0 25rem;
   }
 
   @media ${({ theme }) => theme.devices.laptop} {
-    padding: 3rem 5rem 0;
+    padding: 0 5rem;
   }
 
   @media ${({ theme }) => theme.devices.tablet} {
-    padding: 2rem 5rem 0;
+    padding: 0 5rem;
 
     h1 {
       font-size: 2.3rem;
@@ -39,7 +39,7 @@ export const Box = styled.div`
   }
 
   @media ${({ theme }) => theme.devices.tabletM} {
-    padding: 2rem 5rem 0;
+    padding: 0 5rem;
 
     h1 {
       font-size: 1.5rem;
@@ -47,7 +47,7 @@ export const Box = styled.div`
   }
 
   @media ${({ theme }) => theme.devices.mobileL} {
-    padding: 2rem 2rem 0;
+    padding: 0 2rem;
 
     a {
       gap: 0.5rem;
@@ -59,7 +59,7 @@ export const Box = styled.div`
   }
 
   @media ${({ theme }) => theme.devices.mobileM} {
-    padding: 2rem 1rem 0;
+    padding: 0 1rem;
 
     a {
       gap: 0.3rem;

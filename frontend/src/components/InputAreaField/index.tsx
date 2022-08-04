@@ -6,6 +6,7 @@ type InputAreaFieldProps = {
   id: string;
   label: string;
   value: string;
+  message: string;
   isSubmitted: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checkValidation: (text: string) => boolean;
@@ -15,6 +16,7 @@ const InputAreaField = ({
   id,
   label,
   value,
+  message,
   isSubmitted,
   handleChange,
   checkValidation,
@@ -28,9 +30,7 @@ const InputAreaField = ({
         isError={isSubmitted && !checkValidation(value)}
         onChange={handleChange}
       />
-      {isSubmitted && !checkValidation(value) && (
-        <ErrorMessage>1글자 이상을 입력해주세요.</ErrorMessage>
-      )}
+      {isSubmitted && !checkValidation(value) && <ErrorMessage>{message}</ErrorMessage>}
     </div>
   );
 };
