@@ -34,6 +34,7 @@ import com.woowacourse.ternoko.common.exception.ReservationNotFoundException;
 import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.Reservation;
+import com.woowacourse.ternoko.dto.InterviewResponse;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.ReservationRequest;
@@ -112,7 +113,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("면담 예약 목록을 조회한다.")
+    @DisplayName("크루 - 면담 예약 목록을 조회한다.")
     void findAllReservations() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH1.getId(), MONTH_REQUEST);
@@ -122,7 +123,7 @@ class ReservationServiceTest {
         reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
-        reservationService.create(CREW2.getId(),
+        reservationService.create(CREW1.getId(),
                 new ReservationRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
                         FORM_ITEM_REQUESTS));
         reservationService.create(CREW3.getId(),
@@ -133,12 +134,11 @@ class ReservationServiceTest {
                         FORM_ITEM_REQUESTS));
 
         // when
-        final List<ReservationResponse> reservationResponses = reservationService.findAllReservations();
+        final List<InterviewResponse> interviewResponses = reservationService.findAllByCrewId(CREW1.getId());
 
         // then
-        assertThat(reservationResponses).extracting("crewNickname")
-                .hasSize(4)
-                .contains("수달", "앤지", "애쉬", "록바");
+        assertThat(interviewResponses).extracting("crewNickname")
+                .hasSize(2);
     }
 
     @Test
