@@ -1,14 +1,3 @@
-const sizes = {
-  mobileS: '320px',
-  mobileM: '375px',
-  mobileL: '425px',
-  tabletM: '590px',
-  tablet: '768px',
-  laptop: '1024px',
-  laptopL: '1440px',
-  desktop: '2560px',
-};
-
 const theme = {
   colors: {
     white_50: '#ffffff',
@@ -32,14 +21,14 @@ const theme = {
     basic: '#64646f33 0px 7px 29px 0px',
   },
   devices: {
-    mobileS: `(max-width: ${sizes.mobileS})`,
-    mobileM: `(max-width: ${sizes.mobileM})`,
-    mobileL: `(max-width: ${sizes.mobileL})`,
-    tabletM: `(max-width: ${sizes.tabletM})`,
-    tablet: `(max-width: ${sizes.tablet})`,
-    laptop: `(max-width: ${sizes.laptop})`,
-    laptopL: `(max-width: ${sizes.laptopL})`,
-    desktop: `(max-width: ${sizes.desktop})`,
+    mobileS: '(max-width: 320px)',
+    mobileM: '(max-width: 375px)',
+    mobileL: '(max-width: 425px)',
+    tabletM: '(max-width: 590px)',
+    tablet: '(max-width: 768px)',
+    laptop: '(max-width: 1024px)',
+    laptopL: '(max-width: 1440px)',
+    desktop: '(max-width: 2560px)',
   },
 };
 
