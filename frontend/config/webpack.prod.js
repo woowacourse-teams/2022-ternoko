@@ -9,6 +9,15 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 module.exports = merge(common, {
   mode: 'production',
   devtool: 'cheap-module-source-map',
+  devServer: {
+    https: true,
+    open: false,
+    hot: true,
+    compress: true,
+    port: 3000,
+    historyApiFallback: true,
+    liveReload: true,
+  },
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, '../dist'),
