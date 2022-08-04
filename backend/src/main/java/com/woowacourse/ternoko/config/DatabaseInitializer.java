@@ -89,10 +89,10 @@ public class DatabaseInitializer {
                     "https://user-images.githubusercontent.com/54317630/177786158-226652b7-7b4a-462c-af3b-775811756c87.png",
                     "안녕하세요."));
 
-            coaches.add(new Coach(13L, "김상록", null, "evertree6031@gmail.com",
+            coaches.add(new Coach(13L, "김상록", "록바", "evertree6031@gmail.com",
                     "U02UU3F2H6K",
-                    null,
-                    null));
+                    "https://user-images.githubusercontent.com/26570275/182808926-e5563d40-780d-428a-9d9f-57b9318bbefe.png",
+                    "이두로 코딩하는 개발자"));
 
             coachRepository.saveAll(coaches);
             crewRepository.save(new Crew(13L, "사현빈", "바니", "shb1833@gmail.com", "U03N6FKQEJX",
