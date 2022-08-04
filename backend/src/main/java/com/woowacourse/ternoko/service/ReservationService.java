@@ -20,6 +20,7 @@ import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.Reservation;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.dto.InterviewResponse;
 import com.woowacourse.ternoko.dto.ReservationResponse;
 import com.woowacourse.ternoko.dto.ScheduleResponse;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
@@ -32,7 +33,6 @@ import com.woowacourse.ternoko.repository.InterviewRepository;
 import com.woowacourse.ternoko.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -122,6 +122,15 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
+    public List<InterviewResponse> findAllByCrewId(final Long crewId) {
+        final List<Interview> interviews = interviewRepository.findAllByCrewIdOrderByInterviewStartTime(crewId);
+
+        return interviews.stream()
+                .map(InterviewResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
         final Integer lastDayOfMonth = LocalDate.of(year, month, FIRST_DAY_OF_MONTH).lengthOfMonth();
         final LocalDateTime startOfMonth = LocalDateTime.of(year, month, FIRST_DAY_OF_MONTH, START_HOUR, START_MINUTE);
@@ -150,7 +159,6 @@ public class ReservationService {
         Interview originalInterview = reservation.getInterview();
         List<FormItem> originalInterviewFormItems = originalInterview.getFormItems();
 
-        List<FormItem> updateFormItems = new ArrayList<>();
         for (int i = 0; i < originalInterviewFormItems.size(); i++) {
             originalInterviewFormItems.get(i).update(updateInterviewFormItemsRequest.get(i), originalInterview);
         }
@@ -193,11 +201,6 @@ public class ReservationService {
     private AvailableDateTime findAvailableTime(final ReservationRequest reservationRequest) {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(reservationRequest.getCoachId(),
                         reservationRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
-    }
-
-    private AvailableDateTime findAvailableTime(final Long coachId, final LocalDateTime interviewDatetime) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId, interviewDatetime)
                 .orElseThrow(() -> new InvalidReservationDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 }
