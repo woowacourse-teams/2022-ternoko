@@ -20,8 +20,9 @@ public class ReservationResponse {
 
     private Long id;
     private String coachNickname;
-    private String imageUrl;
+    private String coachImageUrl;
     private String crewNickname;
+    private String crewImageUrl;
     private InterviewStatusType status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
@@ -41,8 +42,9 @@ public class ReservationResponse {
         return ReservationResponse.reservationResponseBuilder()
                 .id(reservation.getId())
                 .coachNickname(interview.getCoach().getNickname())
-                .imageUrl(interview.getCoach().getImageUrl())
+                .coachImageUrl(interview.getCoach().getImageUrl())
                 .crewNickname(interview.getCrew().getNickname())
+                .crewImageUrl(interview.getCrew().getImageUrl())
                 .interviewStartTime(interview.getInterviewStartTime())
                 .interviewEndTime(interview.getInterviewEndTime())
                 .interviewQuestions(formItemResponses)
