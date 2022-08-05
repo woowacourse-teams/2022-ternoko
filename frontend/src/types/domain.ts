@@ -30,8 +30,9 @@ export type ReservationStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' 
 export interface ReservationType {
   id: number;
   coachNickname: string;
-  imageUrl: string;
+  coachImageUrl: string;
   crewNickname: string;
+  crewImageUrl: string;
   interviewStartTime: string;
   interviewEndTime: string;
   status: ReservationStatus;
