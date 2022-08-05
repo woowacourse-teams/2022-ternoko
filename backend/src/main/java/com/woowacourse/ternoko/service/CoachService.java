@@ -82,6 +82,6 @@ public class CoachService {
 
     public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId, coachUpdateRequest.getNickname(),
-                coachUpdateRequest.getImagUrl(), coachUpdateRequest.getIntroduce());
+                coachUpdateRequest.getImageUrl(), coachUpdateRequest.getIntroduce());
     }
 }
