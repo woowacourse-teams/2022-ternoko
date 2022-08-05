@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class CoachUpdateRequest {
 
     private String nickname;
-    private String imagUrl;
+    private String imageUrl;
     private String introduce;
 }
