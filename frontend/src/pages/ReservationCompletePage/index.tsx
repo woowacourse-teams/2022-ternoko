@@ -1,19 +1,32 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import useModal from '@/components/@common/Modal/useModal';
+import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
 import { ReservationType } from '@/types/domain';
 
 import { getReservationAPI } from '@/api';
 import { PAGE } from '@/constants';
+import LocalStorage from '@/localStorage';
 import { getDateString, getTimeString } from '@/utils';
 
 const ReservationCompletePage = () => {
+  const navigate = useNavigate();
+
   const { reservationId } = useParams();
+  const memberRole = LocalStorage.getMemberRole();
+
+  const { show, display, handleOpenModal, handleCloseModal } = useModal();
   const [reservation, setReservation] = useState<ReservationType | null>(null);
+
+  const afterDeleteReservation = () => {
+    handleCloseModal();
+    navigate(PAGE.CREW_HOME);
+  };
 
   useEffect(() => {
     (async () => {
@@ -25,7 +38,7 @@ const ReservationCompletePage = () => {
   return (
     <S.Box>
       <S.LogoBox>
-        <S.Logo src={reservation?.imageUrl} alt="로고" />
+        <S.Logo src={reservation?.crewImageUrl} alt="로고" />
         <h2>{reservation?.crewNickname}님~ 면담 신청이 완료되었습니다.</h2>
       </S.LogoBox>
 
@@ -49,17 +62,24 @@ const ReservationCompletePage = () => {
       </S.InfoContainer>
 
       <S.ButtonContainer>
-        <Link to={PAGE.CREW_HOME}>
-          <Button width="100%" height="35px" white={true}>
-            면담확인
-          </Button>
-        </Link>
+        <Button width="47%" height="35px" white={true} onClick={handleOpenModal}>
+          면담확인
+        </Button>
+
         <Link to={PAGE.CREW_HOME}>
           <Button width="100%" height="35px">
             홈으로
           </Button>
         </Link>
       </S.ButtonContainer>
+      <ReservationDetailModal
+        show={show}
+        display={display}
+        role={memberRole}
+        reservationId={Number(reservationId)}
+        afterDeleteReservation={afterDeleteReservation}
+        handleCloseModal={handleCloseModal}
+      />
     </S.Box>
   );
 };

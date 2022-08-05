@@ -88,4 +88,5 @@ export const Content = styled.div<ToggleProps>`
 
 export const Description = styled.p`
   padding: 0 2rem 2rem;
+  overflow-wrap: break-word;
 `;

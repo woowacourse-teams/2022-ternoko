@@ -16,7 +16,7 @@ type ReservationProps = ReservationType & {
 const Reservation = ({
   id,
   coachNickname,
-  imageUrl,
+  coachImageUrl,
   status,
   interviewStartTime,
   interviewEndTime,
@@ -25,7 +25,7 @@ const Reservation = ({
   return (
     <S.Box status={status}>
       <S.ImageTextBox>
-        <S.ProfileImage src={imageUrl} alt="코치 프로필" />
+        <S.ProfileImage src={coachImageUrl} alt="코치 프로필" />
         <S.CoachName>{coachNickname}</S.CoachName>
       </S.ImageTextBox>
       <S.ImageTextBox>

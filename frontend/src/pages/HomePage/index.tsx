@@ -6,9 +6,9 @@ import * as S from './styled';
 import Button from '@/components/@common/Button/styled';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import useModal from '@/components/@common/Modal/useModal';
+import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
 import Reservation from '@/components/Reservation';
-import ReservationDetailModal from '@/components/ReservationDetailModal';
 
 import { ReservationType } from '@/types/domain';
 
@@ -36,11 +36,18 @@ const HomePage = () => {
     handleOpenModal();
   };
 
+  const updateReservations = async () => {
+    const response = await getReservationsAPI();
+    setReservations(response.data);
+  };
+
+  const afterDeleteReservation = () => {
+    handleCloseModal();
+    updateReservations();
+  };
+
   useEffect(() => {
-    (async () => {
-      const response = await getReservationsAPI();
-      setReservations(response.data);
-    })();
+    updateReservations();
   }, []);
 
   return (
@@ -75,6 +82,7 @@ const HomePage = () => {
         display={display}
         role={memberRole}
         reservationId={clickedReservationId}
+        afterDeleteReservation={afterDeleteReservation}
         handleCloseModal={handleCloseModal}
       />
     </>

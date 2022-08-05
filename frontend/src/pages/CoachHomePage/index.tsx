@@ -5,9 +5,9 @@ import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
 import useModal from '@/components/@common/Modal/useModal';
+import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
 import CoachCalendar from '@/components/CoachCalendar';
-import ReservationDetailModal from '@/components/ReservationDetailModal';
 
 import CalendarProvider from '@/context/CalendarProvider';
 
@@ -40,6 +40,7 @@ const CoachHomePage = () => {
         display={display}
         role={memberRole}
         reservationId={clickedReservationId}
+        afterDeleteReservation={handleCloseModal}
         handleCloseModal={handleCloseModal}
       />
     </>
