@@ -40,6 +40,7 @@ const CoachHomePage = () => {
         display={display}
         role={memberRole}
         reservationId={clickedReservationId}
+        afterDeleteReservation={handleCloseModal}
         handleCloseModal={handleCloseModal}
       />
     </>

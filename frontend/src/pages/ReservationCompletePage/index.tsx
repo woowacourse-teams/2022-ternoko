@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './styled';
 
@@ -15,11 +15,18 @@ import LocalStorage from '@/localStorage';
 import { getDateString, getTimeString } from '@/utils';
 
 const ReservationCompletePage = () => {
+  const navigate = useNavigate();
+
   const { reservationId } = useParams();
   const memberRole = LocalStorage.getMemberRole();
 
   const { show, display, handleOpenModal, handleCloseModal } = useModal();
   const [reservation, setReservation] = useState<ReservationType | null>(null);
+
+  const afterDeleteReservation = () => {
+    handleCloseModal();
+    navigate(PAGE.CREW_HOME);
+  };
 
   useEffect(() => {
     (async () => {
@@ -70,6 +77,7 @@ const ReservationCompletePage = () => {
         display={display}
         role={memberRole}
         reservationId={Number(reservationId)}
+        afterDeleteReservation={afterDeleteReservation}
         handleCloseModal={handleCloseModal}
       />
     </S.Box>

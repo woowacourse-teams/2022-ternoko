@@ -36,11 +36,18 @@ const HomePage = () => {
     handleOpenModal();
   };
 
+  const updateReservations = async () => {
+    const response = await getReservationsAPI();
+    setReservations(response.data);
+  };
+
+  const afterDeleteReservation = () => {
+    handleCloseModal();
+    updateReservations();
+  };
+
   useEffect(() => {
-    (async () => {
-      const response = await getReservationsAPI();
-      setReservations(response.data);
-    })();
+    updateReservations();
   }, []);
 
   return (
@@ -75,6 +82,7 @@ const HomePage = () => {
         display={display}
         role={memberRole}
         reservationId={clickedReservationId}
+        afterDeleteReservation={afterDeleteReservation}
         handleCloseModal={handleCloseModal}
       />
     </>

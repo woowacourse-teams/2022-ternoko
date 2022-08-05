@@ -1,3 +1,5 @@
+import useModal from '../Modal/useModal';
+
 import { useEffect, useState } from 'react';
 
 import * as S from './styled';
@@ -20,6 +22,7 @@ type ReservationDetailModalProps = {
   role: MemberRole;
   reservationId: number;
   handleCloseModal: () => void;
+  afterDeleteReservation: () => void;
 };
 
 const ReservationDetailModal = ({
@@ -28,20 +31,23 @@ const ReservationDetailModal = ({
   role,
   reservationId,
   handleCloseModal,
+  afterDeleteReservation,
 }: ReservationDetailModalProps) => {
   const [reservation, setReservation] = useState<ReservationType | null>();
 
   const { showToast } = useToastActions();
 
-  const handleClickDeleteButton = () => {
+  const handleClickDeleteButton = async () => {
     if (confirm('정말로 삭제하시겠습니까?')) {
       if (role === 'CREW') {
-        deleteCrewReservationAPI(reservationId);
+        await deleteCrewReservationAPI(reservationId);
         showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_RESERVATION);
       } else {
-        deleteCoachReservationAPI(reservationId);
+        await deleteCoachReservationAPI(reservationId);
         showToast('SUCCESS', SUCCESS_MESSAGE.COACH_DELETE_RESERVATION);
       }
+
+      afterDeleteReservation();
     }
   };
 
