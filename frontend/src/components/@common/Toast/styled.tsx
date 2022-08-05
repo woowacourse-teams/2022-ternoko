@@ -71,6 +71,7 @@ export const Box = styled.div<BoxProps>`
   display: flex;
   flex-direction: column;
   height: ${({ length }) => (length - 1) * 11.4}rem;
+  z-index: 1;
   transition: all 0.2s linear;
 
   font-size: 14px;
