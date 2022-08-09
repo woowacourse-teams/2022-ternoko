@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationRequest {
+public class InterviewRequest {
 
     private Long coachId;
 

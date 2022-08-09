@@ -1,6 +1,5 @@
-package com.woowacourse.ternoko.repository;
+package com.woowacourse.ternoko.interview.domain;
 
-import com.woowacourse.ternoko.domain.Interview;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

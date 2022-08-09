@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.interview.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

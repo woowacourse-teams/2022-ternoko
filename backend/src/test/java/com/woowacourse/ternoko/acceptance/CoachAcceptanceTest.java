@@ -17,7 +17,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

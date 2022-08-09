@@ -17,8 +17,8 @@ import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.dto.ReservationResponse;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -66,15 +66,15 @@ class ReservationAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> response = get(createdResponse.header("Location"), header);
-        final ReservationResponse reservationResponse = response.body().as(ReservationResponse.class);
+        final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
 
         // then
         assertAll(
-                () -> assertThat(reservationResponse.getCoachNickname())
+                () -> assertThat(interviewResponse.getCoachNickname())
                         .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(reservationResponse.getInterviewStartTime())
+                () -> assertThat(interviewResponse.getInterviewStartTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
-                () -> assertThat(reservationResponse.getInterviewEndTime())
+                () -> assertThat(interviewResponse.getInterviewEndTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME))
         );
     }
@@ -95,11 +95,11 @@ class ReservationAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> response = get("/api/reservations", generateHeader(CREW1.getId()));
-        final List<ReservationResponse> reservationResponses = response.body().jsonPath()
-                .getList(".", ReservationResponse.class);
+        final List<InterviewResponse> InterviewResponses = response.body().jsonPath()
+                .getList(".", InterviewResponse.class);
 
         // then
-        assertThat(reservationResponses).hasSize(2);
+        assertThat(InterviewResponses).hasSize(2);
     }
 
 
@@ -115,7 +115,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         final char reservationId = redirectURI.charAt(redirectURI.length() - 1);
 
         // when
-        final ReservationRequest updateRequest = new ReservationRequest(COACH3.getId(),
+        final InterviewRequest updateRequest = new InterviewRequest(COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS);
         ExtractableResponse<Response> updateResponse = put("/api/reservations/" + reservationId,
                 generateHeader(CREW1.getId()),

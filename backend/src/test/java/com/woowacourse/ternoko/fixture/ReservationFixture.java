@@ -4,9 +4,9 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 
-import com.woowacourse.ternoko.domain.FormItem;
 import com.woowacourse.ternoko.dto.request.FormItemRequest;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.interview.domain.FormItem;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,11 +30,11 @@ public class ReservationFixture {
             new FormItem("고정질문2", "답변2"),
             new FormItem("고정질문3", "답변3"));
 
-    public static final ReservationRequest COACH1_RESERVATION_REQUEST1 = new ReservationRequest(COACH1.getId(),
+    public static final InterviewRequest COACH1_RESERVATION_REQUEST1 = new InterviewRequest(COACH1.getId(),
             NOW_PLUS_2_DAYS_FIRST_TIME,
             FORM_ITEM_REQUESTS);
 
-    public static final ReservationRequest COACH1_RESERVATION_REQUEST2 = new ReservationRequest(COACH1.getId(),
+    public static final InterviewRequest COACH1_RESERVATION_REQUEST2 = new InterviewRequest(COACH1.getId(),
             NOW_PLUS_2_DAYS_SECOND_TIME,
             FORM_ITEM_REQUESTS);
 }

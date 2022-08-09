@@ -1,9 +1,8 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.interview.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
-import com.woowacourse.ternoko.domain.Reservation;
+import com.woowacourse.ternoko.interview.domain.Interview;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "reservationResponseBuilder")
-public class ReservationResponse {
+@Builder(builderMethodName = "interviewResponseBuilder")
+public class InterviewResponse {
 
     private Long id;
     private String coachNickname;
@@ -33,14 +32,13 @@ public class ReservationResponse {
 
     private List<FormItemResponse> interviewQuestions;
 
-    public static ReservationResponse from(final Reservation reservation) {
-        final Interview interview = reservation.getInterview();
+    public static InterviewResponse from(final Interview interview) {
         final List<FormItemResponse> formItemResponses = interview.getFormItems().stream()
                 .map(FormItemResponse::from)
                 .collect(Collectors.toList());
 
-        return ReservationResponse.reservationResponseBuilder()
-                .id(reservation.getId())
+        return InterviewResponse.interviewResponseBuilder()
+                .id(interview.getId())
                 .coachNickname(interview.getCoach().getNickname())
                 .coachImageUrl(interview.getCoach().getImageUrl())
                 .crewNickname(interview.getCrew().getNickname())

@@ -1,7 +1,7 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.interview.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woowacourse.ternoko.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.Interview;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,5 +1,6 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.interview.domain;
 
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import java.time.LocalDateTime;
@@ -97,13 +98,8 @@ public class Interview {
         this.interviewStatusType = updateInterview.getInterviewStatusType();
     }
 
-    public Interview cancel() {
-        return new Interview(this.id,
-                this.getInterviewStartTime(),
-                this.getInterviewEndTime(),
-                this.getCoach(),
-                this.getCrew(),
-                InterviewStatusType.CANCELED);
+    public void cancel() {
+        this.interviewStatusType = InterviewStatusType.CANCELED;
     }
 
     public boolean sameCrew(Long crewId) {

@@ -1,6 +1,6 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.interview.dto;
 
-import com.woowacourse.ternoko.domain.FormItem;
+import com.woowacourse.ternoko.interview.domain.FormItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

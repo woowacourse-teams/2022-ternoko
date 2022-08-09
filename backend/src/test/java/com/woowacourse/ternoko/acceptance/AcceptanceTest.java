@@ -5,7 +5,7 @@ import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
 
 import com.woowacourse.ternoko.common.JwtProvider;
-import com.woowacourse.ternoko.dto.request.ReservationRequest;
+import com.woowacourse.ternoko.dto.request.InterviewRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
@@ -121,10 +121,10 @@ public class AcceptanceTest {
     protected ExtractableResponse<Response> createReservation(final Long crewId,
                                                               final Long coachId,
                                                               final LocalDateTime interviewDateTime) {
-        final ReservationRequest reservationRequest = new ReservationRequest(coachId, interviewDateTime,
+        final InterviewRequest interviewRequest = new InterviewRequest(coachId, interviewDateTime,
                 FORM_ITEM_REQUESTS);
 
-        return post("/api/reservations/", generateHeader(crewId), reservationRequest);
+        return post("/api/reservations/", generateHeader(crewId), interviewRequest);
     }
 
     protected Header generateHeader(final Long id) {
