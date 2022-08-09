@@ -15,7 +15,6 @@ spring:
         enable: true
   jpa:
     open-in-view: false
-    show-sql: true
     hibernate:
       ddl-auto: create
     properties:
