@@ -7,9 +7,11 @@ dist
 # misc
 .DS_Store
 .env.local
+.env.development
 .env.development.local
-.env.test.local
+.env.production
 .env.production.local
+.env.test.local
 
 # debug
 npm-debug.log*
