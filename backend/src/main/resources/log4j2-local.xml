@@ -76,11 +76,13 @@
             <AppenderRef ref="file"/>
         </logger>
 
-        <!-- sql 파라미터 표시 설정 -->
-        <logger name="org.hibernate.SQL" level="info" additivity="false">
+        <!-- sql 표시 설정 debug 레벨부터 sql log 찍힘-->
+        <logger name="org.hibernate.SQL" level="debug" additivity="false">
             <AppenderRef ref="console"/>
         </logger>
-        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="info" additivity="false">
+
+        <!-- sql 파라미터 표시 설정 trace 레벨부터 binding parameter 찍힘-->
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
             <AppenderRef ref="console"/>
         </logger>
 
