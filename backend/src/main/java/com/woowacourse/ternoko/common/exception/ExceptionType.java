@@ -14,6 +14,7 @@ public enum ExceptionType {
     INVALID_RESERVATION_CREW_ID(HttpStatus.BAD_REQUEST, "다른 크루의 예약에 접근할 수 없습니다."),
     INVALID_RESERVATION_COACH_ID(HttpStatus.BAD_REQUEST, "다른 코치의 예약에 접근할 수 없습니다."),
     INVALID_RESERVATION_DATE(HttpStatus.BAD_REQUEST, "면담 예약은 최소 하루 전에 가능 합니다."),
+    INVALID_RESERVATION_DUPLICATE_DATE_TIME(HttpStatus.BAD_REQUEST, "면담 예약은 같은 시간, 같은 코치에 단 한번 가능합니다."),
     INVALID_AVAILABLE_DATE_TIME(HttpStatus.BAD_REQUEST, "선택한 날짜는 해당 코치의 가능한 시간이 아닙니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),

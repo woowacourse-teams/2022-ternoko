@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.acceptance;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
@@ -88,7 +89,7 @@ class ReservationAcceptanceTest extends AcceptanceTest {
         put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
 
         createReservation(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(CREW1.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createReservation(CREW1.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME));
         createReservation(CREW3.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createReservation(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 

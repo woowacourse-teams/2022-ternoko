@@ -13,4 +13,6 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
                                                  final Long coachId);
 
     List<Interview> findAllByCrewIdOrderByInterviewStartTime(final Long crewId);
+
+    boolean existsByCrewIdAndInterviewStartTime(final Long crewId, final LocalDateTime start);
 }
