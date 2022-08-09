@@ -18,7 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FormItem {
 
-    private static final int MAX_LENGNTH = 1000;
+    private static final int QUESTION_MAX_LENGTH = 255;
+    private static final int ANSWER_MAX_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,13 +41,17 @@ public class FormItem {
     }
 
     public static FormItem from(String question, String answer) {
-        validateLength(answer);
+        validateLength(question, answer);
         return new FormItem(question, answer);
     }
 
-    private static void validateLength(final String answer) {
-        if (answer.length() > MAX_LENGNTH) {
-            throw new InvalidLengthException(OVER_LENGTH, MAX_LENGNTH);
+    private static void validateLength(final String question, final String answer) {
+        if (question.length() > QUESTION_MAX_LENGTH) {
+            throw new InvalidLengthException(OVER_LENGTH, QUESTION_MAX_LENGTH);
+        }
+
+        if (answer.length() > ANSWER_MAX_LENGTH) {
+            throw new InvalidLengthException(OVER_LENGTH, ANSWER_MAX_LENGTH);
         }
     }
 
