@@ -1,4 +1,4 @@
-
+package com.woowacourse.ternoko.domain.formItem;
 
 import com.woowacourse.ternoko.domain.Interview;
 import javax.persistence.Embedded;
