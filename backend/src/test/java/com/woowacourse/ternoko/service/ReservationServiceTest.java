@@ -106,6 +106,23 @@ class ReservationServiceTest {
     }
 
     @Test
+    @DisplayName("면담 예약 선택 일자와 시간이 크루가 이미 신청한 면담 시간일 경우 예외가 발생한다.")
+    void create_WhenDuplicateReservation() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+        reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+
+        // when & then
+        assertThatThrownBy(() -> reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS)))
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_DUPLICATE_DATE_TIME.getMessage());
+    }
+
+    @Test
     @DisplayName("없는 면담을 조회할 시 예외가 발생한다.")
     void find_reservationNotFound() {
         assertThatThrownBy(() -> reservationService.findReservationById(-1L))
@@ -138,7 +155,7 @@ class ReservationServiceTest {
 
         // then
         assertThat(interviewResponses.stream()
-                    .map(InterviewResponse::getCoachNickname))
+                .map(InterviewResponse::getCoachNickname))
                 .containsExactly(COACH3.getNickname(), COACH2.getNickname(), COACH1.getNickname());
     }
 
@@ -297,6 +314,28 @@ class ReservationServiceTest {
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidReservationDateException.class)
                 .hasMessage(ExceptionType.INVALID_AVAILABLE_DATE_TIME.getMessage());
+    }
+
+    @Test
+    @DisplayName("면담 예약 수정 시 면담 예약 선택 일자와 시간이 크루가 이미 신청한 면담 시간일 경우 예외가 발생한다.")
+    void update_WhenDuplicateReservation() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+
+        final Reservation reservation = reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        reservationService.create(CREW1.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+
+        // when & then
+        assertThatThrownBy(() -> reservationService.update(CREW1.getId(), reservation.getId(),
+                new ReservationRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS)))
+                .isInstanceOf(InvalidReservationDateException.class)
+                .hasMessage(ExceptionType.INVALID_RESERVATION_DUPLICATE_DATE_TIME.getMessage());
     }
 
     @Test

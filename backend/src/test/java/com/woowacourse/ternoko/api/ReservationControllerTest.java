@@ -37,11 +37,11 @@ public class ReservationControllerTest extends ControllerTest {
     void findReservationById() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createReservations(CREW1.getId());
+        final Long reservationId = createReservation(CREW1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/reservations/{reservationId}", 1)
+                        .get("/api/reservations/{reservationId}", reservationId)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());

@@ -6,6 +6,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVA
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_COACH_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_DATE;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_RESERVATION_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.RESERVATION_NOT_FOUND;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
@@ -82,6 +83,9 @@ public class ReservationService {
         final Coach coach = coachRepository.findById(reservationRequest.getCoachId())
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, reservationRequest.getCoachId()));
 
+        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, reservationRequest.getInterviewDatetime())) {
+            throw new InvalidReservationDateException(INVALID_RESERVATION_DUPLICATE_DATE_TIME);
+        }
         validateInterviewStartTime(reservationDatetime);
 
         return new Interview(
