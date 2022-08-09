@@ -7,6 +7,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import com.woowacourse.ternoko.interview.domain.FormItem;
 import com.woowacourse.ternoko.interview.dto.FormItemRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
+import com.woowacourse.ternoko.domain.formitem.FormItem;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
