@@ -16,6 +16,7 @@ public enum ExceptionType {
     INVALID_INTERVIEW_DATE(HttpStatus.BAD_REQUEST, "면담 예약은 최소 하루 전에 가능 합니다."),
     INVALID_INTERVIEW_DUPLICATE_DATE_TIME(HttpStatus.BAD_REQUEST, "면담 예약은 같은 시간, 같은 코치에 단 한번 가능합니다."),
     INVALID_AVAILABLE_DATE_TIME(HttpStatus.BAD_REQUEST, "선택한 날짜는 해당 코치의 가능한 시간이 아닙니다."),
+    OVER_LENGTH(HttpStatus.BAD_REQUEST, "자를 넘을 수 없습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
     UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),

@@ -21,8 +21,4 @@ public class FormItemDto {
                 .answer(formItem.getAnswer())
                 .build();
     }
-
-    public FormItem toFormItem() {
-        return new FormItem(question, answer);
-    }
 }
