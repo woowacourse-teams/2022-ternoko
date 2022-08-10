@@ -44,8 +44,8 @@ export const getCoachScheduleAPI = (coachId: number, year: number, month: number
 export const getCoachReservationAPI = (year: number, month: number) =>
   axios.get(`${process.env.SERVER_URL}/api/schedules?year=${year}&month=${month}`);
 
-export const getUserStatusAPI = (code: string) =>
-  axios.get(`${process.env.SERVER_URL}/api/login?code=${code}`);
+export const getUserStatusAPI = (code: string, redirectUrl: string) =>
+  axios.get(`${process.env.SERVER_URL}/api/login?code=${code}&redirectUrl=${redirectUrl}`);
 
 export const getCrewInfoAPI = () => axios.get(`${process.env.SERVER_URL}/api/crews/me`);
 

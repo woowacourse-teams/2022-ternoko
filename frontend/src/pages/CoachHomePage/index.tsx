@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styled';
@@ -18,10 +18,16 @@ const CoachHomePage = () => {
   const memberRole = LocalStorage.getMemberRole();
   const { show, display, handleOpenModal, handleCloseModal } = useModal();
   const [clickedReservationId, setClickedReservationId] = useState(-1);
+  const calendarRerenderkeyRef = useRef(Date.now());
 
   const getHandleClickSchedule = (id: number) => () => {
     setClickedReservationId(id);
     handleOpenModal();
+  };
+
+  const afterDeleteReservation = () => {
+    calendarRerenderkeyRef.current = Date.now();
+    handleCloseModal();
   };
 
   return (
@@ -33,14 +39,17 @@ const CoachHomePage = () => {
         </Link>
       </S.TitleBox>
       <CalendarProvider selectMode="single">
-        <CoachCalendar getHandleClickSchedule={getHandleClickSchedule} />
+        <CoachCalendar
+          key={calendarRerenderkeyRef.current}
+          getHandleClickSchedule={getHandleClickSchedule}
+        />
       </CalendarProvider>
       <ReservationDetailModal
         show={show}
         display={display}
         role={memberRole}
         reservationId={clickedReservationId}
-        afterDeleteReservation={handleCloseModal}
+        afterDeleteReservation={afterDeleteReservation}
         handleCloseModal={handleCloseModal}
       />
     </>

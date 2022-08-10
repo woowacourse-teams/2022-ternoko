@@ -28,7 +28,7 @@ export const InfoBox = styled.div`
 
 export const Info = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 2rem;
   height: 5rem;
   font-size: 2rem;
@@ -38,7 +38,7 @@ export const Info = styled.div`
     font-weight: 600;
   }
 
-  p {
+  > p {
     width: 100%;
     height: fit-content;
     padding-left: 0.7rem;
@@ -58,11 +58,15 @@ export const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray_150};
 `;
 
+export const EditModeBox = styled.div`
+  width: 100%;
+  margin-top: -0.8rem;
+`;
+
 export const Textarea = styled.textarea`
   width: 100%;
   height: 70px;
   border-radius: 10px;
-  margin-top: 3rem;
   padding: 1rem;
 
   font-size: 1.6rem;
@@ -70,6 +74,15 @@ export const Textarea = styled.textarea`
   outline: none;
 
   border: 1px solid ${({ theme }) => theme.colors.gray_150};
+`;
+
+export const DescriptionBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  font-size: 1.4rem;
 `;
 
 export const ButtonContainer = styled.div`

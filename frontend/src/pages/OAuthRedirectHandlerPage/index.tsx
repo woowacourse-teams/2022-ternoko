@@ -18,7 +18,10 @@ const OAuthRedirectHandlerPage = () => {
   const code = search.match(/(?<=code=).+/)?.[0];
 
   (async () => {
-    const response = await getUserStatusAPI(code as string);
+    const response = await getUserStatusAPI(
+      code as string,
+      process.env.SLACK_REDIRECT_URL as string,
+    );
     const { accessToken, hasNickname, memberRole }: UserStatusType = response.data;
 
     LocalStorage.setAccessToken(accessToken);

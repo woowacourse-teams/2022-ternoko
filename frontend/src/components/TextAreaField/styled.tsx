@@ -26,3 +26,12 @@ export const TextArea = styled.textarea<TextAreaProps>`
   border: 1px solid
     ${({ isError, theme }) => (isError ? theme.colors.pink_200 : theme.colors.gray_150)};
 `;
+
+export const DescriptionBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  font-size: 1.4rem;
+`;
