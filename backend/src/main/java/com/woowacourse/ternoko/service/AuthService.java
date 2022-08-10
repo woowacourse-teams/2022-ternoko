@@ -37,7 +37,6 @@ public class AuthService {
 
     private final String clientId;
     private final String clientSecret;
-    private final String redirectUrl;
 
     public AuthService(final MethodsClientImpl slackMethodClient,
                        final MemberRepository memberRepository,
@@ -45,8 +44,7 @@ public class AuthService {
                        final CrewRepository crewRepository,
                        final JwtProvider jwtProvider,
                        @Value("${slack.clientId}") final String clientId,
-                       @Value("${slack.clientSecret}") final String clientSecret,
-                       @Value("${slack.redirectUrl}") final String redirectUrl) {
+                       @Value("${slack.clientSecret}") final String clientSecret) {
         this.slackMethodClient = slackMethodClient;
         this.memberRepository = memberRepository;
         this.coachRepository = coachRepository;
@@ -54,11 +52,10 @@ public class AuthService {
         this.jwtProvider = jwtProvider;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.redirectUrl = redirectUrl;
     }
 
-    public LoginResponse login(final String code) throws SlackApiException, IOException {
-        final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code);
+    public LoginResponse login(final String code, String redirectUrl) throws SlackApiException, IOException {
+        final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code, redirectUrl);
         final Optional<Member> member = memberRepository.findByEmail(userInfoResponse.getEmail());
         if (member.isEmpty()) {
             return signUp(userInfoResponse);
@@ -73,16 +70,16 @@ public class AuthService {
         return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
     }
 
-    private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code)
+    private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code, final String redirectUrl)
             throws IOException, SlackApiException {
-        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(code);
+        final OpenIDConnectTokenResponse openIDConnectTokenResponse = getOpenIDTokenResponse(code, redirectUrl);
         final OpenIDConnectUserInfoRequest userInfoRequest = OpenIDConnectUserInfoRequest.builder()
                 .token(openIDConnectTokenResponse.getAccessToken())
                 .build();
         return slackMethodClient.openIDConnectUserInfo(userInfoRequest);
     }
 
-    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code) throws IOException, SlackApiException {
+    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code, final String redirectUrl) throws IOException, SlackApiException {
         final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
                 .clientId(clientId)
                 .clientSecret(clientSecret)

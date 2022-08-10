@@ -42,7 +42,7 @@ public class AuthServiceTest {
         // given
         setSlackMockData("sudal@gmail.com");
         // when
-        final LoginResponse loginResponse = authService.login("temp_code");
+        final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         // then
         assertThat(loginResponse.getAccessToken()).isNotNull();
     }
@@ -54,7 +54,7 @@ public class AuthServiceTest {
         final String coachEmail = "pobi@woowahan.com";
         setSlackMockData(coachEmail);
         // when
-        final LoginResponse loginResponse = authService.login("temp_code");
+        final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
     }
 
@@ -66,7 +66,7 @@ public class AuthServiceTest {
         final String crewEmail = "sudal1@naver.com";
         setSlackMockData(crewEmail);
         // when
-        final LoginResponse loginResponse = authService.login("temp_code");
+        final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         // then
         assertThat(loginResponse.getMemberRole()).isEqualTo(Type.CREW);
     }
@@ -78,7 +78,7 @@ public class AuthServiceTest {
         final String crewEmail = "sudal@naver.com";
         setSlackMockData(crewEmail);
         // when
-        final LoginResponse loginResponse = authService.login("temp_code");
+        final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         // then
         assertThat(loginResponse.isHasNickname()).isFalse();
     }
@@ -90,7 +90,7 @@ public class AuthServiceTest {
         final String coachEmail = "test1@woowahan.com";
         setSlackMockData(coachEmail);
         // when
-        final LoginResponse loginResponse = authService.login("temp_code");
+        final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         // then
         assertThat(loginResponse.isHasNickname()).isTrue();
     }
