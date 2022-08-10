@@ -83,9 +83,7 @@ public class ReservationService {
         final Coach coach = coachRepository.findById(reservationRequest.getCoachId())
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, reservationRequest.getCoachId()));
 
-        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, reservationRequest.getInterviewDatetime())) {
-            throw new InvalidReservationDateException(INVALID_RESERVATION_DUPLICATE_DATE_TIME);
-        }
+        validateDuplicateStartTime(crewId, reservationRequest);
         validateInterviewStartTime(reservationDatetime);
 
         return new Interview(
@@ -93,6 +91,13 @@ public class ReservationService {
                 reservationDatetime.plusMinutes(30),
                 coach,
                 crew);
+    }
+
+    private void validateDuplicateStartTime(Long crewId, ReservationRequest reservationRequest) {
+        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId,
+                reservationRequest.getInterviewDatetime())) {
+            throw new InvalidReservationDateException(INVALID_RESERVATION_DUPLICATE_DATE_TIME);
+        }
     }
 
     private void validateInterviewStartTime(final LocalDateTime localDateTime) {
