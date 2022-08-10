@@ -1,10 +1,14 @@
 package com.woowacourse.ternoko.fixture;
 
+
+import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.dto.request.CrewUpdateRequest;
+import com.woowacourse.ternoko.dto.CrewUpdateRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,13 +31,13 @@ public class MemberFixture {
     public static final LocalDateTime TIME3 = LocalDateTime.now().plusDays(3);
     public static final LocalDateTime TIME4 = LocalDateTime.now().plusDays(4);
 
-    public static final List<LocalDateTime> AVAILABLE_TIMES = List.of(
-            LocalDateTime.of(TIME2.getYear(), TIME2.getMonthValue(),
-                    TIME2.getDayOfMonth(), TIME2.getHour(), TIME2.getMinute()),
-            LocalDateTime.of(TIME3.getYear(), TIME3.getMonthValue(),
-                    TIME3.getDayOfMonth(), TIME3.getHour(), TIME3.getMinute()),
-            LocalDateTime.of(TIME4.getYear(), TIME4.getMonthValue(),
-                    TIME4.getDayOfMonth(), TIME4.getHour(), TIME4.getMinute()));
+    public static final List<AvailableDateTimeSummaryRequest> AVAILABLE_TIMES = List.of(
+            new AvailableDateTimeSummaryRequest(LocalDateTime.of(TIME2.getYear(), TIME2.getMonthValue(),
+                    TIME2.getDayOfMonth(), TIME2.getHour(), TIME2.getMinute()), OPEN),
+            new AvailableDateTimeSummaryRequest(LocalDateTime.of(TIME3.getYear(), TIME3.getMonthValue(),
+                    TIME3.getDayOfMonth(), TIME3.getHour(), TIME3.getMinute()), OPEN),
+            new AvailableDateTimeSummaryRequest(LocalDateTime.of(TIME4.getYear(), TIME4.getMonthValue(),
+                    TIME4.getDayOfMonth(), TIME4.getHour(), TIME4.getMinute()), OPEN));
 
     public static final AvailableDateTimeRequest AVAILABLE_DATE_TIME_REQUEST2 = new AvailableDateTimeRequest(
             TIME2.getYear(),

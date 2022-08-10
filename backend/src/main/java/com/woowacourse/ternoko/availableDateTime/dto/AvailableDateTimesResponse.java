@@ -1,7 +1,7 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.availabledatetime.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woowacourse.ternoko.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,9 +1,11 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.availabledatetime.domain;
 
 import com.woowacourse.ternoko.domain.member.Coach;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,8 +32,18 @@ public class AvailableDateTime {
     @Column(nullable = false)
     private LocalDateTime localDateTime;
 
-    public AvailableDateTime(Coach coach, LocalDateTime localDateTime) {
+    @Enumerated(EnumType.STRING)
+    private AvailableDateTimeStatus availableDateTimeStatus;
+
+
+    public AvailableDateTime(Coach coach, LocalDateTime localDateTime,
+                             AvailableDateTimeStatus availableDateTimeStatus) {
         this.coach = coach;
         this.localDateTime = localDateTime;
+        this.availableDateTimeStatus = availableDateTimeStatus;
+    }
+
+    public void update(final AvailableDateTimeStatus status) {
+        this.availableDateTimeStatus = status;
     }
 }

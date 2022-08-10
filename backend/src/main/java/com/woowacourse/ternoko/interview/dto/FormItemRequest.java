@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.dto.request;
+package com.woowacourse.ternoko.interview.dto;
 
 import com.woowacourse.ternoko.interview.domain.FormItem;
 import lombok.AllArgsConstructor;

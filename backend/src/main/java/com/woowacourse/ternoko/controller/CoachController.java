@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.controller;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimesResponse;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
-import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.service.CoachService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -27,8 +27,8 @@ public class CoachController {
 
     @PutMapping("/calendar/times")
     public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
-                                                  @RequestBody final AvailableDateTimesRequest availableDateTimesRequest) {
-        coachService.putAvailableDateTimesByCoachId(coachId, availableDateTimesRequest);
+                                                  @RequestBody final CalendarRequest calendarRequest) {
+        coachService.putAvailableDateTimesByCoachId(coachId, calendarRequest);
         return ResponseEntity.ok().build();
     }
 

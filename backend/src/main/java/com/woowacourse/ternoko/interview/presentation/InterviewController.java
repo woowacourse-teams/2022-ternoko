@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.interview.presentation;
 
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
-import com.woowacourse.ternoko.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.application.InterviewService;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
@@ -42,7 +42,7 @@ public class InterviewController {
 
     @GetMapping("/reservations/{interviewId}")
     public ResponseEntity<InterviewResponse> findInterviewById(@PathVariable final Long interviewId) {
-        final InterviewResponse interviewResponse = interviewService.findInterviewById(interviewId);
+        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interviewId);
 
         return ResponseEntity.ok(interviewResponse);
     }

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.dto.request;
+package com.woowacourse.ternoko.availabledatetime.dto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.dto.request;
+package com.woowacourse.ternoko.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

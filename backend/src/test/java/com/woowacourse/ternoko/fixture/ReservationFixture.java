@@ -4,9 +4,9 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 
-import com.woowacourse.ternoko.dto.request.FormItemRequest;
-import com.woowacourse.ternoko.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.interview.domain.FormItem;
+import com.woowacourse.ternoko.interview.dto.FormItemRequest;
+import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 

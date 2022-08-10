@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CrewResponse;
-import com.woowacourse.ternoko.dto.request.CrewUpdateRequest;
+import com.woowacourse.ternoko.dto.CrewUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

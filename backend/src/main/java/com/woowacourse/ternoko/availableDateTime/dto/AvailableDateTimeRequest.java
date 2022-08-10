@@ -1,7 +1,6 @@
-package com.woowacourse.ternoko.dto.request;
+package com.woowacourse.ternoko.availabledatetime.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,5 @@ public class AvailableDateTimeRequest {
 
     private int year;
     private int month;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private List<LocalDateTime> times;
+    private List<AvailableDateTimeSummaryRequest> times;
 }
