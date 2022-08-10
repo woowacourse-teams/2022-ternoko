@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as S from './styled';
 
 import ErrorMessage from '@/components/@common/ErrorMessage/styled';
