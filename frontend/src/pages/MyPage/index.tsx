@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
 import { useToastActions } from '@/context/ToastProvider';
@@ -12,8 +13,9 @@ import { useUserActions } from '@/context/UserProvider';
 import { CoachType as UserType } from '@/types/domain';
 
 import { getCoachInfoAPI, getCrewInfoAPI, patchCoachInfoAPI, patchCrewInfoAPI } from '@/api';
-import { PAGE, SUCCESS_MESSAGE } from '@/constants';
+import { COACH_INTRODUCE_MAX_LENGTH, ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
+import { isValidIntroduceLength, isValidNicknameLength } from '@/validations';
 
 const MyPage = () => {
   const memberRole = LocalStorage.getMemberRole();
@@ -21,10 +23,11 @@ const MyPage = () => {
   const { showToast } = useToastActions();
   const { initializeUser } = useUserActions();
 
-  const [nickname, setNickname] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [nickname, setNickname] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const defaultNicknameRef = useRef('');
   const defaultIntroduceRef = useRef('');
@@ -49,6 +52,14 @@ const MyPage = () => {
 
   const handleClickConfirmButton = async () => {
     //추후 중복 검사 로직
+
+    isSubmitted || setIsSubmitted(true);
+
+    if (
+      !isValidNicknameLength(nickname) ||
+      (memberRole === 'COACH' && !isValidIntroduceLength(introduce))
+    )
+      return;
 
     if (memberRole === 'CREW') {
       await patchCrewInfoAPI({ nickname, imageUrl });
@@ -87,7 +98,13 @@ const MyPage = () => {
             <S.Info>
               <label htmlFor="nickname">닉네임</label>
               {isEditMode ? (
-                <S.Input id="nickname" value={nickname} onChange={handleChangeNickname} />
+                <S.EditModeBox>
+                  <S.Input id="nickname" value={nickname} onChange={handleChangeNickname} />
+
+                  {isSubmitted && !isValidNicknameLength(nickname) && (
+                    <ErrorMessage>{ERROR_MESSAGE.ENTER_IN_RANGE_NICKNAME}</ErrorMessage>
+                  )}
+                </S.EditModeBox>
               ) : (
                 <p>{nickname}</p>
               )}
@@ -96,7 +113,26 @@ const MyPage = () => {
               <S.Info>
                 <label htmlFor="introduce">한 줄 소개</label>
                 {isEditMode ? (
-                  <S.Textarea id="introduce" value={introduce} onChange={handleChangeIntroduce} />
+                  <S.EditModeBox>
+                    <S.Textarea
+                      id="introduce"
+                      value={introduce}
+                      maxLength={COACH_INTRODUCE_MAX_LENGTH}
+                      onChange={handleChangeIntroduce}
+                    />
+                    <S.DescriptionBox>
+                      <p>
+                        {isSubmitted && !isValidIntroduceLength(introduce) && (
+                          <ErrorMessage>
+                            {ERROR_MESSAGE.ENTER_IN_RANGE_INTRODUCE_LENGTH}
+                          </ErrorMessage>
+                        )}
+                      </p>
+                      <p>
+                        {introduce.length}/{COACH_INTRODUCE_MAX_LENGTH}
+                      </p>
+                    </S.DescriptionBox>
+                  </S.EditModeBox>
                 ) : (
                   <p>{introduce}</p>
                 )}

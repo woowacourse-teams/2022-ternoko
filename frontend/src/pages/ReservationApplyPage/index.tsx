@@ -10,6 +10,7 @@ import TitleBox from '@/components/@common/TitleBox';
 import Calendar from '@/components/Calendar';
 import CoachProfile from '@/components/CoachProfile';
 import TextAreaField from '@/components/TextAreaField';
+import resizeTextArea from '@/components/TextAreaField/resizeTextArea';
 import Time from '@/components/Time/styled';
 
 import useTimes from '@/hooks/useTimes';
@@ -26,9 +27,9 @@ import {
   postReservationAPI,
   putReservationAPI,
 } from '@/api';
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
+import { CREW_APPLY_FORM_MAX_LENGTH, ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { separateFullDate } from '@/utils';
-import { isOverApplyFormMinLength } from '@/validations';
+import { isValidApplyFormLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
@@ -95,6 +96,7 @@ const ReservationApplyPage = () => {
   const getHandleChangeAnswer =
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setAnswer(e.target.value);
+      resizeTextArea(e.target);
     };
 
   const getHandleClickDay = (day: number) => () => {
@@ -109,9 +111,9 @@ const ReservationApplyPage = () => {
     isSubmitted || setIsSubmitted(true);
 
     if (
-      !isOverApplyFormMinLength(answer1) ||
-      !isOverApplyFormMinLength(answer2) ||
-      !isOverApplyFormMinLength(answer3)
+      !isValidApplyFormLength(answer1) ||
+      !isValidApplyFormLength(answer2) ||
+      !isValidApplyFormLength(answer3)
     )
       return;
 
@@ -279,27 +281,30 @@ const ReservationApplyPage = () => {
                 id="example1"
                 label="이번 면담을 통해 논의하고 싶은 내용"
                 value={answer1}
-                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
+                maxLength={CREW_APPLY_FORM_MAX_LENGTH}
+                message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer1)}
-                checkValidation={isOverApplyFormMinLength}
+                checkValidation={isValidApplyFormLength}
                 isSubmitted={isSubmitted}
               />
               <TextAreaField
                 id="example2"
                 label="최근에 자신이 긍정적으로 보는 시도와 변화"
                 value={answer2}
-                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
+                maxLength={CREW_APPLY_FORM_MAX_LENGTH}
+                message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer2)}
-                checkValidation={isOverApplyFormMinLength}
+                checkValidation={isValidApplyFormLength}
                 isSubmitted={isSubmitted}
               />
               <TextAreaField
                 id="example3"
                 label="이번 면담을 통해 어떤 변화가 생기기를 원하는지"
                 value={answer3}
-                message={ERROR_MESSAGE.ENTER_MINIMUM_APPLY_FORM_LENGTH}
+                maxLength={CREW_APPLY_FORM_MAX_LENGTH}
+                message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                 handleChange={getHandleChangeAnswer(setAnswer3)}
-                checkValidation={isOverApplyFormMinLength}
+                checkValidation={isValidApplyFormLength}
                 isSubmitted={isSubmitted}
               />
               <Button type="submit" width="100%" height="40px">

@@ -19,9 +19,9 @@ import {
   patchCoachInfoAPI,
   patchCrewInfoAPI,
 } from '@/api';
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
+import { COACH_INTRODUCE_MAX_LENGTH, ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
-import { isOverIntroduceMinLength, isValidNicknameLength } from '@/validations';
+import { isValidIntroduceLength, isValidNicknameLength } from '@/validations';
 
 const LoginRegisterPage = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const LoginRegisterPage = () => {
 
     if (
       !isValidNicknameLength(nickname) ||
-      (memberRole === 'COACH' && !isOverIntroduceMinLength(introduce))
+      (memberRole === 'COACH' && !isValidIntroduceLength(introduce))
     )
       return;
 
@@ -112,10 +112,11 @@ const LoginRegisterPage = () => {
                 id="introduce"
                 label="한 줄 소개*"
                 value={introduce}
-                message={ERROR_MESSAGE.ENTER_MINIMUM_INTRODUCE_LENGTH}
+                maxLength={COACH_INTRODUCE_MAX_LENGTH}
+                message={ERROR_MESSAGE.ENTER_IN_RANGE_INTRODUCE_LENGTH}
                 isSubmitted={isSubmitted}
                 handleChange={handleChangeIntroduce}
-                checkValidation={isOverIntroduceMinLength}
+                checkValidation={isValidIntroduceLength}
               />
             )}
           </S.InputContainer>
