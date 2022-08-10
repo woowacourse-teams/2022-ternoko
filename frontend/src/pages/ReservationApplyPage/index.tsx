@@ -33,6 +33,8 @@ import { isValidApplyFormLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
+const INITIAL_COACH_ID = -1;
+
 const ReservationApplyPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToastActions();
@@ -53,7 +55,7 @@ const ReservationApplyPage = () => {
   const [availableSchedules, setAvailableSchedules] = useState<StringDictionary>({});
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
-  const [coachId, setCoachId] = useState(-1);
+  const [coachId, setCoachId] = useState(INITIAL_COACH_ID);
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
@@ -230,7 +232,12 @@ const ReservationApplyPage = () => {
               ))}
             </GridContainer>
 
-            <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(0)}>
+            <Button
+              width="100%"
+              height="40px"
+              inActive={coachId === INITIAL_COACH_ID}
+              onClick={() => handleClickStepNextButton(0)}
+            >
               다음
             </Button>
           </div>
@@ -263,7 +270,12 @@ const ReservationApplyPage = () => {
               </S.TimeContainer>
             </S.DateBox>
 
-            <Button width="100%" height="40px" onClick={() => handleClickStepNextButton(1)}>
+            <Button
+              width="100%"
+              height="40px"
+              inActive={!selectedTimes.length}
+              onClick={() => handleClickStepNextButton(1)}
+            >
               다음
             </Button>
           </div>

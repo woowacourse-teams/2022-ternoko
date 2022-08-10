@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components';
 export type ButtonProps = {
   width?: string;
   height?: string;
-  orange?: boolean;
+  inActive?: boolean;
   white?: boolean;
+  orange?: boolean;
   home?: boolean;
 };
 
@@ -24,6 +25,13 @@ const Button = styled.button<ButtonProps>`
   font-weight: bold;
   font-size: 1.3rem;
   cursor: pointer;
+
+  ${({ inActive }) =>
+    inActive &&
+    css`
+      opacity: 0.4;
+      pointer-events: none;
+    `}
 
   ${({ white }) =>
     white &&
