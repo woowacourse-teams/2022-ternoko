@@ -74,6 +74,7 @@ export const RightBox = styled.div`
   position: relative;
   width: 55%;
   height: 100%;
+  overflow: hidden;
 
   background-color: ${({ theme }) => theme.colors.gray_100};
 
