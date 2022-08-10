@@ -38,4 +38,4 @@ out/
 /logs/
 /src/docs/
 
-/src/main/resources/static/docs/
+/src/main/resources/static/docs/api.html
