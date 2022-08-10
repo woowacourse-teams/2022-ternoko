@@ -35,7 +35,6 @@ public class AvailableDateTime {
     @Enumerated(EnumType.STRING)
     private AvailableDateTimeStatus availableDateTimeStatus;
 
-
     public AvailableDateTime(Coach coach, LocalDateTime localDateTime,
                              AvailableDateTimeStatus availableDateTimeStatus) {
         this.coach = coach;

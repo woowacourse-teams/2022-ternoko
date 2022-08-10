@@ -2,17 +2,18 @@ package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.CoachesResponse;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import java.util.List;
 import java.util.stream.Collectors;
