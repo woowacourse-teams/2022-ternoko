@@ -60,7 +60,6 @@ dependencies {
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
-
 ext {
     snippetsDir = file('build/generated-snippets')
 }
@@ -76,15 +75,16 @@ test {
     useJUnitPlatform()
 }
 
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+
 asciidoctor {
     configurations 'asciidoctorExtensions'
     baseDirFollowsSourceFile()
     inputs.dir snippetsDir
     dependsOn test
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
@@ -93,14 +93,12 @@ task copyDocument(type: Copy) {
     into file("src/main/resources/static/docs")
 }
 
-bootJar {
+task buildDocument(type: Copy) {
     dependsOn copyDocument
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'static/docs'
-    }
+    from file("src/main/resources/static/docs")
+    into file("build/resources/main/static/docs")
 }
 
-build {
-    dependsOn copyDocument
+bootJar {
+    dependsOn buildDocument
 }
