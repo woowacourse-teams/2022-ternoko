@@ -6,6 +6,7 @@ export type TextAreaFieldProps = {
   id: string;
   label: string;
   value: string;
+  maxLength: number;
   message: string;
   isSubmitted: boolean;
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -16,6 +17,7 @@ const TextAreaField = ({
   id,
   label,
   value,
+  maxLength,
   message,
   isSubmitted,
   handleChange,
@@ -27,10 +29,16 @@ const TextAreaField = ({
       <S.TextArea
         id={id}
         value={value}
-        isError={isSubmitted && !checkValidation(value)}
+        maxLength={maxLength}
         onChange={handleChange}
+        isError={isSubmitted && !checkValidation(value)}
       />
-      {isSubmitted && !checkValidation(value) && <ErrorMessage>{message}</ErrorMessage>}
+      <S.DescriptionBox>
+        <p>{isSubmitted && !checkValidation(value) && <ErrorMessage>{message}</ErrorMessage>}</p>
+        <p>
+          {value.length}/{maxLength}
+        </p>
+      </S.DescriptionBox>
     </S.Box>
   );
 };

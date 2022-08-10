@@ -1,6 +1,6 @@
-import ToastProvider from './context/ToastProvider';
-
 import { ThemeProvider } from 'styled-components';
+
+import ToastProvider from './context/ToastProvider';
 
 import UserProvider from '@/context/UserProvider';
 
