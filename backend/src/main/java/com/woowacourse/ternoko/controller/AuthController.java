@@ -19,8 +19,8 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping
-    public ResponseEntity<LoginResponse> login(@RequestParam final String code) throws SlackApiException, IOException {
-        final LoginResponse loginResponse = authService.login(code);
+    public ResponseEntity<LoginResponse> login(@RequestParam final String code, @RequestParam final String redirectUrl) throws SlackApiException, IOException {
+        final LoginResponse loginResponse = authService.login(code, redirectUrl);
         return ResponseEntity.ok(loginResponse);
     }
 }

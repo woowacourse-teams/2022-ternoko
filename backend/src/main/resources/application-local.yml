@@ -23,10 +23,9 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
     username: root
-    password:
+    password: Keyduck2021^^
 
 slack:
-  redirectUrl: 'https://localhost:8080/api/login'
   clientId: '3756998338916.3821665111344'
   clientSecret: '7db0d45bf9ae307a3a93522aa0cc4131'
   botToken: 'botToken'

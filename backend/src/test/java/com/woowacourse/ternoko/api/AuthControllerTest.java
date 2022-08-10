@@ -24,13 +24,14 @@ public class AuthControllerTest extends ControllerTest {
     @DisplayName("코치/크루 - 로그인을 한다.")
     void login() throws Exception {
         // given, when
-        when(authService.login(any()))
+        when(authService.login(any(), any()))
                 .thenReturn(LoginResponse.of(Type.CREW, "sampleToken", false));
 
         //then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/login")
-                        .queryParam("code", "slackCode"))
+                        .queryParam("code", "slackCode")
+                        .queryParam("redirectUrl", "slackRedirectUrl"))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
