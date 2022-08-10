@@ -37,7 +37,7 @@ public class Member {
     @Column(unique = true)
     private String userId;
 
-    @Column
+    @Column(nullable = false)
     private String imageUrl;
 
     public boolean sameMember(Long id) {
