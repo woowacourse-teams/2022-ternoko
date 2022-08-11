@@ -33,7 +33,6 @@ public class Coach extends Member {
                  final String imageUrl,
                  final String introduce) {
         this(null, name, nickname, email, userId, imageUrl, introduce);
-
     }
 
     public Coach(final String name,

@@ -104,7 +104,7 @@ public class AuthServiceTest {
         final OpenIDConnectUserInfoResponse userInfoResponse = new OpenIDConnectUserInfoResponse();
         userInfoResponse.setEmail(userEmail);
         userInfoResponse.setName("sudal");
-        userInfoResponse.setTeamImage230("testImage");
+        userInfoResponse.setUserImage192("testImage");
 
         given(slackMethodClient.openIDConnectToken(any(OpenIDConnectTokenRequest.class))).willReturn(
                 openIDConnectTokenResponse);
