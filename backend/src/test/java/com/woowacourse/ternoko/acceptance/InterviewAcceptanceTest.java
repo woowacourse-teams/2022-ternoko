@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.acceptance;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.fixture.InterviewFixture.INTERVIEW_TIME;
@@ -89,7 +88,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
 
         createInterview(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createInterview(CREW1.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createInterview(CREW1.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
         createInterview(CREW3.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         createInterview(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 

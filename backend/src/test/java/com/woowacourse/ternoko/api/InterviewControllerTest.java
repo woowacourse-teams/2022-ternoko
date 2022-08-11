@@ -37,11 +37,11 @@ public class InterviewControllerTest extends ControllerTest {
     void findInterviewById() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
-        createInterviews(CREW1.getId());
+        final Long interviewId = createInterview(CREW1.getId());
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/interviews/{interviewId}", 1)
+                        .get("/api/interviews/{interviewId}", interviewId)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId()))))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
