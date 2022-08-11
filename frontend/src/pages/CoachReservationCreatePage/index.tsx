@@ -16,11 +16,10 @@ import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/contex
 import { useToastActions } from '@/context/ToastProvider';
 import { useUserState } from '@/context/UserProvider';
 
-import { CalendarTime } from '@/types/domain';
-import { StringDictionary } from '@/types/domain';
+import { CalendarTime, CoachScheduleRequestCalendarTime, StringDictionary } from '@/types/domain';
 
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
+import { ERROR_MESSAGE, INITIAL_COACH_ID, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { getFullDateString, separateFullDate } from '@/utils';
 
 const defaultTimes = [
@@ -132,7 +131,15 @@ const CoachReservationCreatePage = () => {
       .flat();
 
     const body = {
-      calendarTimes: compactCalendarTimes([...legacyCalendarTimes, ...clickedCalendarTimes]),
+      calendarTimes: compactCalendarTimes([...legacyCalendarTimes, ...clickedCalendarTimes]).map(
+        (calendarTime: CalendarTime): CoachScheduleRequestCalendarTime => ({
+          ...calendarTime,
+          times: calendarTime.times.map((time: string) => ({
+            time,
+            availableDateTimeStatus: 'OPEN',
+          })),
+        }),
+      ),
     };
 
     try {
@@ -147,6 +154,8 @@ const CoachReservationCreatePage = () => {
   };
 
   useEffect(() => {
+    if (id === INITIAL_COACH_ID) return;
+
     (async () => {
       // 추후 response 타입 필요
       const response = await getCoachScheduleAPI(id, year, month + 1);
@@ -169,7 +178,7 @@ const CoachReservationCreatePage = () => {
 
       setCalendarTimes([...recentCalendarTimes, ...oldCalendarTimes]);
     })();
-  }, [year, month, isApplied]);
+  }, [year, month, isApplied, id]);
 
   return (
     <>

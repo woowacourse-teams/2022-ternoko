@@ -45,8 +45,21 @@ export interface CalendarTime {
   times: string[];
 }
 
+export type TimeStatus = 'OPEN' | 'USED';
+
+type Time = {
+  time: string;
+  availableDateTimeStatus: TimeStatus;
+};
+
+export interface CoachScheduleRequestCalendarTime {
+  year: number;
+  month: number;
+  times: Time[];
+}
+
 export interface CoachScheduleRequestBodyType {
-  calendarTimes: CalendarTime[];
+  calendarTimes: CoachScheduleRequestCalendarTime[];
 }
 
 export type MemberRole = 'CREW' | 'COACH';
