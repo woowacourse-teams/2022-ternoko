@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 type ModalProps = {
   show?: boolean;
-  additionalFrameStyle: string;
+  additionalFrameStyle?: string;
 };
 
 type DimmerProps = Pick<ModalProps, 'show'> & {
