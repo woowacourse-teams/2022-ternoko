@@ -27,13 +27,17 @@ import {
   postReservationAPI,
   putReservationAPI,
 } from '@/api';
-import { CREW_APPLY_FORM_MAX_LENGTH, ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/constants';
+import {
+  CREW_APPLY_FORM_MAX_LENGTH,
+  ERROR_MESSAGE,
+  INITIAL_COACH_ID,
+  PAGE,
+  SUCCESS_MESSAGE,
+} from '@/constants';
 import { separateFullDate } from '@/utils';
 import { isValidApplyFormLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
-
-const INITIAL_COACH_ID = -1;
 
 const ReservationApplyPage = () => {
   const navigate = useNavigate();

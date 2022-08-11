@@ -23,6 +23,8 @@ export const NICKNAME_MIN_LENGTH = 1;
 
 export const NICKNAME_MAX_LENGTH = 5;
 
+export const INITIAL_COACH_ID = -1;
+
 export const ERROR_MESSAGE = {
   ENTER_IN_RANGE_APPLY_FORM_LENGTH: `면담 입력폼은 ${CREW_APPLY_FORM_MIN_LENGTH}글자 이상 ${CREW_APPLY_FORM_MAX_LENGTH}글자 이하를 입력해주세용~`,
   ENTER_IN_RANGE_NICKNAME: `닉네임은 ${NICKNAME_MIN_LENGTH}글자 이상 ${NICKNAME_MAX_LENGTH}글자 이하를 입력해주세용~`,
