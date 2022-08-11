@@ -1,8 +1,7 @@
 package com.woowacourse.ternoko.availabledatetime.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -14,13 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AvailableDateTimesResponse {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private List<LocalDateTime> calendarTimes;
+    private List<AvailableDateTimeResponse> calendarTimes;
 
     public static AvailableDateTimesResponse from(final List<AvailableDateTime> availableDateTimes) {
         return new AvailableDateTimesResponse(availableDateTimes.stream()
-                .map(AvailableDateTime::getLocalDateTime)
-                .sorted()
+                .map(data -> new AvailableDateTimeResponse(data.getLocalDateTime(),
+                        data.getAvailableDateTimeStatus()))
+                .sorted(Comparator.comparing(AvailableDateTimeResponse::getCalendarTime))
                 .collect(Collectors.toList()));
     }
 }
