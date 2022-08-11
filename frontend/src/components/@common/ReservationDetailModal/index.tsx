@@ -1,5 +1,3 @@
-import useModal from '../Modal/useModal';
-
 import { useEffect, useState } from 'react';
 
 import * as S from './styled';
