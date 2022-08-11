@@ -1,9 +1,10 @@
 package com.woowacourse.ternoko.config;
 
-import com.woowacourse.ternoko.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import java.time.LocalDate;
@@ -99,9 +100,9 @@ public class DatabaseInitializer {
                     "https://a.slack-edge.com/80588/img/avatars-teams/ava_0012-230.png"));
 
             availableDateTimeRepository.save(new AvailableDateTime(1L, coach1,
-                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0))));
+                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
             availableDateTimeRepository.save(new AvailableDateTime(2L, coach1,
-                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0))));
+                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
         }
     }
 }

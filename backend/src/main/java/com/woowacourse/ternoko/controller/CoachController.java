@@ -1,14 +1,12 @@
 package com.woowacourse.ternoko.controller;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimesResponse;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
-import com.woowacourse.ternoko.domain.AvailableDateTime;
-import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
-import com.woowacourse.ternoko.dto.ScheduleResponse;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.service.CoachService;
-import com.woowacourse.ternoko.service.ReservationService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class CoachController {
 
-    private final ReservationService reservationService;
     private final CoachService coachService;
-
-    @GetMapping("/schedules")
-    public ResponseEntity<ScheduleResponse> findAllReservationByCoach(@AuthenticationPrincipal final Long coachId,
-                                                                      @RequestParam final Integer year,
-                                                                      @RequestParam final Integer month) {
-        final ScheduleResponse schedules = reservationService.findAllByCoach(coachId, year, month);
-        return ResponseEntity.ok(schedules);
-    }
 
     @PutMapping("/calendar/times")
     public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
-                                                  @RequestBody final AvailableDateTimesRequest availableDateTimesRequest) {
-        coachService.putAvailableDateTimesByCoachId(coachId, availableDateTimesRequest);
+                                                  @RequestBody final CalendarRequest calendarRequest) {
+        coachService.putAvailableDateTimesByCoachId(coachId, calendarRequest);
         return ResponseEntity.ok().build();
     }
 

@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.CoachesResponse;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,7 +106,7 @@ public class CoachServiceTest {
     @DisplayName("코치의 면담 가능 시간에 빈 리스트를 넣어준다.")
     void putEmptyAvailableDateTimesByCoachId() {
         // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new AvailableDateTimesRequest(List.of()));
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new CalendarRequest(List.of()));
 
         // when
         final List<AvailableDateTime> availableDateTimes = coachService
@@ -120,7 +120,7 @@ public class CoachServiceTest {
     @DisplayName("코치의 면담 가능 시간 저장시 존재하지 않는 코치 id를 넣어줄 경우 예외가 발생한다.")
     void putAvailableDateTimesByInvalidCoachId() {
         assertThatThrownBy(
-                () -> coachService.putAvailableDateTimesByCoachId(-1L, new AvailableDateTimesRequest(List.of())))
+                () -> coachService.putAvailableDateTimesByCoachId(-1L, new CalendarRequest(List.of())))
                 .isInstanceOf(CoachNotFoundException.class);
     }
 

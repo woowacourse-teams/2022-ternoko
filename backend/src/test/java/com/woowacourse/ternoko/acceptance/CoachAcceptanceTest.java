@@ -17,7 +17,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.dto.ScheduleResponse;
+import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -34,10 +34,10 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     void findAllByCoaches() {
         // given
         put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
-        createReservation(CREW1.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createReservation(CREW2.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
-        createReservation(CREW3.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME));
-        createReservation(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME));
+        createInterview(CREW1.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createInterview(CREW2.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        createInterview(CREW3.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME));
+        createInterview(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME));
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
@@ -71,7 +71,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     void findAllByCoach() {
         // given
         put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        createReservation(CREW1.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        createInterview(CREW1.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()

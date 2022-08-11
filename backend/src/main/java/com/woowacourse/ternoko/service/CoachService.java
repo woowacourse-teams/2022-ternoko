@@ -2,18 +2,19 @@ package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.domain.member.Coach;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.CoachesResponse;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.dto.request.AvailableDateTimesRequest;
-import com.woowacourse.ternoko.repository.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.repository.CoachRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -47,11 +48,11 @@ public class CoachService {
     }
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
-                                               final AvailableDateTimesRequest availableDateTimesRequest) {
+                                               final CalendarRequest calendarRequest) {
         final Coach coach = coachRepository.findById(coachId)
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
 
-        final List<AvailableDateTimeRequest> availableDateTimeRequests = availableDateTimesRequest
+        final List<AvailableDateTimeRequest> availableDateTimeRequests = calendarRequest
                 .getCalendarTimes();
         for (AvailableDateTimeRequest availableDateTime : availableDateTimeRequests) {
             putAvailableTime(coach, availableDateTime);
@@ -66,9 +67,10 @@ public class CoachService {
         availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, availableDateTime.getTimes()));
     }
 
-    public List<AvailableDateTime> toAvailableDateTimes(final Coach coach, final List<LocalDateTime> times) {
+    public List<AvailableDateTime> toAvailableDateTimes(final Coach coach,
+                                                        final List<AvailableDateTimeSummaryRequest> times) {
         return times.stream()
-                .map(time -> new AvailableDateTime(coach, time))
+                .map(time -> new AvailableDateTime(coach, time.getTime(), time.getAvailableDateTimeStatus()))
                 .collect(Collectors.toList());
     }
 

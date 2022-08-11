@@ -6,7 +6,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.dto.AvailableDateTimesResponse;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;

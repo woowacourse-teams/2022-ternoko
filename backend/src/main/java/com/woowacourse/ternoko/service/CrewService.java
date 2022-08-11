@@ -4,7 +4,7 @@ import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CrewResponse;
-import com.woowacourse.ternoko.dto.request.CrewUpdateRequest;
+import com.woowacourse.ternoko.dto.CrewUpdateRequest;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
