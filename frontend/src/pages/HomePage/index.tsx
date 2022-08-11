@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import CommentModal from '@/components/@common/CommentModal';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
@@ -20,7 +21,18 @@ export type TabMenuStatus = 'doing' | 'done';
 
 const HomePage = () => {
   const memberRole = LocalStorage.getMemberRole();
-  const { show, display, handleOpenModal, handleCloseModal } = useModal();
+  const {
+    show: showDetail,
+    display: displayDetail,
+    handleOpenModal: handleOpenModalDetail,
+    handleCloseModal: handleCloseModalDetail,
+  } = useModal();
+  const {
+    show: showComment,
+    display: displayComment,
+    handleOpenModal: handleOpenModalComment,
+    handleCloseModal: handleCloseModalComment,
+  } = useModal();
 
   const [interviews, setInterviews] = useState<InterviewType[]>([]);
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
@@ -33,7 +45,7 @@ const HomePage = () => {
 
   const getHandleClickDetailButton = (id: number) => () => {
     setClickedInterviewId(id);
-    handleOpenModal();
+    handleOpenModalDetail();
   };
 
   const updateInterviews = async () => {
@@ -42,7 +54,7 @@ const HomePage = () => {
   };
 
   const afterDeleteInterview = () => {
-    handleCloseModal();
+    handleCloseModalComment();
     updateInterviews();
   };
 
@@ -73,17 +85,23 @@ const HomePage = () => {
           <Interview
             key={interview.id}
             handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+            handleClickCompleteButton={handleOpenModalComment}
             {...interview}
           />
         ))}
       </GridContainer>
       <InterviewDetailModal
-        show={show}
-        display={display}
+        show={showDetail}
+        display={displayDetail}
         role={memberRole}
         interviewId={clickedInterviewId}
         afterDeleteInterview={afterDeleteInterview}
-        handleCloseModal={handleCloseModal}
+        handleCloseModal={handleCloseModalDetail}
+      />
+      <CommentModal
+        show={showComment}
+        display={displayComment}
+        handleCloseModal={handleCloseModalComment}
       />
     </>
   );

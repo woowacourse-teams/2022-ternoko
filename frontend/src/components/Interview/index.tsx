@@ -11,6 +11,7 @@ import { getDateString, getTimeString } from '@/utils';
 
 type InterviewProps = InterviewType & {
   handleClickDetailButton: () => void;
+  handleClickCompleteButton: () => void;
 };
 
 const Interview = ({
@@ -21,6 +22,7 @@ const Interview = ({
   interviewStartTime,
   interviewEndTime,
   handleClickDetailButton,
+  handleClickCompleteButton,
 }: InterviewProps) => {
   return (
     <S.Box status={status}>
@@ -50,6 +52,10 @@ const Interview = ({
             편집
           </Button>
         </Link>
+        <Button orange={true} onClick={handleClickCompleteButton}>
+          <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
+          완료
+        </Button>
       </S.ButtonBox>
     </S.Box>
   );
