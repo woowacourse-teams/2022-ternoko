@@ -41,7 +41,7 @@ const defaultTimes = [
   '17:30',
 ];
 
-const CoachReservationCreatePage = () => {
+const CoachInterviewCreatePage = () => {
   const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
   const { resetSelectedDates, setDay } = useCalendarActions();
@@ -216,4 +216,4 @@ const CoachReservationCreatePage = () => {
   );
 };
 
-export default CoachReservationCreatePage;
+export default CoachInterviewCreatePage;

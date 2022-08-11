@@ -4,16 +4,16 @@ import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 
 import { PAGE } from '@/constants';
 import { getDateString, getTimeString } from '@/utils';
 
-type ReservationProps = ReservationType & {
+type InterviewProps = InterviewType & {
   handleClickDetailButton: () => void;
 };
 
-const Reservation = ({
+const Interview = ({
   id,
   coachNickname,
   coachImageUrl,
@@ -21,7 +21,7 @@ const Reservation = ({
   interviewStartTime,
   interviewEndTime,
   handleClickDetailButton,
-}: ReservationProps) => {
+}: InterviewProps) => {
   return (
     <S.Box status={status}>
       <S.ImageTextBox>
@@ -44,7 +44,7 @@ const Reservation = ({
           <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
           상세보기
         </Button>
-        <Link to={`${PAGE.RESERVATION_APPLY}?reservationId=${id}`}>
+        <Link to={`${PAGE.RESERVATION_APPLY}?interviewId=${id}`}>
           <Button orange={true}>
             <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
             편집
@@ -55,4 +55,4 @@ const Reservation = ({
   );
 };
 
-export default Reservation;
+export default Interview;

@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
-import { ReservationStatus } from '@/types/domain';
+import { InterviewStatus } from '@/types/domain';
 
 type BoxProps = {
-  status: ReservationStatus;
+  status: InterviewStatus;
 };
 
 export const Box = styled.div<BoxProps>`

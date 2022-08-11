@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
-import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
 import CoachCalendar from '@/components/CoachCalendar';
 
@@ -17,15 +17,15 @@ import LocalStorage from '@/localStorage';
 const CoachHomePage = () => {
   const memberRole = LocalStorage.getMemberRole();
   const { show, display, handleOpenModal, handleCloseModal } = useModal();
-  const [clickedReservationId, setClickedReservationId] = useState(-1);
+  const [clickedInterviewId, setClickedInterviewId] = useState(-1);
   const calendarRerenderkeyRef = useRef(Date.now());
 
   const getHandleClickSchedule = (id: number) => () => {
-    setClickedReservationId(id);
+    setClickedInterviewId(id);
     handleOpenModal();
   };
 
-  const afterDeleteReservation = () => {
+  const afterDeleteInterview = () => {
     calendarRerenderkeyRef.current = Date.now();
     handleCloseModal();
   };
@@ -44,12 +44,12 @@ const CoachHomePage = () => {
           getHandleClickSchedule={getHandleClickSchedule}
         />
       </CalendarProvider>
-      <ReservationDetailModal
+      <InterviewDetailModal
         show={show}
         display={display}
         role={memberRole}
-        reservationId={clickedReservationId}
-        afterDeleteReservation={afterDeleteReservation}
+        interviewId={clickedInterviewId}
+        afterDeleteInterview={afterDeleteInterview}
         handleCloseModal={handleCloseModal}
       />
     </>

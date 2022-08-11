@@ -5,14 +5,14 @@ import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
 import GridContainer from '@/components/@common/GridContainer/styled';
+import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
-import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
-import Reservation from '@/components/Reservation';
+import Interview from '@/components/Interview';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 
-import { getReservationsAPI } from '@/api';
+import { getInterviewsAPI } from '@/api';
 import { PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 
@@ -22,32 +22,32 @@ const HomePage = () => {
   const memberRole = LocalStorage.getMemberRole();
   const { show, display, handleOpenModal, handleCloseModal } = useModal();
 
-  const [reservations, setReservations] = useState<ReservationType[]>([]);
+  const [interviews, setInterviews] = useState<InterviewType[]>([]);
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
 
-  const [clickedReservationId, setClickedReservationId] = useState(-1);
+  const [clickedInterviewId, setClickedInterviewId] = useState(-1);
 
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
   };
 
   const getHandleClickDetailButton = (id: number) => () => {
-    setClickedReservationId(id);
+    setClickedInterviewId(id);
     handleOpenModal();
   };
 
-  const updateReservations = async () => {
-    const response = await getReservationsAPI();
-    setReservations(response.data);
+  const updateInterviews = async () => {
+    const response = await getInterviewsAPI();
+    setInterviews(response.data);
   };
 
-  const afterDeleteReservation = () => {
+  const afterDeleteInterview = () => {
     handleCloseModal();
-    updateReservations();
+    updateInterviews();
   };
 
   useEffect(() => {
-    updateReservations();
+    updateInterviews();
   }, []);
 
   return (
@@ -69,20 +69,20 @@ const HomePage = () => {
       </S.TabMenuBox>
 
       <GridContainer minSize="25rem" pt="4rem">
-        {reservations.map((reservation) => (
-          <Reservation
-            key={reservation.id}
-            handleClickDetailButton={getHandleClickDetailButton(reservation.id)}
-            {...reservation}
+        {interviews.map((interview) => (
+          <Interview
+            key={interview.id}
+            handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+            {...interview}
           />
         ))}
       </GridContainer>
-      <ReservationDetailModal
+      <InterviewDetailModal
         show={show}
         display={display}
         role={memberRole}
-        reservationId={clickedReservationId}
-        afterDeleteReservation={afterDeleteReservation}
+        interviewId={clickedInterviewId}
+        afterDeleteInterview={afterDeleteInterview}
         handleCloseModal={handleCloseModal}
       />
     </>

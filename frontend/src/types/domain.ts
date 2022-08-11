@@ -13,7 +13,7 @@ interface InterviewQuestionType {
   answer: string;
 }
 
-export interface ReservationRequestBodyType {
+export interface InterviewRequestBodyType {
   coachId: number;
   interviewDatetime: string;
   interviewQuestions: InterviewQuestionType[];
@@ -25,9 +25,9 @@ export interface UserRequestBodyType {
   introduce?: string;
 }
 
-export type ReservationStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
+export type InterviewStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
 
-export interface ReservationType {
+export interface InterviewType {
   id: number;
   coachNickname: string;
   coachImageUrl: string;
@@ -35,7 +35,7 @@ export interface ReservationType {
   crewImageUrl: string;
   interviewStartTime: string;
   interviewEndTime: string;
-  status: ReservationStatus;
+  status: InterviewStatus;
   interviewQuestions: InterviewQuestionType[];
 }
 

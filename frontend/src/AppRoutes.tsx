@@ -3,14 +3,14 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CoachHomePage from '@/pages/CoachHomePage';
-import CoachReservationCreatePage from '@/pages/CoachReservationCreatePage';
+import CoachInterviewCreatePage from '@/pages/CoachInterviewCreatePage';
 import HomePage from '@/pages/HomePage';
+import InterviewApplyPage from '@/pages/InterviewApplyPage';
+import InterviewCompletePage from '@/pages/InterviewCompletePage';
 import LoginPage from '@/pages/LoginPage';
 import LoginRegisterPage from '@/pages/LoginRegisterPage';
 import MyPage from '@/pages/MyPage';
 import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
-import ReservationApplyPage from '@/pages/ReservationApplyPage';
-import ReservationCompletePage from '@/pages/ReservationCompletePage';
 
 import Toast from '@/components/@common/Toast';
 
@@ -45,15 +45,15 @@ const AppRoutes = () => {
               path={PAGE.RESERVATION_APPLY}
               element={
                 <CalendarProvider selectMode="single">
-                  <ReservationApplyPage />
+                  <InterviewApplyPage />
                 </CalendarProvider>
               }
             />
           </Route>
           <Route element={<PrivateRoute />}>
             <Route
-              path={`${PAGE.RESERVATION_COMPLETE}/:reservationId`}
-              element={<ReservationCompletePage />}
+              path={`${PAGE.RESERVATION_COMPLETE}/:interviewId`}
+              element={<InterviewCompletePage />}
             />
           </Route>
           <Route element={<PrivateRoute />}>
@@ -61,7 +61,7 @@ const AppRoutes = () => {
               path={PAGE.COACH_RESERVATION_CREATE}
               element={
                 <CalendarProvider selectMode="multiple">
-                  <CoachReservationCreatePage />
+                  <CoachInterviewCreatePage />
                 </CalendarProvider>
               }
             />

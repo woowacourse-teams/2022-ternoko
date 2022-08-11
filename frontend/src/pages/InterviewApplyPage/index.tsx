@@ -18,14 +18,14 @@ import useTimes from '@/hooks/useTimes';
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
-import { CoachType, ReservationType, StringDictionary } from '@/types/domain';
+import { CoachType, InterviewType, StringDictionary } from '@/types/domain';
 
 import {
   getCoachScheduleAPI,
   getCoachesAPI,
-  getReservationAPI,
-  postReservationAPI,
-  putReservationAPI,
+  getInterviewAPI,
+  postInterviewAPI,
+  putInterviewAPI,
 } from '@/api';
 import {
   CREW_APPLY_FORM_MAX_LENGTH,
@@ -39,12 +39,12 @@ import { isValidApplyFormLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 
-const ReservationApplyPage = () => {
+const InterviewApplyPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToastActions();
 
   const { search } = useLocation();
-  const reservationId = new URLSearchParams(search).get('reservationId');
+  const interviewId = new URLSearchParams(search).get('interviewId');
 
   const { year, month, selectedDates } = useCalendarState();
   const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
@@ -142,12 +142,12 @@ const ReservationApplyPage = () => {
       ],
     };
 
-    if (reservationId) {
-      await putReservationAPI(Number(reservationId), body);
+    if (interviewId) {
+      await putInterviewAPI(Number(interviewId), body);
       showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_RESERVATION);
-      navigate(`${PAGE.RESERVATION_COMPLETE}/${reservationId}`);
+      navigate(`${PAGE.RESERVATION_COMPLETE}/${interviewId}`);
     } else {
-      const response = await postReservationAPI(body);
+      const response = await postInterviewAPI(body);
       showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_RESERVATION);
 
       const location = response.headers.location;
@@ -160,11 +160,11 @@ const ReservationApplyPage = () => {
       const coachResponse = await getCoachesAPI();
       setCoaches(coachResponse.data.coaches);
 
-      if (!reservationId) return;
+      if (!interviewId) return;
 
-      const reservationResponse = await getReservationAPI(Number(reservationId));
-      const { coachNickname, interviewQuestions, interviewStartTime }: ReservationType =
-        reservationResponse.data;
+      const interviewResponse = await getInterviewAPI(Number(interviewId));
+      const { coachNickname, interviewQuestions, interviewStartTime }: InterviewType =
+        interviewResponse.data;
 
       const coach = coachResponse.data.coaches.find(
         ({ nickname }: CoachType) => nickname === coachNickname,
@@ -202,7 +202,7 @@ const ReservationApplyPage = () => {
 
         if (!initRef.current) {
           initRef.current = true;
-          reservationId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+          interviewId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
         }
       })();
     }
@@ -216,7 +216,7 @@ const ReservationApplyPage = () => {
 
   return (
     <>
-      <TitleBox to={PAGE.CREW_HOME} title={reservationId ? '면담 수정하기' : '면담 신청하기'} />
+      <TitleBox to={PAGE.CREW_HOME} title={interviewId ? '면담 수정하기' : '면담 신청하기'} />
       <S.Container>
         <S.Box stepStatus={stepStatus[0]}>
           <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
@@ -324,7 +324,7 @@ const ReservationApplyPage = () => {
                 isSubmitted={isSubmitted}
               />
               <Button type="submit" width="100%" height="40px">
-                {reservationId ? '수정 완료' : '신청 완료'}
+                {interviewId ? '수정 완료' : '신청 완료'}
               </Button>
             </S.Form>
           </div>
@@ -334,4 +334,4 @@ const ReservationApplyPage = () => {
   );
 };
 
-export default ReservationApplyPage;
+export default InterviewApplyPage;

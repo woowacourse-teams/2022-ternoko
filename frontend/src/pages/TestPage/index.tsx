@@ -1,5 +1,6 @@
+import InterviewDetailModal from '../../components/InterviewDetailModal';
+
 import { useState } from 'react';
-import ReservationDetailModal from '../../components/ReservationDetailModal';
 
 const TestPage = () => {
   const [modalOn, setModalOn] = useState(false);
@@ -15,7 +16,7 @@ const TestPage = () => {
   return (
     <>
       <button onClick={handleOpenModal}>모달 켜기</button>
-      <ReservationDetailModal role="coach" modalOn={modalOn} handleCloseModal={handleCloseModal} />
+      <InterviewDetailModal role="coach" modalOn={modalOn} handleCloseModal={handleCloseModal} />
     </>
   );
 };

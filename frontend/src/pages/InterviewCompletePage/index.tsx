@@ -4,60 +4,60 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
-import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 
-import { getReservationAPI } from '@/api';
+import { getInterviewAPI } from '@/api';
 import { PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 import { getDateString, getTimeString } from '@/utils';
 
-const ReservationCompletePage = () => {
+const InterviewCompletePage = () => {
   const navigate = useNavigate();
 
-  const { reservationId } = useParams();
+  const { interviewId } = useParams();
   const memberRole = LocalStorage.getMemberRole();
 
   const { show, display, handleOpenModal, handleCloseModal } = useModal();
-  const [reservation, setReservation] = useState<ReservationType | null>(null);
+  const [interview, setInterview] = useState<InterviewType | null>(null);
 
-  const afterDeleteReservation = () => {
+  const afterDeleteInterview = () => {
     handleCloseModal();
     navigate(PAGE.CREW_HOME);
   };
 
   useEffect(() => {
     (async () => {
-      const response = await getReservationAPI(Number(reservationId));
-      setReservation(response.data);
+      const response = await getInterviewAPI(Number(interviewId));
+      setInterview(response.data);
     })();
   }, []);
 
   return (
     <S.Box>
       <S.LogoBox>
-        <S.Logo src={reservation?.crewImageUrl} alt="로고" />
-        <h2>{reservation?.crewNickname}님~ 면담 신청이 완료되었습니다.</h2>
+        <S.Logo src={interview?.crewImageUrl} alt="로고" />
+        <h2>{interview?.crewNickname}님~ 면담 신청이 완료되었습니다.</h2>
       </S.LogoBox>
 
       <S.InfoContainer>
         <S.Info>
           <p>코치</p>
-          <p>{reservation?.coachNickname}</p>
+          <p>{interview?.coachNickname}</p>
         </S.Info>
         <S.Info>
           <p>날짜</p>
-          <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
+          <p>{interview && getDateString(interview.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>시작</p>
-          <p>{reservation && getTimeString(reservation.interviewStartTime)}</p>
+          <p>{interview && getTimeString(interview.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <p>종료</p>
-          <p>{reservation && getTimeString(reservation.interviewEndTime)}</p>
+          <p>{interview && getTimeString(interview.interviewEndTime)}</p>
         </S.Info>
       </S.InfoContainer>
 
@@ -72,16 +72,16 @@ const ReservationCompletePage = () => {
           </Button>
         </Link>
       </S.ButtonContainer>
-      <ReservationDetailModal
+      <InterviewDetailModal
         show={show}
         display={display}
         role={memberRole}
-        reservationId={Number(reservationId)}
-        afterDeleteReservation={afterDeleteReservation}
+        interviewId={Number(interviewId)}
+        afterDeleteInterview={afterDeleteInterview}
         handleCloseModal={handleCloseModal}
       />
     </S.Box>
   );
 };
 
-export default ReservationCompletePage;
+export default InterviewCompletePage;

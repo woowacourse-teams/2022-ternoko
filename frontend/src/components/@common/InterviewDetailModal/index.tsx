@@ -7,45 +7,45 @@ import Modal from '@/components/@common/Modal';
 
 import { useToastActions } from '@/context/ToastProvider';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 import { MemberRole } from '@/types/domain';
 
-import { deleteCoachReservationAPI, deleteCrewReservationAPI, getReservationAPI } from '@/api';
+import { deleteCoachInterviewAPI, deleteCrewInterviewAPI, getInterviewAPI } from '@/api';
 import { SUCCESS_MESSAGE } from '@/constants';
 import { getDateString, getTimeString } from '@/utils';
 
-type ReservationDetailModalProps = {
+type InterviewDetailModalProps = {
   show: boolean;
   display: boolean;
   role: MemberRole;
-  reservationId: number;
+  interviewId: number;
   handleCloseModal: () => void;
-  afterDeleteReservation: () => void;
+  afterDeleteInterview: () => void;
 };
 
-const ReservationDetailModal = ({
+const InterviewDetailModal = ({
   show,
   display,
   role,
-  reservationId,
+  interviewId,
   handleCloseModal,
-  afterDeleteReservation,
-}: ReservationDetailModalProps) => {
-  const [reservation, setReservation] = useState<ReservationType | null>();
+  afterDeleteInterview,
+}: InterviewDetailModalProps) => {
+  const [interview, setInterview] = useState<InterviewType | null>();
 
   const { showToast } = useToastActions();
 
   const handleClickDeleteButton = async () => {
     if (confirm('정말로 삭제하시겠습니까?')) {
       if (role === 'CREW') {
-        await deleteCrewReservationAPI(reservationId);
+        await deleteCrewInterviewAPI(interviewId);
         showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_RESERVATION);
       } else {
-        await deleteCoachReservationAPI(reservationId);
+        await deleteCoachInterviewAPI(interviewId);
         showToast('SUCCESS', SUCCESS_MESSAGE.COACH_DELETE_RESERVATION);
       }
 
-      afterDeleteReservation();
+      afterDeleteInterview();
     }
   };
 
@@ -53,8 +53,8 @@ const ReservationDetailModal = ({
     if (!show) return;
 
     (async () => {
-      const response = await getReservationAPI(Number(reservationId));
-      setReservation(response.data);
+      const response = await getInterviewAPI(Number(interviewId));
+      setInterview(response.data);
     })();
   }, [show]);
 
@@ -81,8 +81,8 @@ const ReservationDetailModal = ({
         />
       </S.IconContainer>
       <S.Profile>
-        <img src={reservation?.crewImageUrl} alt="프로필" />
-        <p>{reservation?.crewNickname}</p>
+        <img src={interview?.crewImageUrl} alt="프로필" />
+        <p>{interview?.crewNickname}</p>
       </S.Profile>
       <S.InfoContainer>
         {role === 'CREW' && (
@@ -90,29 +90,29 @@ const ReservationDetailModal = ({
             <S.IconBox>
               <S.Icon src="/assets/icon/human.png" alt="코치 아이콘" />
             </S.IconBox>
-            <p>{reservation?.coachNickname}</p>
+            <p>{interview?.coachNickname}</p>
           </S.Info>
         )}
         <S.Info>
           <S.IconBox>
             <S.Icon src="/assets/icon/calendar.png" alt="달력 아이콘" />
           </S.IconBox>
-          <p>{reservation && getDateString(reservation.interviewStartTime)}</p>
+          <p>{interview && getDateString(interview.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <S.IconBox>
             <S.Icon src="/assets/icon/clock.png" alt="시간 아이콘" />
           </S.IconBox>
           <p>
-            {reservation &&
-              `${getTimeString(reservation.interviewEndTime)} ~ ${getTimeString(
-                reservation.interviewEndTime,
+            {interview &&
+              `${getTimeString(interview.interviewEndTime)} ~ ${getTimeString(
+                interview.interviewEndTime,
               )}`}
           </p>
         </S.Info>
       </S.InfoContainer>
       <S.AccordionContainer>
-        {reservation?.interviewQuestions.map(({ question, answer }) => (
+        {interview?.interviewQuestions.map(({ question, answer }) => (
           <Accordion key={question} title={question} description={answer} />
         ))}
       </S.AccordionContainer>
@@ -120,4 +120,4 @@ const ReservationDetailModal = ({
   );
 };
 
-export default ReservationDetailModal;
+export default InterviewDetailModal;
