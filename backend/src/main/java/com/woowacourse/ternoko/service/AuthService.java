@@ -119,19 +119,19 @@ public class AuthService {
 
     private void validateType(String role) {
         if (!Type.existType(role)) {
-            new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCoachTypeByMemberId(final Long id, final String role) {
         if (Type.isCoachType(role) && coachRepository.findById(id).isEmpty()) {
-            new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCrewTypeByMemberId(final Long id, final String role) {
         if (Type.isCrewType(role) && crewRepository.findById(id).isEmpty()) {
-            new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }
 }
