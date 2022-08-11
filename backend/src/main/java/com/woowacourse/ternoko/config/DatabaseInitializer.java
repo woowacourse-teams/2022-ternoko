@@ -29,11 +29,11 @@ public class DatabaseInitializer {
 
     @PostConstruct
     public void init() {
-        setTimeZon(TimeZone.getTimeZone(KST));
+        setTimeZone(TimeZone.getTimeZone(KST));
         initService.dbInit();
     }
 
-    private void setTimeZon(final TimeZone timeZone) {
+    private void setTimeZone(final TimeZone timeZone) {
         TimeZone.setDefault(timeZone);
     }
 
