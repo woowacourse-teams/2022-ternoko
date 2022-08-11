@@ -32,6 +32,8 @@
 
 == 회원 API
 === [코치/크루] 회원가입/로그인 API
+GET /api/login?code={slackCode}&redirectUrl={slackRedirectUrl}
+
 operation::auth-controller-test/login[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -43,6 +45,8 @@ operation::auth-controller-test/login[snippets='http-request,http-response']
 |===
 
 === [코치] 내 정보 조회 API
+GET /api/coaches/me
+
 operation::coach-controller-test/find-coach[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -63,6 +67,8 @@ operation::coach-controller-test/find-coach[snippets='http-request,http-response
 |===
 
 === [코치] 내 정보 수정 API
+PATCH /api/coaches/me
+
 operation::coach-controller-test/update-coach[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -79,6 +85,8 @@ operation::coach-controller-test/update-coach[snippets='http-request,http-respon
 |===
 
 === [크루] 내 정보 조회 API
+GET /api/crews/me
+
 operation::crew-controller-test/find-coach[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -99,6 +107,8 @@ operation::crew-controller-test/find-coach[snippets='http-request,http-response'
 |===
 
 === [크루] 내 정보 수정 API
+PATCH /api/crews/me
+
 operation::crew-controller-test/update-coach[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -115,6 +125,8 @@ operation::crew-controller-test/update-coach[snippets='http-request,http-respons
 |===
 
 === [코치/크루] 닉네임 중복 검사 API
+GET /api/login/check?nickname={nickname}
+
 operation::member-controller-test/check-unique-nickname[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -133,6 +145,8 @@ operation::member-controller-test/check-unique-nickname[snippets='http-request,h
 
 == 면담 가능 시간 API
 === [코치] 면담 가능 시간 저장 API
+PUT /api/calendar/times
+
 operation::coach-controller-test/save-calendar-times[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -152,6 +166,8 @@ operation::coach-controller-test/save-calendar-times[snippets='http-request,http
 |===
 
 === [코치] 면담 가능 시간 조회 API
+GET /api/calendar/times?coachId={coachId}&year={year}&month={month}
+
 operation::coach-controller-test/find-calendar-times[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -170,6 +186,8 @@ operation::coach-controller-test/find-calendar-times[snippets='http-request,http
 
 == 면담 예약 API
 === [크루] 코치 목록 조회 API
+GET /api/coaches
+
 operation::member-controller-test/find-coaches[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -186,6 +204,8 @@ operation::member-controller-test/find-coaches[snippets='http-request,http-respo
 |===
 
 === [크루] 면담 예약 신청 API
+POST /api/reservations
+
 operation::reservation-controller-test/create-reservation[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -214,6 +234,8 @@ operation::reservation-controller-test/create-reservation[snippets='http-request
 |===
 
 === [코치] 면담 예약 목록 조회 API
+GET /api/schedules?year={year}&month={month}
+
 operation::coach-controller-test/find-all-reservation-by-coach[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -230,6 +252,8 @@ operation::coach-controller-test/find-all-reservation-by-coach[snippets='http-re
 |===
 
 === [크루] 면담 예약 목록 조회 API
+GET /api/reservations
+
 operation::reservation-controller-test/find-all-reservations[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -246,6 +270,8 @@ operation::reservation-controller-test/find-all-reservations[snippets='http-requ
 |===
 
 === [크루] 면담 예약 단건 조회 API
+GET /api/reservations/{reservationId}
+
 operation::reservation-controller-test/find-reservation-by-id[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -265,6 +291,8 @@ operation::reservation-controller-test/find-reservation-by-id[snippets='http-req
 |===
 
 === [크루] 면담 예약 수정 PAI
+PUT /api/reservations/{reservationId}
+
 operation::reservation-controller-test/update-reservation[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -300,6 +328,8 @@ operation::reservation-controller-test/update-reservation[snippets='http-request
 
 
 === [코치] 면담 예약 취소 API
+PATCH /api/reservations/{reservationId}
+
 operation::reservation-controller-test/cancel-reservation[snippets='http-request,http-response']
 ==== Error Response
 |===
@@ -323,6 +353,8 @@ operation::reservation-controller-test/cancel-reservation[snippets='http-request
 
 
 === [크루] 면담 예약 취소 API
+DELETE /api/reservations/{reservationId}
+
 operation::reservation-controller-test/delete-reservation[snippets='http-request,http-response']
 ==== Error Response
 |===
