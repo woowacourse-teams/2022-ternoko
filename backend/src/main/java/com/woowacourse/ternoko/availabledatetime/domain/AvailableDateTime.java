@@ -1,5 +1,8 @@
 package com.woowacourse.ternoko.availabledatetime.domain;
 
+import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
+
 import com.woowacourse.ternoko.domain.member.Coach;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -42,7 +45,11 @@ public class AvailableDateTime {
         this.availableDateTimeStatus = availableDateTimeStatus;
     }
 
-    public void update(final AvailableDateTimeStatus status) {
-        this.availableDateTimeStatus = status;
+    public void open() {
+        this.availableDateTimeStatus = OPEN;
+    }
+
+    public void used() {
+        this.availableDateTimeStatus = USED;
     }
 }

@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.interview.application;
 
-import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
@@ -67,7 +65,7 @@ public class InterviewService {
         formItemRepository.saveAll(formItems);
 
         final AvailableDateTime availableDateTime = findAvailableTime(interviewRequest);
-        availableDateTime.update(USED);
+        availableDateTime.used();
 
         return interviewRepository.save(interview);
     }
@@ -161,8 +159,8 @@ public class InterviewService {
         final AvailableDateTime beforeAvailableDateTime = findAvailableTime(originalInterview.getCoach().getId(),
                 originalInterview.getInterviewStartTime());
         final AvailableDateTime afterAvailableDateTime = findAvailableTime(interviewRequest);
-        beforeAvailableDateTime.update(OPEN);
-        afterAvailableDateTime.update(USED);
+        beforeAvailableDateTime.open();
+        afterAvailableDateTime.used();
     }
 
     private void updateFromItem(Interview originalInterview, Interview updateInterviewRequest,
@@ -193,7 +191,7 @@ public class InterviewService {
         interviewRepository.delete(interview);
         final AvailableDateTime availableTime = findAvailableTime(interview.getCoach().getId(),
                 interview.getInterviewStartTime());
-        availableTime.update(OPEN);
+        availableTime.open();
         return interview;
     }
 
