@@ -30,11 +30,11 @@ public class InterviewResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewEndTime;
 
-    private List<FormItemResponse> interviewQuestions;
+    private List<FormItemDto> interviewQuestions;
 
     public static InterviewResponse from(final Interview interview) {
-        final List<FormItemResponse> formItemResponses = interview.getFormItems().stream()
-                .map(FormItemResponse::from)
+        final List<FormItemDto> formItemResponses = interview.getFormItems().stream()
+                .map(FormItemDto::from)
                 .collect(Collectors.toList());
 
         return InterviewResponse.interviewResponseBuilder()
