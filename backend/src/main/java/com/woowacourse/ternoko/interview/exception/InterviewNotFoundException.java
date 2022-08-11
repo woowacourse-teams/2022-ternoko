@@ -5,7 +5,7 @@ import com.woowacourse.ternoko.common.exception.ExceptionType;
 
 public class InterviewNotFoundException extends BadRequestException {
 
-    public InterviewNotFoundException(final ExceptionType exceptionType, final Long reservationId) {
-        super(exceptionType.getStatusCode(), reservationId + exceptionType.getMessage());
+    public InterviewNotFoundException(final ExceptionType exceptionType, final Long interviewId) {
+        super(exceptionType.getStatusCode(), interviewId + exceptionType.getMessage());
     }
 }

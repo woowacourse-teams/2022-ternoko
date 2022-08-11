@@ -24,7 +24,7 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(authService))
-                .addPathPatterns("/api/reservations/**")
+                .addPathPatterns("/api/interviews/**")
                 .addPathPatterns("/api/calendar/times/**")
                 .addPathPatterns("/api/schedules/**")
                 .addPathPatterns("/api/coaches/**")

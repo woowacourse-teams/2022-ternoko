@@ -3,8 +3,8 @@ package com.woowacourse.ternoko.api;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1_RESERVATION_REQUEST1;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.COACH1_RESERVATION_REQUEST2;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,34 +30,34 @@ public class ControllerTest extends RestDocsTestSupport {
                 .andExpect(status().isOk());
     }
 
-    public Long createReservation(final Long crewId) throws Exception {
+    public Long createInterview(final Long crewId) throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations")
+                        .post("/api/interviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId)))
                         .characterEncoding("utf-8")
-                        .content(objectMapper.writeValueAsString(COACH1_RESERVATION_REQUEST1)))
+                        .content(objectMapper.writeValueAsString(COACH1_INTERVIEW_REQUEST1)))
                 .andExpect(status().isCreated())
                 .andReturn();
         String redirectURI = mvcResult.getResponse().getHeader("Location");
-        return Long.valueOf(redirectURI.split("/reservations/")[1]);
+        return Long.valueOf(redirectURI.split("/interviews/")[1]);
     }
 
-    public void createReservations(final Long crewId) throws Exception {
+    public void createInterviews(final Long crewId) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations")
+                        .post("/api/interviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId)))
                         .characterEncoding("utf-8")
-                        .content(objectMapper.writeValueAsString(COACH1_RESERVATION_REQUEST1)))
+                        .content(objectMapper.writeValueAsString(COACH1_INTERVIEW_REQUEST1)))
                 .andExpect(status().isCreated());
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/reservations")
+                        .post("/api/interviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(crewId)))
                         .characterEncoding("utf-8")
-                        .content(objectMapper.writeValueAsString(COACH1_RESERVATION_REQUEST2)))
+                        .content(objectMapper.writeValueAsString(COACH1_INTERVIEW_REQUEST2)))
                 .andExpect(status().isCreated());
     }
 }

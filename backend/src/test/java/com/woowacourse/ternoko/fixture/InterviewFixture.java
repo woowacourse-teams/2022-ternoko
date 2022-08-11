@@ -10,7 +10,7 @@ import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ReservationFixture {
+public class InterviewFixture {
 
     public static final Long INTERVIEW_TIME = 30L;
 
@@ -30,11 +30,11 @@ public class ReservationFixture {
             new FormItem("고정질문2", "답변2"),
             new FormItem("고정질문3", "답변3"));
 
-    public static final InterviewRequest COACH1_RESERVATION_REQUEST1 = new InterviewRequest(COACH1.getId(),
+    public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),
             NOW_PLUS_2_DAYS_FIRST_TIME,
             FORM_ITEM_REQUESTS);
 
-    public static final InterviewRequest COACH1_RESERVATION_REQUEST2 = new InterviewRequest(COACH1.getId(),
+    public static final InterviewRequest COACH1_INTERVIEW_REQUEST2 = new InterviewRequest(COACH1.getId(),
             NOW_PLUS_2_DAYS_SECOND_TIME,
             FORM_ITEM_REQUESTS);
 }

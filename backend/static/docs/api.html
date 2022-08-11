@@ -1125,7 +1125,7 @@ Content-Length: 1021
 <h4 id="_크루_면담_예약_신청_api_http_request"><a class="link" href="#_크루_면담_예약_신청_api_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/reservations HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interviews HTTP/1.1
 Content-Type: application/json;charset=utf-8
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjU5NTA0MjIyLCJleHAiOjE2NTk1MDc4MjJ9.hS7AG7IyI6FqNJyS5Nrqkz4aetyJQakl4cBEW1V41oU
 Content-Length: 290
@@ -1156,7 +1156,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: /api/reservations/4</code></pre>
+Location: /api/interviews/4</code></pre>
 </div>
 </div>
 </div>
@@ -1281,7 +1281,7 @@ Content-Length: 307
 <h4 id="_크루_면담_예약_목록_조회_api_http_request"><a class="link" href="#_크루_면담_예약_목록_조회_api_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/reservations HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interviews HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU5NTA0MjI1LCJleHAiOjE2NTk1MDc4MjV9.87-cgPsj1sHwWW_AAYmYQ69aZ821k1ldB6PVHDcEI34
 Host: localhost:8080</code></pre>
 </div>
@@ -1423,7 +1423,7 @@ Content-Length: 2072
 <h4 id="_크루_면담_예약_단건_조회_api_http_request"><a class="link" href="#_크루_면담_예약_단건_조회_api_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/reservations/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interviews/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjU5NTA0MjI5LCJleHAiOjE2NTk1MDc4Mjl9.RrLKZmJwiGEsJbxldS7T9Ervb-rGN40I6q1S41yzmM0
 Host: localhost:8080</code></pre>
 </div>
@@ -1477,7 +1477,7 @@ Content-Length: 412
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reservationId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
@@ -1501,7 +1501,7 @@ Content-Length: 412
 <h4 id="_크루_면담_예약_수정_pai_http_request"><a class="link" href="#_크루_면담_예약_수정_pai_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/reservations/10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/interviews/10 HTTP/1.1
 Content-Type: application/json;charset=utf-8
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjU5NTA0MjMwLCJleHAiOjE2NTk1MDc4MzB9.Ty2uToVNgF0Po23i44aSfqQCgn3BuWJVF1Lz387jWKI
 Content-Length: 290
@@ -1551,7 +1551,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reservationId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
@@ -1595,7 +1595,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <h4 id="_코치_면담_예약_취소_api_http_request"><a class="link" href="#_코치_면담_예약_취소_api_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/reservations/7 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/interviews/7 HTTP/1.1
 Content-Type: application/json;charset=utf-8
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU5NTA0MjI2LCJleHAiOjE2NTk1MDc4MjZ9.oJCBdEzWmI1EaQrb-9kifxYVtYOtZzx-RZegSeA_o6A
 Host: localhost:8080</code></pre>
@@ -1629,7 +1629,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reservationId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
@@ -1657,7 +1657,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <h4 id="_크루_면담_예약_취소_api_http_request"><a class="link" href="#_크루_면담_예약_취소_api_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/reservations/3 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/interviews/3 HTTP/1.1
 Content-Type: application/json;charset=utf-8
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjU5NTA0MjIxLCJleHAiOjE2NTk1MDc4MjF9.qN270lzyyDoeLaAFkQX1t19v9TzKiwJQEVFHJwIZfak
 Host: localhost:8080</code></pre>
@@ -1691,7 +1691,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reservationId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewId번째 면담 예약을 찾을 수 없습니다.</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>

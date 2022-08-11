@@ -10,6 +10,9 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.THIRD_TIME;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_UPDATE_REQUESTS;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.INTERVIEW_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
@@ -18,9 +21,6 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_REQUESTS;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEM_UPDATE_REQUESTS;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.INTERVIEW_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -123,14 +123,14 @@ class InterviewServiceTest {
 
     @Test
     @DisplayName("없는 면담을 조회할 시 예외가 발생한다.")
-    void find_reservationNotFound() {
+    void findInterviewNotFound() {
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(-1L))
                 .isInstanceOf(InterviewNotFoundException.class);
     }
 
     @Test
     @DisplayName("크루 - 정렬된 면담 예약 목록을 조회한다.")
-    void findAllReservations() {
+    void findAllInterviews() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH1.getId(), MONTH_REQUEST);
         coachService.putAvailableDateTimesByCoachId(COACH2.getId(), MONTH_REQUEST);
@@ -189,7 +189,7 @@ class InterviewServiceTest {
 
     @Test
     @DisplayName("면담 예약시, 당일 예약을 시도하면 에러가 발생한다.")
-    void createReservationTodayException() {
+    void createInterviewTodayException() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
         // when & then
@@ -202,7 +202,7 @@ class InterviewServiceTest {
 
     @Test
     @DisplayName("면담 예약시, 과거 기간 예약을 시도하면 에러가 발생한다.")
-    void createReservationException() {
+    void createInterviewException() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
 
@@ -249,7 +249,7 @@ class InterviewServiceTest {
 
     @Test
     @DisplayName("면담 예약을 수정 시 존재하지 않는 예약이라면 예외를 반환한다.")
-    void update_WhenInvalidReservationId() {
+    void update_WhenInvalidInterviewId() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
@@ -339,7 +339,7 @@ class InterviewServiceTest {
 
     @Test
     @DisplayName("면담 수정 시, 당일 예약을 시도하면 에러가 발생한다.")
-    void updateReservationTodayException() {
+    void updateInterviewTodayException() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
 
@@ -357,7 +357,7 @@ class InterviewServiceTest {
 
     @Test
     @DisplayName("면담 수정 시, 과거 기간 예약을 시도하면 에러가 발생한다.")
-    void updateReservationException() {
+    void updateInterviewException() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
 
@@ -396,11 +396,11 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview reservation = interviewService.create(CREW1.getId(),
+        final Interview interview = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview canceledInterview = interviewService.cancel(COACH3.getId(), reservation.getId());
+        Interview canceledInterview = interviewService.cancel(COACH3.getId(), interview.getId());
 
         // then
         assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED);
