@@ -31,5 +31,4 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
         jwtProvider.validateToken(accessToken);
         return Long.valueOf(jwtProvider.getPayload(accessToken));
     }
-
 }

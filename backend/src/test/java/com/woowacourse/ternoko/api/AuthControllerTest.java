@@ -1,6 +1,10 @@
 package com.woowacourse.ternoko.api;
 
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,6 +36,21 @@ public class AuthControllerTest extends ControllerTest {
                         .get("/api/login")
                         .queryParam("code", "slackCode")
                         .queryParam("redirectUrl", "slackRedirectUrl"))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    @DisplayName("요청의 role + 유효성 검사를 한다.")
+    void checkValidAccessTokenAndRole() throws Exception {
+        // given, when
+        doNothing().when(authService).checkMemberType(any(), any());
+
+        //then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/login/valid")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
+                        .queryParam("role", "CREW"))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }

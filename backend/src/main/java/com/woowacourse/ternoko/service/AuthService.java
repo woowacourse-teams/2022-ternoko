@@ -7,6 +7,8 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.config.AuthorizationExtractor;
 import com.woowacourse.ternoko.domain.Type;
 import com.woowacourse.ternoko.domain.member.Coach;
@@ -79,7 +81,8 @@ public class AuthService {
         return slackMethodClient.openIDConnectUserInfo(userInfoRequest);
     }
 
-    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code, final String redirectUrl) throws IOException, SlackApiException {
+    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code, final String redirectUrl)
+            throws IOException, SlackApiException {
         final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
                 .clientId(clientId)
                 .clientSecret(clientSecret)
@@ -106,5 +109,29 @@ public class AuthService {
         final String token = AuthorizationExtractor.extract(header);
         jwtProvider.validateToken(token);
         return true;
+    }
+
+    public void checkMemberType(final Long id, final String role) {
+        validateType(role);
+        validateCoachTypeByMemberId(id, role);
+        validateCrewTypeByMemberId(id, role);
+    }
+
+    private void validateType(String role) {
+        if (!Type.existType(role)) {
+            new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
+    }
+
+    private void validateCoachTypeByMemberId(final Long id, final String role) {
+        if (Type.isCoachType(role) && coachRepository.findById(id).isEmpty()) {
+            new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
+    }
+
+    private void validateCrewTypeByMemberId(final Long id, final String role) {
+        if (Type.isCrewType(role) && crewRepository.findById(id).isEmpty()) {
+            new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
     }
 }

@@ -45,5 +45,4 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     public AuthInterceptor authInterceptor() {
         return new AuthInterceptor(authService);
     }
-
 }

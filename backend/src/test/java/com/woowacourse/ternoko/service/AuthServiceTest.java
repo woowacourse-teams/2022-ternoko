@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -11,9 +12,11 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.domain.Type;
 import com.woowacourse.ternoko.dto.LoginResponse;
 import java.io.IOException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +38,22 @@ public class AuthServiceTest {
 
     @SpyBean
     private JwtProvider jwtProvider;
+
+    @Test
+    @DisplayName("코치가 본인인지 요청을 보내면 true 를 반환한다.")
+    void checkCrewSameType() {
+        Assertions.assertThatNoException().isThrownBy(() -> authService.checkMemberType(1L, "COACH"));
+    }
+
+    @Test
+    @DisplayName("코치가 아닌데 코치로 요청을 보내면 에러를 반환한다.")
+    void checkCrewSameType_false() {
+        final Long crewId = 7L;
+        // when
+        Assertions.assertThatThrownBy(() -> authService.checkMemberType(7L, "COACH"))
+                .isInstanceOf(InvalidTokenException.class)
+                .hasMessage(INVALID_TOKEN.getMessage());
+    }
 
     @Test
     @DisplayName("로그인을 하면 AccessToken 을 발급한다.")
