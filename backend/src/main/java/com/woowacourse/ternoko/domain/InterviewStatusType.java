@@ -5,5 +5,9 @@ public enum InterviewStatusType {
     FIX,
     FEEDBACK,
     COMPLETED,
-    CANCELED
+    CANCELED;
+
+    public static boolean isCanceled(InterviewStatusType type) {
+        return CANCELED.equals(type);
+    }
 }

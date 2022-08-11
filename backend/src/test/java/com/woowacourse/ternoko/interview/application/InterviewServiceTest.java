@@ -188,6 +188,37 @@ class InterviewServiceTest {
     }
 
     @Test
+    @DisplayName("코치별로 면담예약 목록을 조회할 시, 취소된 면담은 제와하고 보낸다.")
+    void findAllByCoach_except_interviewStatus_canceled() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+        interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        interviewService.create(CREW2.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+        interviewService.create(CREW3.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        final Interview interview = interviewService.create(CREW4.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+
+        interviewService.cancel(COACH4.getId(), interview.getId());
+
+        // when
+        final ScheduleResponse scheduleResponses = interviewService.findAllByCoach(COACH4.getId(),
+                NOW.getYear(),
+                NOW.getMonthValue());
+
+        // then
+        assertThat(scheduleResponses.getCalendar()).extracting("crewNickname")
+                .hasSize(3)
+                .contains("수달", "앤지", "애쉬");
+    }
+
+    @Test
     @DisplayName("면담 예약시, 당일 예약을 시도하면 에러가 발생한다.")
     void createInterviewTodayException() {
         // given
