@@ -1,10 +1,12 @@
 package com.woowacourse.ternoko.interview.domain;
 
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
-import static com.woowacourse.ternoko.domain.InterviewStatusType.FIX;
+import static com.woowacourse.ternoko.domain.InterviewStatusType.FIXED;
 
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
@@ -96,7 +98,7 @@ public class Interview {
     }
 
     public void update(Interview updateInterview) {
-        validateInterviewStatus(FIX, CANNOT_EDIT_INTERVIEW);
+        validateInterviewStatus(FIXED, CANNOT_EDIT_INTERVIEW);
         this.interviewStartTime = updateInterview.getInterviewStartTime();
         this.interviewEndTime = updateInterview.getInterviewEndTime();
         this.coach = updateInterview.getCoach();
@@ -106,6 +108,18 @@ public class Interview {
 
     public void cancel() {
         this.interviewStatusType = InterviewStatusType.CANCELED;
+    }
+
+    public void complete(final MemberType memberType) {
+        if (this.interviewStatusType == InterviewStatusType.COMMENT && memberType == MemberType.COACH) {
+            this.interviewStatusType = InterviewStatusType.COACH_COMPLETED;
+            return;
+        }
+        if (this.interviewStatusType == InterviewStatusType.COMMENT && memberType == MemberType.CREW) {
+            this.interviewStatusType = InterviewStatusType.CREW_COMPLETED;
+            return;
+        }
+        this.interviewStatusType = InterviewStatusType.COMPLETE;
     }
 
     public boolean sameCrew(Long crewId) {

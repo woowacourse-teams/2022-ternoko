@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.domain;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public enum MemberType {
@@ -14,6 +15,13 @@ public enum MemberType {
     public static boolean existType(final String value) {
         return Arrays.stream(values())
                 .anyMatch(type -> type.name().equals(value));
+    }
+
+    public List<InterviewStatusType> getValidInterviewStatusType() {
+        if (this == COACH) {
+            return List.of(InterviewStatusType.COMMENT, InterviewStatusType.CREW_COMPLETED);
+        }
+        return List.of(InterviewStatusType.COMMENT, InterviewStatusType.COACH_COMPLETED);
     }
 }
 

@@ -53,7 +53,7 @@ public class EmailService {
 
     private void changeInterviewStatus(final List<Interview> interviews) {
         for (Interview interview : interviews) {
-            interview.updateStatus(InterviewStatusType.FIX);
+            interview.updateStatus(InterviewStatusType.FIXED);
         }
         interviewRepository.saveAll(interviews);
     }
