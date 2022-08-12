@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import {
   CoachScheduleRequestBodyType,
-  ReservationRequestBodyType,
+  InterviewRequestBodyType,
+  MemberExtendedRole,
   UserRequestBodyType,
 } from '@/types/domain';
 
@@ -16,22 +17,22 @@ if (accessToken) {
 
 export const getCoachesAPI = () => axios.get(`${process.env.SERVER_URL}/api/coaches`);
 
-export const getReservationsAPI = () => axios.get(`${process.env.SERVER_URL}/api/reservations`);
+export const getInterviewsAPI = () => axios.get(`${process.env.SERVER_URL}/api/interviews`);
 
-export const getReservationAPI = (id: number) =>
-  axios.get(`${process.env.SERVER_URL}/api/reservations/${id}`);
+export const getInterviewAPI = (id: number) =>
+  axios.get(`${process.env.SERVER_URL}/api/interviews/${id}`);
 
-export const postReservationAPI = (body: ReservationRequestBodyType) =>
-  axios.post(`${process.env.SERVER_URL}/api/reservations`, body);
+export const postInterviewAPI = (body: InterviewRequestBodyType) =>
+  axios.post(`${process.env.SERVER_URL}/api/interviews`, body);
 
-export const putReservationAPI = (reservationId: number, body: ReservationRequestBodyType) =>
-  axios.put(`${process.env.SERVER_URL}/api/reservations/${reservationId}`, body);
+export const putInterviewAPI = (interviewId: number, body: InterviewRequestBodyType) =>
+  axios.put(`${process.env.SERVER_URL}/api/interviews/${interviewId}`, body);
 
-export const deleteCrewReservationAPI = (reservationId: number) =>
-  axios.delete(`${process.env.SERVER_URL}/api/reservations/${reservationId}`);
+export const deleteCrewInterviewAPI = (interviewId: number) =>
+  axios.delete(`${process.env.SERVER_URL}/api/interviews/${interviewId}`);
 
-export const deleteCoachReservationAPI = (reservationId: number) =>
-  axios.patch(`${process.env.SERVER_URL}/api/reservations/${reservationId}`);
+export const deleteCoachInterviewAPI = (interviewId: number) =>
+  axios.patch(`${process.env.SERVER_URL}/api/interviews/${interviewId}`);
 
 export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
   axios.put(`${process.env.SERVER_URL}/api/calendar/times`, body);
@@ -41,7 +42,7 @@ export const getCoachScheduleAPI = (coachId: number, year: number, month: number
     `${process.env.SERVER_URL}/api/calendar/times?coachId=${coachId}&year=${year}&month=${month}`,
   );
 
-export const getCoachReservationAPI = (year: number, month: number) =>
+export const getCoachInterviewAPI = (year: number, month: number) =>
   axios.get(`${process.env.SERVER_URL}/api/schedules?year=${year}&month=${month}`);
 
 export const getUserStatusAPI = (code: string, redirectUrl: string) =>
@@ -59,3 +60,6 @@ export const patchCoachInfoAPI = (body: UserRequestBodyType) =>
 
 export const getDuplicatedNicknameStatusAPI = (nickname: string) =>
   axios.get(`${process.env.SERVER_URL}/api/login/check?nickname=${nickname}`);
+
+export const validateAccessTokenAPI = (type: MemberExtendedRole) =>
+  axios.get(`${process.env.SERVER_URL}/api/login/type=${type}`);

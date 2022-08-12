@@ -11,9 +11,9 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 
-import { getCoachReservationAPI } from '@/api';
+import { getCoachInterviewAPI } from '@/api';
 import { separateFullDate } from '@/utils';
 
 type ScheduleType = {
@@ -40,12 +40,12 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachReservationAPI(year, month + 1);
+      const response = await getCoachInterviewAPI(year, month + 1);
 
       const schedules = response.data.calendar.reduce(
         (
           acc: SchedulesType,
-          { id, crewNickname, interviewStartTime, interviewEndTime }: ReservationType,
+          { id, crewNickname, interviewStartTime, interviewEndTime }: InterviewType,
         ) => {
           const { day, time: startTime } = separateFullDate(interviewStartTime);
           const { time: endTime } = separateFullDate(interviewEndTime);
@@ -87,7 +87,7 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
-              const reservations = schedules[day]
+              const interviews = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times }) => (
                     <S.Schedule key={id} onClick={getHandleClickSchedule(id)}>
                       {crewNickname} ({times[0]}~{times[1]})
@@ -99,7 +99,7 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
                 return (
                   <S.CalendarDay key={index} today>
                     {day}
-                    {reservations}
+                    {interviews}
                   </S.CalendarDay>
                 );
               }
@@ -108,7 +108,7 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
                 return (
                   <S.CalendarDay key={index} type="disable">
                     {day}
-                    {reservations}
+                    {interviews}
                   </S.CalendarDay>
                 );
               }
@@ -116,7 +116,7 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
               return (
                 <S.CalendarDay key={index}>
                   {day}
-                  {reservations}
+                  {interviews}
                   <span />
                   <span />
                   <span />

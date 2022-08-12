@@ -1,17 +1,17 @@
-import Reservation from '.';
+import Interview from '.';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 
 import { Story } from '@storybook/react';
 
 export default {
-  title: 'components/Reservation',
-  component: Reservation,
+  title: 'components/Interview',
+  component: Interview,
 };
 
-const Template = (args: ReservationType) => <Reservation {...args} />;
+const Template = (args: InterviewType) => <Interview {...args} />;
 
-export const Basic: Story<ReservationType> = Template.bind({});
+export const Basic: Story<InterviewType> = Template.bind({});
 
 Basic.args = {
   coachNickname: '브리',

@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
+import CommentModal from '@/components/@common/CommentModal';
 import GridContainer from '@/components/@common/GridContainer/styled';
+import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
-import ReservationDetailModal from '@/components/@common/ReservationDetailModal';
 
-import Reservation from '@/components/Reservation';
+import Interview from '@/components/Interview';
 
-import { ReservationType } from '@/types/domain';
+import { InterviewType } from '@/types/domain';
 
-import { getReservationsAPI } from '@/api';
+import { getInterviewsAPI } from '@/api';
 import { PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 
@@ -20,34 +21,45 @@ export type TabMenuStatus = 'doing' | 'done';
 
 const HomePage = () => {
   const memberRole = LocalStorage.getMemberRole();
-  const { show, display, handleOpenModal, handleCloseModal } = useModal();
+  const {
+    show: showDetail,
+    display: displayDetail,
+    handleOpenModal: handleOpenModalDetail,
+    handleCloseModal: handleCloseModalDetail,
+  } = useModal();
+  const {
+    show: showComment,
+    display: displayComment,
+    handleOpenModal: handleOpenModalComment,
+    handleCloseModal: handleCloseModalComment,
+  } = useModal();
 
-  const [reservations, setReservations] = useState<ReservationType[]>([]);
+  const [interviews, setInterviews] = useState<InterviewType[]>([]);
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
 
-  const [clickedReservationId, setClickedReservationId] = useState(-1);
+  const [clickedInterviewId, setClickedInterviewId] = useState(-1);
 
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
   };
 
   const getHandleClickDetailButton = (id: number) => () => {
-    setClickedReservationId(id);
-    handleOpenModal();
+    setClickedInterviewId(id);
+    handleOpenModalDetail();
   };
 
-  const updateReservations = async () => {
-    const response = await getReservationsAPI();
-    setReservations(response.data);
+  const updateInterviews = async () => {
+    const response = await getInterviewsAPI();
+    setInterviews(response.data);
   };
 
-  const afterDeleteReservation = () => {
-    handleCloseModal();
-    updateReservations();
+  const afterDeleteInterview = () => {
+    handleCloseModalComment();
+    updateInterviews();
   };
 
   useEffect(() => {
-    updateReservations();
+    updateInterviews();
   }, []);
 
   return (
@@ -69,21 +81,27 @@ const HomePage = () => {
       </S.TabMenuBox>
 
       <GridContainer minSize="25rem" pt="4rem">
-        {reservations.map((reservation) => (
-          <Reservation
-            key={reservation.id}
-            handleClickDetailButton={getHandleClickDetailButton(reservation.id)}
-            {...reservation}
+        {interviews.map((interview) => (
+          <Interview
+            key={interview.id}
+            handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+            handleClickCompleteButton={handleOpenModalComment}
+            {...interview}
           />
         ))}
       </GridContainer>
-      <ReservationDetailModal
-        show={show}
-        display={display}
+      <InterviewDetailModal
+        show={showDetail}
+        display={displayDetail}
         role={memberRole}
-        reservationId={clickedReservationId}
-        afterDeleteReservation={afterDeleteReservation}
-        handleCloseModal={handleCloseModal}
+        interviewId={clickedInterviewId}
+        afterDeleteInterview={afterDeleteInterview}
+        handleCloseModal={handleCloseModalDetail}
+      />
+      <CommentModal
+        show={showComment}
+        display={displayComment}
+        handleCloseModal={handleCloseModalComment}
       />
     </>
   );

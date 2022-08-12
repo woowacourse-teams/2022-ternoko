@@ -5,7 +5,7 @@ import * as S from './styled';
 type ModalProps = {
   show: boolean;
   display: boolean;
-  additionalFrameStyle: string;
+  additionalFrameStyle?: string;
   children: React.ReactNode;
   handleCloseModal: () => void;
 };
