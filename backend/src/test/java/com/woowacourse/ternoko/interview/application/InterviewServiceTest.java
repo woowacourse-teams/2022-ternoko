@@ -29,6 +29,9 @@ import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.formitem.Answer;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.Question;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
@@ -40,6 +43,7 @@ import com.woowacourse.ternoko.service.CoachService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -269,11 +273,15 @@ class InterviewServiceTest {
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME)),
                 () -> assertThat(updateInterview.getInterviewEndTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
-                () -> assertThat(updateInterview.getFormItems())
-                        .extracting("question")
+                () -> assertThat(updateInterview.getFormItems().stream()
+                        .map(FormItem::getQuestion)
+                        .map(Question::getQuestion)
+                        .collect(Collectors.toList()))
                         .contains("수정질문1", "수정질문2", "수정질문3"),
-                () -> assertThat(updateInterview.getFormItems())
-                        .extracting("answer")
+                () -> assertThat(updateInterview.getFormItems().stream()
+                        .map(FormItem::getAnswer)
+                        .map(Answer::getAnswer)
+                        .collect(Collectors.toList()))
                         .contains("수정답변1", "수정답변2", "수정답변3")
         );
     }

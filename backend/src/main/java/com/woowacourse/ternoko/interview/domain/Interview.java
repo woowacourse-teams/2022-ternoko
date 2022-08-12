@@ -8,6 +8,7 @@ import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
