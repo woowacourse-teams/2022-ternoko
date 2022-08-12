@@ -4,11 +4,12 @@ import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.EmailDto;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
-import com.woowacourse.ternoko.support.EmailSender;
+import com.woowacourse.ternoko.support.EmailGenerator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,11 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
-    private final EmailSender emailSender;
+    private final JavaMailSender javaMailSender;
     private final InterviewRepository interviewRepository;
 
-    public EmailService(final EmailSender emailSender, final InterviewRepository interviewRepository) {
-        this.emailSender = emailSender;
+    public EmailService(final JavaMailSender javaMailSender, final InterviewRepository interviewRepository) {
+        this.javaMailSender = javaMailSender;
         this.interviewRepository = interviewRepository;
     }
 
@@ -46,7 +47,7 @@ public class EmailService {
 
     private void sendEmails(final List<EmailDto> emailDtos) {
         for (final EmailDto emailDto : emailDtos) {
-            emailSender.send(emailDto);
+            javaMailSender.send(EmailGenerator.generate(emailDto));
         }
     }
 
