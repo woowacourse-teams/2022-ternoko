@@ -1,51 +1,42 @@
-package com.woowacourse.ternoko.interview.domain;
+package com.woowacourse.ternoko.interview.domain.formitem;
 
-import javax.persistence.Column;
+import com.woowacourse.ternoko.interview.domain.Interview;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class FormItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String question;
+    @Embedded
+    private Question question;
 
-    @Column(nullable = false)
-    private String answer;
+    @Embedded
+    private Answer answer;
 
     @ManyToOne
     @JoinColumn(name = "interview_id")
     private Interview interview;
 
-    public FormItem(String question, String answer) {
+    private FormItem(final Question question, final Answer answer) {
         this.question = question;
         this.answer = answer;
     }
 
-    public FormItem(Long id, String question, String answer) {
-        this.id = id;
-        this.question = question;
-        this.answer = answer;
-    }
-
-    public FormItem(String question, String answer, Interview interview) {
-        this.question = question;
-        this.answer = answer;
-        this.interview = interview;
+    public static FormItem from(String question, String answer) {
+        return new FormItem(Question.of(question), Answer.of(answer));
     }
 
     public void addInterview(final Interview interview) {

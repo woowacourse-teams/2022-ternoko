@@ -43,7 +43,7 @@ public class CoachService {
     @Transactional(readOnly = true)
     public CoachResponse findCoach(final Long coachId) {
         final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(ExceptionType.COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
         return CoachResponse.from(coach);
     }
 

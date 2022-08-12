@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_SECOND_TIME;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 
-import com.woowacourse.ternoko.interview.domain.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import com.woowacourse.ternoko.interview.dto.FormItemRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import java.time.LocalDateTime;
@@ -29,25 +29,25 @@ public class InterviewFixture {
 
     public static final ArrayList<FormItem> FORM_ITEMS1 = new ArrayList<>() {
         {
-            add(new FormItem("고정질문1", "답변1"));
-            add(new FormItem("고정질문1", "답변1"));
-            add(new FormItem("고정질문1", "답변1"));
+            add(FormItem.from("고정질문1", "답변1"));
+            add(FormItem.from("고정질문1", "답변1"));
+            add(FormItem.from("고정질문1", "답변1"));
         }
     };
 
     public static final ArrayList<FormItem> FORM_ITEMS2 = new ArrayList<>() {
         {
-            add(new FormItem("고정질문2", "답변2"));
-            add(new FormItem("고정질문2", "답변2"));
-            add(new FormItem("고정질문2", "답변2"));
+            add(FormItem.from("고정질문2", "답변2"));
+            add(FormItem.from("고정질문2", "답변2"));
+            add(FormItem.from("고정질문2", "답변2"));
         }
     };
 
     public static final ArrayList<FormItem> FORM_ITEMS3 = new ArrayList<>() {
         {
-            add(new FormItem("고정질문3", "답변3"));
-            add(new FormItem("고정질문3", "답변3"));
-            add(new FormItem("고정질문3", "답변3"));
+            add(FormItem.from("고정질문3", "답변3"));
+            add(FormItem.from("고정질문3", "답변3"));
+            add(FormItem.from("고정질문3", "답변3"));
         }
     };
 

@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.interview.dto;
 
-import com.woowacourse.ternoko.interview.domain.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,12 +17,8 @@ public class FormItemDto {
 
     public static FormItemDto from(FormItem formItem) {
         return FormItemDto.formItemBuilder()
-                .question(formItem.getQuestion())
-                .answer(formItem.getAnswer())
+                .question(formItem.getQuestion().getValue())
+                .answer(formItem.getAnswer().getValue())
                 .build();
-    }
-
-    public FormItem toFormItem() {
-        return new FormItem(question, answer);
     }
 }
