@@ -17,8 +17,8 @@ public class FormItemRequest {
 
     public static FormItemRequest from(FormItem formItem) {
         return FormItemRequest.formItemBuilder()
-                .question(formItem.getQuestion().getQuestion())
-                .answer(formItem.getAnswer().getAnswer())
+                .question(formItem.getQuestion().getValue())
+                .answer(formItem.getAnswer().getValue())
                 .build();
     }
 

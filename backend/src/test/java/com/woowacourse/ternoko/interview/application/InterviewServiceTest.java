@@ -275,12 +275,12 @@ class InterviewServiceTest {
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
                 () -> assertThat(updateInterview.getFormItems().stream()
                         .map(FormItem::getQuestion)
-                        .map(Question::getQuestion)
+                        .map(Question::getValue)
                         .collect(Collectors.toList()))
                         .contains("수정질문1", "수정질문2", "수정질문3"),
                 () -> assertThat(updateInterview.getFormItems().stream()
                         .map(FormItem::getAnswer)
-                        .map(Answer::getAnswer)
+                        .map(Answer::getValue)
                         .collect(Collectors.toList()))
                         .contains("수정답변1", "수정답변2", "수정답변3")
         );

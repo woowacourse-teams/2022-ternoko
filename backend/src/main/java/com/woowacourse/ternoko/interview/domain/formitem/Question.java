@@ -15,17 +15,17 @@ public class Question {
 
     private static final int QUESTION_MAX_LENGTH = 255;
 
-    @Column(nullable = false)
-    private String question;
+    @Column(name = "question", nullable = false)
+    private String value;
 
-    private Question(final String question) {
-        this.question = question;
+    private Question(final String value) {
+        this.value = value;
     }
 
-    public static Question of(final String question) {
-        if (question.length() > QUESTION_MAX_LENGTH) {
+    public static Question of(final String value) {
+        if (value.length() > QUESTION_MAX_LENGTH) {
             throw new InvalidLengthException(OVER_LENGTH, QUESTION_MAX_LENGTH);
         }
-        return new Question(question);
+        return new Question(value);
     }
 }
