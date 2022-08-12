@@ -25,13 +25,6 @@ public class CoachController {
 
     private final CoachService coachService;
 
-    @PutMapping("/calendar/times")
-    public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
-                                                  @RequestBody final CalendarRequest calendarRequest) {
-        coachService.putAvailableDateTimesByCoachId(coachId, calendarRequest);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/calendar/times")
     public ResponseEntity<AvailableDateTimesResponse> findCalendarTimes(@RequestParam final Long coachId,
                                                                         @RequestParam final int year,
@@ -40,6 +33,13 @@ public class CoachController {
                 .findAvailableDateTimesByCoachId(coachId, year, month);
         final AvailableDateTimesResponse from = AvailableDateTimesResponse.from(availableDateTimes);
         return ResponseEntity.ok(from);
+    }
+
+    @PutMapping("/calendar/times")
+    public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
+                                                  @RequestBody final CalendarRequest calendarRequest) {
+        coachService.putAvailableDateTimesByCoachId(coachId, calendarRequest);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/coaches/me")

@@ -13,6 +13,7 @@ import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.interview.domain.FormItem;
@@ -135,7 +136,11 @@ public class InterviewService {
         final List<Interview> interviews = interviewRepository
                 .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
 
-        return ScheduleResponse.from(interviews);
+        final List<Interview> excludeCanceledInterviews = interviews.stream()
+                .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
+                .collect(Collectors.toList());
+
+        return ScheduleResponse.from(excludeCanceledInterviews);
     }
 
     public Interview update(final Long crewId,
