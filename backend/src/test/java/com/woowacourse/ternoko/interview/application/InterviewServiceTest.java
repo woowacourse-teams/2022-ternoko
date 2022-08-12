@@ -188,7 +188,7 @@ class InterviewServiceTest {
     }
 
     @Test
-    @DisplayName("코치별로 면담예약 목록을 조회할 시, 취소된 면담은 제와하고 보낸다.")
+    @DisplayName("코치별로 면담예약 목록을 조회할 시, 취소된 면담은 제외하고 보낸다.")
     void findAllByCoach_except_interviewStatus_canceled() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
