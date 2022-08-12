@@ -1,7 +1,6 @@
 package com.woowacourse.ternoko.availabledatetime.dto;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,6 @@ public class AvailableDateTimesResponse {
         return new AvailableDateTimesResponse(availableDateTimes.stream()
                 .map(data -> new AvailableDateTimeResponse(data.getLocalDateTime(),
                         data.getAvailableDateTimeStatus()))
-                .sorted(Comparator.comparing(AvailableDateTimeResponse::getCalendarTime))
                 .collect(Collectors.toList()));
     }
 }
