@@ -236,7 +236,7 @@ operation::interview-controller-test/create-interview[snippets='http-request,htt
 === [코치] 면담 예약 목록 조회 API
 GET /api/schedules?year={year}&month={month}
 
-operation::coach-controller-test/find-all-interview-by-coach[snippets='http-request,http-response']
+operation::coach-controller-test/find-calendar-times[snippets='http-request,http-response']
 ==== Error Response
 |===
 | statusCode | message
