@@ -64,6 +64,8 @@ export interface CoachScheduleRequestBodyType {
 
 export type MemberRole = 'CREW' | 'COACH';
 
+export type MemberExtendedRole = MemberRole | 'ALL';
+
 export interface UserStatusType {
   accessToken: string;
   hasNickname: boolean;

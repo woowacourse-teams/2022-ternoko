@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
   CoachScheduleRequestBodyType,
   InterviewRequestBodyType,
+  MemberExtendedRole,
   UserRequestBodyType,
 } from '@/types/domain';
 
@@ -59,3 +60,6 @@ export const patchCoachInfoAPI = (body: UserRequestBodyType) =>
 
 export const getDuplicatedNicknameStatusAPI = (nickname: string) =>
   axios.get(`${process.env.SERVER_URL}/api/login/check?nickname=${nickname}`);
+
+export const validateAccessTokenAPI = (type: MemberExtendedRole) =>
+  axios.get(`${process.env.SERVER_URL}/api/login/type=${type}`);
