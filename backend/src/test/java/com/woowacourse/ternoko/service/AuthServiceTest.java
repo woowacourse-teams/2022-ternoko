@@ -1,7 +1,10 @@
 package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -17,7 +20,6 @@ import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.dto.LoginResponse;
 import java.io.IOException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,15 +45,14 @@ public class AuthServiceTest {
     @Test
     @DisplayName("코치가 본인인지 요청을 보내면 true 를 반환한다.")
     void checkCrewSameType() {
-        Assertions.assertThatNoException().isThrownBy(() -> authService.checkMemberType(1L, "COACH"));
+        assertThatNoException().isThrownBy(() -> authService.checkMemberType(1L, "COACH"));
     }
 
     @Test
     @DisplayName("코치가 아닌데 코치로 요청을 보내면 에러를 반환한다.")
     void check_coach_Type_false() {
-        final Long crewId = 7L;
         // when
-        assertThatThrownBy(() -> authService.checkMemberType(crewId, "COACH"))
+        assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "COACH"))
                 .isInstanceOf(InvalidTokenException.class)
                 .hasMessage(INVALID_TOKEN.getMessage());
     }
@@ -59,9 +60,8 @@ public class AuthServiceTest {
     @Test
     @DisplayName("크루가 아닌데, 크루로 요청을 보내면 에러를 반환한다.")
     void check_crew_type_false() {
-        final Long coachId = 1L;
         // when
-        assertThatThrownBy(() -> authService.checkMemberType(coachId, "CREW"))
+        assertThatThrownBy(() -> authService.checkMemberType(COACH1.getId(), "CREW"))
                 .isInstanceOf(InvalidTokenException.class)
                 .hasMessage(INVALID_TOKEN.getMessage());
     }
@@ -69,9 +69,8 @@ public class AuthServiceTest {
     @Test
     @DisplayName("코치나, 크루가 아닌 다른 롤로 에러를 반환한다.")
     void check_undefined_Type_false() {
-        final Long crewId = 7L;
         // when
-        assertThatThrownBy(() -> authService.checkMemberType(crewId, "UNDEFINED"))
+        assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "UNDEFINED"))
                 .isInstanceOf(InvalidTokenException.class)
                 .hasMessage(INVALID_TOKEN.getMessage());
     }

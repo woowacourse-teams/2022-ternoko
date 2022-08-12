@@ -41,8 +41,23 @@ public class AuthControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("요청의 role + 유효성 검사를 한다.")
-    void checkValidAccessTokenAndRole() throws Exception {
+    @DisplayName("코치 요청 Type + 유효성 검사를 한다.")
+    void checkValidAccessTokenAndCoachType() throws Exception {
+        // given, when
+        doNothing().when(authService).checkMemberType(any(), any());
+
+        //then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/login/valid")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
+                        .queryParam("role", "COACH"))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    @DisplayName("크루 요청 Type + 유효성 검사를 한다.")
+    void checkValidAccessTokenAndCrewType() throws Exception {
         // given, when
         doNothing().when(authService).checkMemberType(any(), any());
 
