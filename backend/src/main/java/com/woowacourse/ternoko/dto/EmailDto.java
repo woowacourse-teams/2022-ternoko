@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.dto;
 
-import com.woowacourse.ternoko.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.dto.FormItemDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

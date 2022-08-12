@@ -1,23 +1,23 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS1;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS2;
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEMS1;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEMS2;
-import static com.woowacourse.ternoko.fixture.ReservationFixture.FORM_ITEMS3;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.woowacourse.ternoko.domain.FormItem;
-import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.repository.FormItemRepository;
-import com.woowacourse.ternoko.repository.InterviewRepository;
+import com.woowacourse.ternoko.interview.domain.FormItem;
+import com.woowacourse.ternoko.interview.domain.FormItemRepository;
+import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

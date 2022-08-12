@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import com.woowacourse.ternoko.dto.EmailDto;
-import com.woowacourse.ternoko.dto.FormItemDto;
+import com.woowacourse.ternoko.interview.dto.FormItemDto;
 import com.woowacourse.ternoko.support.EmailSender;
 import java.time.LocalDateTime;
 import java.util.List;
