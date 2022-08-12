@@ -18,7 +18,8 @@ public enum ExceptionType {
     INVALID_AVAILABLE_DATE_TIME(HttpStatus.BAD_REQUEST, "선택한 날짜는 해당 코치의 가능한 시간이 아닙니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
-    UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다.");
+    UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),
+    CANNOT_EDIT_INTERVIEW(HttpStatus.BAD_REQUEST, "이미 사전메일을 보낸 면담은 수정할 수 없습니다.");
 
     private final HttpStatus statusCode;
     private final String message;

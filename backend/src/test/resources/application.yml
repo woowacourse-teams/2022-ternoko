@@ -1,4 +1,15 @@
 spring:
+  mail:
+    port: 587
+    host: smtp.gmail.com
+    username: 'ternoko.official@gmail.com'
+    password: 'password'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   jpa:
     show-sql: true
     hibernate:

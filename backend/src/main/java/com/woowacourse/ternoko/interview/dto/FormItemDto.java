@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "formItemBuilder")
-public class FormItemResponse {
+public class FormItemDto {
 
     private String question;
     private String answer;
 
-    public static FormItemResponse from(FormItem formItem) {
-        return FormItemResponse.formItemBuilder()
+    public static FormItemDto from(FormItem formItem) {
+        return FormItemDto.formItemBuilder()
                 .question(formItem.getQuestion())
                 .answer(formItem.getAnswer())
                 .build();

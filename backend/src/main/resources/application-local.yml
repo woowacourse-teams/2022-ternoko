@@ -1,7 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: local
   mail:
     port: 587
     host: smtp.gmail.com
@@ -10,9 +7,12 @@ spring:
     properties:
       mail:
         smtp:
-        auth: true
-        starttls:
-        enable: true
+          auth: true
+          starttls:
+            enable: true
+  config:
+    activate:
+      on-profile: local
   jpa:
     open-in-view: false
     hibernate:

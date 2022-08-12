@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -21,13 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer {
+    private static final String KST = "Asia/Seoul";
     private static final String TEST_EMAIL = "@woowahan.com";
 
     private final InitService initService;
 
     @PostConstruct
     public void init() {
+        setTimeZone(TimeZone.getTimeZone(KST));
         initService.dbInit();
+    }
+
+    private void setTimeZone(final TimeZone timeZone) {
+        TimeZone.setDefault(timeZone);
     }
 
     @Component
