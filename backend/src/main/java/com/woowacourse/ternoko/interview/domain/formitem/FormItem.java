@@ -16,9 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FormItem {
 
-    private static final int QUESTION_MAX_LENGTH = 255;
-    private static final int ANSWER_MAX_LENGTH = 1000;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
