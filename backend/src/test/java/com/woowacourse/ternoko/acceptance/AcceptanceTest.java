@@ -99,6 +99,17 @@ public class AcceptanceTest {
                 .extract();
     }
 
+    protected ExtractableResponse<Response> patchInterview(final String uri, final Header header, final String interviewId) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(header)
+                .queryParam("interviewId", interviewId)
+                .queryParam("onlyInterview", "true")
+                .when().patch(uri)
+                .then().log().all()
+                .extract();
+    }
+
     protected ExtractableResponse<Response> patch(final String uri, final Header header, final Object body) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

@@ -154,8 +154,8 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         final char interviewId = redirectURI.charAt(redirectURI.length() - 1);
 
         // when
-        final ExtractableResponse<Response> cancelResponse = patch("/api/interviews/" + interviewId,
-                generateHeader(COACH3.getId()));
+        final ExtractableResponse<Response> cancelResponse = patchInterview("/api/interviews",
+                generateHeader(COACH3.getId()), String.valueOf(interviewId));
 
         //then
         assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());

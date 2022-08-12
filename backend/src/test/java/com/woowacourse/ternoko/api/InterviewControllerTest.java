@@ -99,14 +99,16 @@ public class InterviewControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("코치 - 면담 예약을 취소한다.")
-    void cancelInterview() throws Exception {
+    void cancelInterviewWithDeleteAvailableDateTime() throws Exception {
         //given
         createCalendarTimes(COACH1.getId());
         final Long interviewId = createInterview(CREW1.getId());
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/interviews/{interviewId}", interviewId)
+                        .patch("/api/interviews")
+                        .queryParam("interviewId", String.valueOf(interviewId))
+                        .queryParam("onlyInterview", "true")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
