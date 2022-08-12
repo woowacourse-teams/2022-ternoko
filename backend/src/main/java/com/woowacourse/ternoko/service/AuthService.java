@@ -128,13 +128,13 @@ public class AuthService {
     }
 
     private void validateCoachTypeByMemberId(final Long id, final String type) {
-        if (COACH.matchType(type) && coachRepository.existsById(id)) {
+        if (COACH.matchType(type) && !coachRepository.existsById(id)) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCrewTypeByMemberId(final Long id, final String type) {
-        if (CREW.matchType(type) && crewRepository.existsById(id)) {
+        if (CREW.matchType(type) && !crewRepository.existsById(id)) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }

@@ -50,7 +50,7 @@ public class AuthControllerTest extends ControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/login/valid")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
-                        .queryParam("role", "COACH"))
+                        .queryParam("type", "COACH"))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
@@ -65,7 +65,7 @@ public class AuthControllerTest extends ControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/login/valid")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
-                        .queryParam("role", "CREW"))
+                        .queryParam("type", "CREW"))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
