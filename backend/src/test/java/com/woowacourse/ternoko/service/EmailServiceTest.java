@@ -14,10 +14,10 @@ import static org.mockito.Mockito.verify;
 
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.interview.domain.FormItem;
 import com.woowacourse.ternoko.interview.domain.FormItemRepository;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
