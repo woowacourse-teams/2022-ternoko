@@ -111,10 +111,10 @@ public class AuthService {
         return true;
     }
 
-    public void checkMemberType(final Long id, final String role) {
-        validateType(role);
-        validateCoachTypeByMemberId(id, role);
-        validateCrewTypeByMemberId(id, role);
+    public void checkMemberType(final Long id, final String type) {
+        validateType(type);
+        validateCoachTypeByMemberId(id, type);
+        validateCrewTypeByMemberId(id, type);
     }
 
     private void validateType(String role) {

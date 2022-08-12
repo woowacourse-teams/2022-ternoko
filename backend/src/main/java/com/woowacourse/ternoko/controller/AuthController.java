@@ -28,8 +28,8 @@ public class AuthController {
 
     @GetMapping("/valid")
     public ResponseEntity<Void> checkValidAccessTokenAndRole(@AuthenticationPrincipal final Long id,
-                                                             @RequestParam String role) {
-        authService.checkMemberType(id, role);
+                                                             @RequestParam final String type) {
+        authService.checkMemberType(id, type);
         return ResponseEntity.ok().build();
     }
 }
