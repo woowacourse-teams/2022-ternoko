@@ -8,7 +8,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.dto.LoginResponse;
 import com.woowacourse.ternoko.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ public class AuthControllerTest extends ControllerTest {
     void login() throws Exception {
         // given, when
         when(authService.login(any(), any()))
-                .thenReturn(LoginResponse.of(Type.CREW, "sampleToken", false));
+                .thenReturn(LoginResponse.of(MemberType.CREW, "sampleToken", false));
 
         //then
         mockMvc.perform(MockMvcRequestBuilders

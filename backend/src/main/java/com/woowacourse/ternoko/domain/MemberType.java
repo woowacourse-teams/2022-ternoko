@@ -2,7 +2,7 @@ package com.woowacourse.ternoko.domain;
 
 import java.util.Arrays;
 
-public enum Type {
+public enum MemberType {
     COACH,
     CREW;
 

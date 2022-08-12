@@ -10,7 +10,7 @@ import com.woowacourse.ternoko.common.JwtProvider;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.config.AuthorizationExtractor;
-import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
@@ -65,11 +65,11 @@ public class AuthService {
         boolean hasNickname = member.get().getNickname() != null;
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
+            return LoginResponse.of(MemberType.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
                     hasNickname);
         }
 
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
+        return LoginResponse.of(MemberType.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
     }
 
     private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code, final String redirectUrl)
@@ -96,13 +96,13 @@ public class AuthService {
         if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
                     userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
+            return LoginResponse.of(MemberType.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
 
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
+        return LoginResponse.of(MemberType.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
     }
 
     public boolean isValid(final String header) {
@@ -118,19 +118,19 @@ public class AuthService {
     }
 
     private void validateType(String role) {
-        if (!Type.existType(role)) {
+        if (!MemberType.existType(role)) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCoachTypeByMemberId(final Long id, final String role) {
-        if (Type.isCoachType(role) && coachRepository.findById(id).isEmpty()) {
+        if (MemberType.isCoachType(role) && coachRepository.findById(id).isEmpty()) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCrewTypeByMemberId(final Long id, final String role) {
-        if (Type.isCrewType(role) && crewRepository.findById(id).isEmpty()) {
+        if (MemberType.isCrewType(role) && crewRepository.findById(id).isEmpty()) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
         }
     }

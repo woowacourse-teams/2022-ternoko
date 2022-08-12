@@ -14,7 +14,7 @@ import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
-import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.dto.LoginResponse;
 import java.io.IOException;
 import org.assertj.core.api.Assertions;
@@ -95,7 +95,7 @@ public class AuthServiceTest {
         setSlackMockData(coachEmail);
         // when
         final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
-        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
+        assertThat(loginResponse.getMemberRole()).isEqualTo(MemberType.COACH);
     }
 
 
@@ -108,7 +108,7 @@ public class AuthServiceTest {
         // when
         final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         // then
-        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.CREW);
+        assertThat(loginResponse.getMemberRole()).isEqualTo(MemberType.CREW);
     }
 
     @DisplayName("크루가 최초 회원가입 시, 닉네임을 입력 받아야한다.")
