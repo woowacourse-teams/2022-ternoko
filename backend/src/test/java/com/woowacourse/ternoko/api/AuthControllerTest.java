@@ -25,7 +25,7 @@ public class AuthControllerTest extends ControllerTest {
     private AuthService authService;
 
     @Test
-    @DisplayName("코치/크루 - 로그인을 한다.")
+    @DisplayName("Coach/Crew - 로그인을 한다.")
     void login() throws Exception {
         // given, when
         when(authService.login(any(), any()))
@@ -41,7 +41,7 @@ public class AuthControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("코치 요청 Type + 유효성 검사를 한다.")
+    @DisplayName("Coach 요청 Type + 유효성 검사를 한다.")
     void checkValidAccessTokenAndCoachType() throws Exception {
         // given, when
         doNothing().when(authService).checkMemberType(any(), any());
@@ -56,7 +56,7 @@ public class AuthControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("크루 요청 Type + 유효성 검사를 한다.")
+    @DisplayName("Crew 요청 Type + 유효성 검사를 한다.")
     void checkValidAccessTokenAndCrewType() throws Exception {
         // given, when
         doNothing().when(authService).checkMemberType(any(), any());
