@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.support;
 import com.woowacourse.ternoko.dto.EmailDto;
 import com.woowacourse.ternoko.dto.FormItemDto;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -35,23 +36,29 @@ public class EmailSender {
     }
 
     private String generateContent(final EmailDto emailDto) {
-        final StringBuilder stringBuilder = new StringBuilder();
-        final StringBuilder contentBuilder = stringBuilder.append(
-                        String.format("안녕하세요 %s. %s 면담신청 합니다",
-                                emailDto.getCoachNickname(),
-                                emailDto.getCrewNickname()))
+        final StringBuilder contentBuilder = new StringBuilder();
+        generateContentHeader(emailDto, contentBuilder);
+        generateContentFormItem(emailDto.getFormItems(), contentBuilder);
+        return contentBuilder.toString();
+    }
+
+    private void generateContentHeader(final EmailDto emailDto, final StringBuilder contentBuilder) {
+        contentBuilder.append(String.format("안녕하세요 %s. %s 면담신청 합니다",
+                        emailDto.getCoachNickname(),
+                        emailDto.getCrewNickname()))
                 .append(System.lineSeparator())
                 .append(String.format("면담 일시 : %s", dateFormat.format(emailDto.getInterviewStartTime())))
-                .append(System.lineSeparator())
-                .append("사전 질문 내용")
                 .append(System.lineSeparator());
+    }
 
-        for (final FormItemDto formItem : emailDto.getFormItems()) {
+    private void generateContentFormItem(final List<FormItemDto> formItemsDto, final StringBuilder contentBuilder) {
+        contentBuilder.append("사전 질문 내용")
+                .append(System.lineSeparator());
+        for (final FormItemDto formItem : formItemsDto) {
             contentBuilder.append(String.format("- %s", formItem.getQuestion()))
                     .append(System.lineSeparator())
                     .append(formItem.getAnswer())
                     .append(System.lineSeparator());
         }
-        return contentBuilder.toString();
     }
 }
