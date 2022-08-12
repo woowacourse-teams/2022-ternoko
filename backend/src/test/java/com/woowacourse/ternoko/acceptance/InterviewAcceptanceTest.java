@@ -98,7 +98,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
                 .getList(".", InterviewResponse.class);
 
         // then
-        assertThat(InterviewResponses).hasSize(2);
+        assertThat(InterviewResponses).hasSize(3); // data.sql에 들어가있는 테스트 때문에 1 추가
     }
 
     @Test

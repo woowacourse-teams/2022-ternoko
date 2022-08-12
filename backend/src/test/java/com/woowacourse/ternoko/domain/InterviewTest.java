@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.domain;
 
-import static com.woowacourse.ternoko.domain.InterviewStatusType.FIX;
+import static com.woowacourse.ternoko.domain.InterviewStatusType.FIXED;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,10 +27,10 @@ class InterviewTest {
         );
 
         // when
-        interview.updateStatus(FIX);
+        interview.updateStatus(FIXED);
 
         // then
-        assertThat(interview.getInterviewStatusType()).isEqualTo(FIX);
+        assertThat(interview.getInterviewStatusType()).isEqualTo(FIXED);
     }
 
     @Test
@@ -44,7 +44,7 @@ class InterviewTest {
                 localDateTime.plusMinutes(30),
                 COACH1,
                 CREW1,
-                FIX
+                FIXED
         );
 
         // when & then

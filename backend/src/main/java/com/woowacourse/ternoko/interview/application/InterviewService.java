@@ -8,14 +8,23 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.comment.domain.Comment;
+import com.woowacourse.ternoko.comment.dto.CommentRequest;
+import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.comment.repository.CommentRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
+import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.FormItemRepository;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
@@ -30,6 +39,7 @@ import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdExcepti
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
+import com.woowacourse.ternoko.repository.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,9 +61,11 @@ public class InterviewService {
 
     private final CoachRepository coachRepository;
     private final CrewRepository crewRepository;
+    private final MemberRepository memberRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
     private final FormItemRepository formItemRepository;
+    private final CommentRepository commentRepository;
 
     public Interview create(final Long crewId, final InterviewRequest interviewRequest) {
         final Interview interview = convertInterview(crewId, interviewRequest);
@@ -221,5 +233,36 @@ public class InterviewService {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId,
                         interviewDateTime)
                 .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
+    public Long createComment(final Long memberId, final Long interviewId, final CommentRequest commentRequest) {
+        final Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+        final Member member = getMember(memberId, interview);
+        final MemberType memberType = getMemberType(memberId);
+        if (!memberType.getValidInterviewStatusType().contains(interview.getInterviewStatusType())) {
+            throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
+        }
+        Comment savedComment = commentRepository.save(new Comment(member, interview, commentRequest.getComment()));
+        interview.complete(memberType);
+
+        return savedComment.getId();
+    }
+
+    private Member getMember(Long memberId, Interview interview) {
+        if (interview.getCoach().sameMember(memberId)) {
+            return interview.getCoach();
+        }
+        if (interview.getCrew().sameMember(memberId)) {
+            return interview.getCrew();
+        }
+        throw new MemberNotFoundException(INVALID_INTERVIEW_MEMBER_ID);
+    }
+
+    private MemberType getMemberType(final Long memberId) {
+        if (crewRepository.findById(memberId).isPresent()) {
+            return MemberType.CREW;
+        }
+        return MemberType.COACH;
     }
 }
