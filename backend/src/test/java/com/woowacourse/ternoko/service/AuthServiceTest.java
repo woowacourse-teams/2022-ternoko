@@ -1,6 +1,11 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -11,7 +16,8 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
-import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.dto.LoginResponse;
 import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +43,39 @@ public class AuthServiceTest {
     private JwtProvider jwtProvider;
 
     @Test
+    @DisplayName("Coach가 본인인지 요청을 보내면 true 를 반환한다.")
+    void checkCrewSameType() {
+        assertThatNoException().isThrownBy(() -> authService.checkMemberType(1L, "COACH"));
+    }
+
+    @Test
+    @DisplayName("Coach가 아닌데 Coach로 요청을 보내면 에러를 반환한다.")
+    void check_coach_Type_false() {
+        // when
+        assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "COACH"))
+                .isInstanceOf(InvalidTokenException.class)
+                .hasMessage(INVALID_TOKEN.getMessage());
+    }
+
+    @Test
+    @DisplayName("Crew가 아닌데, Crew로 요청을 보내면 에러를 반환한다.")
+    void check_crew_type_false() {
+        // when
+        assertThatThrownBy(() -> authService.checkMemberType(COACH1.getId(), "CREW"))
+                .isInstanceOf(InvalidTokenException.class)
+                .hasMessage(INVALID_TOKEN.getMessage());
+    }
+
+    @Test
+    @DisplayName("Coach나, Crew가 아닌 다른 롤로 에러를 반환한다.")
+    void check_undefined_Type_exception() {
+        // when
+        assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "UNDEFINED"))
+                .isInstanceOf(InvalidTokenException.class)
+                .hasMessage(INVALID_TOKEN.getMessage());
+    }
+
+    @Test
     @DisplayName("로그인을 하면 AccessToken 을 발급한다.")
     void login() throws SlackApiException, IOException {
         // given
@@ -47,7 +86,7 @@ public class AuthServiceTest {
         assertThat(loginResponse.getAccessToken()).isNotNull();
     }
 
-    @DisplayName("코치가 최초 로그인 시도시, 코치로 회원가입이 된다.")
+    @DisplayName("Coach가 최초 로그인 시도시, Coach로 회원가입이 된다.")
     @Test
     void signup_coach() throws SlackApiException, IOException {
         // given
@@ -55,11 +94,11 @@ public class AuthServiceTest {
         setSlackMockData(coachEmail);
         // when
         final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
-        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.COACH);
+        assertThat(loginResponse.getMemberRole()).isEqualTo(MemberType.COACH);
     }
 
 
-    @DisplayName("크루가 최초 로그인 시도시, 크루로 회원가입이 된다.")
+    @DisplayName("Crew가 최초 로그인 시도시, Crew로 회원가입이 된다.")
     @Test
     void signup_crew() throws SlackApiException, IOException {
         // given
@@ -68,10 +107,10 @@ public class AuthServiceTest {
         // when
         final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
         // then
-        assertThat(loginResponse.getMemberRole()).isEqualTo(Type.CREW);
+        assertThat(loginResponse.getMemberRole()).isEqualTo(MemberType.CREW);
     }
 
-    @DisplayName("크루가 최초 회원가입 시, 닉네임을 입력 받아야한다.")
+    @DisplayName("Crew가 최초 회원가입 시, 닉네임을 입력 받아야한다.")
     @Test
     void signup_crew_with_nickname() throws SlackApiException, IOException {
         // given
@@ -94,7 +133,6 @@ public class AuthServiceTest {
         // then
         assertThat(loginResponse.isHasNickname()).isTrue();
     }
-
 
     private void setSlackMockData(String userEmail) throws IOException, SlackApiException {
 

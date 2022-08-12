@@ -1,5 +1,8 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.domain.MemberType.COACH;
+import static com.woowacourse.ternoko.domain.MemberType.CREW;
+
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.impl.MethodsClientImpl;
 import com.slack.api.methods.request.openid.connect.OpenIDConnectTokenRequest;
@@ -7,8 +10,10 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.config.AuthorizationExtractor;
-import com.woowacourse.ternoko.domain.Type;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
@@ -63,11 +68,12 @@ public class AuthService {
         boolean hasNickname = member.get().getNickname() != null;
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
+            return LoginResponse.of(COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
                     hasNickname);
         }
 
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(member.get().getId())), hasNickname);
+        return LoginResponse.of(CREW, jwtProvider.createToken(String.valueOf(member.get().getId())),
+                hasNickname);
     }
 
     private OpenIDConnectUserInfoResponse getUserInfoResponseBySlack(final String code, final String redirectUrl)
@@ -79,7 +85,8 @@ public class AuthService {
         return slackMethodClient.openIDConnectUserInfo(userInfoRequest);
     }
 
-    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code, final String redirectUrl) throws IOException, SlackApiException {
+    private OpenIDConnectTokenResponse getOpenIDTokenResponse(final String code, final String redirectUrl)
+            throws IOException, SlackApiException {
         final OpenIDConnectTokenRequest tokenRequest = OpenIDConnectTokenRequest.builder()
                 .clientId(clientId)
                 .clientSecret(clientSecret)
@@ -93,18 +100,42 @@ public class AuthService {
         if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
                     userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
-            return LoginResponse.of(Type.COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
+            return LoginResponse.of(COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
 
-        return LoginResponse.of(Type.CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
+        return LoginResponse.of(CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
     }
 
     public boolean isValid(final String header) {
         final String token = AuthorizationExtractor.extract(header);
         jwtProvider.validateToken(token);
         return true;
+    }
+
+    public void checkMemberType(final Long id, final String type) {
+        validateType(type);
+        validateCoachTypeByMemberId(id, type);
+        validateCrewTypeByMemberId(id, type);
+    }
+
+    private void validateType(String type) {
+        if (!MemberType.existType(type)) {
+            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
+    }
+
+    private void validateCoachTypeByMemberId(final Long id, final String type) {
+        if (COACH.matchType(type) && !coachRepository.existsById(id)) {
+            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
+    }
+
+    private void validateCrewTypeByMemberId(final Long id, final String type) {
+        if (CREW.matchType(type) && !crewRepository.existsById(id)) {
+            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
     }
 }
