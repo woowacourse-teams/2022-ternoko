@@ -52,37 +52,4 @@ public class FormItem {
         this.answer = formItem.answer;
         this.interview = interview;
     }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final FormItem formItem = (FormItem) o;
-
-        if (getId() != null ? !getId().equals(formItem.getId()) : formItem.getId() != null) {
-            return false;
-        }
-        if (getQuestion() != null ? !getQuestion().equals(formItem.getQuestion()) : formItem.getQuestion() != null) {
-            return false;
-        }
-        if (getAnswer() != null ? !getAnswer().equals(formItem.getAnswer()) : formItem.getAnswer() != null) {
-            return false;
-        }
-        return getInterview() != null ? getInterview().equals(formItem.getInterview())
-                : formItem.getInterview() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getQuestion() != null ? getQuestion().hashCode() : 0);
-        result = 31 * result + (getAnswer() != null ? getAnswer().hashCode() : 0);
-        result = 31 * result + (getInterview() != null ? getInterview().hashCode() : 0);
-        return result;
-    }
 }
