@@ -67,6 +67,18 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("코치의 면담 가능 시간을 저장한다. - 여러 달")
+    void saveCalendarsTimes() {
+        // given & when
+        final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
+                generateHeader(COACH3.getId()),
+                MONTHS_REQUEST);
+
+        // then
+        assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
     @DisplayName("선택한 년, 월의 면담 예약 내역 목록을 조회한다.")
     void findAllByCoach() {
         // given
@@ -86,17 +98,5 @@ public class CoachAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(scheduleResponse.getCalendar()).hasSize(1);
-    }
-
-    @Test
-    @DisplayName("코치의 면담 가능 시간을 저장한다. - 여러 달")
-    void saveCalendarsTimes() {
-        // given & when
-        final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
-                generateHeader(COACH3.getId()),
-                MONTHS_REQUEST);
-
-        // then
-        assertThat(calendarResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

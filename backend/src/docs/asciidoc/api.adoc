@@ -47,10 +47,11 @@ operation::auth-controller-test/login[snippets='http-request,http-response']
 === [전체] AccessToken 유효성 검사 API
 GET /api/login/valid?type={type}
 
-operation::auth-controller-test/check-valid-access-token-and-role[snippets='http-request,http-response']
+operation::auth-controller-test/check-valid-access-token-and-crew-type[snippets='http-request,http-response']
 ==== Error Response
 |===
 | statusCode | message
+
 | 200
 | `유효한 요청입니다..`
 
