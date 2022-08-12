@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.support;
 
 import com.woowacourse.ternoko.dto.EmailDto;
-import com.woowacourse.ternoko.dto.FormItemDto;
+import com.woowacourse.ternoko.interview.dto.FormItemDto;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.AllArgsConstructor;

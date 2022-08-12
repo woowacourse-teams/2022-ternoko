@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.service;
 
-import com.woowacourse.ternoko.domain.Interview;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.EmailDto;
-import com.woowacourse.ternoko.repository.InterviewRepository;
+import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.support.EmailSender;
 import java.time.LocalDateTime;
 import java.util.List;
