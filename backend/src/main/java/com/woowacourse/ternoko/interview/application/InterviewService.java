@@ -136,11 +136,11 @@ public class InterviewService {
         final List<Interview> interviews = interviewRepository
                 .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
 
-        final List<Interview> result = interviews.stream()
+        final List<Interview> excludeCanceledInterviews = interviews.stream()
                 .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
                 .collect(Collectors.toList());
 
-        return ScheduleResponse.from(result);
+        return ScheduleResponse.from(excludeCanceledInterviews);
     }
 
     public Interview update(final Long crewId,
