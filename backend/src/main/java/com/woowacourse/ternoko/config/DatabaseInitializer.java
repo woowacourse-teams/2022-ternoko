@@ -4,7 +4,6 @@ import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.domain.member.Coach;
-import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import java.time.LocalDate;
@@ -97,14 +96,12 @@ public class DatabaseInitializer {
                     "https://user-images.githubusercontent.com/54317630/177786158-226652b7-7b4a-462c-af3b-775811756c87.png",
                     "안녕하세요."));
 
-            coaches.add(new Coach(13L, "김상록", "록바", "evertree6031@gmail.com",
+            coaches.add(new Coach(13L, "터놓고", "터노코", "ternoko.official@gmail.com",
                     "U02UU3F2H6K",
-                    "https://user-images.githubusercontent.com/26570275/182808926-e5563d40-780d-428a-9d9f-57b9318bbefe.png",
-                    "이두로 코딩하는 개발자"));
+                    "https://user-images.githubusercontent.com/54317630/184493934-9a2ba1bb-6051-4428-bb6a-5527c4f480d9.JPG",
+                    "면담은 터놓고 하세요."));
 
             coachRepository.saveAll(coaches);
-            crewRepository.save(new Crew(13L, "사현빈", "바니", "shb1833@gmail.com", "U03N6FKQEJX",
-                    "https://a.slack-edge.com/80588/img/avatars-teams/ava_0012-230.png"));
 
             availableDateTimeRepository.save(new AvailableDateTime(1L, coach1,
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
