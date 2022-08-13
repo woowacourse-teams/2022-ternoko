@@ -15,11 +15,11 @@ public enum InterviewStatusType {
     COMPLETE,
     CANCELED;
 
-    public static boolean isCanceled(InterviewStatusType type) {
+    public static boolean isCanceled(final InterviewStatusType type) {
         return CANCELED.equals(type);
     }
 
-    public void validateCreateComment(MemberType memberType) {
+    public void validateCreateComment(final MemberType memberType) {
         if (memberType == MemberType.COACH && (this == COMMENT || this == CREW_COMPLETED)) {
             return;
         }
@@ -29,7 +29,7 @@ public enum InterviewStatusType {
         throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
     }
 
-    public void validateFindComment(MemberType memberType) {
+    public void validateFindComment(final MemberType memberType) {
         if (memberType == MemberType.COACH && (this == COMPLETE || this == COACH_COMPLETED)) {
             return;
         }

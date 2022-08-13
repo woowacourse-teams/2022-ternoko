@@ -126,11 +126,11 @@ public class Interview {
         this.interviewStatusType = InterviewStatusType.COMPLETE;
     }
 
-    public boolean sameCrew(Long crewId) {
+    public boolean sameCrew(final Long crewId) {
         return crew.sameMember(crewId);
     }
 
-    public boolean sameCoach(Long coachId) {
+    public boolean sameCoach(final Long coachId) {
         return coach.sameMember(coachId);
     }
 
@@ -145,7 +145,7 @@ public class Interview {
         }
     }
 
-    public Member validateMember(Long memberId) {
+    public Member validateMember(final Long memberId) {
         if (this.coach.sameMember(memberId)) {
             return this.coach;
         }

@@ -45,7 +45,7 @@ public class CommentService {
         return comment.getId();
     }
 
-    public CommentsResponse findComments(Long memberId, Long interviewId) {
+    public CommentsResponse findComments(final Long memberId, final Long interviewId) {
         final Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
 
@@ -59,7 +59,10 @@ public class CommentService {
         return CommentsResponse.from(commentResponses);
     }
 
-    public void update(Long memberId, Long interviewId, Long commentId, CommentRequest commentRequest) {
+    public void update(final Long memberId,
+                       final Long interviewId,
+                       final Long commentId,
+                       final CommentRequest commentRequest) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
         comment.validMember(memberId);
