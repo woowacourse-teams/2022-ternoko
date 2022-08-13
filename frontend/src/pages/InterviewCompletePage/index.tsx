@@ -62,12 +62,12 @@ const InterviewCompletePage = () => {
       </S.InfoContainer>
 
       <S.ButtonContainer>
-        <Button width="47%" height="35px" white={true} onClick={handleOpenModal}>
+        <Button width="47%" height="3.5rem" white={true} onClick={handleOpenModal}>
           면담확인
         </Button>
 
         <Link to={PAGE.CREW_HOME}>
-          <Button width="100%" height="35px">
+          <Button width="100%" height="3.5rem">
             홈으로
           </Button>
         </Link>

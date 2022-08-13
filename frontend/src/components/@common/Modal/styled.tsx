@@ -46,7 +46,9 @@ export const Frame = styled.div<ModalProps>`
   border-radius: 10px;
   font-size: 1.5rem;
 
-  ${({ show, additionalFrameStyle }) =>
+  ${({ additionalFrameStyle }) => additionalFrameStyle};
+
+  ${({ show }) =>
     show &&
     css`
       top: 0;
@@ -54,7 +56,5 @@ export const Frame = styled.div<ModalProps>`
       transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.43, 1.19);
 
       opacity: 1;
-
-      ${additionalFrameStyle}
-    `}
+    `};
 `;
