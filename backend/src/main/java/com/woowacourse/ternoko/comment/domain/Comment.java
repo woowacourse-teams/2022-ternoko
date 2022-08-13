@@ -16,13 +16,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        columnNames = {"member_id", "interview_id"}
-                )
-        }
-)
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"member_id", "interview_id"})})
 @NoArgsConstructor
 public class Comment {
 
