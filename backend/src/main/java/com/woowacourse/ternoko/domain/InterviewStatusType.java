@@ -1,5 +1,11 @@
 package com.woowacourse.ternoko.domain;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
+
+import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
+
 public enum InterviewStatusType {
     EDITABLE,
     FIXED,
@@ -13,4 +19,23 @@ public enum InterviewStatusType {
         return CANCELED.equals(type);
     }
 
+    public void validateCreateComment(MemberType memberType) {
+        if (memberType == MemberType.COACH && (this == COMMENT || this == CREW_COMPLETED)) {
+            return;
+        }
+        if (memberType == MemberType.CREW && (this == COMMENT || this == COACH_COMPLETED)) {
+            return;
+        }
+        throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
+    }
+
+    public void validateFindComment(MemberType memberType) {
+        if (memberType == MemberType.COACH && (this == COMPLETE || this == COACH_COMPLETED)) {
+            return;
+        }
+        if (memberType == MemberType.CREW && (this == COMPLETE || this == CREW_COMPLETED)) {
+            return;
+        }
+        throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
+    }
 }
