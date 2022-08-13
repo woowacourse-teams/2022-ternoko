@@ -33,8 +33,5 @@ export const ExampleBox = styled.div`
 `;
 
 export const ButtonBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  justify-content: center;
   margin-top: 1.5rem;
 `;
