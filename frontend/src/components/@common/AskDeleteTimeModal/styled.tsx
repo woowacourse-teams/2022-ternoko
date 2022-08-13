@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+`;
+
 export const Icon = styled.img`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
   width: 2rem;
   height: 2rem;
   object-fit: cover;
@@ -12,7 +15,13 @@ export const Icon = styled.img`
 
 export const ButtonBox = styled.div`
   display: flex;
-  justify-content: flex-end;
-  justify-content: center;
-  margin-top: 1.5rem;
+  justify-content: space-between;
+
+  button {
+    padding: 0 2.5rem;
+
+    font-size: 1.8rem;
+  }
 `;
+
+export const additionalFrameStyle = 'width: 45rem';
