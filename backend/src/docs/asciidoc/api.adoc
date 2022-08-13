@@ -404,12 +404,14 @@ operation::interview-controller-test/delete-interview[snippets='http-request,htt
 
 === [코치] 면담 예약 취소 API
 
-PATCH /api/interviews?interviewId={interviewId}&onlyInterview={flag}
+PATCH /api/interviews/{interviewId}?onlyInterview={flag}
 
 ==== HTTP request
+
 include::{snippets}/interview-controller-test/cancel-interview-with-delete-available-date-time/http-request.adoc[]
 
 ==== HTTP response
+
 include::{snippets}/interview-controller-test/cancel-interview-with-delete-available-date-time/http-response.adoc[]
 
 ==== Error Response
