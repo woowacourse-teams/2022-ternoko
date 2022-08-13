@@ -19,6 +19,7 @@ public enum ExceptionType {
     INVALID_AVAILABLE_DATE_TIME(HttpStatus.BAD_REQUEST, "선택한 날짜는 해당 코치의 가능한 시간이 아닙니다."),
     OVER_LENGTH(HttpStatus.BAD_REQUEST, "자를 넘을 수 없습니다."),
     INVALID_STATUS_CREATE_COMMENT(HttpStatus.BAD_REQUEST, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),
+    INVALID_STATUS_FIND_COMMENT(HttpStatus.BAD_REQUEST, "해당 면담은 자유로운 한마디를 조회할 수 없습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
     UNAUTHORIZED_MEMBER(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),
