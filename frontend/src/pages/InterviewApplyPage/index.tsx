@@ -18,7 +18,7 @@ import useTimes from '@/hooks/useTimes';
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
-import { CoachType, InterviewType, StringDictionary } from '@/types/domain';
+import { CoachType, CrewSelectTime, InterviewType, StringDictionary } from '@/types/domain';
 
 import {
   getCoachScheduleAPI,
@@ -49,7 +49,7 @@ const InterviewApplyPage = () => {
   const { year, month, selectedDates } = useCalendarState();
   const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime, resetTimes } = useTimes({
+  const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'single',
   });
 
@@ -188,8 +188,8 @@ const InterviewApplyPage = () => {
         const response = await getCoachScheduleAPI(coachId, year, month + 1);
 
         const schedules = response.data.calendarTimes.reduce(
-          (acc: StringDictionary, fullDate: string) => {
-            const { day, time } = separateFullDate(fullDate);
+          (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
+            const { day, time } = separateFullDate(calendarTime);
 
             acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], time] : [time];
 
@@ -202,7 +202,19 @@ const InterviewApplyPage = () => {
 
         if (!initRef.current) {
           initRef.current = true;
-          interviewId && setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+
+          if (interviewId) {
+            setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+            setSelectedTimes([
+              separateFullDate(
+                (
+                  response.data.calendarTimes.find(
+                    ({ status }: CrewSelectTime) => status === 'USED',
+                  ) as CrewSelectTime
+                ).calendarTime,
+              ).time,
+            ]);
+          }
         }
       })();
     }

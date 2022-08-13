@@ -47,7 +47,12 @@ export interface CalendarTime {
 
 export type TimeStatus = 'OPEN' | 'USED';
 
-type Time = {
+export type CrewSelectTime = {
+  calendarTime: string;
+  status: TimeStatus;
+};
+
+type CoachAvailableTime = {
   time: string;
   availableDateTimeStatus: TimeStatus;
 };
@@ -55,7 +60,7 @@ type Time = {
 export interface CoachScheduleRequestCalendarTime {
   year: number;
   month: number;
-  times: Time[];
+  times: CoachAvailableTime[];
 }
 
 export interface CoachScheduleRequestBodyType {
