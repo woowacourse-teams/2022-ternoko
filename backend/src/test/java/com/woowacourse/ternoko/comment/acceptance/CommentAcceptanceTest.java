@@ -148,7 +148,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
         CommentRequest updateCommentRequest = new CommentRequest("굳! 이 말을 빼먹고 보내니 아쉬워서 수정합니다.");
         // when
         String location = createCommentResponse.header("Location");
-        System.out.println("location : "+ location);
+        System.out.println("location : " + location);
         ExtractableResponse<Response> updateCommentResponse = put(location, crewHeader, updateCommentRequest);
         // then
         ExtractableResponse<Response> getResponse = get("/api/interviews/" + interviewId + "/comments", crewHeader);
