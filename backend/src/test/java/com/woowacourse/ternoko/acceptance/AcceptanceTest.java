@@ -99,12 +99,12 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    protected ExtractableResponse<Response> patchInterview(final String uri, final Header header, final String interviewId) {
+    protected ExtractableResponse<Response> patchInterview(final String uri, final Header header,
+                                                           final boolean onlyInterview) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(header)
-                .queryParam("interviewId", interviewId)
-                .queryParam("onlyInterview", "true")
+                .queryParam("onlyInterview", onlyInterview)
                 .when().patch(uri)
                 .then().log().all()
                 .extract();

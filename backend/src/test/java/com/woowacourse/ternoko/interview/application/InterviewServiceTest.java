@@ -460,31 +460,31 @@ class InterviewServiceTest {
         );
     }
 
-//    @Test
-//    @DisplayName("코치가 개인 사정이 생겨서 면담 예약을 취소할 때, 되는 시간은 유지된다.")
-//    void only_cancel() {
-//        // given
-//        coachService.putAvailableDateTimesByCoachId(COACH2.getId(), MONTH_REQUEST);
-//
-//        final Interview interview = interviewService.create(CREW1.getId(),
-//                new InterviewRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
-//                        FORM_ITEM_REQUESTS));
-//        // when
-//        Interview canceledInterview = interviewService.cancelWithDeleteAvailableTime(COACH2.getId(), interview.getId(),
-//                true);
-//
-//        final boolean expected;
-//
-//        final Optional<AvailableDateTime> dateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
-//                COACH2.getId(),
-//                interview.getInterviewEndTime());
-//        // then
-//
-//        assertAll(
-//                () -> assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED),
-//                () -> assertFalse(dateTime.isPresent())
-//        );
-//    }
+    @Test
+    @DisplayName("코치가 개인 사정이 생겨서 면담 예약을 취소할 때, 되는 시간은 유지된다.")
+    void only_cancel() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH2.getId(), MONTH_REQUEST);
+
+        final Interview interview = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        Interview canceledInterview = interviewService.cancelWithDeleteAvailableTime(COACH2.getId(), interview.getId(),
+                true);
+
+        final boolean expected;
+
+        final Optional<AvailableDateTime> dateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
+                COACH2.getId(),
+                interview.getInterviewEndTime());
+        // then
+
+        assertAll(
+                () -> assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED),
+                () -> assertFalse(dateTime.isPresent())
+        );
+    }
 
     @Test
     @DisplayName("코치가 면담 예약을 취소 시 본인의 면담 예약이 아닌 경우 예외를 반환한다.")

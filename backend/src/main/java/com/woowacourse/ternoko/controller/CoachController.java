@@ -2,8 +2,8 @@ package com.woowacourse.ternoko.controller;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimesResponse;
-import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.service.CoachService;

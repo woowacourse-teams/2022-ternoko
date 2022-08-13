@@ -79,10 +79,10 @@ public class InterviewController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/interviews")
-    public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
-                                                @RequestParam final Long interviewId,
-                                                @RequestParam final boolean onlyInterview) throws Exception {
+    @PatchMapping("/interviews/{interviewId}")
+    public ResponseEntity<Void> cancelInterview2(@AuthenticationPrincipal final Long coachId,
+                                                 @PathVariable final Long interviewId,
+                                                 @RequestParam final boolean onlyInterview) throws Exception {
         final Interview interview = interviewService.cancelWithDeleteAvailableTime(coachId, interviewId, onlyInterview);
         slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
         return ResponseEntity.noContent().build();
