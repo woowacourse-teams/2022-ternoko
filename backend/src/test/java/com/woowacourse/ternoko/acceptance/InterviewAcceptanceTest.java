@@ -16,8 +16,10 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
+import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -26,6 +28,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 class InterviewAcceptanceTest extends AcceptanceTest {
 
@@ -68,14 +71,11 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
 
         // then
-        assertAll(
-                () -> assertThat(interviewResponse.getCoachNickname())
-                        .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(interviewResponse.getInterviewStartTime())
-                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
-                () -> assertThat(interviewResponse.getInterviewEndTime())
-                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME))
-        );
+        assertAll(() -> assertThat(interviewResponse.getCoachNickname()).isEqualTo(COACH3.getNickname()),
+                () -> assertThat(interviewResponse.getInterviewStartTime()).isEqualTo(
+                        LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
+                () -> assertThat(interviewResponse.getInterviewEndTime()).isEqualTo(
+                        LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME)));
     }
 
     @Test
@@ -116,8 +116,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         final InterviewRequest updateRequest = new InterviewRequest(COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS);
         ExtractableResponse<Response> updateResponse = put("/api/interviews/" + interviewId,
-                generateHeader(CREW1.getId()),
-                updateRequest);
+                generateHeader(CREW1.getId()), updateRequest);
 
         //then
         assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -143,8 +142,8 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("코치가 면담 예약을 취소한다.")
-    void cancelInterview() {
+    @DisplayName("코치가 면담 예약만 취소한다.")
+    void cancelInterview_onlyInterview() {
         // given
         put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
         final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
@@ -154,10 +153,47 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         final char interviewId = redirectURI.charAt(redirectURI.length() - 1);
 
         // when
-        final ExtractableResponse<Response> cancelResponse = patch("/api/interviews/" + interviewId,
-                generateHeader(COACH3.getId()));
-
+        final ExtractableResponse<Response> cancelResponse = patchInterview("/api/interviews/" + interviewId,
+                generateHeader(COACH3.getId()), true);
         //then
         assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("코치가 면담 예약 취소 + 되는 시간을 삭제한다.")
+    void cancelInterview_with_availableDateTime() {
+        // given
+        final LocalDateTime interviewStartTime = LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME);
+
+        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+                interviewStartTime);
+
+        final String redirectURI = response.header("Location");
+        final char interviewId = redirectURI.charAt(redirectURI.length() - 1);
+
+        // when
+        final ExtractableResponse<Response> cancelResponse = patchInterview("/api/interviews/" + interviewId,
+                generateHeader(COACH3.getId()), false);
+
+        final ExtractableResponse<Response> availableDateTimes = RestAssured.given().log().all()
+                .queryParam("coachId", COACH3.getId())
+                .queryParam("year", NOW_PLUS_2_DAYS.getYear())
+                .queryParam("month", NOW_PLUS_2_DAYS.getMonthValue())
+                .header(generateHeader(COACH3.getId()))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/calendar/times")
+                .then().log().all()
+                .extract();
+
+        final AvailableDateTimesResponse availableDateTimesResponse = availableDateTimes.body()
+                .as(AvailableDateTimesResponse.class);
+        //then
+        assertAll(
+                () -> assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+
+                () -> assertThat(availableDateTimesResponse.getCalendarTimes()).extracting("calendarTime")
+                        .doesNotContain(interviewStartTime)
+        );
     }
 }

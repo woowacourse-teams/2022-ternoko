@@ -50,7 +50,6 @@ public class InterviewController {
     @GetMapping("/interviews/{interviewId}")
     public ResponseEntity<InterviewResponse> findInterviewById(@PathVariable final Long interviewId) {
         final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interviewId);
-
         return ResponseEntity.ok(interviewResponse);
     }
 
@@ -68,9 +67,7 @@ public class InterviewController {
                                                 @RequestBody final InterviewRequest interviewRequest)
             throws Exception {
         final Interview updateInterview = interviewService.update(crewId, interviewId, interviewRequest);
-
         slackAlarm.sendMessage(updateInterview, AlarmMessage.CREW_UPDATE.getMessage());
-
         return ResponseEntity.ok().build();
     }
 
@@ -78,19 +75,16 @@ public class InterviewController {
     public ResponseEntity<Void> deleteInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId) throws Exception {
         final Interview interview = interviewService.delete(crewId, interviewId);
-
         slackAlarm.sendMessage(interview, AlarmMessage.CREW_DELETE.getMessage());
-
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/interviews/{interviewId}")
-    public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
-                                                @PathVariable final Long interviewId) throws Exception {
-        final Interview interview = interviewService.cancel(coachId, interviewId);
-
+    public ResponseEntity<Void> cancelInterview2(@AuthenticationPrincipal final Long coachId,
+                                                 @PathVariable final Long interviewId,
+                                                 @RequestParam final boolean onlyInterview) throws Exception {
+        final Interview interview = interviewService.cancelWithDeleteAvailableTime(coachId, interviewId, onlyInterview);
         slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
-
         return ResponseEntity.noContent().build();
     }
 }

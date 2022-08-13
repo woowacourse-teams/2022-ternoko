@@ -24,7 +24,11 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
@@ -43,6 +47,7 @@ import com.woowacourse.ternoko.service.CoachService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,6 +65,9 @@ class InterviewServiceTest {
 
     @Autowired
     private CoachService coachService;
+
+    @Autowired
+    private AvailableDateTimeRepository availableDateTimeRepository;
 
     @Test
     @DisplayName("면담 예약을 생성한다.")
@@ -209,7 +217,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_REQUESTS));
 
-        interviewService.cancel(COACH4.getId(), interview.getId());
+        interviewService.cancelWithDeleteAvailableTime(COACH4.getId(), interview.getId(), false);
 
         // when
         final ScheduleResponse scheduleResponses = interviewService.findAllByCoach(COACH4.getId(),
@@ -430,8 +438,8 @@ class InterviewServiceTest {
     }
 
     @Test
-    @DisplayName("코치가 면담 예약을 취소한다.")
-    void cancel() {
+    @DisplayName("코치가 시간이 안돼서 면담 예약을 취소할 때, 되는 시간도 지워준다.")
+    void cancelWithDeleteAvailableDateTime() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
@@ -439,10 +447,43 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview canceledInterview = interviewService.cancel(COACH3.getId(), interview.getId());
+        Interview canceledInterview = interviewService.cancelWithDeleteAvailableTime(COACH3.getId(), interview.getId(),
+                true);
 
+        final boolean expected = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(COACH3.getId(),
+                canceledInterview.getInterviewEndTime()).isEmpty();
         // then
-        assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED);
+
+        assertAll(
+                () -> assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED),
+                () -> assertTrue(expected)
+        );
+    }
+
+    @Test
+    @DisplayName("코치가 개인 사정이 생겨서 면담 예약을 취소할 때, 되는 시간은 유지된다.")
+    void only_cancel() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH2.getId(), MONTH_REQUEST);
+
+        final Interview interview = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        Interview canceledInterview = interviewService.cancelWithDeleteAvailableTime(COACH2.getId(), interview.getId(),
+                true);
+
+        final boolean expected;
+
+        final Optional<AvailableDateTime> dateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
+                COACH2.getId(),
+                interview.getInterviewEndTime());
+        // then
+
+        assertAll(
+                () -> assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED),
+                () -> assertFalse(dateTime.isPresent())
+        );
     }
 
     @Test
@@ -455,7 +496,8 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when  && then
-        assertThatThrownBy(() -> interviewService.cancel(COACH2.getId(), interview.getId()))
+        assertThatThrownBy(
+                () -> interviewService.cancelWithDeleteAvailableTime(COACH2.getId(), interview.getId(), true))
                 .isInstanceOf(InvalidInterviewCoachIdException.class)
                 .hasMessage(INVALID_INTERVIEW_COACH_ID.getMessage());
     }

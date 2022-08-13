@@ -107,6 +107,25 @@ public class InterviewControllerTest extends ControllerTest {
         //when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/interviews/{interviewId}", interviewId)
+                        .queryParam("onlyInterview", "true")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    @DisplayName("코치 - 면담 예약을 취소 + 되는 시간을 삭제한다.")
+    void cancelInterviewWithDeleteAvailableDateTime() throws Exception {
+        //given
+        createCalendarTimes(COACH1.getId());
+        final Long interviewId = createInterview(CREW1.getId());
+
+        //when, then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch("/api/interviews/{interviewId}", interviewId)
+                        .queryParam("onlyInterview", "false")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))

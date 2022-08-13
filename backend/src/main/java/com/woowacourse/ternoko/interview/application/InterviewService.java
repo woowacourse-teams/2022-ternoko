@@ -200,8 +200,7 @@ public class InterviewService {
         return interview;
     }
 
-    // : todo update 로직인데 이름만 Cancel? 왜 새로운 객체로 반환?
-    public Interview cancel(final Long coachId, final Long interviewId) {
+    private Interview cancel(final Long coachId, final Long interviewId) {
         final Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
         if (!interview.sameCoach(coachId)) {
@@ -209,6 +208,20 @@ public class InterviewService {
         }
         interview.cancel();
         return interview;
+    }
+
+    public Interview cancelWithDeleteAvailableTime(final Long coachId, final Long interviewId,
+                                                   final boolean onlyInterview) {
+        final Interview canceledInterview = cancel(coachId, interviewId);
+        final AvailableDateTime unAvailableTime = findAvailableTime(coachId,
+                canceledInterview.getInterviewStartTime());
+        if (!onlyInterview) {
+            availableDateTimeRepository.delete(unAvailableTime);
+            return canceledInterview;
+        }
+
+        unAvailableTime.open();
+        return canceledInterview;
     }
 
     private AvailableDateTime findAvailableTime(final InterviewRequest interviewRequest) {
