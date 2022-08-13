@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +26,8 @@ public class CommentController {
     public ResponseEntity<Void> createComment(@AuthenticationPrincipal final Long id,
                                               @PathVariable final Long interviewId,
                                               @RequestBody final CommentRequest commentRequest) {
-        interviewService.createComment(id, interviewId, commentRequest);
-        return ResponseEntity.created(URI.create("/api/interview/" + interviewId)).build();
+        Long commentId = interviewService.createComment(id, interviewId, commentRequest);
+        return ResponseEntity.created(URI.create("/api/interviews/" + interviewId + "/comments/" + commentId)).build();
     }
 
     @GetMapping("/interviews/{interviewId}/comments")
@@ -35,4 +36,15 @@ public class CommentController {
         CommentsResponse commentsResponse = interviewService.findComments(id, interviewId);
         return ResponseEntity.ok(commentsResponse);
     }
+
+    @PutMapping("/interviews/{interviewId}/comments/{commentId}")
+    public ResponseEntity<Void> updateComment(@AuthenticationPrincipal final Long id,
+                                              @PathVariable final Long interviewId,
+                                              @PathVariable final Long commentId,
+                                              @RequestBody final CommentRequest commentRequest) {
+        System.out.println("수정 페이지 접근");
+        interviewService.updateComment(id, interviewId, commentId, commentRequest);
+        return ResponseEntity.ok().build();
+    }
+
 }
