@@ -10,12 +10,16 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.comment.domain.Comment;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
+import com.woowacourse.ternoko.comment.dto.CommentResponse;
+import com.woowacourse.ternoko.comment.dto.CommentsResponse;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.comment.repository.CommentRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
@@ -42,6 +46,7 @@ import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -261,7 +266,7 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
         final Member member = getMember(memberId, interview);
         final MemberType memberType = getMemberType(memberId);
-        if (!memberType.getValidInterviewStatusType().contains(interview.getInterviewStatusType())) {
+        if (!memberType.getValidCreateCommentStatusType().contains(interview.getInterviewStatusType())) {
             throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
         }
         Comment savedComment = commentRepository.save(new Comment(member, interview, commentRequest.getComment()));
@@ -285,5 +290,23 @@ public class InterviewService {
             return MemberType.CREW;
         }
         return MemberType.COACH;
+    }
+
+    public CommentsResponse findComments(Long memberId, Long interviewId) {
+        MemberType requestMemberType = getMemberType(memberId);
+        final Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+        getMember(memberId, interview);
+        InterviewStatusType interviewStatus = interview.getInterviewStatusType();
+        if (!requestMemberType.getValidFindCommentStatusType().contains(interviewStatus)) {
+            throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
+        }
+        List<Comment> comments = commentRepository.findByInterviewId(interviewId);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            MemberType memberType = getMemberType(comment.getMember().getId());
+            commentResponses.add(CommentResponse.of(memberType, comment));
+        }
+        return CommentsResponse.from(commentResponses);
     }
 }
