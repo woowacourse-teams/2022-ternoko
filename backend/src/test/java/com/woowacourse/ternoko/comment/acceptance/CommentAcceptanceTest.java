@@ -135,4 +135,36 @@ public class CommentAcceptanceTest extends AcceptanceTest {
                         .containsExactly("너무 즐거웠어요. 고민이 있다면 또 면담 신청해주세요.", "너무나도 유익한 시간이었습니다.")
         );
     }
+
+    @Test
+    @DisplayName("[크루] 크루는 본인이 작성한 면담 코멘트를 수정할 수 있다.")
+    void updateCommentByAll() {
+        // given
+        final Long interviewId = 1L;
+        final Header crewHeader = generateHeader(CREW1.getId());
+        ExtractableResponse<Response> createCommentResponse = post("/api/interviews/" + interviewId + "/comments",
+                crewHeader,
+                new CommentRequest("너무나도 유익한 시간이었습니다."));
+        CommentRequest updateCommentRequest = new CommentRequest("굳! 이 말을 빼먹고 보내니 아쉬워서 수정합니다.");
+        // when
+        String location = createCommentResponse.header("Location");
+        System.out.println("location : "+ location);
+        ExtractableResponse<Response> updateCommentResponse = put(location, crewHeader, updateCommentRequest);
+        // then
+        ExtractableResponse<Response> getResponse = get("/api/interviews/" + interviewId + "/comments", crewHeader);
+        final CommentsResponse commentsResponse = getResponse.body().as(CommentsResponse.class);
+        assertAll(
+                () -> assertThat(updateCommentResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(getResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(commentsResponse.getComments().size()).isEqualTo(1),
+                () -> assertThat(commentsResponse.getComments().stream()
+                        .map(CommentResponse::getRole)
+                        .collect(Collectors.toList()))
+                        .containsExactly(MemberType.CREW),
+                () -> assertThat(commentsResponse.getComments().stream()
+                        .map(CommentResponse::getComment)
+                        .collect(Collectors.toList()))
+                        .containsExactly("굳! 이 말을 빼먹고 보내니 아쉬워서 수정합니다.")
+        );
+    }
 }

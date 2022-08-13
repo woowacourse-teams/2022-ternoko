@@ -1,6 +1,9 @@
 package com.woowacourse.ternoko.comment.application;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
@@ -12,6 +15,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentResponse;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
+import com.woowacourse.ternoko.comment.exception.CommentNotFoundException;
+import com.woowacourse.ternoko.comment.exception.InvalidCommentInterviewIdException;
+import com.woowacourse.ternoko.comment.exception.InvalidCommentMemberIdException;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.MemberType;
@@ -144,5 +150,72 @@ public class CommentServiceTest {
         assertThatThrownBy(() -> interviewService.createComment(CREW2.getId(), interviewId, commentRequest))
                 .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage(INVALID_INTERVIEW_MEMBER_ID.getMessage());
+    }
+
+    @Test
+    @DisplayName("[크루] 면담에 본인이 작성한 코멘트 수정이 가능하다.")
+    void updateComment() {
+        // given
+        final Long interviewId = 1L;
+        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
+        Long commentId = interviewService.createComment(CREW1.getId(), interviewId, commentRequest);
+        // when
+        final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
+        interviewService.updateComment(CREW1.getId(), interviewId, commentId, updateCommentRequest);
+        final CommentsResponse commentsResponse = interviewService.findComments(CREW1.getId(), interviewId);
+        // then
+        assertThat(commentsResponse.getComments().size()).isEqualTo(1);
+        assertThat(commentsResponse.getComments().get(0).getComment()).isEqualTo("이 말을 빼먹었어요~");
+        assertThat(commentsResponse.getComments().get(0).getRole()).isEqualTo(MemberType.CREW);
+    }
+
+    @Test
+    @DisplayName("[크루] 존재하지 않는 코멘트에 수정 요청을 하면 예외를 반환한다.")
+    void updateComment_NotFoundComment() {
+        // given
+        final Long interviewId = 1L;
+        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
+        Long commentId = interviewService.createComment(CREW1.getId(), interviewId, commentRequest);
+        // when & then
+        final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
+        assertThatThrownBy(() -> interviewService.updateComment(CREW1.getId(), interviewId, 10L, updateCommentRequest))
+                .isInstanceOf(CommentNotFoundException.class)
+                .hasMessage(10L + COMMENT_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("[크루] 수정하려는 코멘트가 면담에 작성된 코멘트가 경우 예외를 반환한다.")
+    void updateComment_InvalidInterview() {
+        // given
+        final Long firstInterviewId = 1L;
+        final Long secondInterviewId = 3L;
+        final CommentRequest firstRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
+        Long firstCommentId = interviewService.createComment(CREW1.getId(), firstInterviewId, firstRequest);
+
+        final CommentRequest secondRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
+        Long secondCommentId = interviewService.createComment(CREW1.getId(), secondInterviewId, secondRequest);
+        // when & then
+        final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
+        assertThatThrownBy(() -> interviewService.updateComment(CREW1.getId(), firstInterviewId, secondCommentId,
+                updateCommentRequest))
+                .isInstanceOf(InvalidCommentInterviewIdException.class)
+                .hasMessage(INVALID_COMMENT_INTERVIEW_ID.getMessage());
+    }
+
+    @Test
+    @DisplayName("[크루] 존재하지 않는 코멘트에 수정 요청을 하면 예외를 반환한다.")
+    void updateComment_InvalidMember() {
+        // given
+        final Long interviewId = 1L;
+        final CommentRequest crewCommentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
+        interviewService.createComment(CREW1.getId(), interviewId, crewCommentRequest);
+        final CommentRequest coachCommentRequest = new CommentRequest("즐거운 면담이었습니다. 오늘도 즐거운 하루 되세요.");
+        Long coachCommentId = interviewService.createComment(COACH1.getId(), interviewId, coachCommentRequest);
+        // when & then
+        final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
+        assertThatThrownBy(
+                () -> interviewService.updateComment(CREW1.getId(), interviewId, coachCommentId, updateCommentRequest))
+                .isInstanceOf(InvalidCommentMemberIdException.class)
+                .hasMessage(INVALID_COMMENT_MEMBER_ID.getMessage());
     }
 }

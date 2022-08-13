@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.comment.domain;
 
+import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import javax.persistence.Entity;
@@ -38,5 +39,9 @@ public class Comment {
         this.interview = interview;
         this.member = member;
         this.comment = comment;
+    }
+
+    public void update(CommentRequest commentRequest) {
+        this.comment = commentRequest.getComment();
     }
 }

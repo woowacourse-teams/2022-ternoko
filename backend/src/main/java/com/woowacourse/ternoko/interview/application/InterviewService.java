@@ -1,9 +1,12 @@
 package com.woowacourse.ternoko.interview.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
@@ -18,6 +21,9 @@ import com.woowacourse.ternoko.comment.domain.Comment;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentResponse;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
+import com.woowacourse.ternoko.comment.exception.CommentNotFoundException;
+import com.woowacourse.ternoko.comment.exception.InvalidCommentInterviewIdException;
+import com.woowacourse.ternoko.comment.exception.InvalidCommentMemberIdException;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.comment.repository.CommentRepository;
@@ -308,5 +314,18 @@ public class InterviewService {
             commentResponses.add(CommentResponse.of(memberType, comment));
         }
         return CommentsResponse.from(commentResponses);
+    }
+
+    public void updateComment(Long memberId, Long interviewId, Long commentId, CommentRequest commentRequest) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
+        MemberType requestMemberType = getMemberType(memberId);
+        if (!comment.getMember().sameMember(memberId)) {
+            throw new InvalidCommentMemberIdException(INVALID_COMMENT_MEMBER_ID);
+        }
+        if (!comment.getInterview().getId().equals(interviewId)) {
+            throw new InvalidCommentInterviewIdException(INVALID_COMMENT_INTERVIEW_ID);
+        }
+        comment.update(commentRequest);
     }
 }
