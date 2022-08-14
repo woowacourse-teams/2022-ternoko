@@ -84,6 +84,17 @@ public class CoachService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<AvailableDateTime> findAvailableDateTimesByCoachIdAndInterviewId(
+            final Long interviewId,
+            final Long coachId,
+            final int year,
+            final int month) {
+
+        return availableDateTimeRepository
+                .findAvailableDateTimesByCoachIdAndInterviewId(interviewId, coachId, year, month);
+    }
+
     public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId, coachUpdateRequest.getNickname(),
                 coachUpdateRequest.getImageUrl(), coachUpdateRequest.getIntroduce());

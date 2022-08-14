@@ -71,11 +71,14 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
 
         // then
-        assertAll(() -> assertThat(interviewResponse.getCoachNickname()).isEqualTo(COACH3.getNickname()),
-                () -> assertThat(interviewResponse.getInterviewStartTime()).isEqualTo(
-                        LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
-                () -> assertThat(interviewResponse.getInterviewEndTime()).isEqualTo(
-                        LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME)));
+        assertAll(
+                () -> assertThat(interviewResponse.getCoachNickname())
+                        .isEqualTo(COACH3.getNickname()),
+                () -> assertThat(interviewResponse.getInterviewStartTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
+                () -> assertThat(interviewResponse.getInterviewEndTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME))
+        );
     }
 
     @Test
