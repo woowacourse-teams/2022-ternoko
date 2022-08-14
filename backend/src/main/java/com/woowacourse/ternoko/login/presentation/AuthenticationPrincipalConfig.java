@@ -1,7 +1,8 @@
-package com.woowacourse.ternoko.config;
+package com.woowacourse.ternoko.login.presentation;
 
-import com.woowacourse.ternoko.common.AuthInterceptor;
-import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.login.aop.MemberTypeCache;
+import com.woowacourse.ternoko.login.application.AuthInterceptor;
+import com.woowacourse.ternoko.login.application.JwtProvider;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +13,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     private final JwtProvider jwtTokenProvider;
+    private final MemberTypeCache memberTypeCache;
     private final AuthInterceptor authInterceptor;
 
     public AuthenticationPrincipalConfig(final JwtProvider jwtProvider,
+                                         final MemberTypeCache memberTypeCache,
                                          final AuthInterceptor authInterceptor) {
         this.jwtTokenProvider = jwtProvider;
+        this.memberTypeCache = memberTypeCache;
         this.authInterceptor = authInterceptor;
     }
 
@@ -37,6 +41,6 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     @Bean
     public AuthenticationPrincipalArgumentResolver createAuthenticationPrincipalArgumentResolver() {
-        return new AuthenticationPrincipalArgumentResolver(jwtTokenProvider);
+        return new AuthenticationPrincipalArgumentResolver(jwtTokenProvider, memberTypeCache);
     }
 }
