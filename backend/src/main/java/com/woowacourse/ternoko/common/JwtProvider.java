@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.common;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.domain.member.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -32,9 +33,22 @@ public class JwtProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(payload)
                 .setIssuedAt(now)
                 .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createToken(Member member) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .setSubject(member.getId().toString())
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .claim("memberType", member.getMemberType())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

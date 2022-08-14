@@ -2,9 +2,11 @@ package com.woowacourse.ternoko.domain.member;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import com.woowacourse.ternoko.domain.MemberType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "ROLE")
+//@DiscriminatorColumn(name = "ROLE")
 public class Member {
 
     @Id
@@ -39,6 +41,10 @@ public class Member {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @Enumerated
+    @Column(name = "ROLE")
+    private MemberType memberType;
 
     public boolean sameMember(Long id) {
         return this.id.equals(id);

@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.domain.member;
 
+import com.woowacourse.ternoko.domain.MemberType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class Crew extends Member {
                 final String email,
                 final String userId,
                 final String imageUrl) {
-        super(id, name, nickname, email, userId, imageUrl);
+        super(id, name, nickname, email, userId, imageUrl, MemberType.CREW);
     }
 
     public Crew(final String name,

@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.domain.member;
 
+import com.woowacourse.ternoko.domain.MemberType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ public class Coach extends Member {
                  final String userId,
                  final String imageUrl,
                  final String introduce) {
-        super(id, name, nickname, email, userId, imageUrl);
+        super(id, name, nickname, email, userId, imageUrl, MemberType.COACH);
         this.introduce = introduce;
     }
 
