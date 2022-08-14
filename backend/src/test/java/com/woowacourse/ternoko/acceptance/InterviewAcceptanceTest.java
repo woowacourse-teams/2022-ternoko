@@ -36,9 +36,9 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약을 생성한다.")
     void create() {
         // given
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
         // when
-        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+        final ExtractableResponse<Response> response = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         //then
@@ -50,7 +50,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("선택한 일시가 코치의 가능한 시간이 아니라면 면담을 생성할 때 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
         // given & when
-        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+        final ExtractableResponse<Response> response = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         //then
@@ -61,9 +61,9 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("면담 예약 상세 내역을 조회한다.")
     void findInterviewById() {
         // given
-        final Header header = generateHeader(COACH3.getId());
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        final ExtractableResponse<Response> createdResponse = createInterview(CREW1.getId(), COACH3.getId(),
+        final Header header = generateHeader(COACH3);
+        put("/api/calendar/times", header, MONTHS_REQUEST);
+        final ExtractableResponse<Response> createdResponse = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
@@ -82,18 +82,18 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("크루 - 면담 예약 내역 목록을 조회한다.")
     void findAllByCrewId() {
         // given
-        put("/api/calendar/times", generateHeader(COACH1.getId()), MONTHS_REQUEST);
-        put("/api/calendar/times", generateHeader(COACH2.getId()), MONTHS_REQUEST);
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH1), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH2), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH4), MONTHS_REQUEST);
 
-        createInterview(CREW1.getId(), COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createInterview(CREW1.getId(), COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
-        createInterview(CREW3.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createInterview(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createInterview(CREW1, COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        createInterview(CREW1, COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createInterview(CREW3, COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createInterview(CREW4, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         // when
-        final ExtractableResponse<Response> response = get("/api/interviews", generateHeader(CREW1.getId()));
+        final ExtractableResponse<Response> response = get("/api/interviews", generateHeader(CREW1));
         final List<InterviewResponse> InterviewResponses = response.body().jsonPath()
                 .getList(".", InterviewResponse.class);
 
@@ -105,8 +105,8 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("크루가 면담 예약을 수정한다.")
     void updateInterview() {
         // given
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         final String redirectURI = response.header("Location");
@@ -116,7 +116,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         final InterviewRequest updateRequest = new InterviewRequest(COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), FORM_ITEM_REQUESTS);
         ExtractableResponse<Response> updateResponse = put("/api/interviews/" + interviewId,
-                generateHeader(CREW1.getId()), updateRequest);
+                generateHeader(CREW1), updateRequest);
 
         //then
         assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -126,8 +126,8 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("크루가 면담 예약을 삭제한다.")
     void deleteInterview() {
         // given
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         final String redirectURI = response.header("Location");
@@ -135,7 +135,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> deleteResponse = delete("/api/interviews/" + interviewId,
-                generateHeader(CREW1.getId()));
+                generateHeader(CREW1));
 
         //then
         assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -145,8 +145,8 @@ class InterviewAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치가 면담 예약만 취소한다.")
     void cancelInterview_onlyInterview() {
         // given
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
 
         final String redirectURI = response.header("Location");
@@ -154,7 +154,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> cancelResponse = patchInterview("/api/interviews/" + interviewId,
-                generateHeader(COACH3.getId()), true);
+                generateHeader(COACH3), true);
         //then
         assertThat(cancelResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
@@ -165,8 +165,8 @@ class InterviewAcceptanceTest extends AcceptanceTest {
         // given
         final LocalDateTime interviewStartTime = LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME);
 
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        final ExtractableResponse<Response> response = createInterview(CREW1.getId(), COACH3.getId(),
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
+        final ExtractableResponse<Response> response = createInterview(CREW1, COACH3.getId(),
                 interviewStartTime);
 
         final String redirectURI = response.header("Location");
@@ -174,13 +174,13 @@ class InterviewAcceptanceTest extends AcceptanceTest {
 
         // when
         final ExtractableResponse<Response> cancelResponse = patchInterview("/api/interviews/" + interviewId,
-                generateHeader(COACH3.getId()), false);
+                generateHeader(COACH3), false);
 
         final ExtractableResponse<Response> availableDateTimes = RestAssured.given().log().all()
                 .queryParam("coachId", COACH3.getId())
                 .queryParam("year", NOW_PLUS_2_DAYS.getYear())
                 .queryParam("month", NOW_PLUS_2_DAYS.getMonthValue())
-                .header(generateHeader(COACH3.getId()))
+                .header(generateHeader(COACH3))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/calendar/times")
                 .then().log().all()

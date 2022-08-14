@@ -33,17 +33,17 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllByCoaches() {
         // given
-        put("/api/calendar/times", generateHeader(COACH4.getId()), MONTHS_REQUEST);
-        createInterview(CREW1.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createInterview(CREW2.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
-        createInterview(CREW3.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME));
-        createInterview(CREW4.getId(), COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME));
+        put("/api/calendar/times", generateHeader(COACH4), MONTHS_REQUEST);
+        createInterview(CREW1, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
+        createInterview(CREW2, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        createInterview(CREW3, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME));
+        createInterview(CREW4, COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME));
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .queryParam("year", NOW.getYear())
                 .queryParam("month", NOW.getMonthValue())
-                .header(generateHeader(COACH4.getId()))
+                .header(generateHeader(COACH4))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/schedules")
                 .then().log().all()
@@ -59,7 +59,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     void saveCalendarTimes() {
         // given & when
         final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
-                generateHeader(COACH1.getId()),
+                generateHeader(COACH1),
                 MONTH_REQUEST);
 
         // then
@@ -71,7 +71,7 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     void saveCalendarsTimes() {
         // given & when
         final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
-                generateHeader(COACH3.getId()),
+                generateHeader(COACH3),
                 MONTHS_REQUEST);
 
         // then
@@ -82,14 +82,14 @@ public class CoachAcceptanceTest extends AcceptanceTest {
     @DisplayName("선택한 년, 월의 면담 예약 내역 목록을 조회한다.")
     void findAllByCoach() {
         // given
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTHS_REQUEST);
-        createInterview(CREW1.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
+        createInterview(CREW1, COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .queryParam("year", NOW.getYear())
                 .queryParam("month", NOW.getMonthValue())
-                .header(generateHeader(COACH3.getId()))
+                .header(generateHeader(COACH3))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/schedules")
                 .then().log().all()

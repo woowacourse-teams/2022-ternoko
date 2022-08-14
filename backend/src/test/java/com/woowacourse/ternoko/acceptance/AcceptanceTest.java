@@ -1,11 +1,13 @@
 package com.woowacourse.ternoko.acceptance;
 
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 
-import com.woowacourse.ternoko.login.application.JwtProvider;
+import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
+import com.woowacourse.ternoko.login.application.JwtProvider;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
@@ -129,16 +131,16 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    protected ExtractableResponse<Response> createInterview(final Long crewId,
+    protected ExtractableResponse<Response> createInterview(final Crew crew,
                                                             final Long coachId,
                                                             final LocalDateTime interviewDateTime) {
         final InterviewRequest interviewRequest = new InterviewRequest(coachId, interviewDateTime,
                 FORM_ITEM_REQUESTS);
 
-        return post("/api/interviews/", generateHeader(crewId), interviewRequest);
+        return post("/api/interviews/", generateHeader(crew), interviewRequest);
     }
 
-    protected Header generateHeader(final Long id) {
-        return new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(id)));
+    protected Header generateHeader(final Member member) {
+        return new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(member));
     }
 }

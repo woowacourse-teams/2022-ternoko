@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ class MemberControllerTest extends ControllerTest {
     void findCoaches() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/coaches")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1)))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
