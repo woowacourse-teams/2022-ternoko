@@ -1,47 +1,72 @@
 package com.woowacourse.ternoko.common.exception.advice;
 
-import com.woowacourse.ternoko.common.exception.BadRequestException;
+import static com.woowacourse.ternoko.common.log.LogForm.FAILED_LOGGING_FORM;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionResponse;
-import com.woowacourse.ternoko.common.exception.UnauthorizedException;
+import java.io.IOException;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalControllerAdvice {
+@AllArgsConstructor
+public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
-    private static final String LOG_FORM =
-            " \n CODE : {} "
-            + "\n MESSAGE : {}";
-    private static final String UNHANDLE_EXCEPTION_MESSAGE = "유효하지 않은 요청입니다.";
+    private static final String UNHANDLED_EXCEPTION_MESSAGE = "유효하지 않은 요청입니다.";
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity unhandleExceptionHandler(){
-        log.error(LOG_FORM, HttpStatus.INTERNAL_SERVER_ERROR.value(), UNHANDLE_EXCEPTION_MESSAGE);
-        return ResponseEntity.internalServerError().body(UNHANDLE_EXCEPTION_MESSAGE);
-    }
+    private final ObjectMapper objectMapper;
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ExceptionResponse> badRequestHandler(BadRequestException e) {
-        log.warn(LOG_FORM, e.getCode(), e.getMessage());
-        return ResponseEntity.status(e.getCode()).body(new ExceptionResponse(e.getCode().value(), e.getMessage()));
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ExceptionResponse> unauthorizedHandler(UnauthorizedException e) {
-        log.warn(LOG_FORM, e.getCode(), e.getMessage());
-        return ResponseEntity.status(e.getCode()).body(new ExceptionResponse(e.getCode().value(), e.getMessage()));
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<ExceptionResponse> commonExceptionHandler(HttpServletRequest request, CommonException e)
+            throws IOException {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        printFailedLog(request, e, cachingRequest);
+        return ResponseEntity.status(e.getCode()).body(ExceptionResponse.from(e));
     }
 
     @ExceptionHandler(SQLException.class)
-    public ResponseEntity<ExceptionResponse> sqlExceptionHandler(SQLException e) {
-        log.warn(LOG_FORM, HttpStatus.INTERNAL_SERVER_ERROR.value(), "SQL exception이 발생했습니다.");
+    public ResponseEntity<ExceptionResponse> sqlExceptionHandler() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         "SQL exception이 발생했습니다."));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(HttpServletRequest request) throws IOException {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        log.info(FAILED_LOGGING_FORM,
+                request.getMethod(),
+                request.getRequestURI(),
+                StringUtils.hasText(request.getHeader("Authorization")),
+                objectMapper.readTree(cachingRequest.getContentAsByteArray()),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                UNHANDLED_EXCEPTION_MESSAGE);
+        return ResponseEntity.internalServerError().body(new ExceptionResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                UNHANDLED_EXCEPTION_MESSAGE
+        ));
+    }
+
+    private void printFailedLog(HttpServletRequest request, CommonException e, ContentCachingRequestWrapper cachingRequest)
+            throws IOException {
+        log.info(FAILED_LOGGING_FORM,
+                request.getMethod(),
+                request.getRequestURI(),
+                StringUtils.hasText(request.getHeader("Authorization")),
+                objectMapper.readTree(cachingRequest.getContentAsByteArray()),
+                e.getCode(),
+                e.getMessage());
+        log.debug("Stack trace: ", e);
     }
 }
