@@ -10,15 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final LogInterceptor logInterceptor;
-
     public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
 
-    public WebConfig(LogInterceptor logInterceptor) {
+    private final LogInterceptor logInterceptor;
+
+    public WebConfig(final LogInterceptor logInterceptor) {
         this.logInterceptor = logInterceptor;
     }
-
-
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
@@ -28,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor)
             .addPathPatterns("/api/**");
     }

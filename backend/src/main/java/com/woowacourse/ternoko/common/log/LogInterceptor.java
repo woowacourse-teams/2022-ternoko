@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -21,7 +22,10 @@ public class LogInterceptor implements HandlerInterceptor {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+    public void afterCompletion(@NotNull final HttpServletRequest request,
+                                final HttpServletResponse response,
+                                @NotNull final Object handler,
+                                final Exception ex)
             throws Exception {
         if (isSuccess(response.getStatus())) {
             final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -28,14 +29,15 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     private final ObjectMapper objectMapper;
 
     @ExceptionHandler(CommonException.class)
-    public ResponseEntity<ExceptionResponse> commonExceptionHandler(HttpServletRequest request, CommonException e)
+    public ResponseEntity<ExceptionResponse> commonExceptionHandler(final HttpServletRequest request,
+                                                                    final CommonException e)
             throws IOException {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.status(e.getCode()).body(ExceptionResponse.from(e));
     }
 
-    @ExceptionHandler(SQLException.class)
+    @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ExceptionResponse> sqlExceptionHandler() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -43,7 +45,8 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(HttpServletRequest request) throws IOException {
+    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final HttpServletRequest request)
+            throws IOException {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         log.info(FAILED_LOGGING_FORM,
                 request.getMethod(),
@@ -58,7 +61,9 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
         ));
     }
 
-    private void printFailedLog(HttpServletRequest request, CommonException e, ContentCachingRequestWrapper cachingRequest)
+    private void printFailedLog(final HttpServletRequest request,
+                                final CommonException e,
+                                final ContentCachingRequestWrapper cachingRequest)
             throws IOException {
         log.info(FAILED_LOGGING_FORM,
                 request.getMethod(),
