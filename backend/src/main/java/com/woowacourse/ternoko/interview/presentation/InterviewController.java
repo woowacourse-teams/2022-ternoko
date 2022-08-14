@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.interview.presentation;
 
-import com.woowacourse.ternoko.config.AuthenticationPrincipal;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.interview.application.InterviewService;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;

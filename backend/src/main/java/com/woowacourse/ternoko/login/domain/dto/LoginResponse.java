@@ -1,6 +1,6 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.login.domain.dto;
 
-import com.woowacourse.ternoko.domain.MemberType;
+import com.woowacourse.ternoko.login.domain.MemberType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

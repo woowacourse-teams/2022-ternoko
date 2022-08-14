@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 
-import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.login.application.JwtProvider;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;

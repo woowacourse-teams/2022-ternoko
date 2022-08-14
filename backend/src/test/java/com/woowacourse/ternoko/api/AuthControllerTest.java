@@ -1,16 +1,16 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.domain.MemberType;
-import com.woowacourse.ternoko.dto.LoginResponse;
-import com.woowacourse.ternoko.service.AuthService;
+import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.login.domain.dto.LoginResponse;
+import com.woowacourse.ternoko.login.application.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

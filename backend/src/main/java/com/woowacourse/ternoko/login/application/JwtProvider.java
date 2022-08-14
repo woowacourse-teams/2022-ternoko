@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.common;
+package com.woowacourse.ternoko.login.application;
 
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;

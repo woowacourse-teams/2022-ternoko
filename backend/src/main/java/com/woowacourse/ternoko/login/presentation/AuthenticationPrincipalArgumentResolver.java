@@ -1,6 +1,7 @@
-package com.woowacourse.ternoko.config;
+package com.woowacourse.ternoko.login.presentation;
 
-import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.login.application.JwtProvider;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

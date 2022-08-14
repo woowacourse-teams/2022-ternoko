@@ -2,10 +2,10 @@ package com.woowacourse.ternoko.domain.member;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import com.woowacourse.ternoko.domain.MemberType;
+import com.woowacourse.ternoko.login.domain.MemberType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -42,7 +42,7 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "ROLE")
     private MemberType memberType;
 

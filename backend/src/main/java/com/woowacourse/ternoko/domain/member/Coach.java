@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.domain.member;
 
-import com.woowacourse.ternoko.domain.MemberType;
+import com.woowacourse.ternoko.login.domain.MemberType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

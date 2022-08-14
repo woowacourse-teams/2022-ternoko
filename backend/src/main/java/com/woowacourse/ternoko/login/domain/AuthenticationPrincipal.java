@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.config;
+package com.woowacourse.ternoko.login.domain;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

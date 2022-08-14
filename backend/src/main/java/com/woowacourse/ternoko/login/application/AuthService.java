@@ -1,7 +1,7 @@
-package com.woowacourse.ternoko.service;
+package com.woowacourse.ternoko.login.application;
 
-import static com.woowacourse.ternoko.domain.MemberType.COACH;
-import static com.woowacourse.ternoko.domain.MemberType.CREW;
+import static com.woowacourse.ternoko.login.domain.MemberType.COACH;
+import static com.woowacourse.ternoko.login.domain.MemberType.CREW;
 
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.impl.MethodsClientImpl;
@@ -9,15 +9,14 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectTokenRequest;
 import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
-import com.woowacourse.ternoko.common.JwtProvider;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
-import com.woowacourse.ternoko.config.AuthorizationExtractor;
-import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
-import com.woowacourse.ternoko.dto.LoginResponse;
+import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.login.domain.dto.LoginResponse;
+import com.woowacourse.ternoko.login.presentation.AuthorizationExtractor;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
