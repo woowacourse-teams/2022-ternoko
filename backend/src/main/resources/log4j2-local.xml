@@ -20,7 +20,11 @@
     <!--Log가 찍힐 대상 설정.-->
     <Loggers>
         <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
-        <logger name="org.springframework" level="info" additivity="false">
+        <logger name="org.springframework." level="info" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <logger name="com.woowacourse.ternoko" level="debug" additivity="false">
             <AppenderRef ref="console"/>
         </logger>
 
@@ -40,6 +44,7 @@
         </logger>
 
         <!-- ROOT logger-->
-        <Root level="info"></Root>
+        <Root level="debug"></Root>
+
     </Loggers>
 </Configuration>
