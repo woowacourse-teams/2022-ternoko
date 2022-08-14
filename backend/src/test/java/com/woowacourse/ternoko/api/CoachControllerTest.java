@@ -1,20 +1,26 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class CoachControllerTest extends ControllerTest {
+
+    @BeforeEach
+    void setUp() {
+
+    }
 
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
@@ -26,7 +32,7 @@ public class CoachControllerTest extends ControllerTest {
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/schedules")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
                 .andExpect(status().isOk())
@@ -69,7 +75,7 @@ public class CoachControllerTest extends ControllerTest {
         // given, when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/coaches/me")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1)))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }

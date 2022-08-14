@@ -2,10 +2,11 @@ package com.woowacourse.ternoko.controller;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimesResponse;
-import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
+import com.woowacourse.ternoko.login.aop.CoachOnly;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.service.CoachService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class CoachController {
         return ResponseEntity.ok(from);
     }
 
+    @CoachOnly
     @PutMapping("/calendar/times")
     public ResponseEntity<Void> saveCalendarTimes(@AuthenticationPrincipal final Long coachId,
                                                   @RequestBody final CalendarRequest calendarRequest) {
@@ -42,11 +44,13 @@ public class CoachController {
         return ResponseEntity.ok().build();
     }
 
+    @CoachOnly
     @GetMapping("/coaches/me")
     public ResponseEntity<CoachResponse> findCoach(@AuthenticationPrincipal final Long coachId) {
         return ResponseEntity.ok(coachService.findCoach(coachId));
     }
 
+    @CoachOnly
     @PatchMapping("/coaches/me")
     public ResponseEntity<Void> updateCoach(@AuthenticationPrincipal final Long coachId,
                                             @RequestBody final CoachUpdateRequest coachUpdateRequest) {

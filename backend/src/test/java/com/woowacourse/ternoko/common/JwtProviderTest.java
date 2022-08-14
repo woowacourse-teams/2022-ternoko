@@ -21,7 +21,7 @@ class JwtProviderTest {
     void checkPayloadAfterIssuingToken() {
         final String payload = "\"email\":\"example@example.com\"";
         final String accessToken = jwtProvider.createToken(payload);
-        assertThat(jwtProvider.getPayload(accessToken)).isEqualTo(payload);
+        assertThat(jwtProvider.extractSubject(accessToken)).isEqualTo(payload);
     }
 
     @DisplayName("토큰을 검증할 때")

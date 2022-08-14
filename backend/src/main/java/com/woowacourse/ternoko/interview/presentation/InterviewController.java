@@ -1,11 +1,13 @@
 package com.woowacourse.ternoko.interview.presentation;
 
-import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.interview.application.InterviewService;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
+import com.woowacourse.ternoko.login.aop.CoachOnly;
+import com.woowacourse.ternoko.login.aop.CrewOnly;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.support.AlarmMessage;
 import com.woowacourse.ternoko.support.SlackAlarm;
 import java.net.URI;
@@ -31,6 +33,7 @@ public class InterviewController {
     private final InterviewService interviewService;
     private final SlackAlarm slackAlarm;
 
+    @CrewOnly
     @GetMapping("/interviews")
     public ResponseEntity<List<InterviewResponse>> findAllInterviewsByCrewId(
             @AuthenticationPrincipal final Long crewId) {
@@ -38,6 +41,7 @@ public class InterviewController {
         return ResponseEntity.ok(interviewResponses);
     }
 
+    @CrewOnly
     @PostMapping("/interviews")
     public ResponseEntity<Void> createInterview(@AuthenticationPrincipal final Long crewId,
                                                 @RequestBody final InterviewRequest interviewRequest)
@@ -53,6 +57,7 @@ public class InterviewController {
         return ResponseEntity.ok(interviewResponse);
     }
 
+    @CoachOnly
     @GetMapping("/schedules")
     public ResponseEntity<ScheduleResponse> findAllInterviewByCoach(@AuthenticationPrincipal final Long coachId,
                                                                     @RequestParam final Integer year,
@@ -61,6 +66,7 @@ public class InterviewController {
         return ResponseEntity.ok(schedules);
     }
 
+    @CrewOnly
     @PutMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> updateInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId,
@@ -71,6 +77,7 @@ public class InterviewController {
         return ResponseEntity.ok().build();
     }
 
+    @CrewOnly
     @DeleteMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> deleteInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId) throws Exception {
@@ -79,11 +86,12 @@ public class InterviewController {
         return ResponseEntity.noContent().build();
     }
 
+    @CoachOnly
     @PatchMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
                                                 @PathVariable final Long interviewId,
                                                 @RequestParam final boolean onlyInterview) throws Exception {
-        final Interview interview = interviewService.cancelAndDeleteAvailableTime(coachId, interviewId, onlyInterview);
+        final Interview interview = interviewService.cancelWithDeleteAvailableTime(coachId, interviewId, onlyInterview);
         slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
         return ResponseEntity.noContent().build();
     }
