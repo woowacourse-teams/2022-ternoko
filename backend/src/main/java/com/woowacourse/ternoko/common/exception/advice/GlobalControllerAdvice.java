@@ -37,7 +37,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(e.getCode()).body(ExceptionResponse.from(e));
     }
 
-    @ExceptionHandler(DataAccessException.class)
+    @ExceptionHandler(SQLException.class)
     public ResponseEntity<ExceptionResponse> sqlExceptionHandler() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
