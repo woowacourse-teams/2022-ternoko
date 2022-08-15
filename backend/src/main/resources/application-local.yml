@@ -19,6 +19,7 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
         format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/ternoko?serverTimezone=Asia/Seoul
