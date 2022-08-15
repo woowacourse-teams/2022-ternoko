@@ -47,3 +47,5 @@ export const SUCCESS_MESSAGE = {
   COACH_DELETE_RESERVATION: '면담이 취소됐어용... ㅠㅠ',
   SELECT_COACH: (coachName: string) => `${coachName ?? '코치'} 골랐어용~`,
 };
+
+export const CONFIRM_DELETE_MESSAGE = '정말로 삭제하시겠습니까?';
