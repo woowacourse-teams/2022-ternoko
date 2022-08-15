@@ -11,6 +11,7 @@ export const Box = styled.div<BoxProps>`
   width: 55%;
   height: 100%;
   overflow: hidden;
+  z-index: 5;
 
   background-color: ${({ theme }) => theme.colors.gray_100};
 

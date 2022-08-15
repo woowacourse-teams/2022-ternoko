@@ -7,6 +7,7 @@ import AskDeleteTimeModal from '@/components/@common/AskDeleteTimeModal';
 import Modal from '@/components/@common/Modal';
 import useModal from '@/components/@common/Modal/useModal';
 
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
 import { InterviewType } from '@/types/domain';
@@ -43,12 +44,18 @@ const InterviewDetailModal = ({
   } = useModal();
 
   const { showToast } = useToastActions();
+  const { onLoading, offLoading } = useLoadingActions();
 
   const handleClickDeleteButton = async () => {
     if (role === 'CREW' && confirm(CONFIRM_DELETE_MESSAGE)) {
-      await deleteCrewInterviewAPI(interviewId);
-      showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_INTERVIEW);
-      afterDeleteInterview();
+      try {
+        onLoading();
+        await deleteCrewInterviewAPI(interviewId);
+        showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_INTERVIEW);
+        afterDeleteInterview();
+      } finally {
+        offLoading();
+      }
     } else if (role === 'COACH') {
       handleAskOpenModal();
     }

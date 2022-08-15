@@ -13,6 +13,7 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 import { useUserState } from '@/context/UserProvider';
 
@@ -50,6 +51,7 @@ const CoachInterviewCreatePage = () => {
   const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
   const { resetSelectedDates, setDay } = useCalendarActions();
+  const { onLoading, offLoading } = useLoadingActions();
   const { isSelectedDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'multiple',
@@ -148,6 +150,7 @@ const CoachInterviewCreatePage = () => {
     };
 
     try {
+      onLoading();
       await postCoachScheduleAPI(body);
       resetSelectedDates();
       resetTimes();
@@ -155,6 +158,8 @@ const CoachInterviewCreatePage = () => {
       setIsApplied((prev) => !prev);
     } catch (error) {
       showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
+    } finally {
+      offLoading();
     }
   };
 

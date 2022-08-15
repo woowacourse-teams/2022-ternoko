@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 
-import ToastProvider from './context/ToastProvider';
-
+import LoadingProvider from '@/context/LoadingProvider';
+import ToastProvider from '@/context/ToastProvider';
 import UserProvider from '@/context/UserProvider';
 
 import AppRoutes from '@/AppRoutes';
@@ -13,8 +13,10 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <UserProvider>
         <ToastProvider>
-          <GlobalStyle />
-          <AppRoutes />
+          <LoadingProvider>
+            <GlobalStyle />
+            <AppRoutes />
+          </LoadingProvider>
         </ToastProvider>
       </UserProvider>
     </ThemeProvider>

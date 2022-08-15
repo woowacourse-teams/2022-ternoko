@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import Loading from '@/components/@common/Loading';
+import TernokoLoading from '@/components/@common/TernokoLoading';
 
 import { MemberExtendedRole } from '@/types/domain';
 
@@ -45,9 +45,6 @@ const Pending = ({ resource }: PendingProps) => {
   return result ? <Outlet /> : <Navigate to={PAGE.ACCESS_DENY} />;
 };
 
-const additionalBoxStyle =
-  'position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%; background-color: unset;';
-
 const PrivateRoute = ({ auth }: PrivateRouteProps) => {
   const accessToken = LocalStorage.getAccessToken();
 
@@ -56,15 +53,7 @@ const PrivateRoute = ({ auth }: PrivateRouteProps) => {
   }
 
   return (
-    <Suspense
-      fallback={
-        <Loading
-          additionalBoxStyle={additionalBoxStyle}
-          profileSizeRem={25}
-          animationDuration={1.2}
-        />
-      }
-    >
+    <Suspense fallback={<TernokoLoading show={true} />}>
       <Pending resource={fetchAccessResult(auth)} />
     </Suspense>
   );

@@ -3,6 +3,7 @@ import * as S from './styled';
 import Button from '@/components/@common/Button/styled';
 import Modal from '@/components/@common/Modal';
 
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
 import { deleteCoachInterviewAPI } from '@/api';
@@ -24,13 +25,19 @@ const AskDeleteTimeModal = ({
   afterDeleteInterview,
 }: AskDeleteTimeModalProps) => {
   const { showToast } = useToastActions();
+  const { onLoading, offLoading } = useLoadingActions();
 
   const handleClickButton = async (onlyInterview: boolean, message: string) => {
     if (confirm(CONFIRM_DELETE_MESSAGE)) {
-      await deleteCoachInterviewAPI(interviewId, onlyInterview);
-      showToast('SUCCESS', message);
-      afterDeleteInterview();
-      handleCloseModal();
+      try {
+        onLoading();
+        await deleteCoachInterviewAPI(interviewId, onlyInterview);
+        showToast('SUCCESS', message);
+        afterDeleteInterview();
+        handleCloseModal();
+      } finally {
+        offLoading();
+      }
     }
   };
 

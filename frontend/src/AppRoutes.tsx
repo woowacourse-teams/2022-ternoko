@@ -2,8 +2,7 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import AccessDenyPage from './pages/AccessDenyPage';
-
+import AccessDenyPage from '@/pages/AccessDenyPage';
 import CoachHomePage from '@/pages/CoachHomePage';
 import CoachInterviewCreatePage from '@/pages/CoachInterviewCreatePage';
 import HomePage from '@/pages/HomePage';
@@ -14,12 +13,14 @@ import LoginRegisterPage from '@/pages/LoginRegisterPage';
 import MyPage from '@/pages/MyPage';
 import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
 
+import TernokoLoading from '@/components/@common/TernokoLoading';
 import Toast from '@/components/@common/Toast';
 
 import Header from '@/components/Header';
 import PrivateRoute from '@/components/PrivateRoute';
 
 import CalendarProvider from '@/context/CalendarProvider';
+import { useLoadingState } from '@/context/LoadingProvider';
 import { useUserActions } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
@@ -81,6 +82,8 @@ const AppRoutes = () => {
 };
 
 const Layout = () => {
+  const { show } = useLoadingState();
+
   return (
     <>
       <Header />
@@ -88,6 +91,7 @@ const Layout = () => {
       <S.Body>
         <Outlet />
         <Toast />
+        <TernokoLoading show={show} />
       </S.Body>
     </>
   );
@@ -95,6 +99,7 @@ const Layout = () => {
 
 const S = {
   Body: styled.div`
+    position: relative;
     min-height: calc(100% - 60px);
     padding: 3rem 30rem 0;
 
