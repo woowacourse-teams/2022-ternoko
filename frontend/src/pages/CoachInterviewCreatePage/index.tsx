@@ -16,7 +16,12 @@ import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/contex
 import { useToastActions } from '@/context/ToastProvider';
 import { useUserState } from '@/context/UserProvider';
 
-import { CalendarTime, CoachScheduleRequestCalendarTime, StringDictionary } from '@/types/domain';
+import {
+  CalendarTime,
+  CoachScheduleRequestCalendarTime,
+  CrewSelectTime,
+  StringDictionary,
+} from '@/types/domain';
 
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
 import { ERROR_MESSAGE, INITIAL_COACH_ID, PAGE, SUCCESS_MESSAGE } from '@/constants';
@@ -161,7 +166,7 @@ const CoachInterviewCreatePage = () => {
       const response = await getCoachScheduleAPI(id, year, month + 1);
 
       const recentCalendarTimes = compactCalendarTimes(
-        response.data.calendarTimes.map((calendarTime: string) => {
+        response.data.calendarTimes.map(({ calendarTime }: CrewSelectTime) => {
           const { year, month } = separateFullDate(calendarTime);
 
           return { year, month, times: [calendarTime] };
