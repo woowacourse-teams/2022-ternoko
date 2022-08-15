@@ -97,10 +97,12 @@ public class InterviewService {
         }
     }
 
-    private void validateInterviewStartTime(final LocalDateTime localDateTime) {
+    private void validateInterviewStartTime(final LocalDateTime interviewStartTime) {
         //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
-        final LocalDate standardDay = LocalDate.now().plusDays(1);
-        if (!standardDay.isBefore(localDateTime.toLocalDate())) {
+        final LocalDate nowDay = LocalDate.now();
+        final LocalDate interviewDay = interviewStartTime.toLocalDate();
+
+        if (nowDay.isAfter(interviewDay) || nowDay.isEqual(interviewDay)) {
             throw new InvalidInterviewDateException(INVALID_INTERVIEW_DATE);
         }
     }

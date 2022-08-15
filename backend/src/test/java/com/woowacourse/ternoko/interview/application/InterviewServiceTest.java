@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.interview.application;
 
+import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
@@ -29,9 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
+import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
@@ -96,6 +100,29 @@ class InterviewServiceTest {
                         .extracting("answer")
                         .contains("답변1", "답변2", "답변3")
         );
+    }
+
+    @Test
+    @DisplayName("면담 예약시, 전날 예약도 가능해야 한다.")
+    void createPreviousDay() {
+        // given
+        LocalDate nextDay = NOW.plusDays(1);
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), new CalendarRequest(
+                List.of(new AvailableDateTimeRequest(
+                        nextDay.getYear(),
+                        nextDay.getMonthValue(),
+                        List.of(new AvailableDateTimeSummaryRequest(LocalDateTime.of(nextDay, FIRST_TIME), OPEN))
+                ))
+        ));
+
+        // when
+        final Interview interview = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(),
+                        LocalDateTime.of(nextDay, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // then
+        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interview.getId());
+        assertThat(interviewResponse.getId()).isNotNull();
     }
 
     @Test
