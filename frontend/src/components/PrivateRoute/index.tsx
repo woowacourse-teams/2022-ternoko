@@ -25,6 +25,9 @@ const Pending = ({ auth }: PrivateRouteProps) => {
   return <Outlet />;
 };
 
+const additionalBoxStyle =
+  'position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%; background-color: unset;';
+
 const PrivateRoute = ({ auth }: PrivateRouteProps) => {
   const accessToken = LocalStorage.getAccessToken();
 
