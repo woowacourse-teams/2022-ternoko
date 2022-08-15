@@ -34,7 +34,7 @@ const CoachHomePage = () => {
     <>
       <S.TitleBox>
         <h2>면담 리스트</h2>
-        <Link to={PAGE.COACH_RESERVATION_CREATE}>
+        <Link to={PAGE.COACH_INTERVIEW_CREATE}>
           <Button home>스케쥴 생성</Button>
         </Link>
       </S.TitleBox>

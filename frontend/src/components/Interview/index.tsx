@@ -46,7 +46,7 @@ const Interview = ({
           <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
           상세보기
         </Button>
-        <Link to={`${PAGE.RESERVATION_APPLY}?interviewId=${id}`}>
+        <Link to={`${PAGE.INTERVIEW_APPLY}?interviewId=${id}`}>
           <Button orange={true}>
             <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
             편집

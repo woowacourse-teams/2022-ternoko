@@ -144,14 +144,14 @@ const InterviewApplyPage = () => {
 
     if (interviewId) {
       await putInterviewAPI(Number(interviewId), body);
-      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_RESERVATION);
-      navigate(`${PAGE.RESERVATION_COMPLETE}/${interviewId}`);
+      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_INTERVIEW);
+      navigate(`${PAGE.INTERVIEW_COMPLETE}/${interviewId}`);
     } else {
       const response = await postInterviewAPI(body);
-      showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_RESERVATION);
+      showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_INTERVIEW);
 
       const location = response.headers.location;
-      navigate(`${PAGE.RESERVATION_COMPLETE}/${location.split('/').pop()}`);
+      navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
     }
   };
 
