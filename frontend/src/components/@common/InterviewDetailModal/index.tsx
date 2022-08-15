@@ -13,7 +13,7 @@ import { InterviewType } from '@/types/domain';
 import { MemberRole } from '@/types/domain';
 
 import { deleteCrewInterviewAPI, getInterviewAPI } from '@/api';
-import { SUCCESS_MESSAGE } from '@/constants';
+import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/constants';
 import { getDateString, getTimeString } from '@/utils';
 
 type InterviewDetailModalProps = {
@@ -45,7 +45,7 @@ const InterviewDetailModal = ({
   const { showToast } = useToastActions();
 
   const handleClickDeleteButton = async () => {
-    if (role === 'CREW' && confirm('정말로 삭제하시겠습니까?')) {
+    if (role === 'CREW' && confirm(CONFIRM_DELETE_MESSAGE)) {
       await deleteCrewInterviewAPI(interviewId);
       showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_RESERVATION);
       afterDeleteInterview();

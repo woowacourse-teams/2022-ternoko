@@ -5,14 +5,27 @@ import * as S from './styled';
 type ModalProps = {
   show: boolean;
   display: boolean;
+  additionalDimmerStyle?: string;
   additionalFrameStyle?: string;
   children: React.ReactNode;
   handleCloseModal: () => void;
 };
 
-const Modal = ({ show, display, additionalFrameStyle, children, handleCloseModal }: ModalProps) => {
+const Modal = ({
+  show,
+  display,
+  additionalDimmerStyle,
+  additionalFrameStyle,
+  children,
+  handleCloseModal,
+}: ModalProps) => {
   return ReactDOM.createPortal(
-    <S.Dimmer show={show} display={display ? 1 : 0} onClick={handleCloseModal}>
+    <S.Dimmer
+      show={show}
+      display={display ? 1 : 0}
+      additionalDimmerStyle={additionalDimmerStyle}
+      onClick={handleCloseModal}
+    >
       <S.Frame
         show={show}
         additionalFrameStyle={additionalFrameStyle}

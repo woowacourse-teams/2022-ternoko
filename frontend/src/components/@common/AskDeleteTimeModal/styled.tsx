@@ -24,4 +24,9 @@ export const ButtonBox = styled.div`
   }
 `;
 
-export const additionalFrameStyle = 'width: 45rem';
+export const additionalDimmerStyle = `
+  z-index: 1; 
+  background-color: unset;
+`;
+
+export const additionalFrameStyle = 'width: 45rem;';

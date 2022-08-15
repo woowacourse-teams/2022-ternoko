@@ -6,7 +6,7 @@ import Modal from '@/components/@common/Modal';
 import { useToastActions } from '@/context/ToastProvider';
 
 import { deleteCoachInterviewAPI } from '@/api';
-import { SUCCESS_MESSAGE } from '@/constants';
+import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/constants';
 
 type AskDeleteTimeModalProps = {
   show: boolean;
@@ -26,9 +26,10 @@ const AskDeleteTimeModal = ({
   const { showToast } = useToastActions();
 
   const handleClickYesButton = async () => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
+    if (confirm(CONFIRM_DELETE_MESSAGE)) {
       await deleteCoachInterviewAPI(interviewId);
       showToast('SUCCESS', SUCCESS_MESSAGE.COACH_DELETE_RESERVATION);
+      handleCloseModal();
       afterDeleteInterview();
     }
   };
@@ -37,11 +38,12 @@ const AskDeleteTimeModal = ({
     <Modal
       show={show}
       display={display}
+      additionalDimmerStyle={S.additionalDimmerStyle}
       additionalFrameStyle={S.additionalFrameStyle}
       handleCloseModal={handleCloseModal}
     >
       <S.Header>
-        <h2>열어둔 시간은 남겨둘까용?</h2>
+        <h2>열어둔 시간은 남겨둘까용?😎</h2>
         <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
       </S.Header>
       <S.ButtonBox>
