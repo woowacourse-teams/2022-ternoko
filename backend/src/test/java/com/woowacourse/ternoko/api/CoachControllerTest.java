@@ -18,7 +18,7 @@ public class CoachControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
-    void findAllinterviewByCoach() throws Exception {
+    void findAllInterviewByCoach() throws Exception {
         // given
         createCalendarTimes(COACH1.getId());
         createInterviews(CREW1.getId());

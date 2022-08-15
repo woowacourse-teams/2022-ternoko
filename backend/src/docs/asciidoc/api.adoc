@@ -279,7 +279,7 @@ operation::interview-controller-test/create-interview[snippets='http-request,htt
 
 GET /api/schedules?year={year}&month={month}
 
-operation::coach-controller-test/find-calendar-times[snippets='http-request,http-response']
+operation::coach-controller-test/find-all-interview-by-coach[snippets='http-request,http-response']
 ==== Error Response
 
 |===
