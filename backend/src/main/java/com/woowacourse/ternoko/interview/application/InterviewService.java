@@ -33,6 +33,7 @@ import com.woowacourse.ternoko.repository.CrewRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -196,24 +197,12 @@ public class InterviewService {
         validateChangeAuthorization(interview, crewId);
         formItemRepository.deleteAll(interview.getFormItems());
         interviewRepository.delete(interview);
-        final AvailableDateTime availableTime = findAvailableTime(interview.getCoach().getId(),
-                interview.getInterviewStartTime());
-        availableTime.open();
+        openAvailableTime(interview);
         return interview;
     }
 
-    private Interview cancel(final Long coachId, final Long interviewId) {
-        final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
-        if (!interview.sameCoach(coachId)) {
-            throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
-        }
-        interview.cancel();
-        return interview;
-    }
-
-    public Interview cancelWithDeleteAvailableTime(final Long coachId, final Long interviewId,
-                                                   final boolean onlyInterview) {
+    public Interview cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
+                                                  final boolean onlyInterview) {
         final Interview canceledInterview = cancel(coachId, interviewId);
         final AvailableDateTime unAvailableTime = findAvailableTime(coachId,
                 canceledInterview.getInterviewStartTime());
@@ -226,6 +215,16 @@ public class InterviewService {
         return canceledInterview;
     }
 
+    private Interview cancel(final Long coachId, final Long interviewId) {
+        final Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+        if (!interview.sameCoach(coachId)) {
+            throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
+        }
+        interview.cancel();
+        return interview;
+    }
+
     private AvailableDateTime findAvailableTime(final InterviewRequest interviewRequest) {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
                         interviewRequest.getInterviewDatetime())
@@ -236,5 +235,12 @@ public class InterviewService {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId,
                         interviewDateTime)
                 .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
+    private void openAvailableTime(final Interview interview) {
+        Optional<AvailableDateTime> time = availableDateTimeRepository
+                .findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
+                        interview.getInterviewStartTime());
+        time.ifPresent(AvailableDateTime::open);
     }
 }
