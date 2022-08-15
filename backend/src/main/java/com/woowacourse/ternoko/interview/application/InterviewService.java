@@ -246,6 +246,6 @@ public class InterviewService {
         Optional<AvailableDateTime> time = availableDateTimeRepository
                 .findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
                         interview.getInterviewStartTime());
-        time.ifPresent(AvailableDateTime::open);
+        time.ifPresent(it -> it.changeStatus(OPEN));
     }
 }
