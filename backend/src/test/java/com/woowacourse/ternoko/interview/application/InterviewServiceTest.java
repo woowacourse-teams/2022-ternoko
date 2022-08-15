@@ -244,7 +244,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_REQUESTS));
 
-        interviewService.cancelWithDeleteAvailableTime(COACH4.getId(), interview.getId(), false);
+        interviewService.cancelAndDeleteAvailableTime(COACH4.getId(), interview.getId(), false);
 
         // when
         final ScheduleResponse scheduleResponses = interviewService.findAllByCoach(COACH4.getId(),
@@ -448,7 +448,7 @@ class InterviewServiceTest {
     }
 
     @Test
-    @DisplayName("면담 예약을 삭제한다.")
+    @DisplayName("크루가 면담 예약을 삭제한다.")
     void delete() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
@@ -457,6 +457,24 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
+        Interview updateInterview = interviewService.delete(CREW1.getId(), interview.getId());
+
+        // then
+        assertThatThrownBy(() -> interviewService.findInterviewResponseById(updateInterview.getId()))
+                .isInstanceOf(InterviewNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("크루 - 코치가 취소한 면담 예약을 삭제한다.")
+    void deleteCanceledInterview() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Interview interview = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interview.getId(), false);
         Interview updateInterview = interviewService.delete(CREW1.getId(), interview.getId());
 
         // then
@@ -474,7 +492,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview canceledInterview = interviewService.cancelWithDeleteAvailableTime(COACH3.getId(), interview.getId(),
+        Interview canceledInterview = interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interview.getId(),
                 true);
 
         final boolean expected = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(COACH3.getId(),
@@ -497,7 +515,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview canceledInterview = interviewService.cancelWithDeleteAvailableTime(COACH2.getId(), interview.getId(),
+        Interview canceledInterview = interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), interview.getId(),
                 true);
 
         final boolean expected;
@@ -524,7 +542,7 @@ class InterviewServiceTest {
                         FORM_ITEM_REQUESTS));
         // when  && then
         assertThatThrownBy(
-                () -> interviewService.cancelWithDeleteAvailableTime(COACH2.getId(), interview.getId(), true))
+                () -> interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), interview.getId(), true))
                 .isInstanceOf(InvalidInterviewCoachIdException.class)
                 .hasMessage(INVALID_INTERVIEW_COACH_ID.getMessage());
     }
