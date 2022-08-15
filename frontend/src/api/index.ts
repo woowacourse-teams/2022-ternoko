@@ -31,8 +31,8 @@ export const putInterviewAPI = (interviewId: number, body: InterviewRequestBodyT
 export const deleteCrewInterviewAPI = (interviewId: number) =>
   axios.delete(`${process.env.SERVER_URL}/api/interviews/${interviewId}`);
 
-export const deleteCoachInterviewAPI = (interviewId: number) =>
-  axios.patch(`${process.env.SERVER_URL}/api/interviews/${interviewId}`);
+export const deleteCoachInterviewAPI = (interviewId: number, flag: boolean) =>
+  axios.patch(`${process.env.SERVER_URL}/api/interviews/${interviewId}?onlyInterview=${flag}`);
 
 export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
   axios.put(`${process.env.SERVER_URL}/api/calendar/times`, body);
@@ -62,4 +62,4 @@ export const getDuplicatedNicknameStatusAPI = (nickname: string) =>
   axios.get(`${process.env.SERVER_URL}/api/login/check?nickname=${nickname}`);
 
 export const validateAccessTokenAPI = (type: MemberExtendedRole) =>
-  axios.get(`${process.env.SERVER_URL}/api/login/type=${type}`);
+  axios.get(`${process.env.SERVER_URL}/api/login/valid?type=${type}`);

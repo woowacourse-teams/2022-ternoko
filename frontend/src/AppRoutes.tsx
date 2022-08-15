@@ -44,7 +44,7 @@ const AppRoutes = () => {
           </Route>
           <Route element={<PrivateRoute auth="CREW" />}>
             <Route
-              path={PAGE.RESERVATION_APPLY}
+              path={PAGE.INTERVIEW_APPLY}
               element={
                 <CalendarProvider selectMode="single">
                   <InterviewApplyPage />
@@ -54,13 +54,13 @@ const AppRoutes = () => {
           </Route>
           <Route element={<PrivateRoute auth="CREW" />}>
             <Route
-              path={`${PAGE.RESERVATION_COMPLETE}/:interviewId`}
+              path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
               element={<InterviewCompletePage />}
             />
           </Route>
           <Route element={<PrivateRoute auth="COACH" />}>
             <Route
-              path={PAGE.COACH_RESERVATION_CREATE}
+              path={PAGE.COACH_INTERVIEW_CREATE}
               element={
                 <CalendarProvider selectMode="multiple">
                   <CoachInterviewCreatePage />

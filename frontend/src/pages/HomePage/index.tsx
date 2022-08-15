@@ -66,7 +66,7 @@ const HomePage = () => {
     <>
       <S.TitleBox>
         <h2>나의 면담</h2>
-        <Link to={PAGE.RESERVATION_APPLY}>
+        <Link to={PAGE.INTERVIEW_APPLY}>
           <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>
