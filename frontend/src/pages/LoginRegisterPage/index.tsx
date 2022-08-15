@@ -69,12 +69,12 @@ const LoginRegisterPage = () => {
       if (memberRole === 'COACH') {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
 
-        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
+        showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COACH_INFO);
         initializeUser(() => navigate(PAGE.COACH_HOME));
       } else {
         await patchCrewInfoAPI({ nickname, imageUrl });
 
-        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
+        showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_CREW_INFO);
         initializeUser(() => navigate(PAGE.CREW_HOME));
       }
     })();
