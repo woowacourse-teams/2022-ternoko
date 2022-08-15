@@ -47,7 +47,7 @@ const InterviewDetailModal = ({
   const handleClickDeleteButton = async () => {
     if (role === 'CREW' && confirm(CONFIRM_DELETE_MESSAGE)) {
       await deleteCrewInterviewAPI(interviewId);
-      showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_RESERVATION);
+      showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_INTERVIEW);
       afterDeleteInterview();
     } else if (role === 'COACH') {
       handleAskOpenModal();

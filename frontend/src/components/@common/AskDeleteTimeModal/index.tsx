@@ -25,14 +25,20 @@ const AskDeleteTimeModal = ({
 }: AskDeleteTimeModalProps) => {
   const { showToast } = useToastActions();
 
-  const handleClickYesButton = async () => {
+  const handleClickButton = async (onlyInterview: boolean, message: string) => {
     if (confirm(CONFIRM_DELETE_MESSAGE)) {
-      await deleteCoachInterviewAPI(interviewId);
-      showToast('SUCCESS', SUCCESS_MESSAGE.COACH_DELETE_RESERVATION);
-      handleCloseModal();
+      await deleteCoachInterviewAPI(interviewId, onlyInterview);
+      showToast('SUCCESS', message);
       afterDeleteInterview();
+      handleCloseModal();
     }
   };
+
+  const handleClickYesButton = () =>
+    handleClickButton(true, SUCCESS_MESSAGE.COACH_DELETE_INTERVIEW);
+
+  const handleClickNoButton = () =>
+    handleClickButton(false, SUCCESS_MESSAGE.COACH_DELETE_INTERVIEW_AND_TIME);
 
   return (
     <Modal
@@ -50,7 +56,9 @@ const AskDeleteTimeModal = ({
         <Button white height="4.5rem" onClick={handleClickYesButton}>
           넹
         </Button>
-        <Button height="4.5rem">아니용~ 열어둔 시간도 삭제할게용~</Button>
+        <Button height="4.5rem" onClick={handleClickNoButton}>
+          아니용~ 열어둔 시간도 삭제할게용~
+        </Button>
       </S.ButtonBox>
     </Modal>
   );
