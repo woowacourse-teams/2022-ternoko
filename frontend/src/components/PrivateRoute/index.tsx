@@ -24,15 +24,20 @@ const Pending = ({ resource }: PendingProps) => {
 const fetchAccessResult = (role: MemberExtendedRole) => {
   let result: boolean | null = null;
 
-  const suspender = validateAccessTokenAPI(role).then((response) => {
-    result = response.data;
-  });
+  const suspender = validateAccessTokenAPI(role)
+    .then(() => {
+      result = true;
+    })
+    .catch(() => {
+      result = false;
+    });
 
   return {
     read() {
       if (result === null) {
-        return suspender;
+        throw suspender;
       }
+
       return result;
     },
   };
