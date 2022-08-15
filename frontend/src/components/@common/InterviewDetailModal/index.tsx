@@ -51,9 +51,10 @@ const InterviewDetailModal = ({
       try {
         onLoading();
         await deleteCrewInterviewAPI(interviewId);
+        offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_INTERVIEW);
         afterDeleteInterview();
-      } finally {
+      } catch (e) {
         offLoading();
       }
     } else if (role === 'COACH') {
