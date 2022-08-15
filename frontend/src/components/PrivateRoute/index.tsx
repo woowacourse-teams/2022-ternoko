@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
+import Loading from '@/components/@common/Loading';
+
 import { MemberExtendedRole } from '@/types/domain';
 
 import { validateAccessTokenAPI } from '@/api';
@@ -13,12 +15,6 @@ type PrivateRouteProps = {
 
 type PendingProps = {
   resource: { read: () => Promise<void> | boolean };
-};
-
-const Pending = ({ resource }: PendingProps) => {
-  const result = resource.read();
-
-  return result ? <Outlet /> : <Navigate to={PAGE.ACCESS_DENY} />;
 };
 
 const fetchAccessResult = (role: MemberExtendedRole) => {
@@ -43,6 +39,15 @@ const fetchAccessResult = (role: MemberExtendedRole) => {
   };
 };
 
+const Pending = ({ resource }: PendingProps) => {
+  const result = resource.read();
+
+  return result ? <Outlet /> : <Navigate to={PAGE.ACCESS_DENY} />;
+};
+
+const additionalBoxStyle =
+  'position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%; background-color: unset;';
+
 const PrivateRoute = ({ auth }: PrivateRouteProps) => {
   const accessToken = LocalStorage.getAccessToken();
 
@@ -51,7 +56,15 @@ const PrivateRoute = ({ auth }: PrivateRouteProps) => {
   }
 
   return (
-    <Suspense fallback={<p>loading...</p>}>
+    <Suspense
+      fallback={
+        <Loading
+          additionalBoxStyle={additionalBoxStyle}
+          profileSizeRem={25}
+          animationDuration={1.2}
+        />
+      }
+    >
       <Pending resource={fetchAccessResult(auth)} />
     </Suspense>
   );
