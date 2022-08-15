@@ -68,7 +68,7 @@ public class AuthServiceTest {
 
     @Test
     @DisplayName("Coach나, Crew가 아닌 다른 롤로 에러를 반환한다.")
-    void check_undefined_Type_exception() {
+    void check_undefined_Type_false() {
         // when
         assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "UNDEFINED"))
                 .isInstanceOf(InvalidTokenException.class)

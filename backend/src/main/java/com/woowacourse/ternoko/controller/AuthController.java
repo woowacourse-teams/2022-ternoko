@@ -5,6 +5,7 @@ import com.woowacourse.ternoko.config.AuthenticationPrincipal;
 import com.woowacourse.ternoko.dto.LoginResponse;
 import com.woowacourse.ternoko.service.AuthService;
 import java.io.IOException;
+import java.util.Locale;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/login")
 public class AuthController {
 
+    private static final String ALL = "ALL";
     private final AuthService authService;
 
     @GetMapping
@@ -29,6 +31,9 @@ public class AuthController {
     @GetMapping("/valid")
     public ResponseEntity<Void> checkValidAccessTokenAndRole(@AuthenticationPrincipal final Long id,
                                                              @RequestParam final String type) {
+        if (type.toUpperCase(Locale.ROOT).equals(ALL)) {
+            return ResponseEntity.ok().build();
+        }
         authService.checkMemberType(id, type);
         return ResponseEntity.ok().build();
     }
