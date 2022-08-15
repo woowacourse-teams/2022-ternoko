@@ -32,6 +32,8 @@ const LoginRegisterPage = () => {
   const { onLoading, offLoading } = useLoadingActions();
   const { initializeUser } = useUserActions();
 
+  const { onLoading, offLoading } = useLoadingActions();
+
   const memberRole = LocalStorage.getMemberRole();
 
   const [name, setName] = useState('');

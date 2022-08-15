@@ -160,6 +160,8 @@ const CoachInterviewCreatePage = () => {
     } catch (error) {
       offLoading();
       showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
+    } finally {
+      offLoading();
     }
   };
 
