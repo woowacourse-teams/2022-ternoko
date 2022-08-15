@@ -7,6 +7,7 @@ type ModalProps = {
 
 type DimmerProps = Pick<ModalProps, 'show'> & {
   display: number;
+  additionalDimmerStyle?: string;
 };
 
 export const Dimmer = styled.div<DimmerProps>`
@@ -22,6 +23,8 @@ export const Dimmer = styled.div<DimmerProps>`
   background-color: ${({ theme }) => theme.colors.black_50};
   opacity: 0;
   transition: opacity 0.5s;
+
+  ${({ additionalDimmerStyle }) => additionalDimmerStyle};
 
   ${({ show }) =>
     show &&
