@@ -69,4 +69,19 @@ public class AuthControllerTest extends ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
+
+    @Test
+    @DisplayName("All 요청 Type + 유효성 검사를 한다.")
+    void checkValidAccessTokenAndAllType() throws Exception {
+        // given, when
+        doNothing().when(authService).checkMemberType(any(), any());
+
+        //then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/login/valid")
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
+                        .queryParam("type", "all"))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
 }
