@@ -7,6 +7,7 @@ import Button from '@/components/@common/Button/styled';
 import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 import { useUserActions } from '@/context/UserProvider';
 
@@ -22,6 +23,7 @@ const MyPage = () => {
 
   const { showToast } = useToastActions();
   const { initializeUser } = useUserActions();
+  const { onLoading, offLoading } = useLoadingActions();
 
   const [imageUrl, setImageUrl] = useState('');
   const [nickname, setNickname] = useState('');
@@ -52,7 +54,6 @@ const MyPage = () => {
 
   const handleClickConfirmButton = async () => {
     //추후 중복 검사 로직
-
     isSubmitted || setIsSubmitted(true);
 
     if (
@@ -61,12 +62,18 @@ const MyPage = () => {
     )
       return;
 
-    if (memberRole === 'CREW') {
-      await patchCrewInfoAPI({ nickname, imageUrl });
-      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
-    } else {
-      await patchCoachInfoAPI({ nickname, introduce, imageUrl });
-      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
+    try {
+      onLoading();
+
+      if (memberRole === 'CREW') {
+        await patchCrewInfoAPI({ nickname, imageUrl });
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
+      } else {
+        await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
+      }
+    } finally {
+      offLoading();
     }
 
     initializeUser(null);

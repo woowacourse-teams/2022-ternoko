@@ -16,6 +16,7 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
 import { CoachType, CrewSelectTime, InterviewType, StringDictionary } from '@/types/domain';
@@ -42,6 +43,8 @@ export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
 const InterviewApplyPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToastActions();
+
+  const { onLoading, offLoading } = useLoadingActions();
 
   const { search } = useLocation();
   const interviewId = new URLSearchParams(search).get('interviewId');
@@ -142,16 +145,22 @@ const InterviewApplyPage = () => {
       ],
     };
 
-    if (interviewId) {
-      await putInterviewAPI(Number(interviewId), body);
-      showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_INTERVIEW);
-      navigate(`${PAGE.INTERVIEW_COMPLETE}/${interviewId}`);
-    } else {
-      const response = await postInterviewAPI(body);
-      showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_INTERVIEW);
+    try {
+      onLoading();
 
-      const location = response.headers.location;
-      navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
+      if (interviewId) {
+        await putInterviewAPI(Number(interviewId), body);
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_INTERVIEW);
+        navigate(`${PAGE.INTERVIEW_COMPLETE}/${interviewId}`);
+      } else {
+        const response = await postInterviewAPI(body);
+        const location = response.headers.location;
+
+        showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_INTERVIEW);
+        navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
+      }
+    } finally {
+      offLoading();
     }
   };
 

@@ -1,22 +1,13 @@
-import InterviewDetailModal from '../../components/InterviewDetailModal';
-
-import { useState } from 'react';
+import Loading from '@/components/@common/Loading';
 
 const TestPage = () => {
-  const [modalOn, setModalOn] = useState(false);
-
-  const handleOpenModal = () => {
-    console.log('click', modalOn);
-    setModalOn(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOn(false);
-  };
   return (
     <>
-      <button onClick={handleOpenModal}>모달 켜기</button>
-      <InterviewDetailModal role="coach" modalOn={modalOn} handleCloseModal={handleCloseModal} />
+      <Loading
+        additionalBoxStyle="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%"
+        profileSizeRem={25}
+        animationDuration={1.2}
+      />
     </>
   );
 };

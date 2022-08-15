@@ -8,6 +8,7 @@ import Button from '@/components/@common/Button/styled';
 import InputAreaField from '@/components/InputAreaField';
 import TextAreaField from '@/components/TextAreaField';
 
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 import { useUserActions } from '@/context/UserProvider';
 
@@ -29,6 +30,8 @@ const LoginRegisterPage = () => {
 
   const { showToast } = useToastActions();
   const { initializeUser } = useUserActions();
+
+  const { onLoading, offLoading } = useLoadingActions();
 
   const memberRole = LocalStorage.getMemberRole();
 
@@ -57,25 +60,29 @@ const LoginRegisterPage = () => {
       return;
 
     (async () => {
-      const response = await getDuplicatedNicknameStatusAPI(nickname);
-      const { exists }: DuplicatedNicknameStatusType = response.data;
+      try {
+        onLoading();
 
-      if (exists) {
-        showToast('ERROR', ERROR_MESSAGE.DUPLICATED_NICKNAME);
+        const response = await getDuplicatedNicknameStatusAPI(nickname);
+        const { exists }: DuplicatedNicknameStatusType = response.data;
 
-        return;
-      }
+        if (exists) {
+          showToast('ERROR', ERROR_MESSAGE.DUPLICATED_NICKNAME);
 
-      if (memberRole === 'COACH') {
-        await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+          return;
+        }
 
-        showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COACH_INFO);
-        initializeUser(() => navigate(PAGE.COACH_HOME));
-      } else {
-        await patchCrewInfoAPI({ nickname, imageUrl });
-
-        showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_CREW_INFO);
-        initializeUser(() => navigate(PAGE.CREW_HOME));
+        if (memberRole === 'COACH') {
+          await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+          showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COACH_INFO);
+          initializeUser(() => navigate(PAGE.COACH_HOME));
+        } else {
+          await patchCrewInfoAPI({ nickname, imageUrl });
+          showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_CREW_INFO);
+          initializeUser(() => navigate(PAGE.CREW_HOME));
+        }
+      } finally {
+        offLoading();
       }
     })();
   };
