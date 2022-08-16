@@ -10,7 +10,6 @@ import TextAreaField from '@/components/TextAreaField';
 
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
-import { useUserActions } from '@/context/UserProvider';
 
 import { DuplicatedNicknameStatusType, CoachType as UserType } from '@/types/domain';
 
@@ -29,7 +28,6 @@ const LoginRegisterPage = () => {
   const navigate = useNavigate();
 
   const { showToast } = useToastActions();
-  const { initializeUser } = useUserActions();
 
   const { onLoading, offLoading } = useLoadingActions();
 
@@ -74,14 +72,16 @@ const LoginRegisterPage = () => {
 
         if (memberRole === 'COACH') {
           await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+          offLoading();
           showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COACH_INFO);
-          initializeUser(() => navigate(PAGE.COACH_HOME));
+          navigate(PAGE.COACH_HOME);
         } else {
           await patchCrewInfoAPI({ nickname, imageUrl });
+          offLoading();
           showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_CREW_INFO);
-          initializeUser(() => navigate(PAGE.CREW_HOME));
+          navigate(PAGE.CREW_HOME);
         }
-      } finally {
+      } catch (error) {
         offLoading();
       }
     })();
@@ -147,5 +147,4 @@ const LoginRegisterPage = () => {
     </S.Box>
   );
 };
-
 export default LoginRegisterPage;

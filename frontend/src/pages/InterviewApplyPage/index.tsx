@@ -150,16 +150,18 @@ const InterviewApplyPage = () => {
 
       if (interviewId) {
         await putInterviewAPI(Number(interviewId), body);
+        offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_INTERVIEW);
         navigate(`${PAGE.INTERVIEW_COMPLETE}/${interviewId}`);
       } else {
         const response = await postInterviewAPI(body);
         const location = response.headers.location;
 
+        offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_INTERVIEW);
         navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
       }
-    } finally {
+    } catch (error) {
       offLoading();
     }
   };
