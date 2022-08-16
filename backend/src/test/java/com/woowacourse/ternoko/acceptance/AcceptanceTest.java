@@ -143,4 +143,8 @@ public class AcceptanceTest {
     protected Header generateHeader(final Member member) {
         return new Header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(member));
     }
+
+    protected Long parseLocationHeader(final ExtractableResponse<Response> response, final String regex) {
+        return Long.parseLong(response.header("Location").split(regex)[1]);
+    }
 }

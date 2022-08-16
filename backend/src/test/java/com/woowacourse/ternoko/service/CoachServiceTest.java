@@ -129,6 +129,25 @@ public class CoachServiceTest {
     void findAvailableDateTimesByCoachId() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTHS_REQUEST);
+
+        // when
+        final List<AvailableDateTime> availableDateTimes = coachService
+                .findAvailableDateTimesByCoachId(COACH3.getId(), NOW_PLUS_1_MONTH.getYear(),
+                        NOW_PLUS_1_MONTH.getMonthValue());
+
+        // then
+        assertThat(availableDateTimes.stream()
+                .map(AvailableDateTime::getLocalDateTime)
+                .collect(Collectors.toList()))
+                .hasSize(3);
+    }
+
+    @Test
+    @DisplayName("크루 면담 수정시 코치의 면담 가능 시간을 조회한다.")
+    void findAvailableDateTimesByCoachIdAndInterviewId() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTHS_REQUEST);
+
         // when
         final List<AvailableDateTime> availableDateTimes = coachService
                 .findAvailableDateTimesByCoachId(COACH3.getId(), NOW_PLUS_1_MONTH.getYear(),

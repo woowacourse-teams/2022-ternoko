@@ -64,6 +64,24 @@ public class CoachControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("크루 - 면담 수정시 면담 가능 시간 목록을 조회한다.")
+    void findCalendarTimesByInterviewId() throws Exception {
+        // given
+        createCalendarTimes(COACH1);
+        final Long interviewId = createInterview(CREW1);
+
+        // when, then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/interviews/{interviewId}/calendar/times", interviewId)
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
+                        .queryParam("coachId", String.valueOf(COACH1.getId()))
+                        .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
+                        .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
     @DisplayName("코치 - 내 정보를 조회한다.")
     void findCoach() throws Exception {
         // given, when, then
