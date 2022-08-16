@@ -69,7 +69,7 @@ public class CoachService {
     public List<AvailableDateTime> toAvailableDateTimes(final Coach coach,
                                                         final List<AvailableDateTimeSummaryRequest> times) {
         return times.stream()
-                .map(time -> new AvailableDateTime(coach, time.getTime(), time.getAvailableDateTimeStatus()))
+                .map(time -> new AvailableDateTime(coach.getId(), time.getTime(), time.getAvailableDateTimeStatus()))
                 .collect(Collectors.toList());
     }
 
