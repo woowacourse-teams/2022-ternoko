@@ -9,7 +9,6 @@ import TitleBox from '@/components/@common/TitleBox';
 
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
-import { useUserActions } from '@/context/UserProvider';
 
 import { CoachType as UserType } from '@/types/domain';
 

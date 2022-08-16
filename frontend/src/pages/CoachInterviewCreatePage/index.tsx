@@ -162,6 +162,7 @@ const CoachInterviewCreatePage = () => {
       showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
     } finally {
       offLoading();
+      showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
     }
   };
 
