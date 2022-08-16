@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.login.presentation;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZED_MEMBER;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
 
 import com.woowacourse.ternoko.login.aop.MemberTypeCache;
 import com.woowacourse.ternoko.login.application.JwtProvider;
@@ -36,7 +36,7 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
         try {
             memberTypeCache.setMemberType(jwtProvider.getMemberType(credentials));
         } catch (NumberFormatException e) {
-            throw new TokenNotValidException(UNAUTHORIZED_MEMBER);
+            throw new TokenNotValidException(INVALID_TOKEN);
         }
 
         jwtProvider.validateToken(credentials);

@@ -61,10 +61,11 @@ public class CoachController {
 
     // TODO: AvailableDateTimeController 로 옮기기
     @GetMapping("/interviews/{interviewId}/calendar/times")
-    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimesByInterviewId(@PathVariable final Long interviewId,
-                                                                        @RequestParam final Long coachId,
-                                                                        @RequestParam final int year,
-                                                                        @RequestParam final int month) {
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimesByInterviewId(
+            @PathVariable final Long interviewId,
+            @RequestParam final Long coachId,
+            @RequestParam final int year,
+            @RequestParam final int month) {
         final List<AvailableDateTime> availableDateTimes = coachService
                 .findAvailableDateTimesByCoachIdAndInterviewId(interviewId, coachId, year, month);
         final AvailableDateTimesResponse response = AvailableDateTimesResponse.of(availableDateTimes);

@@ -147,6 +147,6 @@ public class AuthServiceTest {
                 openIDConnectTokenResponse);
         given(slackMethodClient.openIDConnectUserInfo(any(OpenIDConnectUserInfoRequest.class))).willReturn(
                 userInfoResponse);
-        given(jwtProvider.createToken("1")).willReturn("temp_access_token");
+        given(jwtProvider.createToken(CREW1)).willReturn("temp_access_token");
     }
 }

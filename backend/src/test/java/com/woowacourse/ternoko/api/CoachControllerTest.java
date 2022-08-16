@@ -73,7 +73,7 @@ public class CoachControllerTest extends ControllerTest {
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/interviews/{interviewId}/calendar/times", interviewId)
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(CREW1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(CREW1))
                         .queryParam("coachId", String.valueOf(COACH1.getId()))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
