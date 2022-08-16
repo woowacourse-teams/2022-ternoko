@@ -38,7 +38,7 @@ public class CommentService {
         final MemberType memberType = getMemberType(memberId);
         interview.getInterviewStatusType().validateCreateComment(getMemberType(memberId));
 
-        final Comment comment = commentRepository.save(new Comment(member, interview, commentRequest.getComment()));
+        final Comment comment = commentRepository.save(new Comment(memberId, interview, commentRequest.getComment()));
 
         interview.complete(memberType);
 
@@ -54,7 +54,7 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByInterviewId(interviewId);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
-            commentResponses.add(CommentResponse.of(getMemberType(comment.getMember().getId()), comment));
+            commentResponses.add(CommentResponse.of(getMemberType(comment.getMemberId()), comment));
         }
         return CommentsResponse.from(commentResponses);
     }

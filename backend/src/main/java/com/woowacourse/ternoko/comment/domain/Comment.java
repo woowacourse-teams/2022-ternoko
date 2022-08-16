@@ -8,6 +8,7 @@ import com.woowacourse.ternoko.comment.exception.InvalidCommentInterviewIdExcept
 import com.woowacourse.ternoko.comment.exception.InvalidCommentMemberIdException;
 import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.Interview;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "member_id", nullable = false)
     private Long memberId;
 
     @ManyToOne
@@ -48,7 +50,7 @@ public class Comment {
     }
 
     public void validMember(final Long memberId) {
-        if (!this.member.sameMember(memberId)) {
+        if (!this.memberId.equals(memberId)) {
             throw new InvalidCommentMemberIdException(INVALID_COMMENT_MEMBER_ID);
         }
     }
