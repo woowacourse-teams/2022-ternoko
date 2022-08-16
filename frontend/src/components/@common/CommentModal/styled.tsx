@@ -13,6 +13,15 @@ export const TextArea = styled.textarea`
   border: 1px solid ${({ theme }) => theme.colors.gray_150};
 `;
 
+export const DescriptionBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  font-size: 1.4rem;
+`;
+
 export const Icon = styled.img`
   position: absolute;
   top: 1rem;
