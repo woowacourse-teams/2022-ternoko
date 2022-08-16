@@ -29,6 +29,7 @@ import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +52,7 @@ public class CommentService {
         if (!memberType.getValidCreateCommentStatusType().contains(interview.getInterviewStatusType())) {
             throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
         }
-        Comment savedComment = commentRepository.save(new Comment(member, interview, commentRequest.getComment()));
+        Comment savedComment = commentRepository.save(new Comment(member.getId(), interview, commentRequest.getComment()));
         interview.complete(memberType);
 
         return savedComment.getId();
@@ -69,7 +70,8 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByInterviewId(interviewId);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
-            MemberType memberType = getMemberType(comment.getMember().getId());
+//            MemberType memberType = getMemberType(comment.getMember().getId());
+            MemberType memberType = getMemberType(comment.getMemberId());
             commentResponses.add(CommentResponse.of(memberType, comment));
         }
         return CommentsResponse.from(commentResponses);
@@ -78,10 +80,11 @@ public class CommentService {
     public void update(Long memberId, Long interviewId, Long commentId, CommentRequest commentRequest) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
-        MemberType requestMemberType = getMemberType(memberId);
-        if (!comment.getMember().sameMember(memberId)) {
+
+        if (!Objects.equals(comment.getMemberId(), memberId)) {
             throw new InvalidCommentMemberIdException(INVALID_COMMENT_MEMBER_ID);
         }
+
         if (!comment.getInterview().getId().equals(interviewId)) {
             throw new InvalidCommentInterviewIdException(INVALID_COMMENT_INTERVIEW_ID);
         }
