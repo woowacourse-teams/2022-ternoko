@@ -38,7 +38,7 @@ export const Box = styled.div`
     }
   }
 
-  @media ${({ theme }) => theme.devices.tabletM} {
+  @media ${({ theme }) => theme.devices.tabletM()} {
     div p {
       font-size: 2.5rem;
     }
