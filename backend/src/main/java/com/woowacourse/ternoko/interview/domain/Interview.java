@@ -9,8 +9,6 @@ import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.MemberType;
-import com.woowacourse.ternoko.domain.InterviewStatusType;
-import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;

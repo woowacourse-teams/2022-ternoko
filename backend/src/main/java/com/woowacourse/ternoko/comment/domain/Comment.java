@@ -6,7 +6,6 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COM
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.exception.InvalidCommentInterviewIdException;
 import com.woowacourse.ternoko.comment.exception.InvalidCommentMemberIdException;
-import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import javax.persistence.Column;
 import javax.persistence.Entity;
