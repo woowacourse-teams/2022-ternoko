@@ -1,4 +1,4 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import * as S from './styled';
 
@@ -14,13 +14,15 @@ const AccessDenyPage = () => {
     return <Navigate to={PAGE.LOGIN} />;
   }
 
+  const handleClickButton = () => {
+    location.href = role === 'CREW' ? PAGE.CREW_HOME : PAGE.COACH_HOME;
+  };
+
   return (
     <S.Box>
       <div>
         <p>접근 권한이 없다구용ㅠㅠㅠㅠ😭</p>
-        <Link to={role === 'CREW' ? PAGE.CREW_HOME : PAGE.COACH_HOME}>
-          <Button>홈으로 돌아가기</Button>
-        </Link>
+        <Button onClick={handleClickButton}>홈으로 가즈앗🏃‍♂️</Button>
       </div>
     </S.Box>
   );

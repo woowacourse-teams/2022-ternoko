@@ -9,6 +9,7 @@ import TitleBox from '@/components/@common/TitleBox';
 
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
+import { useUserActions } from '@/context/UserProvider';
 
 import { CoachType as UserType } from '@/types/domain';
 
@@ -23,6 +24,8 @@ const MyPage = () => {
   const { showToast } = useToastActions();
 
   const { onLoading, offLoading } = useLoadingActions();
+
+  const { initializeUser } = useUserActions();
 
   const [imageUrl, setImageUrl] = useState('');
   const [nickname, setNickname] = useState('');
@@ -52,7 +55,6 @@ const MyPage = () => {
   };
 
   const handleClickConfirmButton = async () => {
-    //추후 중복 검사 로직
     isSubmitted || setIsSubmitted(true);
 
     if (
@@ -75,9 +77,10 @@ const MyPage = () => {
       }
     } catch (e) {
       offLoading();
+    } finally {
+      setIsEditMode(false);
+      initializeUser(null);
     }
-
-    setIsEditMode(false);
   };
 
   useEffect(() => {
