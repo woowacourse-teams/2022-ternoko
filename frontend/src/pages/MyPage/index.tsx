@@ -9,7 +9,6 @@ import TitleBox from '@/components/@common/TitleBox';
 
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
-import { useUserActions } from '@/context/UserProvider';
 
 import { CoachType as UserType } from '@/types/domain';
 
@@ -22,7 +21,7 @@ const MyPage = () => {
   const memberRole = LocalStorage.getMemberRole();
 
   const { showToast } = useToastActions();
-  const { initializeUser } = useUserActions();
+
   const { onLoading, offLoading } = useLoadingActions();
 
   const [imageUrl, setImageUrl] = useState('');
@@ -67,16 +66,17 @@ const MyPage = () => {
 
       if (memberRole === 'CREW') {
         await patchCrewInfoAPI({ nickname, imageUrl });
+        offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
       } else {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
+        offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
       }
-    } finally {
+    } catch (e) {
       offLoading();
     }
 
-    initializeUser(null);
     setIsEditMode(false);
   };
 

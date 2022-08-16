@@ -152,14 +152,14 @@ const CoachInterviewCreatePage = () => {
     try {
       onLoading();
       await postCoachScheduleAPI(body);
+      offLoading();
       resetSelectedDates();
       resetTimes();
       showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_SCHEDULE);
       setIsApplied((prev) => !prev);
     } catch (error) {
-      showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
-    } finally {
       offLoading();
+      showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
     }
   };
 
