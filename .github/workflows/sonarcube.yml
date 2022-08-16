@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.SUBMODULE_TOKEN }}
           submodules: recursive
@@ -32,7 +32,7 @@ jobs:
     steps:
 			# 소스코드 체크아웃 수행
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.SUBMODULE_TOKEN }}
           submodules: recursive
