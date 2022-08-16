@@ -21,10 +21,12 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "
             + "and YEAR(a.localDateTime) = :year "
-            + "and MONTH(a.localDateTime) = :month")
-    List<AvailableDateTime> findAvailableDateTimesByCoachId(final Long coachId,
-                                                            final int year,
-                                                            final int month);
+            + "and MONTH(a.localDateTime) = :month "
+            + "and a.availableDateTimeStatus = 'OPEN' "
+            + "order by a.localDateTime")
+    List<AvailableDateTime> findOpenAvailableDateTimesByCoachId(final Long coachId,
+                                                                final int year,
+                                                                final int month);
 
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "

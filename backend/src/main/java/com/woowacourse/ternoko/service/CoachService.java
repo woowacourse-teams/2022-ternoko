@@ -13,7 +13,6 @@ import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.repository.CoachRepository;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -79,9 +78,7 @@ public class CoachService {
             final int year,
             final int month) {
 
-        return availableDateTimeRepository.findAvailableDateTimesByCoachId(coachId, year, month).stream()
-                .sorted(Comparator.comparing(AvailableDateTime::getLocalDateTime))
-                .collect(Collectors.toList());
+        return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
     }
 
     @Transactional(readOnly = true)
