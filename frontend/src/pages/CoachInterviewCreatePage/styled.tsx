@@ -9,7 +9,7 @@ export const DateBox = styled.div`
   gap: 3rem;
   padding-bottom: 3rem;
 
-  @media ${({ theme }) => theme.devices.tabletM} {
+  @media ${({ theme }) => theme.devices.tabletM()} {
     flex-direction: column;
   }
 `;

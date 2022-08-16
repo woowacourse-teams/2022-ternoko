@@ -38,7 +38,7 @@ export const Box = styled.div`
     }
   }
 
-  @media ${({ theme }) => theme.devices.tabletM} {
+  @media ${({ theme }) => theme.devices.tabletM()} {
     padding: 0 5rem;
 
     h1 {
