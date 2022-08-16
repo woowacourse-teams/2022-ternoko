@@ -103,9 +103,9 @@ public class DatabaseInitializer {
 
             coachRepository.saveAll(coaches);
 
-            availableDateTimeRepository.save(new AvailableDateTime(1L, coach1,
+            availableDateTimeRepository.save(new AvailableDateTime(1L, coach1.getId(),
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
-            availableDateTimeRepository.save(new AvailableDateTime(2L, coach1,
+            availableDateTimeRepository.save(new AvailableDateTime(2L, coach1.getId(),
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
         }
     }

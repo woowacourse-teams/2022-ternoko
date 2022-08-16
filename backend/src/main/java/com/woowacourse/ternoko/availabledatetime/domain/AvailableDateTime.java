@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.availabledatetime.domain;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
 
-import com.woowacourse.ternoko.domain.member.Coach;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +11,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +25,8 @@ public class AvailableDateTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Coach coach;
+    @Column(name = "coach_id", nullable = false)
+    private Long coachId;
 
     @Column(nullable = false)
     private LocalDateTime localDateTime;
@@ -38,9 +34,9 @@ public class AvailableDateTime {
     @Enumerated(EnumType.STRING)
     private AvailableDateTimeStatus availableDateTimeStatus;
 
-    public AvailableDateTime(Coach coach, LocalDateTime localDateTime,
-                             AvailableDateTimeStatus availableDateTimeStatus) {
-        this.coach = coach;
+    public AvailableDateTime(final Long coachId, final LocalDateTime localDateTime,
+                             final AvailableDateTimeStatus availableDateTimeStatus) {
+        this.coachId = coachId;
         this.localDateTime = localDateTime;
         this.availableDateTimeStatus = availableDateTimeStatus;
     }

@@ -36,7 +36,7 @@ VALUES (5),
        (7),
        (8);
 
-INSERT INTO available_date_time (available_date_time_status, local_date_time, member_id)
+INSERT INTO available_date_time (available_date_time_status, local_date_time, coach_id)
 VALUES ('USED', '2022-07-31 11:00:00', 1),
        ('USED', '2022-07-31 12:00:00', 1),
        ('USED', '2022-07-31 13:00:00', 1),
