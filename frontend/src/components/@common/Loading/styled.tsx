@@ -15,7 +15,7 @@ export const Box = styled.div<BoxProps>`
 
   background-color: ${({ theme }) => theme.colors.gray_100};
 
-  @media ${({ theme }) => theme.devices.tablet} {
+  @media ${({ theme }) => theme.devices.tablet()} {
     width: 100%;
   }
 

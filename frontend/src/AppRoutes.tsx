@@ -39,6 +39,7 @@ const AppRoutes = () => {
         <Route path={PAGE.LOGIN} element={<LoginPage />} />
         <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
         <Route path={PAGE.ACCESS_DENY} element={<AccessDenyPage />} />
+
         <Route path={PAGE.BASE} element={<Layout />}>
           <Route element={<PrivateRoute auth="ALL" />}>
             <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
@@ -46,16 +47,7 @@ const AppRoutes = () => {
           <Route element={<PrivateRoute auth="CREW" />}>
             <Route path={PAGE.CREW_HOME} element={<HomePage />} />
           </Route>
-          <Route element={<PrivateRoute auth="CREW" />}>
-            <Route
-              path={PAGE.INTERVIEW_APPLY}
-              element={
-                <CalendarProvider selectMode="single">
-                  <InterviewApplyPage />
-                </CalendarProvider>
-              }
-            />
-          </Route>
+
           <Route element={<PrivateRoute auth="CREW" />}>
             <Route
               path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
@@ -78,6 +70,17 @@ const AppRoutes = () => {
           <Route element={<PrivateRoute auth="ALL" />}>
             <Route path={PAGE.MY_PAGE} element={<MyPage />} />
           </Route>
+        </Route>
+
+        <Route element={<PrivateRoute auth="CREW" />}>
+          <Route
+            path={PAGE.INTERVIEW_APPLY}
+            element={
+              <CalendarProvider selectMode="single">
+                <InterviewApplyPage />
+              </CalendarProvider>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -106,23 +109,23 @@ const S = {
     min-height: calc(100% - 60px);
     padding: 3rem 30rem 0;
 
-    @media ${({ theme }) => theme.devices.laptopL} {
+    @media ${({ theme }) => theme.devices.laptopL()} {
       padding: 3rem 25rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.laptop} {
+    @media ${({ theme }) => theme.devices.laptop()} {
       padding: 3rem 5rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.tablet} {
+    @media ${({ theme }) => theme.devices.tablet()} {
       padding: 2rem 5rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.mobileL} {
+    @media ${({ theme }) => theme.devices.mobileL()} {
       padding: 2rem 2rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.mobileM} {
+    @media ${({ theme }) => theme.devices.mobileM()} {
       padding: 2rem 1rem 0;
     }
   `,

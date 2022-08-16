@@ -22,15 +22,15 @@ export const Box = styled.div`
     }
   }
 
-  @media ${({ theme }) => theme.devices.laptopL} {
+  @media ${({ theme }) => theme.devices.laptopL()} {
     padding: 0 25rem;
   }
 
-  @media ${({ theme }) => theme.devices.laptop} {
+  @media ${({ theme }) => theme.devices.laptop()} {
     padding: 0 5rem;
   }
 
-  @media ${({ theme }) => theme.devices.tablet} {
+  @media ${({ theme }) => theme.devices.tablet()} {
     padding: 0 5rem;
 
     h1 {
@@ -46,7 +46,7 @@ export const Box = styled.div`
     }
   }
 
-  @media ${({ theme }) => theme.devices.mobileL} {
+  @media ${({ theme }) => theme.devices.mobileL()} {
     padding: 0 2rem;
 
     a {
@@ -58,7 +58,7 @@ export const Box = styled.div`
     }
   }
 
-  @media ${({ theme }) => theme.devices.mobileM} {
+  @media ${({ theme }) => theme.devices.mobileM()} {
     padding: 0 1rem;
 
     a {

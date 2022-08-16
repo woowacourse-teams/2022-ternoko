@@ -28,7 +28,7 @@ export const Box = styled.div`
     padding: 1.2rem 2.5rem;
   }
 
-  @media ${({ theme }) => theme.devices.tablet} {
+  @media ${({ theme }) => theme.devices.tablet()} {
     background-image: url(/assets/image/mobile.jpeg);
     div {
       top: unset;
