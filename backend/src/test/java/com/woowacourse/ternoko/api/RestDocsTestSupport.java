@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.api;
 
-import com.woowacourse.ternoko.common.JwtProvider;
+import com.woowacourse.ternoko.login.application.JwtProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.domain.member;
 
 import java.util.Arrays;
 import java.util.Locale;

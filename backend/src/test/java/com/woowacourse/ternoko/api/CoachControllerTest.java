@@ -1,12 +1,12 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.config.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -20,13 +20,13 @@ public class CoachControllerTest extends ControllerTest {
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllInterviewByCoach() throws Exception {
         // given
-        createCalendarTimes(COACH1.getId());
-        createInterviews(CREW1.getId());
+        createCalendarTimes(COACH1);
+        createInterviews(CREW1);
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/schedules")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
                 .andExpect(status().isOk())
@@ -40,7 +40,7 @@ public class CoachControllerTest extends ControllerTest {
                         .put("/api/calendar/times")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1))
                         .content(objectMapper.writeValueAsString(MONTH_REQUEST)))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -50,12 +50,12 @@ public class CoachControllerTest extends ControllerTest {
     @DisplayName("코치 - 면담 가능 시간 목록을 조회한다.")
     void findCalendarTimes() throws Exception {
         // given
-        createCalendarTimes(COACH1.getId());
+        createCalendarTimes(COACH1);
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/calendar/times")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1))
                         .queryParam("coachId", String.valueOf(COACH1.getId()))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
@@ -69,7 +69,7 @@ public class CoachControllerTest extends ControllerTest {
         // given, when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/coaches/me")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId()))))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1)))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
@@ -82,7 +82,7 @@ public class CoachControllerTest extends ControllerTest {
                         .patch("/api/coaches/me")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(String.valueOf(COACH1.getId())))
+                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1))
                         .content(objectMapper.writeValueAsString(COACH1_UPDATE_REQUEST)))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());

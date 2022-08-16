@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.login.application.JwtProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class JwtProviderTest {
     void checkPayloadAfterIssuingToken() {
         final String payload = "\"email\":\"example@example.com\"";
         final String accessToken = jwtProvider.createToken(payload);
-        assertThat(jwtProvider.getPayload(accessToken)).isEqualTo(payload);
+        assertThat(jwtProvider.extractSubject(accessToken)).isEqualTo(payload);
     }
 
     @DisplayName("토큰을 검증할 때")

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.dto;
+package com.woowacourse.ternoko.login.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

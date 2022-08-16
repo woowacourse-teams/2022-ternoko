@@ -1,10 +1,16 @@
-package com.woowacourse.ternoko.common;
+package com.woowacourse.ternoko.login.application;
+
+import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZED_MEMBER;
 
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.domain.member.Member;
+import com.woowacourse.ternoko.domain.member.MemberType;
+import com.woowacourse.ternoko.login.exception.TokenNotValidException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -32,19 +38,32 @@ public class JwtProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(payload)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String getPayload(final String token) {
-        return Jwts.parserBuilder()
+    public String createToken(Member member) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .setSubject(member.getId().toString())
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .claim("memberType", member.getMemberType())
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public MemberType getMemberType(final String token) {
+        return MemberType.valueOf(Jwts.parserBuilder()
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("memberType").toString());
     }
 
     public void validateToken(final String token) {
@@ -57,6 +76,15 @@ public class JwtProvider {
             throw new ExpiredTokenException(ExceptionType.EXPIRED_TOKEN);
         } catch (Exception e) {
             throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+        }
+    }
+
+    public String extractSubject(String token) {
+        try {
+            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody()
+                    .getSubject();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new TokenNotValidException(UNAUTHORIZED_MEMBER);
         }
     }
 }

@@ -9,9 +9,9 @@ import com.woowacourse.ternoko.acceptance.AcceptanceTest;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentResponse;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
-import com.woowacourse.ternoko.domain.InterviewStatusType;
-import com.woowacourse.ternoko.domain.MemberType;
+import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -27,7 +27,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     void createCommentByCrew() {
         // given
         final Long interviewId = 1L;
-        final Header header = generateHeader(CREW1.getId());
+        final Header header = generateHeader(CREW1);
         final ExtractableResponse<Response> response = get("/api/interviews/" + interviewId, header);
         final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
         // when
@@ -48,7 +48,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     void createCommentByCoach() {
         // given
         final Long interviewId = 1L;
-        final Header header = generateHeader(COACH1.getId());
+        final Header header = generateHeader(COACH1);
         final ExtractableResponse<Response> response = get("/api/interviews/" + interviewId, header);
         final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
         // when
@@ -69,8 +69,8 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     void createCommentByAll() {
         // given
         final Long interviewId = 1L;
-        final Header coachHeader = generateHeader(COACH1.getId());
-        final Header crewHeader = generateHeader(CREW1.getId());
+        final Header coachHeader = generateHeader(COACH1);
+        final Header crewHeader = generateHeader(CREW1);
         final ExtractableResponse<Response> response = get("/api/interviews/" + interviewId, coachHeader);
         final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
         // when
@@ -92,7 +92,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     void getCommentByCoach_OnlyCreateCoach() {
         // given
         final Long interviewId = 1L;
-        final Header header = generateHeader(COACH1.getId());
+        final Header header = generateHeader(COACH1);
         final ExtractableResponse<Response> response = get("/api/interviews/" + interviewId, header);
         post("/api/interviews/" + interviewId + "/comments", header, new CommentRequest("너무나도 유익한 시간이었습니다."));
         // when
@@ -112,11 +112,11 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     void getCommentByCrew_CreateBothMember() {
         // given
         final Long interviewId = 1L;
-        final Header coachHeader = generateHeader(COACH1.getId());
+        final Header coachHeader = generateHeader(COACH1);
         post("/api/interviews/" + interviewId + "/comments", coachHeader,
                 new CommentRequest("너무 즐거웠어요. 고민이 있다면 또 면담 신청해주세요."));
 
-        final Header crewHeader = generateHeader(CREW1.getId());
+        final Header crewHeader = generateHeader(CREW1);
         post("/api/interviews/" + interviewId + "/comments", crewHeader, new CommentRequest("너무나도 유익한 시간이었습니다."));
         // when
         ExtractableResponse<Response> getResponse = get("/api/interviews/" + interviewId + "/comments", crewHeader);
@@ -141,7 +141,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     void updateCommentByAll() {
         // given
         final Long interviewId = 1L;
-        final Header crewHeader = generateHeader(CREW1.getId());
+        final Header crewHeader = generateHeader(CREW1);
         ExtractableResponse<Response> createCommentResponse = post("/api/interviews/" + interviewId + "/comments",
                 crewHeader,
                 new CommentRequest("너무나도 유익한 시간이었습니다."));

@@ -3,7 +3,7 @@ package com.woowacourse.ternoko.comment.presentation;
 import com.woowacourse.ternoko.comment.application.CommentService;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
-import com.woowacourse.ternoko.config.AuthenticationPrincipal;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

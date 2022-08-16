@@ -1,10 +1,11 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.interview.domain;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
 import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
+import com.woowacourse.ternoko.domain.member.MemberType;
 
 public enum InterviewStatusType {
     EDITABLE,

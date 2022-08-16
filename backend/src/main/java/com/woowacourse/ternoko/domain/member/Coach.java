@@ -22,7 +22,7 @@ public class Coach extends Member {
                  final String userId,
                  final String imageUrl,
                  final String introduce) {
-        super(id, name, nickname, email, userId, imageUrl);
+        super(id, name, nickname, email, userId, imageUrl, MemberType.COACH);
         this.introduce = introduce;
     }
 

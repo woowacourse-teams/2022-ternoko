@@ -1,20 +1,24 @@
-package com.woowacourse.ternoko.config;
+package com.woowacourse.ternoko.login.presentation;
 
-import com.woowacourse.ternoko.common.JwtProvider;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZED_MEMBER;
+
+import com.woowacourse.ternoko.login.aop.MemberTypeCache;
+import com.woowacourse.ternoko.login.application.JwtProvider;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
+import com.woowacourse.ternoko.login.exception.TokenNotValidException;
 import javax.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+@AllArgsConstructor
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtProvider jwtProvider;
-
-    public AuthenticationPrincipalArgumentResolver(final JwtProvider jwtProvider) {
-        this.jwtProvider = jwtProvider;
-    }
+    private final MemberTypeCache memberTypeCache;
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
@@ -26,9 +30,16 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
                                   final ModelAndViewContainer mavContainer,
                                   final NativeWebRequest webRequest,
                                   final WebDataBinderFactory binderFactory) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String accessToken = AuthorizationExtractor.extract(request);
-        jwtProvider.validateToken(accessToken);
-        return Long.valueOf(jwtProvider.getPayload(accessToken));
+        final String credentials = AuthorizationExtractor.extract(
+                webRequest.getNativeRequest(HttpServletRequest.class));
+
+        try {
+            memberTypeCache.setMemberType(jwtProvider.getMemberType(credentials));
+        } catch (NumberFormatException e) {
+            throw new TokenNotValidException(UNAUTHORIZED_MEMBER);
+        }
+
+        jwtProvider.validateToken(credentials);
+        return Long.valueOf(jwtProvider.extractSubject(credentials));
     }
 }

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.config;
+package com.woowacourse.ternoko.login.presentation;
 
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;

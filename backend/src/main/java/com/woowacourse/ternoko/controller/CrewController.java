@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.controller;
 
-import com.woowacourse.ternoko.config.AuthenticationPrincipal;
+import com.woowacourse.ternoko.login.aop.CrewOnly;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.dto.CrewResponse;
 import com.woowacourse.ternoko.dto.CrewUpdateRequest;
 import com.woowacourse.ternoko.service.CrewService;
@@ -21,11 +22,13 @@ public class CrewController {
 
     private final CrewService crewService;
 
+    @CrewOnly
     @GetMapping("/me")
     public ResponseEntity<CrewResponse> findCrew(@AuthenticationPrincipal final Long crewId) {
         return ResponseEntity.ok(crewService.findCrew(crewId));
     }
 
+    @CrewOnly
     @PatchMapping("/me")
     public ResponseEntity<Void> updateCrew(@AuthenticationPrincipal final Long crewId,
                                            @RequestBody final CrewUpdateRequest crewUpdateRequest) {

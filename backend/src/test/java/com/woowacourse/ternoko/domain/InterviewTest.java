@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.domain;
 
-import static com.woowacourse.ternoko.domain.InterviewStatusType.FIXED;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -15,7 +15,7 @@ public class Crew extends Member {
                 final String email,
                 final String userId,
                 final String imageUrl) {
-        super(id, name, nickname, email, userId, imageUrl);
+        super(id, name, nickname, email, userId, imageUrl, MemberType.CREW);
     }
 
     public Crew(final String name,

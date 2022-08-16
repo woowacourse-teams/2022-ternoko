@@ -20,7 +20,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치 목록을 조회한다.")
     void find() {
         // given & when
-        final ExtractableResponse<Response> response = get("/api/coaches", generateHeader(CREW1.getId()));
+        final ExtractableResponse<Response> response = get("/api/coaches", generateHeader(CREW1));
 
         //then
         final CoachesResponse coachesResponse = response.body().as(CoachesResponse.class);
@@ -31,9 +31,9 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치의 면담 가능 시간을 조회한다.")
     void findCalendarTimes() {
         // given
-        put("/api/calendar/times", generateHeader(COACH3.getId()), MONTH_REQUEST);
+        put("/api/calendar/times", generateHeader(COACH3), MONTH_REQUEST);
 
-        final Header crewHeader = generateHeader(CREW1.getId());
+        final Header crewHeader = generateHeader(CREW1);
         final ExtractableResponse<Response> calendarResponse = get(
                 "/api/calendar/times?"
                         + "coachId=" + COACH3.getId()
