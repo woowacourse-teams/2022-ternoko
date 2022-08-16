@@ -70,7 +70,6 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByInterviewId(interviewId);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
-//            MemberType memberType = getMemberType(comment.getMember().getId());
             MemberType memberType = getMemberType(comment.getMemberId());
             commentResponses.add(CommentResponse.of(memberType, comment));
         }
