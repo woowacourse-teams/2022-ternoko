@@ -99,22 +99,22 @@ public class AcceptanceTest {
                 .extract();
     }
 
+    protected ExtractableResponse<Response> patch(final String uri, final Header header, final Object body) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(header)
+                .body(body)
+                .when().patch(uri)
+                .then().log().all()
+                .extract();
+    }
+
     protected ExtractableResponse<Response> patchInterview(final String uri, final Header header,
                                                            final boolean onlyInterview) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(header)
                 .queryParam("onlyInterview", onlyInterview)
-                .when().patch(uri)
-                .then().log().all()
-                .extract();
-    }
-
-    protected ExtractableResponse<Response> patch(final String uri, final Header header, final Object body) {
-        return RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(header)
-                .body(body)
                 .when().patch(uri)
                 .then().log().all()
                 .extract();

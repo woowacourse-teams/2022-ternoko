@@ -35,3 +35,22 @@ VALUES (5),
        (6),
        (7),
        (8);
+
+INSERT INTO available_date_time (available_date_time_status, local_date_time, member_id)
+VALUES ('USED', '2022-07-31 11:00:00', 1),
+       ('USED', '2022-07-31 12:00:00', 1),
+       ('USED', '2022-07-31 13:00:00', 1),
+       ('OPEN', '2022-07-31 14:00:00', 1);
+
+INSERT INTO interview (interview_start_time, interview_end_time, interview_status_type, coach_id, crew_id)
+VALUES ('2022-07-31 11:00:00', '2022-07-31 11:30:00', 'COMMENT', 1, 5),
+       ('2022-07-31 12:00:00', '2022-07-31 12:30:00', 'FIXED', 1, 6),
+       ('2022-07-31 13:00:00', '2022-07-31 13:30:00', 'COMMENT', 1, 7);
+
+INSERT INTO form_item (answer, question, interview_id)
+VALUES ('1 : 질문 1입니다.', '1 : 답변 1입니다.', 1),
+       ('1 : 질문 2입니다.', '1 : 답변 2입니다.', 1),
+       ('1 : 질문 3입니다.', '1 : 답변 3입니다.', 1),
+       ('2 : 질문 1입니다.', '2 : 답변 1입니다.', 2),
+       ('2 : 질문 2입니다.', '2 : 답변 2입니다.', 2),
+       ('2 : 질문 3입니다.', '2 : 답변 3입니다.', 2);

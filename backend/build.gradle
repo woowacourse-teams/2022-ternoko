@@ -47,6 +47,7 @@ dependencies {
 
     // logging
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.projectlombok:lombok:1.18.22'
 
     // DB
     runtimeOnly 'com.h2database:h2'
