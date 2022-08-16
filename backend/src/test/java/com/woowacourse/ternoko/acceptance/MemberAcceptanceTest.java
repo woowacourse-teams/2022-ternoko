@@ -67,13 +67,13 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void findCalendarTimesByCrew() {
         // given
         putAvailableTimes();
-        final ExtractableResponse<Response> interviewResponse = createInterview(CREW1.getId(), COACH3.getId(),
+        final ExtractableResponse<Response> interviewResponse = createInterview(CREW1, COACH3.getId(),
                 LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
         final Long interviewId = parseLocationHeader(interviewResponse, "/api/interviews/");
-        createInterview(CREW1.getId(), COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        createInterview(CREW1, COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
 
         // when
-        final Header crewHeader = generateHeader(CREW1.getId());
+        final Header crewHeader = generateHeader(CREW1);
         final ExtractableResponse<Response> calendarResponse = get(
                 "/api/interviews/" + interviewId + "/calendar/times?"
                         + "coachId=" + COACH3.getId()

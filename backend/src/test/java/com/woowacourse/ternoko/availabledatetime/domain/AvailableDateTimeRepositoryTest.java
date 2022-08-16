@@ -52,13 +52,13 @@ class AvailableDateTimeRepositoryTest {
 
         // then
         assertThat(times).hasSize(2)
-                .containsExactly(new AvailableDateTime(startDateTime.getId(), COACH1, startTime, USED),
-                        new AvailableDateTime(availableDateTime.getId(), COACH1, availableTime, OPEN));
+                .containsExactly(new AvailableDateTime(startDateTime.getId(), COACH1.getId(), startTime, USED),
+                        new AvailableDateTime(availableDateTime.getId(), COACH1.getId(), availableTime, OPEN));
 
     }
 
     private AvailableDateTime saveAvailableTime(final LocalDateTime startTime) {
-        return availableDateTimeRepository.save(new AvailableDateTime(COACH1, startTime, OPEN));
+        return availableDateTimeRepository.save(new AvailableDateTime(COACH1.getId(), startTime, OPEN));
     }
 
     private Long saveInterview(final LocalDateTime startTime) {

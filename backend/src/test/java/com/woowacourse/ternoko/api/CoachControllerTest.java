@@ -67,8 +67,8 @@ public class CoachControllerTest extends ControllerTest {
     @DisplayName("크루 - 면담 수정시 면담 가능 시간 목록을 조회한다.")
     void findCalendarTimesByInterviewId() throws Exception {
         // given
-        createCalendarTimes(COACH1.getId());
-        final Long interviewId = createInterview(CREW1.getId());
+        createCalendarTimes(COACH1);
+        final Long interviewId = createInterview(CREW1);
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
