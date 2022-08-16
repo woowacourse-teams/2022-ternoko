@@ -2,14 +2,16 @@ package com.woowacourse.ternoko.common.log;
 
 public class LogForm {
 
+    private static final String NEWLINE = System.lineSeparator();
+
     public static final String SUCCESS_LOGGING_FORM =
-            "\n HTTP Method : {} "
-            + "\n Request URI : {} "
-            + "\n AccessToken is exist : {} "
-            + "\n Request Body : {}";
+            NEWLINE + "HTTP Method : {} "
+            + NEWLINE +"Request URI : {} "
+            + NEWLINE +"AccessToken is exist : {} "
+            + NEWLINE +"Request Body : {}";
 
     public static final String FAILED_LOGGING_FORM =
             SUCCESS_LOGGING_FORM
-            + "\n CODE : {} "
-            + "\n MESSAGE : {}";
+            + NEWLINE + "CODE : {} "
+            + NEWLINE + "MESSAGE : {}";
 }
