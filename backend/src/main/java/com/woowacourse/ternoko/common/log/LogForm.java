@@ -12,6 +12,5 @@ public class LogForm {
 
     public static final String FAILED_LOGGING_FORM =
             SUCCESS_LOGGING_FORM
-            + NEWLINE + "CODE : {} "
             + NEWLINE + "MESSAGE : {}";
 }

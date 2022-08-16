@@ -26,13 +26,11 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 @AllArgsConstructor
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
-    private static final String UNHANDLED_EXCEPTION_MESSAGE = "유효하지 않은 요청입니다.";
-
     private final ObjectMapper objectMapper;
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionResponse> badRequestHandler(final BadRequestException e,
-                                                               final HttpServletRequest request) throws IOException {
+                                                               final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.badRequest().body(new ExceptionResponse(e.getCode(), e.getMessage()));
@@ -40,7 +38,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ExceptionResponse> unauthorizedHandler(final UnauthorizedException e,
-                                                                 final HttpServletRequest request) throws IOException {
+                                                                 final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionResponse(e.getCode(), e.getMessage()));
@@ -48,53 +46,55 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ExceptionResponse> forbiddenHandler(final UnauthorizedException e,
-                                                              final HttpServletRequest request) throws IOException {
+                                                              final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionResponse(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> sqlExceptionHandler(final Exception e) {
+    public ResponseEntity<ExceptionResponse> exceptionHandler(final Exception e, final HttpServletRequest request) {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        printFailedLog(request, e, cachingRequest);
         return ResponseEntity.internalServerError()
                 .body(new ExceptionResponse(UNHANDLED_EXCEPTION.getStatusCode(),
                         UNHANDLED_EXCEPTION.getMessage()));
     }
 
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<ExceptionResponse> sqlExceptionHandler(final HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> sqlExceptionHandler(final DataAccessException e,
+                                                                 final HttpServletRequest request) {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        printFailedLog(request, e, cachingRequest);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         "SQL exception이 발생했습니다."));
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final HttpServletRequest request)
-            throws IOException {
+    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final RuntimeException e,
+                                                                       final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-        log.info(FAILED_LOGGING_FORM,
-                request.getMethod(),
-                request.getRequestURI(),
-                StringUtils.hasText(request.getHeader("Authorization")),
-                objectMapper.readTree(cachingRequest.getContentAsByteArray()),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                UNHANDLED_EXCEPTION_MESSAGE);
+        printFailedLog(request, e, cachingRequest);
         return ResponseEntity.internalServerError().body(new ExceptionResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                UNHANDLED_EXCEPTION_MESSAGE
+                e.getMessage()
         ));
     }
 
     private void printFailedLog(final HttpServletRequest request,
-                                final RuntimeException e,
-                                final ContentCachingRequestWrapper cachingRequest)
-            throws IOException {
-        log.info(FAILED_LOGGING_FORM,
-                request.getMethod(),
-                request.getRequestURI(),
-                StringUtils.hasText(request.getHeader("Authorization")),
-                objectMapper.readTree(cachingRequest.getContentAsByteArray()),
-                e.getMessage());
-        log.debug("Stack trace: ", e);
+                                final Throwable e,
+                                final ContentCachingRequestWrapper cachingRequest) {
+        try {
+            log.info(FAILED_LOGGING_FORM,
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    StringUtils.hasText(request.getHeader("Authorization")),
+                    objectMapper.readTree(cachingRequest.getContentAsByteArray()),
+                    e.getMessage());
+            log.debug("Stack trace: ", e);
+        } catch (IOException ex) {
+            log.debug("log error");
+        }
     }
 }

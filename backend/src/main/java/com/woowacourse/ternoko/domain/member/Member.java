@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name = "ROLE")
 public class Member {
 
     @Id
