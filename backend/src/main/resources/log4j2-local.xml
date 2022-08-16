@@ -15,73 +15,25 @@
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="${layoutPattern}" disableAnsi="false"/>
         </Console>
-        <!--ConsoleAppender, RollingFileAppneder -->
-        <RollingFile name="file"
-                     fileName="logs/${logFileName}.log"
-                     filePattern="logs/${logFileName}.%d{yyyy-MM-dd-hh}.log">
-            <PatternLayout pattern="${fileLayout}"/>
-            <Policies>
-                <TimeBasedTriggeringPolicy
-                        modulate="true"
-                        interval="1"/><!-- 시간별 로그 파일 생성-->
-            </Policies>
-            <DefaultRolloverStrategy max="5" fileIndex="min"> <!-- 롤링 파일 5개 까지 생성 -->
-                <Delete basePath="/logs" maxDepth="3">
-                    <IfLastModified age="3d"/>
-                </Delete>
-            </DefaultRolloverStrategy>
-        </RollingFile>
-
-        <RollingFile name="sql_log"
-                     fileName="logs/sql.log"
-                     filePattern="logs/sql.%d{yyyy-MM-dd-hh}.log">
-            <PatternLayout pattern="${fileLayout}"/>
-            <Policies>
-                <TimeBasedTriggeringPolicy
-                        modulate="true"
-                        interval="1"/><!-- 시간별 로그 파일 생성-->
-            </Policies>
-            <DefaultRolloverStrategy max="5" fileIndex="min"> <!-- 롤링 파일 5개 까지 생성 -->
-                <Delete basePath="/logs" maxDepth="3">
-                    <IfLastModified age="3d"/>
-                </Delete>
-            </DefaultRolloverStrategy>
-        </RollingFile>
-
-        <RollingFile name="sql_basicBinder_log"
-                     fileName="logs/sql_basicBinder.log"
-                     filePattern="logs/sql_basicBinder.%d{yyyy-MM-dd-hh}.log">
-            <PatternLayout pattern="${fileLayout}"/>
-            <Policies>
-                <TimeBasedTriggeringPolicy
-                        modulate="true"
-                        interval="1"/><!-- 시간별 로그 파일 생성-->
-            </Policies>
-            <DefaultRolloverStrategy max="5" fileIndex="min"> <!-- 롤링 파일 5개 까지 생성 -->
-                <Delete basePath="/logs" maxDepth="3">
-                    <IfLastModified age="3d"/>
-                </Delete>
-            </DefaultRolloverStrategy>
-        </RollingFile>
-
-
     </Appenders>
-
     <!--TRACE > DEBUG > INFO > WARN > ERROR > FATAL -->
     <!--Log가 찍힐 대상 설정.-->
     <Loggers>
         <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
         <logger name="org.springframework" level="info" additivity="false">
             <AppenderRef ref="console"/>
-            <AppenderRef ref="file"/>
         </logger>
 
-        <!-- sql 표시 설정 debug 레벨부터 sql log 찍힘-->
+        <logger name="com.woowacourse.ternoko" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <!-- debug 레벨부터 sql log 찍힘-->
         <logger name="org.hibernate.SQL" level="debug" additivity="false">
             <AppenderRef ref="console"/>
         </logger>
 
-        <!-- sql 파라미터 표시 설정 trace 레벨부터 binding parameter 찍힘-->
+        <!-- binding parameter 찍힘-->
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
             <AppenderRef ref="console"/>
         </logger>
@@ -92,6 +44,7 @@
         </logger>
 
         <!-- ROOT logger-->
-        <Root level="info"></Root>
+        <Root level="debug"></Root>
+
     </Loggers>
 </Configuration>

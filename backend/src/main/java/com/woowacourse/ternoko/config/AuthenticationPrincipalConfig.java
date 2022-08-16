@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.config;
 
 import com.woowacourse.ternoko.common.AuthInterceptor;
 import com.woowacourse.ternoko.common.JwtProvider;
-import com.woowacourse.ternoko.service.AuthService;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,17 +12,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
 
     private final JwtProvider jwtTokenProvider;
-    private final AuthService authService;
+    private final AuthInterceptor authInterceptor;
 
     public AuthenticationPrincipalConfig(final JwtProvider jwtProvider,
-                                         AuthService authService) {
+                                         final AuthInterceptor authInterceptor) {
         this.jwtTokenProvider = jwtProvider;
-        this.authService = authService;
+        this.authInterceptor = authInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(authService))
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/interviews/**")
                 .addPathPatterns("/api/calendar/times/**")
                 .addPathPatterns("/api/schedules/**")
@@ -39,10 +38,5 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Bean
     public AuthenticationPrincipalArgumentResolver createAuthenticationPrincipalArgumentResolver() {
         return new AuthenticationPrincipalArgumentResolver(jwtTokenProvider);
-    }
-
-    @Bean
-    public AuthInterceptor authInterceptor() {
-        return new AuthInterceptor(authService);
     }
 }
