@@ -118,7 +118,7 @@ const InterviewDetailModal = ({
           </S.IconBox>
           <p>
             {interview &&
-              `${getTimeString(interview.interviewEndTime)} ~ ${getTimeString(
+              `${getTimeString(interview.interviewStartTime)} ~ ${getTimeString(
                 interview.interviewEndTime,
               )}`}
           </p>
