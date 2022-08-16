@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
