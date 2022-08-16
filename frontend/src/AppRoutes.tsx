@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -28,7 +29,9 @@ import { PAGE } from '@/constants';
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
 
-  initializeUser(null);
+  useEffect(() => {
+    initializeUser(null);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -91,7 +94,7 @@ const Layout = () => {
       <S.Body>
         <Outlet />
         <Toast />
-        <TernokoLoading show={show} />
+        {show && <TernokoLoading />}
       </S.Body>
     </>
   );

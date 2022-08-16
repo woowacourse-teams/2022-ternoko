@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
+import { useQuery } from 'react-query';
 import { Navigate, Outlet } from 'react-router-dom';
 
+import ErrorBoundary from '@/components/@common/ErrorBoundary';
 import TernokoLoading from '@/components/@common/TernokoLoading';
 
 import { MemberExtendedRole } from '@/types/domain';
@@ -13,36 +15,14 @@ type PrivateRouteProps = {
   auth: MemberExtendedRole;
 };
 
-type PendingProps = {
-  resource: { read: () => Promise<void> | boolean };
-};
+const Pending = ({ auth }: PrivateRouteProps) => {
+  useQuery('authorization', () => validateAccessTokenAPI(auth), {
+    suspense: true,
+    retry: 0,
+    staleTime: 0,
+  });
 
-const fetchAccessResult = (role: MemberExtendedRole) => {
-  let result: boolean | null = null;
-
-  const suspender = validateAccessTokenAPI(role)
-    .then(() => {
-      result = true;
-    })
-    .catch(() => {
-      result = false;
-    });
-
-  return {
-    read() {
-      if (result === null) {
-        throw suspender;
-      }
-
-      return result;
-    },
-  };
-};
-
-const Pending = ({ resource }: PendingProps) => {
-  const result = resource.read();
-
-  return result ? <Outlet /> : <Navigate to={PAGE.ACCESS_DENY} />;
+  return <Outlet />;
 };
 
 const PrivateRoute = ({ auth }: PrivateRouteProps) => {
@@ -53,9 +33,11 @@ const PrivateRoute = ({ auth }: PrivateRouteProps) => {
   }
 
   return (
-    <Suspense fallback={<TernokoLoading show={true} />}>
-      <Pending resource={fetchAccessResult(auth)} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<TernokoLoading />}>
+        <Pending auth={auth} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
