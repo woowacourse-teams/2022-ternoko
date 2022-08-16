@@ -14,6 +14,36 @@ type BoxProps = {
   stepStatus: StepStatus;
 };
 
+export const Body = styled.div`
+  height: calc(100% - 60px);
+
+  padding: 3rem 30rem 0;
+
+  @media ${({ theme }) => theme.devices.laptopL()} {
+    padding: 3rem 25rem 0;
+  }
+
+  @media ${({ theme }) => theme.devices.laptop(200)} {
+    padding: 3rem 19rem 0;
+  }
+
+  @media ${({ theme }) => theme.devices.laptop()} {
+    padding: 3rem 5rem 0;
+  }
+
+  @media ${({ theme }) => theme.devices.tabletM(60)} {
+    padding: 2rem 3rem 0;
+  }
+
+  @media ${({ theme }) => theme.devices.mobileL()} {
+    padding: 2rem 2rem 0;
+  }
+
+  @media ${({ theme }) => theme.devices.mobileM()} {
+    padding: 2rem 1rem 0;
+  }
+`;
+
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
@@ -145,7 +175,7 @@ export const DateBox = styled.div`
   gap: 3rem;
   padding-bottom: 3rem;
 
-  @media ${({ theme }) => theme.devices.tabletM} {
+  @media ${({ theme }) => theme.devices.tabletM()} {
     flex-direction: column;
   }
 `;

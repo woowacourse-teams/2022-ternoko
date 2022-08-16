@@ -5,7 +5,7 @@ export const Box = styled.div`
   width: 100vw;
   height: 100vh;
 
-  @media ${({ theme }) => theme.devices.tablet} {
+  @media ${({ theme }) => theme.devices.tablet()} {
     flex-direction: column;
   }
 `;
@@ -17,7 +17,7 @@ export const LeftBox = styled.div`
   width: 45%;
   height: 100%;
 
-  @media ${({ theme }) => theme.devices.tablet} {
+  @media ${({ theme }) => theme.devices.tablet()} {
     width: 100%;
   }
 

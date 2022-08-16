@@ -21,14 +21,14 @@ const theme = {
     basic: '#64646f33 0px 7px 29px 0px',
   },
   devices: {
-    mobileS: '(max-width: 320px)',
-    mobileM: '(max-width: 375px)',
-    mobileL: '(max-width: 425px)',
-    tabletM: '(max-width: 590px)',
-    tablet: '(max-width: 768px)',
-    laptop: '(max-width: 1024px)',
-    laptopL: '(max-width: 1440px)',
-    desktop: '(max-width: 2560px)',
+    mobileS: (adjustment: number = 0) => `(max-width: ${320 + adjustment}px)`,
+    mobileM: (adjustment: number = 0) => `(max-width: ${375 + adjustment}px)`,
+    mobileL: (adjustment: number = 0) => `(max-width: ${425 + adjustment}px)`,
+    tabletM: (adjustment: number = 0) => `(max-width: ${590 + adjustment}px)`,
+    tablet: (adjustment: number = 0) => `(max-width: ${768 + adjustment}px)`,
+    laptop: (adjustment: number = 0) => `(max-width: ${1024 + adjustment}px)`,
+    laptopL: (adjustment: number = 0) => `(max-width: ${1440 + adjustment}px)`,
+    desktop: (adjustment: number = 0) => `(max-width: ${2560 + adjustment}px)`,
   },
 };
 
