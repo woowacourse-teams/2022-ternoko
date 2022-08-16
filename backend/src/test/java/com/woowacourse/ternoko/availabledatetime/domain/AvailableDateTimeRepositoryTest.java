@@ -29,6 +29,36 @@ class AvailableDateTimeRepositoryTest {
     private InterviewRepository interviewRepository;
 
     @Test
+    @DisplayName("코치가 OPEN인 면담 가능한 시간을 조회한다.")
+    void findOpenAvailableDateTimesByCoachId() {
+        // given
+        final LocalDateTime startTime = LocalDateTime.of(NOW_PLUS_1_MONTH, FIRST_TIME);
+        final LocalDateTime reservedTime = LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME);
+        final LocalDateTime availableTime = LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME);
+
+        final AvailableDateTime availableDateTime = saveAvailableTime(availableTime);
+        final AvailableDateTime startDateTime = saveAvailableTime(startTime);
+        final AvailableDateTime reservedDateTime = saveAvailableTime(reservedTime);
+        startDateTime.changeStatus(USED);
+
+        // when
+        saveInterview(startTime);
+        final List<AvailableDateTime> times = availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(
+                COACH1.getId(),
+                NOW_PLUS_1_MONTH.getYear(),
+                NOW_PLUS_1_MONTH.getMonthValue());
+
+        // then
+        final AvailableDateTime expect1 = new AvailableDateTime(reservedDateTime.getId(), COACH1.getId(),
+                reservedTime, OPEN);
+        final AvailableDateTime expect2 = new AvailableDateTime(availableDateTime.getId(), COACH1.getId(),
+                availableTime, OPEN);
+        assertThat(times).hasSize(2)
+                .containsExactly(expect1, expect2);
+
+    }
+
+    @Test
     @DisplayName("해당 코치의 면담가능한 시간과 interview startTime이 포함된 정렬된 AvailableTime List를 반환해야 한다.")
     void findAvailableDateTimesByCoachIdAndInterviewId() {
         // given
