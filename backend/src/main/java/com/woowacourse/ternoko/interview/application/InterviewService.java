@@ -1,40 +1,22 @@
 package com.woowacourse.ternoko.interview.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.comment.domain.Comment;
-import com.woowacourse.ternoko.comment.dto.CommentRequest;
-import com.woowacourse.ternoko.comment.dto.CommentResponse;
-import com.woowacourse.ternoko.comment.dto.CommentsResponse;
-import com.woowacourse.ternoko.comment.exception.CommentNotFoundException;
-import com.woowacourse.ternoko.comment.exception.InvalidCommentInterviewIdException;
-import com.woowacourse.ternoko.comment.exception.InvalidCommentMemberIdException;
-import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
-import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.comment.repository.CommentRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
-import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
-import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.FormItemRepository;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
@@ -52,7 +34,6 @@ import com.woowacourse.ternoko.repository.CrewRepository;
 import com.woowacourse.ternoko.repository.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -265,67 +246,5 @@ public class InterviewService {
                 .findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
                         interview.getInterviewStartTime());
         time.ifPresent(AvailableDateTime::open);
-    }
-
-    public Long createComment(final Long memberId, final Long interviewId, final CommentRequest commentRequest) {
-        final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
-        final Member member = getMember(memberId, interview);
-        final MemberType memberType = getMemberType(memberId);
-        if (!memberType.getValidCreateCommentStatusType().contains(interview.getInterviewStatusType())) {
-            throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
-        }
-        Comment savedComment = commentRepository.save(new Comment(member, interview, commentRequest.getComment()));
-        interview.complete(memberType);
-
-        return savedComment.getId();
-    }
-
-    private Member getMember(Long memberId, Interview interview) {
-        if (interview.getCoach().sameMember(memberId)) {
-            return interview.getCoach();
-        }
-        if (interview.getCrew().sameMember(memberId)) {
-            return interview.getCrew();
-        }
-        throw new MemberNotFoundException(INVALID_INTERVIEW_MEMBER_ID);
-    }
-
-    private MemberType getMemberType(final Long memberId) {
-        if (crewRepository.findById(memberId).isPresent()) {
-            return MemberType.CREW;
-        }
-        return MemberType.COACH;
-    }
-
-    public CommentsResponse findComments(Long memberId, Long interviewId) {
-        MemberType requestMemberType = getMemberType(memberId);
-        final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
-        getMember(memberId, interview);
-        InterviewStatusType interviewStatus = interview.getInterviewStatusType();
-        if (!requestMemberType.getValidFindCommentStatusType().contains(interviewStatus)) {
-            throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
-        }
-        List<Comment> comments = commentRepository.findByInterviewId(interviewId);
-        List<CommentResponse> commentResponses = new ArrayList<>();
-        for (Comment comment : comments) {
-            MemberType memberType = getMemberType(comment.getMember().getId());
-            commentResponses.add(CommentResponse.of(memberType, comment));
-        }
-        return CommentsResponse.from(commentResponses);
-    }
-
-    public void updateComment(Long memberId, Long interviewId, Long commentId, CommentRequest commentRequest) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
-        MemberType requestMemberType = getMemberType(memberId);
-        if (!comment.getMember().sameMember(memberId)) {
-            throw new InvalidCommentMemberIdException(INVALID_COMMENT_MEMBER_ID);
-        }
-        if (!comment.getInterview().getId().equals(interviewId)) {
-            throw new InvalidCommentInterviewIdException(INVALID_COMMENT_INTERVIEW_ID);
-        }
-        comment.update(commentRequest);
     }
 }

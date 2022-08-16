@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.comment.presentation;
 
+import com.woowacourse.ternoko.comment.application.CommentService;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
 import com.woowacourse.ternoko.config.AuthenticationPrincipal;
-import com.woowacourse.ternoko.interview.application.InterviewService;
 import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class CommentController {
 
-    private final InterviewService interviewService;
+    private final CommentService commentService;
 
     @PostMapping("/interviews/{interviewId}/comments")
     public ResponseEntity<Void> createComment(@AuthenticationPrincipal final Long id,
                                               @PathVariable final Long interviewId,
                                               @RequestBody final CommentRequest commentRequest) {
-        Long commentId = interviewService.createComment(id, interviewId, commentRequest);
+        Long commentId = commentService.create(id, interviewId, commentRequest);
         return ResponseEntity.created(URI.create("/api/interviews/" + interviewId + "/comments/" + commentId)).build();
     }
 
     @GetMapping("/interviews/{interviewId}/comments")
     public ResponseEntity<CommentsResponse> getComments(@AuthenticationPrincipal final Long id,
                                                         @PathVariable final Long interviewId) {
-        CommentsResponse commentsResponse = interviewService.findComments(id, interviewId);
+        CommentsResponse commentsResponse = commentService.findComments(id, interviewId);
         return ResponseEntity.ok(commentsResponse);
     }
 
@@ -42,8 +42,7 @@ public class CommentController {
                                               @PathVariable final Long interviewId,
                                               @PathVariable final Long commentId,
                                               @RequestBody final CommentRequest commentRequest) {
-        System.out.println("수정 페이지 접근");
-        interviewService.updateComment(id, interviewId, commentId, commentRequest);
+        commentService.update(id, interviewId, commentId, commentRequest);
         return ResponseEntity.ok().build();
     }
 

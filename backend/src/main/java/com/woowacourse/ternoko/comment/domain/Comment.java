@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.comment.domain;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.Interview;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,10 +23,9 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "comment_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_id")
     private Member member;
 
