@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   CoachScheduleRequestBodyType,
+  CommentRequestBodyType,
   InterviewRequestBodyType,
   MemberExtendedRole,
   UserRequestBodyType,
@@ -63,3 +64,12 @@ export const getDuplicatedNicknameStatusAPI = (nickname: string) =>
 
 export const validateAccessTokenAPI = (type: MemberExtendedRole) =>
   axios.get(`${process.env.SERVER_URL}/api/login/valid?type=${type}`);
+
+export const postCommentAPI = (interviewId: number, body: CommentRequestBodyType) =>
+  axios.post(`${process.env.SERVER_URL}/api/interviews/${interviewId}/comments`, body);
+
+export const getCommentAPI = (interviewId: number) =>
+  axios.get(`${process.env.SERVER_URL}/api/interviews/${interviewId}/comments`);
+
+export const putCommentAPI = (commentId: number) =>
+  axios.put(`${process.env.SERVER_URL}/api/interview/{interviewId}/comment/${commentId}`);
