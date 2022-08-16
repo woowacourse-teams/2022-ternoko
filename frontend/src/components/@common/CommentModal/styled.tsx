@@ -1,5 +1,30 @@
 import styled from 'styled-components';
 
+<<<<<<< HEAD
+=======
+export const TextArea = styled.textarea`
+  width: 100%;
+  height: 70px;
+  border-radius: 10px;
+  padding: 1rem;
+
+  font-size: 1.4rem;
+  resize: none;
+  outline: none;
+
+  border: 1px solid ${({ theme }) => theme.colors.gray_150};
+`;
+
+export const DescriptionBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  font-size: 1.4rem;
+`;
+
+>>>>>>> 5b45068 (feat: CommentModal - create, read 개발)
 export const Icon = styled.img`
   position: absolute;
   top: 1rem;
