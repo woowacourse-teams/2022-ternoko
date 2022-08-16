@@ -57,7 +57,6 @@ public class InterviewController {
         return ResponseEntity.ok(interviewResponse);
     }
 
-    @CoachOnly
     @GetMapping("/schedules")
     public ResponseEntity<ScheduleResponse> findAllInterviewByCoach(@AuthenticationPrincipal final Long coachId,
                                                                     @RequestParam final Integer year,
@@ -91,7 +90,7 @@ public class InterviewController {
     public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
                                                 @PathVariable final Long interviewId,
                                                 @RequestParam final boolean onlyInterview) throws Exception {
-        final Interview interview = interviewService.cancelWithDeleteAvailableTime(coachId, interviewId, onlyInterview);
+        final Interview interview = interviewService.cancelAndDeleteAvailableTime(coachId, interviewId, onlyInterview);
         slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
         return ResponseEntity.noContent().build();
     }

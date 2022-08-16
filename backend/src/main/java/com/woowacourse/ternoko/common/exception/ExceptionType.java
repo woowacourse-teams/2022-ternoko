@@ -10,6 +10,8 @@ public enum ExceptionType {
     UNAUTHORIZED_MEMBER(1001, "토큰이 존재하지 않습니다."),
     INVALID_TOKEN(1002, "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN(1003, "토큰이 만료되었습니다."),
+    CREW_NOT_ALLOWED(1004, "크루가 할 수 있는 요청이 아닙니다."),
+    COACH_NOT_ALLOWED(1005, "코차가 할 수 있는 요청이 아닙니다."),
 
     // Coach 관련 Exception
     COACH_NOT_FOUND(2001, "번째 코치를 찾을 수 없습니다."),

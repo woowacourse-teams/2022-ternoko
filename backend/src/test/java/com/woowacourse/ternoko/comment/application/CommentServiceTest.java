@@ -24,10 +24,10 @@ import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentExcep
 import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
-import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.interview.application.InterviewService;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
+import com.woowacourse.ternoko.login.domain.MemberType;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

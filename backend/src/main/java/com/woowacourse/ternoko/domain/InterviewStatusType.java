@@ -5,6 +5,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STA
 
 import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
+import com.woowacourse.ternoko.login.domain.MemberType;
 
 public enum InterviewStatusType {
     EDITABLE,
