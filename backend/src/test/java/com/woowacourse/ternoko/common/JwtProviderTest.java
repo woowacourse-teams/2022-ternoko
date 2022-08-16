@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.common;
 
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -19,9 +20,8 @@ class JwtProviderTest {
     @DisplayName("유효한 토큰이 생성된 후 원하는 playload로 변환되는지 검증한다.")
     @Test
     void checkPayloadAfterIssuingToken() {
-        final String payload = "\"email\":\"example@example.com\"";
-        final String accessToken = jwtProvider.createToken(payload);
-        assertThat(jwtProvider.extractSubject(accessToken)).isEqualTo(payload);
+        final String accessToken = jwtProvider.createToken(CREW1);
+        assertThat(jwtProvider.extractSubject(accessToken)).isEqualTo(CREW1.getId().toString());
     }
 
     @DisplayName("토큰을 검증할 때")
@@ -36,15 +36,14 @@ class JwtProviderTest {
         @Test
         void validToken() {
             final String payload = "\"email\":\"example@example.com\"";
-            final String accessToken = jwtProvider.createToken(payload);
+            final String accessToken = jwtProvider.createToken(CREW1);
             assertThatNoException().isThrownBy(() -> jwtProvider.validateToken(accessToken));
         }
 
         @DisplayName("토큰이 만료된 토큰이면 에러를 던진다.")
         @Test
         void expiredToken() {
-            final String payload = "\"email\":\"example@example.com\"";
-            final String accessToken = invalidJwtTokenProvider.createToken(payload);
+            final String accessToken = invalidJwtTokenProvider.createToken(CREW1);
             assertThatThrownBy(() -> invalidJwtTokenProvider.validateToken(accessToken))
                     .isInstanceOf(ExpiredTokenException.class);
         }

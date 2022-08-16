@@ -67,11 +67,11 @@ public class AuthService {
         boolean hasNickname = member.get().getNickname() != null;
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {
-            return LoginResponse.of(COACH, jwtProvider.createToken(String.valueOf(member.get().getId())),
+            return LoginResponse.of(COACH, jwtProvider.createToken(member.get()),
                     hasNickname);
         }
 
-        return LoginResponse.of(CREW, jwtProvider.createToken(String.valueOf(member.get().getId())),
+        return LoginResponse.of(CREW, jwtProvider.createToken(member.get()),
                 hasNickname);
     }
 
@@ -99,13 +99,13 @@ public class AuthService {
         if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
                     userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
-            return LoginResponse.of(COACH, jwtProvider.createToken(String.valueOf(coach.getId())), false);
+            return LoginResponse.of(COACH, jwtProvider.createToken(coach), false);
         }
 
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
 
-        return LoginResponse.of(CREW, jwtProvider.createToken(String.valueOf(crew.getId())), false);
+        return LoginResponse.of(CREW, jwtProvider.createToken(crew), false);
     }
 
     public boolean isValid(final String header) {
