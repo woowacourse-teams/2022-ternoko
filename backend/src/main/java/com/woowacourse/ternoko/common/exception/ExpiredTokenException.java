@@ -1,7 +1,8 @@
 package com.woowacourse.ternoko.common.exception;
 
-public class ExpiredTokenException extends UnauthorizedException {
+import com.woowacourse.ternoko.common.exception.form.UnauthorizedException;
 
+public class ExpiredTokenException extends UnauthorizedException {
     public ExpiredTokenException(ExceptionType exceptionType) {
         super(exceptionType.getStatusCode(), exceptionType.getMessage());
     }
