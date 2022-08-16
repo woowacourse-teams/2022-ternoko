@@ -48,6 +48,11 @@ const HomePage = () => {
     handleOpenModalDetail();
   };
 
+  const getHandleClickCompleteButton = (id: number) => () => {
+    setClickedInterviewId(id);
+    handleOpenModalComment();
+  };
+
   const updateInterviews = async () => {
     const response = await getInterviewsAPI();
     setInterviews(response.data);
@@ -55,6 +60,7 @@ const HomePage = () => {
 
   const afterDeleteInterview = () => {
     handleCloseModalComment();
+    handleCloseModalDetail();
     updateInterviews();
   };
 
@@ -85,7 +91,7 @@ const HomePage = () => {
           <Interview
             key={interview.id}
             handleClickDetailButton={getHandleClickDetailButton(interview.id)}
-            handleClickCompleteButton={handleOpenModalComment}
+            handleClickCompleteButton={getHandleClickCompleteButton(interview.id)}
             {...interview}
           />
         ))}
@@ -101,6 +107,8 @@ const HomePage = () => {
       <CommentModal
         show={showComment}
         display={displayComment}
+        memberRole={memberRole}
+        interviewId={clickedInterviewId}
         handleCloseModal={handleCloseModalComment}
       />
     </>
