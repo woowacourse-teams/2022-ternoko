@@ -10,6 +10,7 @@ import TextAreaField from '@/components/TextAreaField';
 
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
+import { useUserActions } from '@/context/UserProvider';
 
 import { DuplicatedNicknameStatusType, CoachType as UserType } from '@/types/domain';
 
@@ -32,6 +33,7 @@ const LoginRegisterPage = () => {
   const { initializeUser } = useUserActions();
 
   const { onLoading, offLoading } = useLoadingActions();
+  const { initializeUser } = useUserActions();
 
   const memberRole = LocalStorage.getMemberRole();
 
@@ -76,12 +78,12 @@ const LoginRegisterPage = () => {
           await patchCoachInfoAPI({ nickname, introduce, imageUrl });
           offLoading();
           showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COACH_INFO);
-          navigate(PAGE.COACH_HOME);
+          initializeUser(() => navigate(PAGE.COACH_HOME));
         } else {
           await patchCrewInfoAPI({ nickname, imageUrl });
           offLoading();
           showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_CREW_INFO);
-          navigate(PAGE.CREW_HOME);
+          initializeUser(() => navigate(PAGE.CREW_HOME));
         }
       } catch (error) {
         offLoading();
