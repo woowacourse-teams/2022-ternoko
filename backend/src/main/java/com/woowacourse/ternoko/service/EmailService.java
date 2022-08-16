@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.service;
 
-import com.woowacourse.ternoko.domain.InterviewStatusType;
+import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.EmailDto;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;

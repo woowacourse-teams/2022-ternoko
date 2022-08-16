@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.domain.member;
 
-import com.woowacourse.ternoko.login.domain.MemberType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.NoArgsConstructor;

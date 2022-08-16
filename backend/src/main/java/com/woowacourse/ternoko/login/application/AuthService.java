@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.login.application;
 
-import static com.woowacourse.ternoko.login.domain.MemberType.COACH;
-import static com.woowacourse.ternoko.login.domain.MemberType.CREW;
+import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
+import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
 
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.impl.MethodsClientImpl;
@@ -14,7 +14,7 @@ import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
-import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.login.domain.dto.LoginResponse;
 import com.woowacourse.ternoko.login.presentation.AuthorizationExtractor;
 import com.woowacourse.ternoko.repository.CoachRepository;

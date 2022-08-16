@@ -2,17 +2,16 @@ package com.woowacourse.ternoko.interview.domain;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
-import static com.woowacourse.ternoko.domain.InterviewStatusType.FIXED;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
-import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
-import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@ import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.domain.member.Member;
-import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.login.exception.TokenNotValidException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

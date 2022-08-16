@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.comment.dto;
 
 import com.woowacourse.ternoko.comment.domain.Comment;
-import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

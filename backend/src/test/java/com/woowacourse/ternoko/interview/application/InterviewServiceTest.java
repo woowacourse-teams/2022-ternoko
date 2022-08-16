@@ -34,7 +34,7 @@ import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.domain.InterviewStatusType;
+import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;

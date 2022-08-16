@@ -13,7 +13,7 @@ import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.login.domain.MemberType;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import java.util.ArrayList;
 import java.util.List;

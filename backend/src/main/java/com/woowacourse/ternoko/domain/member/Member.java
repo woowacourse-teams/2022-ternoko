@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.domain.member;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import com.woowacourse.ternoko.login.domain.MemberType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
