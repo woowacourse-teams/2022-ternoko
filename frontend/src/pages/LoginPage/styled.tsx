@@ -36,7 +36,7 @@ export const LeftBox = styled.div`
     }
   }
 
-  @media ${({ theme }) => theme.devices.labtop()} {
+  @media ${({ theme }) => theme.devices.laptop()} {
     > div {
       h3 {
         font-size: 3rem;
