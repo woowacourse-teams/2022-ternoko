@@ -1,13 +1,14 @@
 package com.woowacourse.ternoko.interview.domain;
 
-import com.woowacourse.ternoko.domain.InterviewStatusType;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
 import static com.woowacourse.ternoko.domain.InterviewStatusType.FIXED;
 
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
+import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
+import com.woowacourse.ternoko.domain.MemberType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;

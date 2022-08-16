@@ -2,9 +2,8 @@ package com.woowacourse.ternoko.interview.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
@@ -31,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.woowacourse.ternoko.comment.dto.CommentRequest;
+import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
@@ -39,7 +40,6 @@ import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.Interview;
@@ -551,125 +551,5 @@ class InterviewServiceTest {
                 () -> interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), interview.getId(), true))
                 .isInstanceOf(InvalidInterviewCoachIdException.class)
                 .hasMessage(INVALID_INTERVIEW_COACH_ID.getMessage());
-    }
-
-    @Test
-    @DisplayName("[크루] 면담 종료 시 면담에 대한 한마디를 작성하면 면담이 완료된다.")
-    void createCommentByCrew() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when
-        Long commentId = interviewService.createComment(CREW1.getId(), interviewId, commentRequest);
-        // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(interviewId);
-        assertThat(commentId).isNotNull();
-        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.CREW_COMPLETED);
-    }
-
-    @Test
-    @DisplayName("[코치] 면담 종료 시 면담에 대한 한마디를 작성하면 면담이 완료된다.")
-    void createCommentByCoach() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when
-        Long commentId = interviewService.createComment(COACH1.getId(), interviewId, commentRequest);
-        // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(interviewId);
-        assertThat(commentId).isNotNull();
-        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COACH_COMPLETED);
-    }
-
-    @Test
-    @DisplayName("면담에 관련되지 않은 회원이 코멘트를 작성하면 예외를 반환한다.")
-    void createComment_InvalidMember() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when & then
-        assertThatThrownBy(() -> interviewService.createComment(COACH2.getId(), interviewId, commentRequest))
-                .isInstanceOf(MemberNotFoundException.class)
-                .hasMessage(INVALID_INTERVIEW_MEMBER_ID.getMessage());
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 면담에 코멘트를 작성하면 예외를 반환한다.")
-    void createComment_InvalidInterview() {
-        // given
-        final Long interviewId = 10L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when & then
-        assertThatThrownBy(() -> interviewService.createComment(COACH1.getId(), interviewId, commentRequest))
-                .isInstanceOf(InterviewNotFoundException.class)
-                .hasMessage(interviewId + INTERVIEW_NOT_FOUND.getMessage());
-    }
-
-    @Test
-    @DisplayName("[크루] 2번 이상 코멘트를 남기면 예외를 발생한다.")
-    void createCommentByCrew_InvalidStatus_Twice() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when
-        interviewService.createComment(CREW1.getId(), interviewId, commentRequest);
-        assertThatThrownBy(() -> interviewService.createComment(CREW1.getId(), interviewId, commentRequest))
-                .isInstanceOf(InvalidStatusCreateCommentException.class)
-                .hasMessage(INVALID_STATUS_CREATE_COMMENT.getMessage());
-    }
-
-    @Test
-    @DisplayName("[코치] COMMENT, CREW_COMPLETE 이외의 상태에서 코멘트를 남기면 예외를 발생한다.")
-    void createCommentByCoach_InvalidStatus_Twice() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when & then
-        interviewService.createComment(COACH1.getId(), interviewId, commentRequest);
-        assertThatThrownBy(() -> interviewService.createComment(COACH1.getId(), interviewId, commentRequest))
-                .isInstanceOf(InvalidStatusCreateCommentException.class)
-                .hasMessage(INVALID_STATUS_CREATE_COMMENT.getMessage());
-    }
-
-    @Test
-    @DisplayName("[코치] COMMENT, CREW_COMPLETE 이외의 상태에서 코멘트를 남기면 예외를 발생한다.")
-    void createCommentByCoach_InvalidStatus_OtherStatus() {
-        // given
-        final Long interviewId = 2L; // FIXED인 인터뷰
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        // when & then
-        assertThatThrownBy(() -> interviewService.createComment(COACH1.getId(), interviewId, commentRequest))
-                .isInstanceOf(InvalidStatusCreateCommentException.class)
-                .hasMessage(INVALID_STATUS_CREATE_COMMENT.getMessage());
-    }
-
-    @Test
-    @DisplayName("[크루] 코치가 한마디 작성 후 크루가 작성한다면 면담 상태는 COMPLETE가 된다.")
-    void createComment_Complete_ByCrew() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        interviewService.createComment(COACH1.getId(), interviewId, commentRequest);
-        // when
-        Long commentId = interviewService.createComment(CREW1.getId(), interviewId, commentRequest);
-        // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(interviewId);
-        assertThat(commentId).isNotNull();
-        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETE);
-    }
-
-    @Test
-    @DisplayName("[코치] 크루가 한마디 작성 후 코치가 작성한다면 면담 상태는 COMPLETE가 된다.")
-    void createComment_Complete_ByCoach() {
-        // given
-        final Long interviewId = 1L;
-        final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
-        interviewService.createComment(CREW1.getId(), interviewId, commentRequest);
-        // when
-        Long commentId = interviewService.createComment(COACH1.getId(), interviewId, commentRequest);
-        // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(interviewId);
-        assertThat(commentId).isNotNull();
-        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETE);
     }
 }

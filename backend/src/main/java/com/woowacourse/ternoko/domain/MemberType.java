@@ -17,11 +17,18 @@ public enum MemberType {
                 .anyMatch(type -> type.name().equals(value));
     }
 
-    public List<InterviewStatusType> getValidInterviewStatusType() {
+    public List<InterviewStatusType> getValidCreateCommentStatusType() {
         if (this == COACH) {
             return List.of(InterviewStatusType.COMMENT, InterviewStatusType.CREW_COMPLETED);
         }
         return List.of(InterviewStatusType.COMMENT, InterviewStatusType.COACH_COMPLETED);
+    }
+
+    public List<InterviewStatusType> getValidFindCommentStatusType() {
+        if (this == COACH) {
+            return List.of(InterviewStatusType.COMPLETE, InterviewStatusType.COACH_COMPLETED);
+        }
+        return List.of(InterviewStatusType.COMPLETE, InterviewStatusType.CREW_COMPLETED);
     }
 }
 

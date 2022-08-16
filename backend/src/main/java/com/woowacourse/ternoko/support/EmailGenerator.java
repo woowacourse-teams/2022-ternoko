@@ -40,7 +40,8 @@ public class EmailGenerator {
                 .append(System.lineSeparator());
     }
 
-    private static void generateContentFormItem(final List<FormItemDto> formItemsDto, final StringBuilder contentBuilder) {
+    private static void generateContentFormItem(final List<FormItemDto> formItemsDto,
+                                                final StringBuilder contentBuilder) {
         contentBuilder.append("사전 질문 내용")
                 .append(System.lineSeparator());
         for (final FormItemDto formItem : formItemsDto) {
