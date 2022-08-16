@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: get repository
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.SUBMODULE_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
       SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
       SONARQUBE_TOKEN : ${{ secrets.SONARQUBE_TOKEN }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
-		# analysis job 의 세부 단계 설정
+      
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
