@@ -54,7 +54,7 @@ const CoachInterviewCreatePage = () => {
   const { onLoading, offLoading } = useLoadingActions();
   const { isSelectedDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
-    selectMode: 'multiple',
+    selectMode: 'MULTIPLE',
   });
   const { showToast } = useToastActions();
 

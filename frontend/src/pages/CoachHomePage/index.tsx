@@ -38,7 +38,7 @@ const CoachHomePage = () => {
           <Button home>스케쥴 생성</Button>
         </Link>
       </S.TitleBox>
-      <CalendarProvider selectMode="single">
+      <CalendarProvider selectMode="SINGLE">
         <CoachCalendar
           key={calendarRerenderkeyRef.current}
           getHandleClickSchedule={getHandleClickSchedule}

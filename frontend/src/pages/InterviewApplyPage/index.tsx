@@ -54,7 +54,7 @@ const InterviewApplyPage = () => {
   const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
-    selectMode: 'single',
+    selectMode: 'SINGLE',
   });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
