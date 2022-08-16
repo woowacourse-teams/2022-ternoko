@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.controller;
 
-import com.woowacourse.ternoko.login.aop.CrewOnly;
-import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.dto.CrewResponse;
 import com.woowacourse.ternoko.dto.CrewUpdateRequest;
+import com.woowacourse.ternoko.login.aop.CrewOnly;
+import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.service.CrewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

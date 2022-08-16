@@ -8,7 +8,6 @@ import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.login.exception.TokenNotValidException;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -30,19 +29,6 @@ public class JwtProvider {
                        @Value("${security.jwt.token.expire-length}") final long validityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
-    }
-
-    public String createToken(String payload) {
-        Claims claims = Jwts.claims().setSubject(payload);
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-
-        return Jwts.builder()
-                .setSubject(payload)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
     }
 
     public String createToken(Member member) {

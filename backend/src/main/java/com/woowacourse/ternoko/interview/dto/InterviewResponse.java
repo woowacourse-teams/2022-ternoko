@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.interview.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
