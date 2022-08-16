@@ -6,9 +6,9 @@ public class LogForm {
 
     public static final String SUCCESS_LOGGING_FORM =
             NEWLINE + "HTTP Method : {} "
-            + NEWLINE +"Request URI : {} "
-            + NEWLINE +"AccessToken is exist : {} "
-            + NEWLINE +"Request Body : {}";
+            + NEWLINE + "Request URI : {} "
+            + NEWLINE + "AccessToken is exist : {} "
+            + NEWLINE + "Request Body : {}";
 
     public static final String FAILED_LOGGING_FORM =
             SUCCESS_LOGGING_FORM
