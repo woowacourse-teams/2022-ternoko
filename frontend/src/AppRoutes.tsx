@@ -91,8 +91,6 @@ const AppRoutes = () => {
 };
 
 const Layout = () => {
-  const { show } = useLoadingState();
-
   return (
     <>
       <Header />
