@@ -1,10 +1,13 @@
 package com.woowacourse.ternoko.common.exception.advice;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.UNHANDLED_EXCEPTION;
 import static com.woowacourse.ternoko.common.log.LogForm.FAILED_LOGGING_FORM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionResponse;
+import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import com.woowacourse.ternoko.common.exception.form.ForbiddenException;
+import com.woowacourse.ternoko.common.exception.form.UnauthorizedException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -27,17 +30,39 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     private final ObjectMapper objectMapper;
 
-    @ExceptionHandler(CommonException.class)
-    public ResponseEntity<ExceptionResponse> commonExceptionHandler(final HttpServletRequest request,
-                                                                    final CommonException e)
-            throws IOException {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionResponse> badRequestHandler(final BadRequestException e,
+                                                               final HttpServletRequest request) throws IOException {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
-        return ResponseEntity.status(e.getCode()).body(ExceptionResponse.from(e));
+        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getCode(), e.getMessage()));
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionResponse> unauthorizedHandler(final UnauthorizedException e,
+                                                                 final HttpServletRequest request) throws IOException {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        printFailedLog(request, e, cachingRequest);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionResponse(e.getCode(), e.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> forbiddenHandler(final UnauthorizedException e,
+                                                              final HttpServletRequest request) throws IOException {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        printFailedLog(request, e, cachingRequest);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionResponse(e.getCode(), e.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> sqlExceptionHandler(final Exception e) {
+        return ResponseEntity.internalServerError()
+                .body(new ExceptionResponse(UNHANDLED_EXCEPTION.getStatusCode(),
+                        UNHANDLED_EXCEPTION.getMessage()));
     }
 
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<ExceptionResponse> sqlExceptionHandler() {
+    public ResponseEntity<ExceptionResponse> sqlExceptionHandler(final HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         "SQL exception이 발생했습니다."));
@@ -61,7 +86,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     private void printFailedLog(final HttpServletRequest request,
-                                final CommonException e,
+                                final RuntimeException e,
                                 final ContentCachingRequestWrapper cachingRequest)
             throws IOException {
         log.info(FAILED_LOGGING_FORM,
@@ -69,7 +94,6 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
                 request.getRequestURI(),
                 StringUtils.hasText(request.getHeader("Authorization")),
                 objectMapper.readTree(cachingRequest.getContentAsByteArray()),
-                e.getCode(),
                 e.getMessage());
         log.debug("Stack trace: ", e);
     }

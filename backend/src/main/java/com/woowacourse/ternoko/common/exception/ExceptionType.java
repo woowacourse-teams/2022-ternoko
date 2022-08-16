@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ExceptionType {
-
     // 인증 관련 Exception
     UNAUTHORIZED_MEMBER(1001, "토큰이 존재하지 않습니다."),
     INVALID_TOKEN(1002, "유효하지 않은 토큰입니다"),
