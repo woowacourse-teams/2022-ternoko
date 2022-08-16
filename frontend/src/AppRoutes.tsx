@@ -28,6 +28,7 @@ import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
+  const { show } = useLoadingState();
 
   useEffect(() => {
     initializeUser(null);
@@ -58,7 +59,7 @@ const AppRoutes = () => {
             <Route
               path={PAGE.COACH_INTERVIEW_CREATE}
               element={
-                <CalendarProvider selectMode="multiple">
+                <CalendarProvider selectMode="MULTIPLE">
                   <CoachInterviewCreatePage />
                 </CalendarProvider>
               }
@@ -76,28 +77,26 @@ const AppRoutes = () => {
           <Route
             path={PAGE.INTERVIEW_APPLY}
             element={
-              <CalendarProvider selectMode="single">
+              <CalendarProvider selectMode="SINGLE">
                 <InterviewApplyPage />
               </CalendarProvider>
             }
           />
         </Route>
       </Routes>
+      <Toast />
+      {show && <TernokoLoading />}
     </BrowserRouter>
   );
 };
 
 const Layout = () => {
-  const { show } = useLoadingState();
-
   return (
     <>
       <Header />
 
       <S.Body>
         <Outlet />
-        <Toast />
-        {show && <TernokoLoading />}
       </S.Body>
     </>
   );
