@@ -63,6 +63,7 @@ public class InterviewService {
     private final CommentRepository commentRepository;
 
     public Interview create(final Long crewId, final InterviewRequest interviewRequest) {
+        validateDuplicateStartTime(crewId, interviewRequest);
         final Interview interview = convertInterview(crewId, interviewRequest);
         final Interview savedInterview = interviewRepository.save(interview);
 
@@ -88,8 +89,6 @@ public class InterviewService {
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest.getCoachId()));
 
         validateInterviewStartTime(interviewDatetime);
-        validateDuplicateStartTime(crewId, interviewRequest);
-
         return new Interview(
                 interviewDatetime,
                 interviewDatetime.plusMinutes(30),

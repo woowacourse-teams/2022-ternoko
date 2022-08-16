@@ -34,9 +34,9 @@ import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import com.woowacourse.ternoko.interview.domain.formitem.Question;
@@ -387,28 +387,6 @@ class InterviewServiceTest {
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
                 .hasMessage(ExceptionType.INVALID_AVAILABLE_DATE_TIME.getMessage());
-    }
-
-    @Test
-    @DisplayName("면담 예약 수정 시 면담 예약 선택 일자와 시간이 크루가 이미 신청한 면담 시간일 경우 예외가 발생한다.")
-    void update_WhenDuplicateReservation() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
-        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
-
-        final Interview interview = interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
-        interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
-                        FORM_ITEM_REQUESTS));
-
-        // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), interview.getId(),
-                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
-                        FORM_ITEM_UPDATE_REQUESTS)))
-                .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME.getMessage());
     }
 
     @Test
