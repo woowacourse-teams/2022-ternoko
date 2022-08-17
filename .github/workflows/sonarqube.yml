@@ -1,9 +1,8 @@
 # Workflow 의 이름 설정
 name: 소나큐브 테스트 자동화
 
-# develop 브랜치에 대한 pr 이벤트가 일어났을 때 실행한다는 설정
 on:
-  push:  # main, feat, develop 브랜치에  PUSH event 가 일어났을때
+  push:
     branches:
       - main
       - feat/*
@@ -11,6 +10,7 @@ on:
       - fix/*
       - refactor/*
       - develop
+      - test/*
     paths: 'backend/**'
   pull_request:
     branches:
@@ -21,55 +21,42 @@ on:
       - refactor/*
       - develop
     paths: 'backend/**'
-    # PR 이 생성 되었을 때(opend), PR branch 에 새로운 commit 이 push 되었을 때(synchronize) 실행한다는 설정
     types: [opened, synchronize]
 
 # job 의 공통된 옵션
 defaults:
   run:
-		# 작업을 수행할 디렉토리 설정
     working-directory: backend
 
 # 실행 해야 할 job 들에 대한 설정
 jobs:
-  # Job의 이름 설정, 빌드 수행
   build:
-    # ubuntu 환경에서 실행, 환경은 GitHub 이 제공
     runs-on: ubuntu-latest
-    # build job 의 세부 단계 설정
     steps:
-      # 소스코드 체크아웃 수행
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-  # Job의 이름 설정, Scanner 발동
   analysis:
-    # ubuntu 환경에서 실행, 환경은 GitHub 이 제공
     runs-on: ubuntu-latest
-    # 현재 Job에서 사용할 환경변수, repository setting secrets 에서 설정한 환경변수 사용
     env:
       SONARQUBE_PROJECT_KEY: ternoko
       SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
       SONARQUBE_TOKEN : ${{ secrets.SONARQUBE_TOKEN }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
-		# analysis job 의 세부 단계 설정
     steps:
-			# 소스코드 체크아웃 수행
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      # gradlw 파일 권한 변경
       - name: gradlew permission change
         run: sudo chmod 755 gradlew
 
-      # Gralde 의 Scanner 발동, 위의 env 에서 선언한 환경변수와 함께 발동
       - name: Sonaqube Analysis
         run: ./gradlew test sonarqube
              -Dsonar.host.url=${{ env.SONARQUBE_URL }}
              -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
              -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
              -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
-			# PR 에 Comment 를 달아주는 스크립트 실행
+
       - name: Comment Sonarqube URL
         uses: actions/github-script@v4
         with:
