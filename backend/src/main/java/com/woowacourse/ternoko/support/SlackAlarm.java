@@ -11,10 +11,8 @@ import com.slack.api.model.block.SectionBlock;
 import com.slack.api.model.block.composition.MarkdownTextObject;
 import com.slack.api.model.block.composition.PlainTextObject;
 import com.slack.api.model.block.element.ImageElement;
-import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +24,8 @@ public class SlackAlarm {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일(E) HH시 mm분",
             Locale.KOREAN);
+    private static final String TERNOKO_CREW_URL = "https://ternoko.site/";
+    private static final String TERNOKO_COACH_URL = "https://ternoko.site/coach/home";
 
     private final String botToken;
     private final MethodsClientImpl slackMethodClient;
@@ -36,46 +36,35 @@ public class SlackAlarm {
     }
 
     public void sendMessage(final Interview interview, final SlackMessageType slackMessageType) throws Exception {
-        postCrewMessage(slackMessageType,
-                interview.getCrew(),
-                interview.getCoach(),
-                interview.getInterviewStartTime());
-        postCoachMessage(slackMessageType,
-                interview.getCrew(),
-                interview.getCoach(),
-                interview.getInterviewStartTime());
+        postCrewMessage(slackMessageType, interview);
+        postCoachMessage(slackMessageType, interview);
     }
 
     private void postCrewMessage(final SlackMessageType slackMessageType,
-                                 final Member crew,
-                                 final Member coach,
-                                 final LocalDateTime interviewStartTime) throws IOException, SlackApiException {
+                                 final Interview interview) throws IOException, SlackApiException {
         final ChatPostMessageRequest crewRequest = ChatPostMessageRequest.builder()
-                .text(String.format(slackMessageType.getCrewPreviewMessage(), coach.getNickname()))
-                .attachments(generateAttachment(slackMessageType, crew, coach, interviewStartTime))
-                .channel(crew.getUserId())
+                .text(String.format(slackMessageType.getCrewPreviewMessage(), interview.getCoach().getNickname()))
+                .attachments(generateAttachment(slackMessageType, interview, TERNOKO_CREW_URL))
+                .channel(interview.getCrew().getUserId())
                 .token(botToken)
                 .build();
         slackMethodClient.chatPostMessage(crewRequest);
     }
 
     private void postCoachMessage(final SlackMessageType slackMessageType,
-                                  final Member crew,
-                                  final Member coach,
-                                  final LocalDateTime interviewStartTime) throws IOException, SlackApiException {
+                                  final Interview interview) throws IOException, SlackApiException {
         final ChatPostMessageRequest coachRequest = ChatPostMessageRequest.builder()
-                .text(String.format(slackMessageType.getCoachPreviewMessage(), crew.getNickname()))
-                .attachments(generateAttachment(slackMessageType, crew, coach, interviewStartTime))
-                .channel(coach.getUserId())
+                .text(String.format(slackMessageType.getCoachPreviewMessage(), interview.getCrew().getNickname()))
+                .attachments(generateAttachment(slackMessageType, interview, TERNOKO_COACH_URL))
+                .channel(interview.getCoach().getUserId())
                 .token(botToken)
                 .build();
         slackMethodClient.chatPostMessage(coachRequest);
     }
 
     private List<Attachment> generateAttachment(final SlackMessageType slackMessageType,
-                                                final Member crew,
-                                                final Member coach,
-                                                final LocalDateTime interviewStartTime) {
+                                                final Interview interview,
+                                                final String homeUrl) {
         return List.of(Attachment.builder()
                 .color(slackMessageType.getColor())
                 .blocks(List.of(HeaderBlock.builder()
@@ -84,23 +73,35 @@ public class SlackAlarm {
                                 DividerBlock.builder().build(),
                                 SectionBlock.builder().fields(
                                         List.of(MarkdownTextObject.builder()
-                                                        .text(":clock3: *면담일시*" + System.lineSeparator()
-                                                                + DATE_FORMAT.format(interviewStartTime))
+                                                        .text(":clock3: *면담일시*" +
+                                                                System.lineSeparator() +
+                                                                DATE_FORMAT.format(interview.getInterviewStartTime()))
                                                         .build(),
                                                 MarkdownTextObject.builder()
-                                                        .text(":smiley: *크루*" + System.lineSeparator() + crew.getNickname())
+                                                        .text(":smiley: *크루*" +
+                                                                System.lineSeparator() +
+                                                                interview.getCrew().getNickname())
                                                         .build(),
                                                 MarkdownTextObject.builder()
                                                         .text(" ")
                                                         .build(),
                                                 MarkdownTextObject.builder()
-                                                        .text(":smiley: *코치*" + System.lineSeparator() + coach.getNickname())
+                                                        .text(":smiley: *코치*" +
+                                                                System.lineSeparator() +
+                                                                interview.getCoach().getNickname())
                                                         .build())
                                 ).build(),
                                 ContextBlock.builder().elements(List.of(
-                                                MarkdownTextObject.builder().text("<https://ternoko.site|터놓고로 이동>").build(),
-                                                ImageElement.builder().imageUrl(coach.getImageUrl()).altText("코치 이미지").build(),
-                                                ImageElement.builder().imageUrl(crew.getImageUrl()).altText("크루 이미지").build()))
+                                                MarkdownTextObject.builder()
+                                                        .text("<" + homeUrl + "|터놓고로 이동>").build(),
+                                                ImageElement.builder()
+                                                        .imageUrl(interview.getCoach().getImageUrl())
+                                                        .altText("코치 이미지")
+                                                        .build(),
+                                                ImageElement.builder()
+                                                        .imageUrl(interview.getCrew().getImageUrl())
+                                                        .altText("크루 이미지")
+                                                        .build()))
                                         .build()
                         )
                 ).build());
