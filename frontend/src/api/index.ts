@@ -43,6 +43,16 @@ export const getCoachScheduleAPI = (coachId: number, year: number, month: number
     `${process.env.SERVER_URL}/api/calendar/times?coachId=${coachId}&year=${year}&month=${month}`,
   );
 
+export const getCoachScheduleAndUsedScheduleAPI = (
+  interviewId: number,
+  coachId: number,
+  year: number,
+  month: number,
+) =>
+  axios.get(
+    `${process.env.SERVER_URL}/api/interviews/${interviewId}/calendar/times?coachId=${coachId}&year=${year}&month=${month}`,
+  );
+
 export const getCoachInterviewAPI = (year: number, month: number) =>
   axios.get(`${process.env.SERVER_URL}/api/schedules?year=${year}&month=${month}`);
 
