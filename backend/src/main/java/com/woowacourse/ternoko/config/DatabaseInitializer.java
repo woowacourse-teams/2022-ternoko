@@ -97,15 +97,15 @@ public class DatabaseInitializer {
                     "안녕하세요."));
 
             coaches.add(new Coach(13L, "터놓고", "터노코", "ternoko.official@gmail.com",
-                    "U02UU3F2H6K",
+                    "U03U8ETQ48Y",
                     "https://user-images.githubusercontent.com/54317630/184493934-9a2ba1bb-6051-4428-bb6a-5527c4f480d9.JPG",
                     "면담은 터놓고 하세요."));
 
             coachRepository.saveAll(coaches);
 
-            availableDateTimeRepository.save(new AvailableDateTime(1L, coach1.getId(),
+            availableDateTimeRepository.save(new AvailableDateTime(1L, 13L,
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
-            availableDateTimeRepository.save(new AvailableDateTime(2L, coach1.getId(),
+            availableDateTimeRepository.save(new AvailableDateTime(2L, 13L,
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
         }
     }
