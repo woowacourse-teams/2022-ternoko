@@ -99,10 +99,6 @@ jacocoTestReport {
 
 sonarqube {
     properties {
-        property "sonar.host.url", "http://3.39.189.196:8081"
-        property "sonar.login", "7fea8ed7fcc171a72450ca8f63fb214db3115bb8"
-        property "sonar.projectKey", "ternoko"
-        property "sonar.projectName" , "ternoko"
         property "sonar.sources", "src" // 소스 경로
         property "sonar.language", "java" // 언어
         property "sonar.sourceEncoding", "UTF-8"

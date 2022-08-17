@@ -53,7 +53,6 @@ jobs:
              -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
              -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
              -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
-
       - name: Comment Sonarqube URL
         uses: actions/github-script@v4
         with:
