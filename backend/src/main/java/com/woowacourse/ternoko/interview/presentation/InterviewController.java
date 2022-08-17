@@ -8,8 +8,8 @@ import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
 import com.woowacourse.ternoko.login.aop.CoachOnly;
 import com.woowacourse.ternoko.login.aop.CrewOnly;
 import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
-import com.woowacourse.ternoko.support.AlarmMessage;
 import com.woowacourse.ternoko.support.SlackAlarm;
+import com.woowacourse.ternoko.support.SlackMessageType;
 import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -47,7 +47,7 @@ public class InterviewController {
                                                 @RequestBody final InterviewRequest interviewRequest)
             throws Exception {
         final Interview interview = interviewService.create(crewId, interviewRequest);
-        slackAlarm.sendMessage(interview, AlarmMessage.CREW_CREATE.getMessage());
+        slackAlarm.sendMessage(interview, SlackMessageType.CREW_CREATE);
         return ResponseEntity.created(URI.create("/api/interviews/" + interview.getId())).build();
     }
 
@@ -72,7 +72,7 @@ public class InterviewController {
                                                 @RequestBody final InterviewRequest interviewRequest)
             throws Exception {
         final Interview updateInterview = interviewService.update(crewId, interviewId, interviewRequest);
-        slackAlarm.sendMessage(updateInterview, AlarmMessage.CREW_UPDATE.getMessage());
+        slackAlarm.sendMessage(updateInterview, SlackMessageType.CREW_UPDATE);
         return ResponseEntity.ok().build();
     }
 
@@ -81,7 +81,7 @@ public class InterviewController {
     public ResponseEntity<Void> deleteInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId) throws Exception {
         final Interview interview = interviewService.delete(crewId, interviewId);
-        slackAlarm.sendMessage(interview, AlarmMessage.CREW_DELETE.getMessage());
+        slackAlarm.sendMessage(interview, SlackMessageType.CREW_DELETE);
         return ResponseEntity.noContent().build();
     }
 
@@ -91,7 +91,7 @@ public class InterviewController {
                                                 @PathVariable final Long interviewId,
                                                 @RequestParam final boolean onlyInterview) throws Exception {
         final Interview interview = interviewService.cancelAndDeleteAvailableTime(coachId, interviewId, onlyInterview);
-        slackAlarm.sendMessage(interview, AlarmMessage.COACH_CANCEL.getMessage());
+        slackAlarm.sendMessage(interview, SlackMessageType.COACH_CANCEL);
         return ResponseEntity.noContent().build();
     }
 }
