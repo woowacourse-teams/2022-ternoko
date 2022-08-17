@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.interview.domain;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
+import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
+import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
 
 import com.woowacourse.ternoko.comment.exception.InvalidStatusCreateCommentException;
-import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.domain.member.MemberType;
 
 public enum InterviewStatusType {
@@ -21,22 +21,26 @@ public enum InterviewStatusType {
     }
 
     public void validateCreateComment(final MemberType memberType) {
-        if (memberType == MemberType.COACH && (this == COMMENT || this == CREW_COMPLETED)) {
+        if (memberType == COACH && (this == FIXED || this == CREW_COMPLETED)) {
             return;
         }
-        if (memberType == MemberType.CREW && (this == COMMENT || this == COACH_COMPLETED)) {
+        if (memberType == CREW && (this == FIXED || this == COACH_COMPLETED)) {
             return;
         }
         throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
     }
 
-    public void validateFindComment(final MemberType memberType) {
-        if (memberType == MemberType.COACH && (this == COMPLETE || this == COACH_COMPLETED)) {
-            return;
+    public boolean canCreateCommentStatusBy(final MemberType memberType) {
+        if (memberType.isSameType(COACH) && (this == FIXED || this == CREW_COMPLETED)) {
+            return true;
         }
-        if (memberType == MemberType.CREW && (this == COMPLETE || this == CREW_COMPLETED)) {
-            return;
+        if (memberType.isSameType(CREW) && (this == FIXED || this == COACH_COMPLETED)) {
+            return true;
         }
-        throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
+        return false;
+    }
+
+    public boolean canFindCommentBy() {
+        return this == COMPLETE || this == COACH_COMPLETED || this == CREW_COMPLETED;
     }
 }
