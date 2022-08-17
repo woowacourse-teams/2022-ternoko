@@ -358,7 +358,16 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                   isSubmitted={isSubmitted}
                 />
-                <Button type="submit" width="100%" height="40px">
+                <Button
+                  type="submit"
+                  width="100%"
+                  height="40px"
+                  inActive={
+                    !isValidApplyFormLength(answer1) ||
+                    !isValidApplyFormLength(answer2) ||
+                    !isValidApplyFormLength(answer3)
+                  }
+                >
                   {interviewId ? '수정 완료' : '신청 완료'}
                 </Button>
               </S.Form>
