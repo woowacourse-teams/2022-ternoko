@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @GetMapping("/interviews/{interviewId}/comments")
-    public ResponseEntity<CommentsResponse> getComments(@AuthenticationPrincipal final Long id,
+    public ResponseEntity<CommentsResponse> findComments(@AuthenticationPrincipal final Long id,
                                                         @PathVariable final Long interviewId) {
         CommentsResponse commentsResponse = commentService.findComments(id, interviewId);
         return ResponseEntity.ok(commentsResponse);

@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.comment.acceptance;
 
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -9,9 +10,9 @@ import com.woowacourse.ternoko.acceptance.AcceptanceTest;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentResponse;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
+import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
-import com.woowacourse.ternoko.domain.member.MemberType;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -68,20 +69,17 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @DisplayName("코치 크루 모두가 한마디를 작성 시 면담이 완료된다.")
     void createCommentByAll() {
         // given
-        final Long interviewId = 1L;
+        final Long interviewId = 2L;
         final Header coachHeader = generateHeader(COACH1);
-        final Header crewHeader = generateHeader(CREW1);
-        final ExtractableResponse<Response> response = get("/api/interviews/" + interviewId, coachHeader);
-        final InterviewResponse interviewResponse = response.body().as(InterviewResponse.class);
+        final Header crewHeader = generateHeader(CREW2);
+        get("/api/interviews/" + interviewId, coachHeader);
+
         // when
         CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다.");
         post("/api/interviews/" + interviewId + "/comments", coachHeader, commentRequest);
-        ExtractableResponse<Response> createCommentResponse = post("/api/interviews/" + interviewId + "/comments",
-                crewHeader,
-                commentRequest);
-        // then
-        assertThat(createCommentResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        post("/api/interviews/" + interviewId + "/comments", crewHeader, commentRequest);
 
+        // then
         final ExtractableResponse<Response> findResponse = get("/api/interviews/" + interviewId, crewHeader);
         final InterviewResponse newInterviewResponse = findResponse.body().as(InterviewResponse.class);
         assertThat(newInterviewResponse.getStatus()).isEqualTo(InterviewStatusType.COMPLETE);
