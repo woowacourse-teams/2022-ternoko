@@ -2,6 +2,13 @@ package com.woowacourse.ternoko.interview.domain;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
+import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CANCELED;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.COACH_COMPLETED;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.COMPLETE;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CREW_COMPLETED;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 
 import com.woowacourse.ternoko.common.exception.ExceptionType;
@@ -9,7 +16,6 @@ import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import java.time.LocalDateTime;
@@ -26,11 +32,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Interview {
 
@@ -95,7 +103,7 @@ public class Interview {
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
-        this.interviewStatusType = InterviewStatusType.EDITABLE;
+        this.interviewStatusType = EDITABLE;
     }
 
     public void update(Interview updateInterview) {
@@ -108,19 +116,19 @@ public class Interview {
     }
 
     public void cancel() {
-        this.interviewStatusType = InterviewStatusType.CANCELED;
+        this.interviewStatusType = CANCELED;
     }
 
     public void complete(final MemberType memberType) {
-        if (this.interviewStatusType == InterviewStatusType.COMMENT && memberType == MemberType.COACH) {
-            this.interviewStatusType = InterviewStatusType.COACH_COMPLETED;
+        if (this.interviewStatusType == FIXED && memberType == COACH) {
+            this.interviewStatusType = COACH_COMPLETED;
             return;
         }
-        if (this.interviewStatusType == InterviewStatusType.COMMENT && memberType == MemberType.CREW) {
-            this.interviewStatusType = InterviewStatusType.CREW_COMPLETED;
+        if ((this.interviewStatusType == FIXED) && (memberType == CREW)) {
+            this.interviewStatusType = CREW_COMPLETED;
             return;
         }
-        this.interviewStatusType = InterviewStatusType.COMPLETE;
+        this.interviewStatusType = COMPLETE;
     }
 
     public boolean sameCrew(final Long crewId) {
@@ -142,13 +150,31 @@ public class Interview {
         }
     }
 
-    public Member validateMember(final Long memberId) {
-        if (this.coach.sameMember(memberId)) {
-            return this.coach;
+    public void validateCreateComment(final MemberType memberType) {
+        interviewStatusType.validateCreateComment(memberType);
+    }
+
+    public MemberType findMemberType(final Long memberId) {
+        if (coach.sameMember(memberId)) {
+            return coach.getMemberType();
         }
-        if (this.crew.sameMember(memberId)) {
-            return this.crew;
+
+        if (crew.sameMember(memberId)) {
+            return crew.getMemberType();
         }
+
         throw new MemberNotFoundException(INVALID_INTERVIEW_MEMBER_ID);
+    }
+
+    public boolean canCreateCommentBy(final MemberType memberType) {
+        return interviewStatusType.canCreateCommentStatusBy(memberType);
+    }
+
+    public boolean canFindCommentBy() {
+        return interviewStatusType.canFindCommentBy();
+    }
+
+    public boolean isSame(final Long interviewId) {
+        return id.equals(interviewId);
     }
 }

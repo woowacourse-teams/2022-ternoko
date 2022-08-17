@@ -2,20 +2,18 @@ package com.woowacourse.ternoko.comment.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
 import com.woowacourse.ternoko.comment.domain.Comment;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
-import com.woowacourse.ternoko.comment.dto.CommentResponse;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
 import com.woowacourse.ternoko.comment.exception.CommentNotFoundException;
+import com.woowacourse.ternoko.comment.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.comment.repository.CommentRepository;
-import com.woowacourse.ternoko.domain.member.Member;
 import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.repository.CrewRepository;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class CommentService {
 
-    private final CrewRepository crewRepository;
     private final InterviewRepository interviewRepository;
     private final CommentRepository commentRepository;
 
@@ -34,46 +31,35 @@ public class CommentService {
         final Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
 
-        final Member member = interview.validateMember(memberId);
-        final MemberType memberType = getMemberType(memberId);
-        interview.getInterviewStatusType().validateCreateComment(getMemberType(memberId));
-
-        final Comment comment = commentRepository.save(new Comment(memberId, interview, commentRequest.getComment()));
+        final MemberType memberType = interview.findMemberType(memberId);
+        final Comment comment = commentRepository.save(
+                Comment.create(memberId, interview, commentRequest.getComment(), memberType));
 
         interview.complete(memberType);
-
         return comment.getId();
     }
 
     public CommentsResponse findComments(final Long memberId, final Long interviewId) {
         final Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+        interview.findMemberType(memberId);
+        validateFindStatus(interview);
+        final List<Comment> comments = commentRepository.findByInterviewId(interviewId);
+        return CommentsResponse.of(comments, interview);
+    }
 
-        interview.validateMember(memberId);
-        interview.getInterviewStatusType().validateFindComment(getMemberType(memberId));
-        List<Comment> comments = commentRepository.findByInterviewId(interviewId);
-        List<CommentResponse> commentResponses = new ArrayList<>();
-        for (Comment comment : comments) {
-            commentResponses.add(CommentResponse.of(getMemberType(comment.getMemberId()), comment));
+    private void validateFindStatus(final Interview interview) {
+        if (!interview.canFindCommentBy()) {
+            throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
         }
-        return CommentsResponse.from(commentResponses);
     }
 
     public void update(final Long memberId,
                        final Long interviewId,
                        final Long commentId,
                        final CommentRequest commentRequest) {
-        Comment comment = commentRepository.findById(commentId)
+        final Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
-        comment.validMember(memberId);
-        comment.validInterview(interviewId);
-        comment.update(commentRequest);
-    }
-
-    private MemberType getMemberType(final Long memberId) {
-        if (crewRepository.findById(memberId).isPresent()) {
-            return MemberType.CREW;
-        }
-        return MemberType.COACH;
+        comment.update(memberId, interviewId, commentRequest.getComment());
     }
 }

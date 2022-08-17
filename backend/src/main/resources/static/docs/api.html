@@ -484,6 +484,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_코치_면담_예약_취소_api">[코치] 면담 예약 취소 API</a></li>
 </ul>
 </li>
+<li><a href="#_코멘트_api">코멘트 API</a>
+<ul class="sectlevel2">
+<li><a href="#_크루_코멘트_생성_api">[크루] 코멘트 생성 API</a></li>
+<li><a href="#_코치_코멘트_생성_api">[코치] 코멘트 생성 API</a></li>
+<li><a href="#_크루코치_코멘트_조회_api">[크루/코치] 코멘트 조회 API</a></li>
+<li><a href="#_크루_코멘트_수정_api">[크루] 코멘트 수정 API</a></li>
+<li><a href="#_코치_코멘트_수정_api">[코치] 코멘트 수정 API</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -597,7 +606,8 @@ Content-Length: 85
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/login/valid?type=CREW HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4ODgxLCJleHAiOjE2NjA3NDI0ODEsIm1lbWJlclR5cGUiOiJDUkVXIn0.gLHwnWVwET6XUIsjUqkofPIKzqHycsC8GpDJ-wx6EL4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDQzLCJleHAiOjE2NjA3Mzg2NDMsIm1lbWJlclR5cGUiOiJDUkVXIn0.tTgSuOzmLrP6HeBVBd5njh_B7SZ2NlKFFH2_Un4qZcE
+
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -649,7 +659,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/coaches/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4ODkxLCJleHAiOjE2NjA3NDI0OTEsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.XxQvFY4py6Bw3_ObWsGxFv4pWtvycvMK267ee0AuzDA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDQ5LCJleHAiOjE2NjA3Mzg2NDksIm1lbWJlclR5cGUiOiJDT0FDSCJ9.45Cf3-EaHV5LhFKsZHs1JfP_ODpLtHDyxkioJ15_o8Q
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -721,7 +731,7 @@ Content-Length: 254
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/coaches/me HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4ODg2LCJleHAiOjE2NjA3NDI0ODYsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.DLTZ_yMToysg_PL7TxE_8Jp_lW5stG7AqikDSZwrr_I
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDQ2LCJleHAiOjE2NjA3Mzg2NDYsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.X_MWxhDVnKrPzpmlhvW9WZ7az2psbd3pM9Ym6i0shFA
 Content-Length: 87
 Host: localhost:8080
 
@@ -949,7 +959,7 @@ Content-Length: 21
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/calendar/times HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4ODg3LCJleHAiOjE2NjA3NDI0ODcsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.sWMYPbUjMhUsce8k5xg7b6D8LsOYHzqEOQMM5la-nVo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDQ3LCJleHAiOjE2NjA3Mzg2NDcsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.F_ihiU5wlROfup3PtofsYph7gx51HBy1e6DL8vqcEs0
 Content-Length: 851
 Host: localhost:8080
 
@@ -1045,7 +1055,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/calendar/times?coachId=1&amp;year=2022&amp;month=8 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4ODk0LCJleHAiOjE2NjA3NDI0OTQsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.maxOmW5wxu_4wFXEsCbT-N3JU-Wmj3wXVtoboOvC3ug
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDUwLCJleHAiOjE2NjA3Mzg2NTAsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.VA3lxHGoDdVQSbv6jpF7M8VLrbi8qgia86PTQnLb9gA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1134,7 +1144,7 @@ Content-Length: 656
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interviews/4/calendar/times?coachId=1&amp;year=2022&amp;month=8 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4ODg5LCJleHAiOjE2NjA3NDI0ODksIm1lbWJlclR5cGUiOiJDUkVXIn0.kH7_6H3759qTrgdA_O0lzB2XYE_P65WAZk5zEG4dobw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDQ4LCJleHAiOjE2NjA3Mzg2NDgsIm1lbWJlclR5cGUiOiJDUkVXIn0.wM-2O7vglQT9_brqxCz6L7Kdjt4MSwCIiKjW3A64Hjo
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1228,7 +1238,7 @@ Content-Length: 656
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/coaches HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4OTIwLCJleHAiOjE2NjA3NDI1MjAsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.egUVJbvXvg1uKOlpBe8IGs9IvqRUO6MIUGmPNqsPgo0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDY4LCJleHAiOjE2NjA3Mzg2NjgsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.ht_bmKKjTT6h4snWGC9sEH45xNClLRJJwRg8nDWlvqc
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1319,7 +1329,7 @@ Content-Length: 1118
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interviews HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4ODk5LCJleHAiOjE2NjA3NDI0OTksIm1lbWJlclR5cGUiOiJDUkVXIn0.MuKLfvUWyUJQPaeXoSV8yqkKXLz83i7FrvRzTuJcotc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDUyLCJleHAiOjE2NjA3Mzg2NTIsIm1lbWJlclR5cGUiOiJDUkVXIn0.aDIi46MW1WAOcdwIRaMdp5UFA3QRuzVuPodBhjx2hJA
 Content-Length: 290
 Host: localhost:8080
 
@@ -1408,7 +1418,7 @@ Location: /api/interviews/4</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/schedules?year=2022&amp;month=8 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4ODg0LCJleHAiOjE2NjA3NDI0ODQsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.0z4GyeNwXAXADdfBXweqTdaoDooAjV6OEr1Io5y3w2M
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDQ1LCJleHAiOjE2NjA3Mzg2NDUsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.LkJ0s8KuHKZp6J4xA7TuIKENKnUkg0q3rDRatF-LrQA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1480,7 +1490,9 @@ Content-Length: 307
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interviews HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4OTExLCJleHAiOjE2NjA3NDI1MTEsIm1lbWJlclR5cGUiOiJDUkVXIn0.oa0T_jali8RsUhvU2KQeJKv4zlDOrEA3MC_q99mtb1c
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDYyLCJleHAiOjE2NjA3Mzg2NjIsIm1lbWJlclR5cGUiOiJDUkVXIn0.i9JKo-vOYGKGNRJGWDQeNZwqE-jEEIwCjESisUT3hS8
+
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1494,7 +1506,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 2519
+Content-Length: 2518
 
 [ {
   "id" : 1,
@@ -1502,7 +1514,7 @@ Content-Length: 2519
   "coachImageUrl" : "https://user-images.githubusercontent.com/26570275/177680212-63242449-1059-450b-96d8-a06b01a1aea5.png",
   "crewNickname" : "수달",
   "crewImageUrl" : "https://user-images.githubusercontent.com/43205258/177765431-63d39896-c8e1-42e8-a229-08309849f2ff.png",
-  "status" : "COMMENT",
+  "status" : "FIXED",
   "interviewStartTime" : "2022-07-31 11:00",
   "interviewEndTime" : "2022-07-31 11:30",
   "interviewQuestions" : [ {
@@ -1521,7 +1533,7 @@ Content-Length: 2519
   "coachImageUrl" : "https://user-images.githubusercontent.com/26570275/177680212-63242449-1059-450b-96d8-a06b01a1aea5.png",
   "crewNickname" : "수달",
   "crewImageUrl" : "https://user-images.githubusercontent.com/43205258/177765431-63d39896-c8e1-42e8-a229-08309849f2ff.png",
-  "status" : "COMMENT",
+  "status" : "EDITABLE",
   "interviewStartTime" : "2022-07-31 13:00",
   "interviewEndTime" : "2022-07-31 13:30",
   "interviewQuestions" : [ ]
@@ -1607,7 +1619,7 @@ Content-Length: 2519
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interviews/4 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4OTA1LCJleHAiOjE2NjA3NDI1MDUsIm1lbWJlclR5cGUiOiJDUkVXIn0.JmbHaOTRVUC3yZayaNajBJKdIo3DwlTc3_E8vEqWBCM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDU3LCJleHAiOjE2NjA3Mzg2NTcsIm1lbWJlclR5cGUiOiJDUkVXIn0.m1CrHv-IjlHsonzfEliUysQYWiizmAzdl4nuwY_hhQE
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1691,7 +1703,7 @@ Content-Length: 659
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/interviews/4 HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4OTE3LCJleHAiOjE2NjA3NDI1MTcsIm1lbWJlclR5cGUiOiJDUkVXIn0.VnqayxLHeqTo7he9pgnwlWPWr8VbaRcyEHTLfKo39HM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDY2LCJleHAiOjE2NjA3Mzg2NjYsIm1lbWJlclR5cGUiOiJDUkVXIn0.KXcwo25hHdBnym05Wrz5OOyYf6ggdwDbOCCL4Sd3P5Y
 Content-Length: 290
 Host: localhost:8080
 
@@ -1788,7 +1800,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/interviews/4 HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM4OTE0LCJleHAiOjE2NjA3NDI1MTQsIm1lbWJlclR5cGUiOiJDUkVXIn0.UxIRd6Uirvo4IUE3MbEW_tfb6-VH4DJV7g4aPtjxw_A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNjYwNzM1MDY0LCJleHAiOjE2NjA3Mzg2NjQsIm1lbWJlclR5cGUiOiJDUkVXIn0.JIOjqfvddUvIDCrf6MOtQpTAfd3wWGEXtFVKPL2H17o
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1853,7 +1865,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/interviews/4?onlyInterview=false HTTP/1.1
 Content-Type: application/json;charset=utf-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM4OTAyLCJleHAiOjE2NjA3NDI1MDIsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.cU9jdYtSUhN8JRKhypSfP8dIaXH1nZuB1F5C1_lybr0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDU0LCJleHAiOjE2NjA3Mzg2NTQsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.H4wtzTeGsX0VKx_I2odd7d6CJXMlaT-TMuAUnta8Nrs
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1909,11 +1921,396 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_코멘트_api"><a class="link" href="#_코멘트_api">코멘트 API</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_크루_코멘트_생성_api"><a class="link" href="#_크루_코멘트_생성_api">[크루] 코멘트 생성 API</a></h3>
+<div class="paragraph">
+<p>POST /api/interviews/{interviewId}/comments</p>
+</div>
+<div class="sect3">
+<h4 id="_크루_코멘트_생성_api_http_request"><a class="link" href="#_크루_코멘트_생성_api_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interviews/2/comments HTTP/1.1
+Content-Type: application/json;charset=utf-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNjYwNzM1MDc3LCJleHAiOjE2NjA3Mzg2NzcsIm1lbWJlclR5cGUiOiJDUkVXIn0.jS9BdWHbwg7kDqyXJOWu6thoZL_eWBWvV3651S9hB3c
+Content-Length: 43
+Host: localhost:8080
+
+{
+  "comment" : "크루가 적었어요."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_크루_코멘트_생성_api_http_response"><a class="link" href="#_크루_코멘트_생성_api_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /api/interviews/2/comments/1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error_response_19"><a class="link" href="#_error_response_19">Error Response</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">statusCode</th>
+<th class="tableblock halign-left valign-top">message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 입력할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 조회할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"번째 코멘트를 찾을 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"코멘트에 해당하지 않는 면담입니다."</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_코치_코멘트_생성_api"><a class="link" href="#_코치_코멘트_생성_api">[코치] 코멘트 생성 API</a></h3>
+<div class="paragraph">
+<p>POST /api/interviews/{interviewId}/comments</p>
+</div>
+<div class="sect3">
+<h4 id="_코치_코멘트_생성_api_http_request"><a class="link" href="#_코치_코멘트_생성_api_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interviews/2/comments HTTP/1.1
+Content-Type: application/json;charset=utf-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDc2LCJleHAiOjE2NjA3Mzg2NzYsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.Pj2Bwv0wIq2dqRg2_4DLFN5BKgwZNNeoUZiL5gEh-PE
+Content-Length: 43
+Host: localhost:8080
+
+{
+  "comment" : "코치가 적었어요."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_코치_코멘트_생성_api_http_response"><a class="link" href="#_코치_코멘트_생성_api_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /api/interviews/2/comments/1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error_response_20"><a class="link" href="#_error_response_20">Error Response</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">statusCode</th>
+<th class="tableblock halign-left valign-top">message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 입력할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 조회할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"번째 코멘트를 찾을 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"코멘트에 해당하지 않는 면담입니다."</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_크루코치_코멘트_조회_api"><a class="link" href="#_크루코치_코멘트_조회_api">[크루/코치] 코멘트 조회 API</a></h3>
+<div class="paragraph">
+<p>GET /api/interviews/{interviewId}/comments</p>
+</div>
+<div class="sect3">
+<h4 id="_크루코치_코멘트_조회_api_http_request"><a class="link" href="#_크루코치_코멘트_조회_api_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interviews/2/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNjYwNzM1MDc3LCJleHAiOjE2NjA3Mzg2NzcsIm1lbWJlclR5cGUiOiJDUkVXIn0.jS9BdWHbwg7kDqyXJOWu6thoZL_eWBWvV3651S9hB3c
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_크루코치_코멘트_조회_api_http_response"><a class="link" href="#_크루코치_코멘트_조회_api_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 218
+
+{
+  "comments" : [ {
+    "role" : "COACH",
+    "commentId" : 1,
+    "comment" : "코치의 코멘트 입니다."
+  }, {
+    "role" : "CREW",
+    "commentId" : 2,
+    "comment" : "크루의 코멘트 입니다."
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error_response_21"><a class="link" href="#_error_response_21">Error Response</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">statusCode</th>
+<th class="tableblock halign-left valign-top">message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 입력할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 조회할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"번째 코멘트를 찾을 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"코멘트에 해당하지 않는 면담입니다."</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_크루_코멘트_수정_api"><a class="link" href="#_크루_코멘트_수정_api">[크루] 코멘트 수정 API</a></h3>
+<div class="paragraph">
+<p>PUT /api/interviews/{interviewId}/comments/{commentId}</p>
+</div>
+<div class="sect3">
+<h4 id="_크루_코멘트_수정_api_http_request"><a class="link" href="#_크루_코멘트_수정_api_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/interviews/2/comments/1 HTTP/1.1
+Content-Type: application/json;charset=utf-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwNzM1MDc1LCJleHAiOjE2NjA3Mzg2NzUsIm1lbWJlclR5cGUiOiJDT0FDSCJ9.qsTmb_FTqRhVTWUyZoLfG4D0svJL_VVYaJ0eIJt4b1s
+Content-Length: 36
+Host: localhost:8080
+
+{
+  "comment" : "수정할게용."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_크루_코멘트_수정_api_http_response"><a class="link" href="#_크루_코멘트_수정_api_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error_response_22"><a class="link" href="#_error_response_22">Error Response</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">statusCode</th>
+<th class="tableblock halign-left valign-top">message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 입력할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 조회할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"번째 코멘트를 찾을 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"코멘트에 해당하지 않는 면담입니다."</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_코치_코멘트_수정_api"><a class="link" href="#_코치_코멘트_수정_api">[코치] 코멘트 수정 API</a></h3>
+<div class="paragraph">
+<p>PUT /api/interviews/{interviewId}/comments/{commentId}</p>
+</div>
+<div class="sect3">
+<h4 id="_코치_코멘트_수정_api_http_request"><a class="link" href="#_코치_코멘트_수정_api_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/interviews/2/comments/2 HTTP/1.1
+Content-Type: application/json;charset=utf-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNjYwNzM1MDc0LCJleHAiOjE2NjA3Mzg2NzQsIm1lbWJlclR5cGUiOiJDUkVXIn0.5hmw9rJVuYjCLXnI_tmtW7R2t8Qh2J1mcs4X6Xl1chs
+Content-Length: 36
+Host: localhost:8080
+
+{
+  "comment" : "수정할게용."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_코치_코멘트_수정_api_http_response"><a class="link" href="#_코치_코멘트_수정_api_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error_response_23"><a class="link" href="#_error_response_23">Error Response</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">statusCode</th>
+<th class="tableblock halign-left valign-top">message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 입력할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담은 자유로운 한마디를 조회할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"번째 코멘트를 찾을 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"코멘트에 해당하지 않는 면담입니다."</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-17 10:43:44 +0900
+Last updated 2022-08-17 20:16:36 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

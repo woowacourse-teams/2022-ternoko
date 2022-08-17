@@ -259,7 +259,7 @@ operation::member-controller-test/find-coaches[snippets='http-request,http-respo
 | 401
 | `토큰이 만료되었습니다.`
 
-|401
+| 401
 |`토큰이 존재하지 않습니다.`
 |===
 
@@ -453,4 +453,156 @@ include::{snippets}/interview-controller-test/cancel-interview-with-delete-avail
 
 |401
 |`토큰이 존재하지 않습니다.`
+|===
+
+== 코멘트 API
+
+=== [크루] 코멘트 생성 API
+
+POST /api/interviews/{interviewId}/comments
+
+operation::comment-controller-test/create-comment-by-crew[snippets='http-request,http-response']
+==== Error Response
+
+|===
+| statusCode | message
+
+| 5001
+| `"해당 면담은 자유로운 한마디를 입력할 수 없습니다."`
+
+| 5002
+| `"해당 면담은 자유로운 한마디를 조회할 수 없습니다."`
+
+| 5003
+| `"번째 코멘트를 찾을 수 없습니다."`
+
+| 5004
+| `"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5005
+| `"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5006
+| `"코멘트에 해당하지 않는 면담입니다."`
+
+|===
+
+=== [코치] 코멘트 생성 API
+
+POST /api/interviews/{interviewId}/comments
+
+operation::comment-controller-test/create-comment-by-coach[snippets='http-request,http-response']
+==== Error Response
+
+|===
+| statusCode | message
+
+| 5001
+| `"해당 면담은 자유로운 한마디를 입력할 수 없습니다."`
+
+| 5002
+| `"해당 면담은 자유로운 한마디를 조회할 수 없습니다."`
+
+| 5003
+| `"번째 코멘트를 찾을 수 없습니다."`
+
+| 5004
+| `"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5005
+| `"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5006
+| `"코멘트에 해당하지 않는 면담입니다."`
+
+|===
+
+=== [크루/코치] 코멘트 조회 API
+
+GET /api/interviews/{interviewId}/comments
+
+operation::comment-controller-test/find-comment-by-crew[snippets='http-request,http-response']
+==== Error Response
+
+|===
+| statusCode | message
+
+| 5001
+| `"해당 면담은 자유로운 한마디를 입력할 수 없습니다."`
+
+| 5002
+| `"해당 면담은 자유로운 한마디를 조회할 수 없습니다."`
+
+| 5003
+| `"번째 코멘트를 찾을 수 없습니다."`
+
+| 5004
+| `"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5005
+| `"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5006
+| `"코멘트에 해당하지 않는 면담입니다."`
+
+|===
+
+=== [크루] 코멘트 수정 API
+
+PUT /api/interviews/{interviewId}/comments/{commentId}
+
+operation::comment-controller-test/update-comment-by-coach[snippets='http-request,http-response']
+==== Error Response
+
+|===
+| statusCode | message
+
+| 5001
+| `"해당 면담은 자유로운 한마디를 입력할 수 없습니다."`
+
+| 5002
+| `"해당 면담은 자유로운 한마디를 조회할 수 없습니다."`
+
+| 5003
+| `"번째 코멘트를 찾을 수 없습니다."`
+
+| 5004
+| `"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5005
+| `"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5006
+| `"코멘트에 해당하지 않는 면담입니다."`
+
+|===
+
+=== [코치] 코멘트 수정 API
+
+PUT /api/interviews/{interviewId}/comments/{commentId}
+
+operation::comment-controller-test/update-comment-by-crew[snippets='http-request,http-response']
+==== Error Response
+
+|===
+| statusCode | message
+
+| 5001
+| `"해당 면담은 자유로운 한마디를 입력할 수 없습니다."`
+
+| 5002
+| `"해당 면담은 자유로운 한마디를 조회할 수 없습니다."`
+
+| 5003
+| `"번째 코멘트를 찾을 수 없습니다."`
+
+| 5004
+| `"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5005
+| `"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5006
+| `"코멘트에 해당하지 않는 면담입니다."`
+
 |===

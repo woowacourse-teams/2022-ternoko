@@ -15,6 +15,10 @@ public enum MemberType {
         return Arrays.stream(values())
                 .anyMatch(type -> type.name().equals(value));
     }
+
+    public boolean isSameType(final MemberType memberType) {
+        return this == memberType;
+    }
 }
 
 

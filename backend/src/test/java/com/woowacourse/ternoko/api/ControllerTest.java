@@ -9,9 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
+import com.woowacourse.ternoko.domain.member.Member;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.MvcResult;
@@ -61,5 +64,30 @@ public class ControllerTest extends RestDocsTestSupport {
                         .characterEncoding("utf-8")
                         .content(objectMapper.writeValueAsString(COACH1_INTERVIEW_REQUEST2)))
                 .andExpect(status().isCreated());
+    }
+
+    public Long createComment(final Long interviewId,
+                              final CommentRequest commentRequest,
+                              final Member member) throws Exception {
+        final MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/interviews/" + interviewId + "/comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(objectMapper.writeValueAsString(commentRequest))
+                        .header(AUTHORIZATION, generateToken(member)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        return parseLocationHeader(mvcResult.getResponse(), "/api/interviews/" + interviewId + "/comments/");
+    }
+
+    protected String generateToken(final Member member) {
+        return BEARER_TYPE + jwtProvider.createToken(member);
+    }
+
+    protected Long parseLocationHeader(final MockHttpServletResponse response, final String regex) {
+        final String header = response.getHeader("Location");
+        final String s = header.split(regex)[1];
+        return Long.parseLong(s);
     }
 }
