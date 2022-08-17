@@ -1,8 +1,8 @@
 # Workflow 의 이름 설정
-name: 소나큐브 테스트 자동화
+name: 백엔드 코드 정적 분석
 
 on:
-  push:
+  push:  # main, feat, develop 브랜치에  PUSH event 가 일어났을때
     branches:
       - main
       - feat/*
@@ -11,8 +11,8 @@ on:
       - refactor/*
       - develop
       - test/*
-    paths: 'backend/**'
-  pull_request:
+    paths: 'backend/**' # backend dir 하위에 변경 지점이 있어야한다.
+  pull_request:  # main, feat, develop 브랜치에  PR event 가 일어났을때
     branches:
       - main
       - feat/*
@@ -21,20 +21,20 @@ on:
       - refactor/*
       - develop
     paths: 'backend/**'
-    types: [opened, synchronize]
 
-# job 의 공통된 옵션
 defaults:
   run:
     working-directory: backend
 
-# 실행 해야 할 job 들에 대한 설정
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: get repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+          submodules: recursive
 
   analysis:
     runs-on: ubuntu-latest
@@ -43,28 +43,32 @@ jobs:
       SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
       SONARQUBE_TOKEN : ${{ secrets.SONARQUBE_TOKEN }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
+
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+          submodules: recursive
 
       - name: gradlew permission change
         run: sudo chmod 755 gradlew
 
       - name: Sonaqube Analysis
         run: ./gradlew test sonarqube
-             -Dsonar.host.url=${{ env.SONARQUBE_URL }}
-             -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
-             -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
-             -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
+              -Dsonar.host.url=${{ env.SONARQUBE_URL }}
+              -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
+              -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
+              -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
 
-      - name: Comment Sonarqube URL
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const { SONARQUBE_PROJECT_KEY, SONARQUBE_URL, PR_NUMBER } = process.env
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `📊 ${ SONARQUBE_PROJECT_KEY }-${ PR_NUMBER } 분석 결과 확인하기 [링크](${SONARQUBE_URL})`
-            })
+       - name: Comment Sonarqube URL
+         uses: actions/github-script@v4
+         with:
+           script: |
+             const { SONARQUBE_PROJECT_KEY, SONARQUBE_URL, PR_NUMBER } = process.env
+             github.issues.createComment({
+               issue_number: context.issue.number,
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               body: `📊 ${ SONARQUBE_PROJECT_KEY }-${ PR_NUMBER } 분석 결과 확인하기 [링크](${SONARQUBE_URL})`
+             })
