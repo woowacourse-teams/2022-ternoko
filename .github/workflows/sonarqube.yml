@@ -31,9 +31,6 @@ jobs:
     steps:
       - name: get repository
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.SUBMODULE_TOKEN }}
-          submodules: recursive
 
   analysis:
     runs-on: ubuntu-latest
@@ -45,9 +42,6 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.SUBMODULE_TOKEN }}
-          submodules: recursive
 
       - name: gradlew permission change
         run: sudo chmod 755 gradlew
