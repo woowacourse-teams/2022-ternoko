@@ -24,6 +24,7 @@ import { CoachType, CrewSelectTime, InterviewType, StringDictionary } from '@/ty
 
 import {
   getCoachScheduleAPI,
+  getCoachScheduleAndUsedScheduleAPI,
   getCoachesAPI,
   getInterviewAPI,
   postInterviewAPI,
@@ -68,7 +69,7 @@ const InterviewApplyPage = () => {
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
-  const initRef = useRef(false);
+  const initRef = useRef(true);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
@@ -79,6 +80,30 @@ const InterviewApplyPage = () => {
       : availableSchedules[day]
       ? 'default'
       : 'disable';
+
+  const getCoachScheduleAPIForPage = async () => {
+    const response = await (initRef.current && interviewId
+      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
+      : getCoachScheduleAPI(coachId, year, month + 1));
+
+    return response;
+  };
+
+  const setTimesOnModifyPage = (schedules: StringDictionary, calendarTimes: CrewSelectTime[]) => {
+    if (!initRef.current) return;
+
+    initRef.current = false;
+
+    if (!interviewId) return;
+
+    setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+    setSelectedTimes([
+      separateFullDate(
+        (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
+          .calendarTime,
+      ).time,
+    ]);
+  };
 
   const handleClickStepTitle = (step: number) => {
     setStepStatus((prevStepStatus) =>
@@ -197,7 +222,7 @@ const InterviewApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await getCoachScheduleAPI(coachId, year, month + 1);
+        const response = await getCoachScheduleAPIForPage();
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
@@ -211,26 +236,10 @@ const InterviewApplyPage = () => {
         );
 
         setAvailableSchedules(schedules);
-
-        if (!initRef.current) {
-          initRef.current = true;
-
-          if (interviewId) {
-            setAvailableTimes(schedules[selectedDates[0].day] ?? []);
-            setSelectedTimes([
-              separateFullDate(
-                (
-                  response.data.calendarTimes.find(
-                    ({ status }: CrewSelectTime) => status === 'USED',
-                  ) as CrewSelectTime
-                ).calendarTime,
-              ).time,
-            ]);
-          }
-        }
+        setTimesOnModifyPage(schedules, response.data.calendarTimes);
       })();
     }
-  }, [stepStatus, year, month, initRef.current]);
+  }, [stepStatus, year, month]);
 
   useEffect(() => {
     resetTimes();
