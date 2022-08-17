@@ -14,10 +14,6 @@ on:
   pull_request:  # main, feat, develop 브랜치에  PR event 가 일어났을때
     branches:
       - main
-      - feat/*
-      - feature/*
-      - fix/*
-      - refactor/*
       - develop
     paths: 'backend/**'
     types: [opened, synchronize]
