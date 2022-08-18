@@ -11,7 +11,7 @@ import { getDateString, getTimeString, isUnderToday } from '@/utils';
 
 type InterviewProps = InterviewType & {
   handleClickDetailButton: () => void;
-  handleClickCompleteButton: () => void;
+  handleClickCommentButton: () => void;
 };
 
 const Interview = ({
@@ -22,7 +22,7 @@ const Interview = ({
   interviewStartTime,
   interviewEndTime,
   handleClickDetailButton,
-  handleClickCompleteButton,
+  handleClickCommentButton,
 }: InterviewProps) => {
   return (
     <S.Box status={status}>
@@ -55,7 +55,7 @@ const Interview = ({
           </Link>
         )}
         {isUnderToday(interviewEndTime) && (
-          <Button orange={true} onClick={handleClickCompleteButton}>
+          <Button orange={true} onClick={handleClickCommentButton}>
             <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
             코멘트
           </Button>
