@@ -11,7 +11,7 @@ import useModal from '@/components/@common/Modal/useModal';
 
 import Interview from '@/components/Interview';
 
-import { InterviewType } from '@/types/domain';
+import { InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getInterviewsAPI } from '@/api';
 import { PAGE } from '@/constants';
@@ -38,20 +38,23 @@ const HomePage = () => {
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
 
   const [clickedInterviewId, setClickedInterviewId] = useState(-1);
+  const [clickedInterviewStatus, setClickedInterviewStatus] = useState<InterviewStatus>('EDITABLE');
 
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
   };
 
-  const getHandleClickDetailButton = (id: number) => () => {
-    setClickedInterviewId(id);
+  const getHandleClickDetailButton = (interviewId: number) => () => {
+    setClickedInterviewId(interviewId);
     handleOpenModalDetail();
   };
 
-  const getHandleClickCompleteButton = (id: number) => () => {
-    setClickedInterviewId(id);
-    handleOpenModalComment();
-  };
+  const getHandleClickCommentButton =
+    (interviewId: number, interviewStatus: InterviewStatus) => () => {
+      setClickedInterviewId(interviewId);
+      setClickedInterviewStatus(interviewStatus);
+      handleOpenModalComment();
+    };
 
   const updateInterviews = async () => {
     const response = await getInterviewsAPI();
@@ -91,7 +94,7 @@ const HomePage = () => {
           <Interview
             key={interview.id}
             handleClickDetailButton={getHandleClickDetailButton(interview.id)}
-            handleClickCompleteButton={getHandleClickCompleteButton(interview.id)}
+            handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
             {...interview}
           />
         ))}
@@ -109,6 +112,7 @@ const HomePage = () => {
         display={displayComment}
         memberRole={memberRole}
         interviewId={clickedInterviewId}
+        interviewStatus={clickedInterviewStatus}
         handleCloseModal={handleCloseModalComment}
       />
     </>
