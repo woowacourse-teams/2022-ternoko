@@ -30,7 +30,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CommonException.class)
     public ResponseEntity<ExceptionResponse> commonExceptionHandler(final CommonException e,
-                                                                    final HttpServletRequest request){
+                                                                    final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity
@@ -58,7 +58,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final RuntimeException e,
+    public ResponseEntity<ExceptionResponse> runtimeExceptionHandler(final RuntimeException e,
                                                                        final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
