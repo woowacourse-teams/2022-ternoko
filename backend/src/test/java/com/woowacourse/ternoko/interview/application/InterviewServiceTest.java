@@ -58,6 +58,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -550,6 +551,8 @@ class InterviewServiceTest {
     }
 
     @Test
+    @Disabled
+    @DisplayName("같은 가능 시간에 여러개의 면담을 생성할 수 없다. (동시성테스트)")
     void test_con() {
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
         ExecutorService service = Executors.newCachedThreadPool();
@@ -557,11 +560,11 @@ class InterviewServiceTest {
         for (Long i = 5L; i <= 6L; i++) {
             final Long finalI = i;
             service.execute(() -> {
-                try{
+                try {
                     interviewService.create(finalI,
-                            new InterviewRequest(COACH3.getId(),LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
+                            new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
                                     FORM_ITEM_REQUESTS));
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             });

@@ -146,7 +146,7 @@ public class Interview {
         updateFormItem(interview.getFormItems());
     }
 
-    public void updateFormItem(final List<FormItem> formItem){
+    public void updateFormItem(final List<FormItem> formItem) {
         //TODO : 일급컬렉션으로 빼기~
         for (int i = 0; i < formItem.size(); i++) {
             this.formItems.get(i).update(formItem.get(i));

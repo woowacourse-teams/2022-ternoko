@@ -163,16 +163,13 @@ public class InterviewService {
     }
 
     public List<AlarmResponse> update(final Long crewId,
-                            final Long interviewId,
-                            final InterviewRequest interviewRequest) {
+                                      final Long interviewId,
+                                      final InterviewRequest interviewRequest) {
         final Interview interview = findInterviewById(interviewId);
         validateChangeAuthorization(interview, crewId);
 
         List<AlarmResponse> alarmResponses = new ArrayList<>();
         alarmResponses.add(AlarmResponse.from(interview));
-
-        final Coach coach = coachRepository.findById(interviewRequest.getCoachId())
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest.getCoachId()));
 
         final LocalDateTime interviewDatetime = interviewRequest.getInterviewDatetime();
 
@@ -185,8 +182,19 @@ public class InterviewService {
         return alarmResponses;
     }
 
-    private Interview generateUpdateInterview(final Crew crew, final InterviewRequest interviewRequest){
-        return new Interview();
+    private Interview generateUpdateInterview(final Crew crew, final InterviewRequest interviewRequest) {
+
+        final Long coachId = interviewRequest.getCoachId();
+        final Coach coach = coachRepository.findById(coachId)
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+
+        return new Interview(
+                interviewRequest.getInterviewDatetime(),
+                interviewRequest.getInterviewDatetime().plusMinutes(30),
+                coach,
+                crew,
+                convertFormItem(interviewRequest.getInterviewQuestions())
+        );
     }
 
     private void changeAvailableDateTimeStatus(InterviewRequest interviewRequest, Interview originalInterview) {

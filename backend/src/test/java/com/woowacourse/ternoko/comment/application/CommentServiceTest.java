@@ -328,7 +328,8 @@ public class CommentServiceTest {
         // when & then
         final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
         assertThatThrownBy(
-                () -> commentService.update(CREW2.getId(), FIXED_INTERVIEW_ID, NOT_FOUND_COMMENT_ID, updateCommentRequest))
+                () -> commentService.update(CREW2.getId(), FIXED_INTERVIEW_ID, NOT_FOUND_COMMENT_ID,
+                        updateCommentRequest))
                 .isInstanceOf(CommentNotFoundException.class);
     }
 }
