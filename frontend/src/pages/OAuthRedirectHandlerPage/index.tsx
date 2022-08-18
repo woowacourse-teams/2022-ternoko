@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import TernokoLoading from '@/components/@common/TernokoLoading';
+
 import { useUserActions } from '@/context/UserProvider';
 
 import { UserStatusType } from '@/types/domain';
@@ -15,7 +17,7 @@ const OAuthRedirectHandlerPage = () => {
   const { search } = useLocation();
   const { initializeUser } = useUserActions();
 
-  const code = search.match(/(?<=code=).+/)?.[0];
+  const code = search.match(/(code=).+/)?.[0].replace('code=', '');
 
   (async () => {
     const response = await getUserStatusAPI(
@@ -37,7 +39,7 @@ const OAuthRedirectHandlerPage = () => {
     });
   })();
 
-  return <p>로딩중....</p>;
+  return <TernokoLoading />;
 };
 
 export default OAuthRedirectHandlerPage;

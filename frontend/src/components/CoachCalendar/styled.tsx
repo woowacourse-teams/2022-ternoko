@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { Day } from '@/components/@common/CalendarStyle/styled';
 
-import { DayType } from '@/types/domain';
+import { DayType, InterviewStatus } from '@/types/domain';
 
 export const Box = styled.div`
   width: 100%;
@@ -44,10 +44,34 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
     `}
 `;
 
-export const Schedule = styled.p`
+type ScheduleProps = {
+  status: InterviewStatus;
+};
+
+export const Schedule = styled.div<ScheduleProps>`
   padding: 0.5rem;
 
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.pink_50};
   font-weight: 600;
+  background-color: ${({ theme }) => theme.colors.pink_50};
+
+  ${({ theme, status }) =>
+    status === 'COMMENT' &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background-color: ${theme.colors.white_50};
+    `};
+`;
+
+export const CrewNickname = styled.p`
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding: 0 1rem;
+
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.pink_50};
 `;

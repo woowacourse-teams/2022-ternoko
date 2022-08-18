@@ -13,10 +13,16 @@ import Time from '@/components/Time/styled';
 import useTimes from '@/hooks/useTimes';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 import { useUserState } from '@/context/UserProvider';
 
-import { CalendarTime, CoachScheduleRequestCalendarTime, StringDictionary } from '@/types/domain';
+import {
+  CalendarTime,
+  CoachScheduleRequestCalendarTime,
+  CrewSelectTime,
+  StringDictionary,
+} from '@/types/domain';
 
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
 import { ERROR_MESSAGE, INITIAL_COACH_ID, PAGE, SUCCESS_MESSAGE } from '@/constants';
@@ -45,9 +51,10 @@ const CoachInterviewCreatePage = () => {
   const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
   const { resetSelectedDates, setDay } = useCalendarActions();
+  const { onLoading, offLoading } = useLoadingActions();
   const { isSelectedDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
-    selectMode: 'multiple',
+    selectMode: 'MULTIPLE',
   });
   const { showToast } = useToastActions();
 
@@ -143,12 +150,15 @@ const CoachInterviewCreatePage = () => {
     };
 
     try {
+      onLoading();
       await postCoachScheduleAPI(body);
+      offLoading();
       resetSelectedDates();
       resetTimes();
       showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_SCHEDULE);
       setIsApplied((prev) => !prev);
     } catch (error) {
+      offLoading();
       showToast('ERROR', ERROR_MESSAGE.CREATE_SCHEDULE);
     }
   };
@@ -161,7 +171,7 @@ const CoachInterviewCreatePage = () => {
       const response = await getCoachScheduleAPI(id, year, month + 1);
 
       const recentCalendarTimes = compactCalendarTimes(
-        response.data.calendarTimes.map((calendarTime: string) => {
+        response.data.calendarTimes.map(({ calendarTime }: CrewSelectTime) => {
           const { year, month } = separateFullDate(calendarTime);
 
           return { year, month, times: [calendarTime] };

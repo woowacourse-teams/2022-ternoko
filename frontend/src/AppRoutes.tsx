@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import AccessDenyPage from './pages/AccessDenyPage';
-
+import AccessDenyPage from '@/pages/AccessDenyPage';
 import CoachHomePage from '@/pages/CoachHomePage';
 import CoachInterviewCreatePage from '@/pages/CoachInterviewCreatePage';
 import HomePage from '@/pages/HomePage';
@@ -14,20 +14,25 @@ import LoginRegisterPage from '@/pages/LoginRegisterPage';
 import MyPage from '@/pages/MyPage';
 import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
 
+import TernokoLoading from '@/components/@common/TernokoLoading';
 import Toast from '@/components/@common/Toast';
 
 import Header from '@/components/Header';
 import PrivateRoute from '@/components/PrivateRoute';
 
 import CalendarProvider from '@/context/CalendarProvider';
+import { useLoadingState } from '@/context/LoadingProvider';
 import { useUserActions } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
 
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
+  const { show } = useLoadingState();
 
-  initializeUser(null);
+  useEffect(() => {
+    initializeUser(null);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -35,6 +40,7 @@ const AppRoutes = () => {
         <Route path={PAGE.LOGIN} element={<LoginPage />} />
         <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
         <Route path={PAGE.ACCESS_DENY} element={<AccessDenyPage />} />
+
         <Route path={PAGE.BASE} element={<Layout />}>
           <Route element={<PrivateRoute auth="ALL" />}>
             <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
@@ -42,27 +48,18 @@ const AppRoutes = () => {
           <Route element={<PrivateRoute auth="CREW" />}>
             <Route path={PAGE.CREW_HOME} element={<HomePage />} />
           </Route>
+
           <Route element={<PrivateRoute auth="CREW" />}>
             <Route
-              path={PAGE.RESERVATION_APPLY}
-              element={
-                <CalendarProvider selectMode="single">
-                  <InterviewApplyPage />
-                </CalendarProvider>
-              }
-            />
-          </Route>
-          <Route element={<PrivateRoute auth="CREW" />}>
-            <Route
-              path={`${PAGE.RESERVATION_COMPLETE}/:interviewId`}
+              path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
               element={<InterviewCompletePage />}
             />
           </Route>
           <Route element={<PrivateRoute auth="COACH" />}>
             <Route
-              path={PAGE.COACH_RESERVATION_CREATE}
+              path={PAGE.COACH_INTERVIEW_CREATE}
               element={
-                <CalendarProvider selectMode="multiple">
+                <CalendarProvider selectMode="MULTIPLE">
                   <CoachInterviewCreatePage />
                 </CalendarProvider>
               }
@@ -75,7 +72,20 @@ const AppRoutes = () => {
             <Route path={PAGE.MY_PAGE} element={<MyPage />} />
           </Route>
         </Route>
+
+        <Route element={<PrivateRoute auth="CREW" />}>
+          <Route
+            path={PAGE.INTERVIEW_APPLY}
+            element={
+              <CalendarProvider selectMode="SINGLE">
+                <InterviewApplyPage />
+              </CalendarProvider>
+            }
+          />
+        </Route>
       </Routes>
+      <Toast />
+      {show && <TernokoLoading />}
     </BrowserRouter>
   );
 };
@@ -87,7 +97,6 @@ const Layout = () => {
 
       <S.Body>
         <Outlet />
-        <Toast />
       </S.Body>
     </>
   );
@@ -95,26 +104,27 @@ const Layout = () => {
 
 const S = {
   Body: styled.div`
+    position: relative;
     min-height: calc(100% - 60px);
     padding: 3rem 30rem 0;
 
-    @media ${({ theme }) => theme.devices.laptopL} {
+    @media ${({ theme }) => theme.devices.laptopL()} {
       padding: 3rem 25rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.laptop} {
+    @media ${({ theme }) => theme.devices.laptop()} {
       padding: 3rem 5rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.tablet} {
+    @media ${({ theme }) => theme.devices.tablet()} {
       padding: 2rem 5rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.mobileL} {
+    @media ${({ theme }) => theme.devices.mobileL()} {
       padding: 2rem 2rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.mobileM} {
+    @media ${({ theme }) => theme.devices.mobileM()} {
       padding: 2rem 1rem 0;
     }
   `,

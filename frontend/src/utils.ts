@@ -23,3 +23,11 @@ export const getFullDateString = (
   day: number | string,
   time: string,
 ) => `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${time}`;
+
+export const isUnderToday = (fullDate: string) => {
+  const { year, month, day, time } = separateFullDate(fullDate);
+  const [hour, minute] = time.split(':');
+  const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute));
+
+  return new Date().getTime() >= date.getTime();
+};

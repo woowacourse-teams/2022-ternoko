@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react';
 import * as S from './styled';
 
 import Accordion from '@/components/@common/Accordion';
+import AskDeleteTimeModal from '@/components/@common/AskDeleteTimeModal';
 import Modal from '@/components/@common/Modal';
+import useModal from '@/components/@common/Modal/useModal';
 
+import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
 import { InterviewType } from '@/types/domain';
 import { MemberRole } from '@/types/domain';
 
-import { deleteCoachInterviewAPI, deleteCrewInterviewAPI, getInterviewAPI } from '@/api';
-import { SUCCESS_MESSAGE } from '@/constants';
+import { deleteCrewInterviewAPI, getInterviewAPI } from '@/api';
+import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/constants';
 import { getDateString, getTimeString } from '@/utils';
 
 type InterviewDetailModalProps = {
@@ -33,19 +36,29 @@ const InterviewDetailModal = ({
 }: InterviewDetailModalProps) => {
   const [interview, setInterview] = useState<InterviewType | null>();
 
+  const {
+    show: askShow,
+    display: askDisplay,
+    handleOpenModal: handleAskOpenModal,
+    handleCloseModal: handleAskCloseModal,
+  } = useModal();
+
   const { showToast } = useToastActions();
+  const { onLoading, offLoading } = useLoadingActions();
 
   const handleClickDeleteButton = async () => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      if (role === 'CREW') {
+    if (role === 'CREW' && confirm(CONFIRM_DELETE_MESSAGE)) {
+      try {
+        onLoading();
         await deleteCrewInterviewAPI(interviewId);
-        showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_RESERVATION);
-      } else {
-        await deleteCoachInterviewAPI(interviewId);
-        showToast('SUCCESS', SUCCESS_MESSAGE.COACH_DELETE_RESERVATION);
+        offLoading();
+        showToast('SUCCESS', SUCCESS_MESSAGE.CREW_DELETE_INTERVIEW);
+        afterDeleteInterview();
+      } catch (e) {
+        offLoading();
       }
-
-      afterDeleteInterview();
+    } else if (role === 'COACH') {
+      handleAskOpenModal();
     }
   };
 
@@ -105,7 +118,7 @@ const InterviewDetailModal = ({
           </S.IconBox>
           <p>
             {interview &&
-              `${getTimeString(interview.interviewEndTime)} ~ ${getTimeString(
+              `${getTimeString(interview.interviewStartTime)} ~ ${getTimeString(
                 interview.interviewEndTime,
               )}`}
           </p>
@@ -116,6 +129,13 @@ const InterviewDetailModal = ({
           <Accordion key={question} title={question} description={answer} />
         ))}
       </S.AccordionContainer>
+      <AskDeleteTimeModal
+        show={askShow}
+        display={askDisplay}
+        interviewId={interviewId}
+        handleCloseModal={handleAskCloseModal}
+        afterDeleteInterview={afterDeleteInterview}
+      />
     </Modal>
   );
 };

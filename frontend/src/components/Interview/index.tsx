@@ -7,11 +7,11 @@ import Button from '@/components/@common/Button/styled';
 import { InterviewType } from '@/types/domain';
 
 import { PAGE } from '@/constants';
-import { getDateString, getTimeString } from '@/utils';
+import { getDateString, getTimeString, isUnderToday } from '@/utils';
 
 type InterviewProps = InterviewType & {
   handleClickDetailButton: () => void;
-  handleClickCompleteButton: () => void;
+  handleClickCommentButton: () => void;
 };
 
 const Interview = ({
@@ -22,7 +22,7 @@ const Interview = ({
   interviewStartTime,
   interviewEndTime,
   handleClickDetailButton,
-  handleClickCompleteButton,
+  handleClickCommentButton,
 }: InterviewProps) => {
   return (
     <S.Box status={status}>
@@ -46,16 +46,20 @@ const Interview = ({
           <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
           상세보기
         </Button>
-        <Link to={`${PAGE.RESERVATION_APPLY}?interviewId=${id}`}>
-          <Button orange={true}>
-            <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
-            편집
+        {['EDITABLE', 'CANCELD'].includes(status) && (
+          <Link to={`${PAGE.INTERVIEW_APPLY}?interviewId=${id}`}>
+            <Button orange={true}>
+              <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
+              편집
+            </Button>
+          </Link>
+        )}
+        {isUnderToday(interviewEndTime) && (
+          <Button orange={true} onClick={handleClickCommentButton}>
+            <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
+            코멘트
           </Button>
-        </Link>
-        <Button orange={true} onClick={handleClickCompleteButton}>
-          <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
-          완료
-        </Button>
+        )}
       </S.ButtonBox>
     </S.Box>
   );
