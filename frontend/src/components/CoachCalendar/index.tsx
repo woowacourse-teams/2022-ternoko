@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import * as S from './styled';
 
+import Button from '@/components/@common/Button/styled';
 import * as C from '@/components/@common/CalendarStyle/styled';
 
 import {
@@ -11,24 +12,29 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { InterviewType } from '@/types/domain';
+import { InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
-import { separateFullDate } from '@/utils';
+import { isUnderToday, separateFullDate } from '@/utils';
 
 type ScheduleType = {
   id: number;
   crewNickname: string;
   times: string[];
+  status: InterviewStatus;
 };
 
 type SchedulesType = { [key: number]: ScheduleType[] };
 
 type CoachCalendarProps = {
   getHandleClickSchedule: (id: number) => () => void;
+  getHandleClickCommentButton: (status: InterviewStatus | null) => () => void;
 };
 
-const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
+const CoachCalendar = ({
+  getHandleClickSchedule,
+  getHandleClickCommentButton,
+}: CoachCalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
@@ -45,11 +51,11 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
       const schedules = response.data.calendar.reduce(
         (
           acc: SchedulesType,
-          { id, crewNickname, interviewStartTime, interviewEndTime }: InterviewType,
+          { id, crewNickname, interviewStartTime, interviewEndTime, status }: InterviewType,
         ) => {
           const { day, time: startTime } = separateFullDate(interviewStartTime);
           const { time: endTime } = separateFullDate(interviewEndTime);
-          const schedule = { id, crewNickname, times: [startTime, endTime] };
+          const schedule = { id, crewNickname, times: [startTime, endTime], status };
 
           acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], schedule] : [schedule];
 
@@ -88,11 +94,23 @@ const CoachCalendar = ({ getHandleClickSchedule }: CoachCalendarProps) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
               const interviews = schedules[day]
-                ? schedules[day].map(({ id, crewNickname, times }) => (
-                    <S.Schedule key={id} onClick={getHandleClickSchedule(id)}>
-                      {crewNickname} ({times[0]}~{times[1]})
-                    </S.Schedule>
-                  ))
+                ? schedules[day].map(({ id, crewNickname, times: [startTime, endTime], status }) =>
+                    isUnderToday(`${year}-${month}-${day} ${endTime}`) ? (
+                      <S.Schedule key={id} status="COMMENT">
+                        <S.CrewNickname onClick={getHandleClickSchedule(id)}>
+                          {crewNickname}
+                        </S.CrewNickname>
+                        <Button height="4rem" onClick={getHandleClickCommentButton(status)}>
+                          코멘트
+                        </Button>
+                      </S.Schedule>
+                    ) : (
+                      <S.Schedule key={id} status="EDITABLE" onClick={getHandleClickSchedule(id)}>
+                        {crewNickname}
+                        {startTime}~{endTime}
+                      </S.Schedule>
+                    ),
+                  )
                 : [];
 
               if (isToday(day)) {
