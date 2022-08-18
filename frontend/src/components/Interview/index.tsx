@@ -7,7 +7,7 @@ import Button from '@/components/@common/Button/styled';
 import { InterviewType } from '@/types/domain';
 
 import { PAGE } from '@/constants';
-import { getDateString, getTimeString } from '@/utils';
+import { getDateString, getTimeString, isUnderToday } from '@/utils';
 
 type InterviewProps = InterviewType & {
   handleClickDetailButton: () => void;
@@ -54,7 +54,7 @@ const Interview = ({
             </Button>
           </Link>
         )}
-        {['COMMENT', 'COACH_COMPLTED'].includes(status) && (
+        {isUnderToday(interviewEndTime) && (
           <Button orange={true} onClick={handleClickCompleteButton}>
             <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
             코멘트
