@@ -44,14 +44,15 @@ export const SUCCESS_MESSAGE = {
   CREATE_SCHEDULE: '면담 스케줄 생성이 성공했어용~',
   CREATE_COACH_INFO: '코치 정보가 정상적으로 입력됐어용~',
   CREATE_CREW_INFO: '코치 정보가 정상적으로 입력됐어용~',
-  UPDATED_COACH_INFO: '코치 정보가 정상적으로 정보가 수정됐어용~',
-  UPDATED_CREW_INFO: '크루 정보가 정상적으로 정보가 수정됐어용~',
+  UPDATE_COACH_INFO: '코치 정보가 정상적으로 정보가 수정됐어용~',
+  UPDATE_CREW_INFO: '크루 정보가 정상적으로 정보가 수정됐어용~',
   CREATE_INTERVIEW: '면담 신청이 성공적으로 완료됐어용~',
   UPDATE_INTERVIEW: '면담 신청이 성공적으로 수정됐어용~',
   CREW_DELETE_INTERVIEW: '면담이 삭제됐어용... ㅠㅠ',
   COACH_DELETE_INTERVIEW: '면담이 삭제됐어용... ㅠㅠ',
   COACH_DELETE_INTERVIEW_AND_TIME: '면담과 시간이 삭제됐어용... ㅠㅠ',
   CREATE_COMMENT: '코멘트가 정상적으로 입력됐어용~',
+  UPDATE_COMMENT: '코멘트가 정삭적으로 수정됐어용~',
   SELECT_COACH: (coachName: string) => `${coachName ?? '코치'} 골랐어용~`,
 };
 
