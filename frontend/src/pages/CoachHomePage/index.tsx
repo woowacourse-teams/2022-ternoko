@@ -35,8 +35,8 @@ const CoachHomePage = () => {
   const [clickedInterviewStatus, setClickedInterviewStatus] = useState<InterviewStatus>('EDITABLE');
   const calendarRerenderkeyRef = useRef(Date.now());
 
-  const getHandleClickSchedule = (id: number) => () => {
-    setClickedInterviewId(id);
+  const getHandleClickSchedule = (interviewId: number) => () => {
+    setClickedInterviewId(interviewId);
     handleOpenModalDetail();
   };
 
@@ -45,10 +45,13 @@ const CoachHomePage = () => {
     handleOpenModalDetail();
   };
 
-  const getHandleClickCommentButton = (status: InterviewStatus | null) => () => {
-    status && setClickedInterviewStatus(status);
-    handleOpenModalComment();
-  };
+  const getHandleClickCommentButton =
+    (interviewId: number, status: InterviewStatus = 'EDITABLE') =>
+    () => {
+      setClickedInterviewId(interviewId);
+      setClickedInterviewStatus(status);
+      handleOpenModalComment();
+    };
 
   return (
     <>
