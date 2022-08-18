@@ -44,9 +44,8 @@ public class FormItem {
         interview.getFormItems().add(this);
     }
 
-    public void update(FormItem formItem, Interview interview) {
+    public void update(FormItem formItem) {
         this.question = formItem.question;
         this.answer = formItem.answer;
-        this.interview = interview;
     }
 }
