@@ -11,11 +11,12 @@ import com.slack.api.model.block.SectionBlock;
 import com.slack.api.model.block.composition.MarkdownTextObject;
 import com.slack.api.model.block.composition.PlainTextObject;
 import com.slack.api.model.block.element.ImageElement;
-import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.dto.AlarmResponse;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,8 @@ public class SlackAlarm {
             Locale.KOREAN);
     private static final String TERNOKO_CREW_URL = "https://ternoko.site/";
     private static final String TERNOKO_COACH_URL = "https://ternoko.site/coach/home";
+    private static final int ORIGIN_RESPONSE = 0;
+    private static final int UPDATE_RESPONSE = 1;
 
     private final String botToken;
     private final MethodsClientImpl slackMethodClient;
@@ -35,35 +38,58 @@ public class SlackAlarm {
         this.botToken = botToken;
     }
 
-    public void sendMessage(final Interview interview, final SlackMessageType slackMessageType) throws Exception {
-        postCrewMessage(slackMessageType, interview);
-        postCoachMessage(slackMessageType, interview);
+    public void sendCreateMessage(final AlarmResponse alarmResponse) throws Exception {
+        postCrewMessage(SlackMessageType.CREW_CREATE, alarmResponse);
+        postCoachMessage(SlackMessageType.CREW_CREATE, alarmResponse);
+    }
+
+    public void sendUpdateMessage(final List<AlarmResponse> alarmResponses) throws Exception {
+        if (alarmResponses.stream()
+                .map(alarmResponse -> alarmResponse.getCoach().getId())
+                .collect(Collectors.toSet()).size() == 2) {
+            postCrewMessage(SlackMessageType.CREW_UPDATE, alarmResponses.get(UPDATE_RESPONSE));
+            postCoachMessage(SlackMessageType.CREW_DELETE, alarmResponses.get(ORIGIN_RESPONSE));
+            postCoachMessage(SlackMessageType.CREW_CREATE, alarmResponses.get(UPDATE_RESPONSE));
+            return;
+        }
+        postCrewMessage(SlackMessageType.CREW_UPDATE, alarmResponses.get(UPDATE_RESPONSE));
+        postCoachMessage(SlackMessageType.CREW_UPDATE, alarmResponses.get(UPDATE_RESPONSE));
+    }
+
+    public void sendDeleteMessage(final AlarmResponse alarmResponse) throws Exception {
+        postCrewMessage(SlackMessageType.CREW_DELETE, alarmResponse);
+        postCoachMessage(SlackMessageType.CREW_DELETE, alarmResponse);
+    }
+
+    public void sendCancelMessage(final AlarmResponse alarmResponse) throws Exception {
+        postCrewMessage(SlackMessageType.COACH_CANCEL, alarmResponse);
+        postCoachMessage(SlackMessageType.COACH_CANCEL, alarmResponse);
     }
 
     private void postCrewMessage(final SlackMessageType slackMessageType,
-                                 final Interview interview) throws IOException, SlackApiException {
+                                 final AlarmResponse alarmResponse) throws IOException, SlackApiException {
         final ChatPostMessageRequest crewRequest = ChatPostMessageRequest.builder()
-                .text(String.format(slackMessageType.getCrewPreviewMessage(), interview.getCoach().getNickname()))
-                .attachments(generateAttachment(slackMessageType, interview, TERNOKO_CREW_URL))
-                .channel(interview.getCrew().getUserId())
+                .text(String.format(slackMessageType.getCrewPreviewMessage(), alarmResponse.getCoach().getNickname()))
+                .attachments(generateAttachment(slackMessageType, alarmResponse, TERNOKO_CREW_URL))
+                .channel(alarmResponse.getCrew().getUserId())
                 .token(botToken)
                 .build();
         slackMethodClient.chatPostMessage(crewRequest);
     }
 
     private void postCoachMessage(final SlackMessageType slackMessageType,
-                                  final Interview interview) throws IOException, SlackApiException {
+                                  final AlarmResponse alarmResponse) throws IOException, SlackApiException {
         final ChatPostMessageRequest coachRequest = ChatPostMessageRequest.builder()
-                .text(String.format(slackMessageType.getCoachPreviewMessage(), interview.getCrew().getNickname()))
-                .attachments(generateAttachment(slackMessageType, interview, TERNOKO_COACH_URL))
-                .channel(interview.getCoach().getUserId())
+                .text(String.format(slackMessageType.getCoachPreviewMessage(), alarmResponse.getCrew().getNickname()))
+                .attachments(generateAttachment(slackMessageType, alarmResponse, TERNOKO_COACH_URL))
+                .channel(alarmResponse.getCoach().getUserId())
                 .token(botToken)
                 .build();
         slackMethodClient.chatPostMessage(coachRequest);
     }
 
     private List<Attachment> generateAttachment(final SlackMessageType slackMessageType,
-                                                final Interview interview,
+                                                final AlarmResponse alarmResponse,
                                                 final String homeUrl) {
         return List.of(Attachment.builder()
                 .color(slackMessageType.getColor())
@@ -75,12 +101,12 @@ public class SlackAlarm {
                                         List.of(MarkdownTextObject.builder()
                                                         .text(":clock3: *면담일시*"
                                                                 + System.lineSeparator()
-                                                                + DATE_FORMAT.format(interview.getInterviewStartTime()))
+                                                                + DATE_FORMAT.format(alarmResponse.getInterviewStartTime()))
                                                         .build(),
                                                 MarkdownTextObject.builder()
                                                         .text(":smiley: *크루*"
                                                                 + System.lineSeparator()
-                                                                + interview.getCrew().getNickname())
+                                                                + alarmResponse.getCrew().getNickname())
                                                         .build(),
                                                 MarkdownTextObject.builder()
                                                         .text(" ")
@@ -88,18 +114,18 @@ public class SlackAlarm {
                                                 MarkdownTextObject.builder()
                                                         .text(":smiley: *코치*"
                                                                 + System.lineSeparator()
-                                                                + interview.getCoach().getNickname())
+                                                                + alarmResponse.getCoach().getNickname())
                                                         .build())
                                 ).build(),
                                 ContextBlock.builder().elements(List.of(
                                                 MarkdownTextObject.builder()
                                                         .text("<" + homeUrl + "|터놓고로 이동>").build(),
                                                 ImageElement.builder()
-                                                        .imageUrl(interview.getCoach().getImageUrl())
+                                                        .imageUrl(alarmResponse.getCoach().getImageUrl())
                                                         .altText("코치 이미지")
                                                         .build(),
                                                 ImageElement.builder()
-                                                        .imageUrl(interview.getCrew().getImageUrl())
+                                                        .imageUrl(alarmResponse.getCrew().getImageUrl())
                                                         .altText("크루 이미지")
                                                         .build()))
                                         .build()

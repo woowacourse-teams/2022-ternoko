@@ -35,11 +35,9 @@ import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryReq
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.dto.CalendarRequest;
-import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
-import com.woowacourse.ternoko.interview.domain.formitem.Answer;
-import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
-import com.woowacourse.ternoko.interview.domain.formitem.Question;
+import com.woowacourse.ternoko.interview.dto.AlarmResponse;
+import com.woowacourse.ternoko.interview.dto.FormItemDto;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
@@ -80,13 +78,14 @@ class InterviewServiceTest {
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
         // when
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // then
-        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interview.getId());
+        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(
+                alarmResponse.getInterviewId());
         assertAll(
-                () -> assertThat(interview.getId()).isNotNull(),
+                () -> assertThat(interviewResponse.getId()).isNotNull(),
                 () -> assertThat(interviewResponse.getCoachNickname())
                         .isEqualTo(COACH3.getNickname()),
                 () -> assertThat(interviewResponse.getInterviewStartTime())
@@ -116,12 +115,13 @@ class InterviewServiceTest {
         ));
 
         // when
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(),
                         LocalDateTime.of(nextDay, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // then
-        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interview.getId());
+        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(
+                alarmResponse.getInterviewId());
         assertThat(interviewResponse.getId()).isNotNull();
     }
 
@@ -240,11 +240,11 @@ class InterviewServiceTest {
         interviewService.create(CREW3.getId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
-        final Interview interview = interviewService.create(CREW4.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW4.getId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_REQUESTS));
 
-        interviewService.cancelAndDeleteAvailableTime(COACH4.getId(), interview.getId(), false);
+        interviewService.cancelAndDeleteAvailableTime(COACH4.getId(), alarmResponse.getInterviewId(), false);
 
         // when
         final ScheduleResponse scheduleResponses = interviewService.findAllByCoach(COACH4.getId(),
@@ -290,32 +290,32 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        final Interview updateInterview = interviewService.update(CREW1.getId(), interview.getId(),
+        List<AlarmResponse> alarmResponses = interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
                 new InterviewRequest(COACH3.getId(),
                         LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS));
 
+        InterviewResponse updatedInterviewResponse = interviewService.findInterviewResponseById(
+                alarmResponses.get(1).getInterviewId());
         // then
         assertAll(
-                () -> assertThat(updateInterview.getId()).isNotNull(),
-                () -> assertThat(updateInterview.getCoach().getNickname())
+                () -> assertThat(updatedInterviewResponse.getId()).isNotNull(),
+                () -> assertThat(updatedInterviewResponse.getCoachNickname())
                         .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(updateInterview.getInterviewStartTime())
+                () -> assertThat(updatedInterviewResponse.getInterviewStartTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME)),
-                () -> assertThat(updateInterview.getInterviewEndTime())
+                () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
-                () -> assertThat(updateInterview.getFormItems().stream()
-                        .map(FormItem::getQuestion)
-                        .map(Question::getValue)
+                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
+                        .map(FormItemDto::getQuestion)
                         .collect(Collectors.toList()))
                         .contains("수정질문1", "수정질문2", "수정질문3"),
-                () -> assertThat(updateInterview.getFormItems().stream()
-                        .map(FormItem::getAnswer)
-                        .map(Answer::getValue)
+                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
+                        .map(FormItemDto::getAnswer)
                         .collect(Collectors.toList()))
                         .contains("수정답변1", "수정답변2", "수정답변3")
         );
@@ -344,11 +344,11 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW2.getId(), interview.getId(),
+        assertThatThrownBy(() -> interviewService.update(CREW2.getId(), alarmResponse.getInterviewId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidInterviewCrewIdException.class)
@@ -361,11 +361,11 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), interview.getId(),
+        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
                 new InterviewRequest(5L, LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(CoachNotFoundException.class)
@@ -378,11 +378,11 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), interview.getId(),
+        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
@@ -395,12 +395,12 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when & then
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), interview.getId(),
+        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now(), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
@@ -413,12 +413,12 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when & then
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), PAST_REQUEST);
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), interview.getId(),
+        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
@@ -431,14 +431,14 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview updateInterview = interviewService.delete(CREW1.getId(), interview.getId());
+        AlarmResponse deleteResponse = interviewService.delete(CREW1.getId(), alarmResponse.getInterviewId());
 
         // then
-        assertThatThrownBy(() -> interviewService.findInterviewResponseById(updateInterview.getId()))
+        assertThatThrownBy(() -> interviewService.findInterviewResponseById(deleteResponse.getInterviewId()))
                 .isInstanceOf(InterviewNotFoundException.class);
     }
 
@@ -448,15 +448,15 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interview.getId(), false);
-        Interview updateInterview = interviewService.delete(CREW1.getId(), interview.getId());
+        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), alarmResponse.getInterviewId(), false);
+        AlarmResponse deleteResponse = interviewService.delete(CREW1.getId(), alarmResponse.getInterviewId());
 
         // then
-        assertThatThrownBy(() -> interviewService.findInterviewResponseById(updateInterview.getId()))
+        assertThatThrownBy(() -> interviewService.findInterviewResponseById(deleteResponse.getInterviewId()))
                 .isInstanceOf(InterviewNotFoundException.class);
     }
 
@@ -466,19 +466,21 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview canceledInterview = interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interview.getId(),
+        final AlarmResponse cancelAlarmResponse = interviewService.cancelAndDeleteAvailableTime(COACH3.getId(),
+                alarmResponse.getInterviewId(),
                 true);
-
+        final InterviewResponse canceledResponse = interviewService.findInterviewResponseById(
+                cancelAlarmResponse.getInterviewId());
         final boolean expected = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(COACH3.getId(),
-                canceledInterview.getInterviewEndTime()).isEmpty();
+                canceledResponse.getInterviewEndTime()).isEmpty();
         // then
 
         assertAll(
-                () -> assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED),
+                () -> assertThat(canceledResponse.getStatus()).isEqualTo(InterviewStatusType.CANCELED),
                 () -> assertTrue(expected)
         );
     }
@@ -489,22 +491,24 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH2.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH2.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
                         FORM_ITEM_REQUESTS));
         // when
-        Interview canceledInterview = interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), interview.getId(),
+        AlarmResponse canceledResponse = interviewService.cancelAndDeleteAvailableTime(COACH2.getId(),
+                alarmResponse.getInterviewId(),
                 true);
 
-        final boolean expected;
+        final InterviewResponse canceledInterview = interviewService.findInterviewResponseById(
+                canceledResponse.getInterviewId());
 
         final Optional<AvailableDateTime> dateTime = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
                 COACH2.getId(),
-                interview.getInterviewEndTime());
+                canceledInterview.getInterviewEndTime());
         // then
 
         assertAll(
-                () -> assertThat(canceledInterview.getInterviewStatusType()).isEqualTo(InterviewStatusType.CANCELED),
+                () -> assertThat(canceledInterview.getStatus()).isEqualTo(InterviewStatusType.CANCELED),
                 () -> assertFalse(dateTime.isPresent())
         );
     }
@@ -515,12 +519,13 @@ class InterviewServiceTest {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 
-        final Interview interview = interviewService.create(CREW1.getId(),
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when  && then
         assertThatThrownBy(
-                () -> interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), interview.getId(), true))
+                () -> interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), alarmResponse.getInterviewId(),
+                        true))
                 .isInstanceOf(InvalidInterviewCoachIdException.class)
                 .hasMessage(INVALID_INTERVIEW_COACH_ID.getMessage());
     }

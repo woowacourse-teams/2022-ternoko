@@ -13,7 +13,6 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.comment.repository.CommentRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.domain.member.Coach;
@@ -23,6 +22,7 @@ import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.dto.AlarmResponse;
 import com.woowacourse.ternoko.interview.dto.FormItemRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
@@ -33,9 +33,9 @@ import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdExcepti
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
-import com.woowacourse.ternoko.repository.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,13 +56,11 @@ public class InterviewService {
 
     private final CoachRepository coachRepository;
     private final CrewRepository crewRepository;
-    private final MemberRepository memberRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
     private final FormItemRepository formItemRepository;
-    private final CommentRepository commentRepository;
 
-    public Interview create(final Long crewId, final InterviewRequest interviewRequest) {
+    public AlarmResponse create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTime(crewId, interviewRequest);
         final Interview interview = convertInterview(crewId, interviewRequest);
         final Interview savedInterview = interviewRepository.save(interview);
@@ -76,7 +74,7 @@ public class InterviewService {
         final AvailableDateTime availableDateTime = findAvailableTime(interviewRequest);
         availableDateTime.changeStatus(USED);
 
-        return interviewRepository.save(interview);
+        return AlarmResponse.from(interviewRepository.save(interview));
     }
 
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
@@ -151,21 +149,24 @@ public class InterviewService {
         return ScheduleResponse.from(excludeCanceledInterviews);
     }
 
-    public Interview update(final Long crewId,
-                            final Long interviewId,
-                            final InterviewRequest interviewRequest) {
+    public List<AlarmResponse> update(final Long crewId,
+                                      final Long interviewId,
+                                      final InterviewRequest interviewRequest) {
         final Interview originalInterview = findInterviewById(interviewId);
+
+        List<AlarmResponse> alarmResponses = new ArrayList<>();
+        alarmResponses.add(AlarmResponse.from(originalInterview));
 
         validateChangeAuthorization(originalInterview, crewId);
 
         Interview updateInterviewRequest = convertInterview(crewId, interviewRequest);
+
         List<FormItem> updateInterviewFormItemsRequest = convertFormItem(interviewRequest.getInterviewQuestions());
 
         updateFromItem(originalInterview, updateInterviewRequest, updateInterviewFormItemsRequest);
         changeAvailableDateTimeStatus(interviewRequest, originalInterview);
-
-        return interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+        alarmResponses.add(AlarmResponse.from(originalInterview));
+        return alarmResponses;
     }
 
     private void changeAvailableDateTimeStatus(InterviewRequest interviewRequest, Interview originalInterview) {
@@ -197,26 +198,26 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
-    public Interview delete(final Long crewId, final Long interviewId) {
+    public AlarmResponse delete(final Long crewId, final Long interviewId) {
         final Interview interview = findInterviewById(interviewId);
         validateChangeAuthorization(interview, crewId);
         formItemRepository.deleteAll(interview.getFormItems());
         interviewRepository.delete(interview);
         openAvailableTime(interview);
-        return interview;
+        return AlarmResponse.from(interview);
     }
 
-    public Interview cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
-                                                  final boolean onlyInterview) {
+    public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
+                                                      final boolean onlyInterview) {
         final Interview canceledInterview = cancel(coachId, interviewId);
         final AvailableDateTime unAvailableTime = findAvailableTime(coachId,
                 canceledInterview.getInterviewStartTime());
         if (!onlyInterview) {
             availableDateTimeRepository.delete(unAvailableTime);
-            return canceledInterview;
+            return AlarmResponse.from(canceledInterview);
         }
         unAvailableTime.changeStatus(OPEN);
-        return canceledInterview;
+        return AlarmResponse.from(canceledInterview);
     }
 
     private Interview cancel(final Long coachId, final Long interviewId) {
