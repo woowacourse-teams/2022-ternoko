@@ -96,7 +96,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 new AvailableDateTimeSummaryRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME), OPEN),
                 new AvailableDateTimeSummaryRequest(LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME), OPEN),
                 new AvailableDateTimeSummaryRequest(LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME), OPEN));
-        final AvailableDateTimeRequest afterTwoDays = new AvailableDateTimeRequest(NOW.getYear(), NOW.getMonthValue(), inputTimes);
+        final AvailableDateTimeRequest afterTwoDays = new AvailableDateTimeRequest(NOW.getYear(), NOW.getMonthValue(),
+                inputTimes);
         put("/api/calendar/times", generateHeader(COACH3), new CalendarRequest(List.of(afterTwoDays)));
     }
 }
