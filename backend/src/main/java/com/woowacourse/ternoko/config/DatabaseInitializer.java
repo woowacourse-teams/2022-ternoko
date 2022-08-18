@@ -47,7 +47,7 @@ public class DatabaseInitializer {
         public void dbInit() {
             ArrayList<Coach> coaches = new ArrayList<>(12);
             Coach coach1 = new Coach(1L, "이름", "공원", "공원" + TEST_EMAIL,
-                    "U03R55S2A9L",
+                    "U1234567890",
                     "https://user-images.githubusercontent.com/26570275/177680173-9bb25eac-5922-407b-889b-bb49ac392c2a.png",
                     "안녕하세요.");
             coaches.add(coach1);
