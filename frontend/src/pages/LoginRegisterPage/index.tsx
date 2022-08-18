@@ -66,6 +66,7 @@ const LoginRegisterPage = () => {
         const { exists }: DuplicatedNicknameStatusType = response.data;
 
         if (exists) {
+          offLoading();
           showToast('ERROR', ERROR_MESSAGE.DUPLICATED_NICKNAME);
 
           return;
