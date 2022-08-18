@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
-import ErrorMessage from '@/components/@common/ErrorMessage/styled';
 import Modal from '@/components/@common/Modal';
 
 import TextAreaField from '@/components/TextAreaField';
