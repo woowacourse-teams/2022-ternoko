@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   CoachScheduleRequestBodyType,
+  CommentRequestBodyType,
   InterviewRequestBodyType,
   MemberExtendedRole,
   UserRequestBodyType,
@@ -31,8 +32,8 @@ export const putInterviewAPI = (interviewId: number, body: InterviewRequestBodyT
 export const deleteCrewInterviewAPI = (interviewId: number) =>
   axios.delete(`${process.env.SERVER_URL}/api/interviews/${interviewId}`);
 
-export const deleteCoachInterviewAPI = (interviewId: number) =>
-  axios.patch(`${process.env.SERVER_URL}/api/interviews/${interviewId}`);
+export const deleteCoachInterviewAPI = (interviewId: number, flag: boolean) =>
+  axios.patch(`${process.env.SERVER_URL}/api/interviews/${interviewId}?onlyInterview=${flag}`);
 
 export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
   axios.put(`${process.env.SERVER_URL}/api/calendar/times`, body);
@@ -40,6 +41,16 @@ export const postCoachScheduleAPI = (body: CoachScheduleRequestBodyType) =>
 export const getCoachScheduleAPI = (coachId: number, year: number, month: number) =>
   axios.get(
     `${process.env.SERVER_URL}/api/calendar/times?coachId=${coachId}&year=${year}&month=${month}`,
+  );
+
+export const getCoachScheduleAndUsedScheduleAPI = (
+  interviewId: number,
+  coachId: number,
+  year: number,
+  month: number,
+) =>
+  axios.get(
+    `${process.env.SERVER_URL}/api/interviews/${interviewId}/calendar/times?coachId=${coachId}&year=${year}&month=${month}`,
   );
 
 export const getCoachInterviewAPI = (year: number, month: number) =>
@@ -62,4 +73,16 @@ export const getDuplicatedNicknameStatusAPI = (nickname: string) =>
   axios.get(`${process.env.SERVER_URL}/api/login/check?nickname=${nickname}`);
 
 export const validateAccessTokenAPI = (type: MemberExtendedRole) =>
-  axios.get(`${process.env.SERVER_URL}/api/login/type=${type}`);
+  axios.get(`${process.env.SERVER_URL}/api/login/valid?type=${type}`);
+
+export const postCommentAPI = (interviewId: number, body: CommentRequestBodyType) =>
+  axios.post(`${process.env.SERVER_URL}/api/interviews/${interviewId}/comments`, body);
+
+export const getCommentAPI = (interviewId: number) =>
+  axios.get(`${process.env.SERVER_URL}/api/interviews/${interviewId}/comments`);
+
+export const putCommentAPI = (
+  interviewId: number,
+  commentId: number,
+  body: CommentRequestBodyType,
+) => axios.put(`${process.env.SERVER_URL}/api/interview/${interviewId}/comment/${commentId}`, body);

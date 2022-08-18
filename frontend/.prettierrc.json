@@ -15,6 +15,7 @@
     "^(@/pages)(.*|$)",
     "^(@/components/@common)(.*|$)",
     "^(@/components)(.*|$)",
+    "^(@/hoc)(.*|$)",
     "^(@/hooks)(.*|$)",
     "^(@/context)(.*|$)",
     "^(@/types)(.*|$)",

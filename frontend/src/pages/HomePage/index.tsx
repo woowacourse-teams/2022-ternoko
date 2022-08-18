@@ -11,7 +11,7 @@ import useModal from '@/components/@common/Modal/useModal';
 
 import Interview from '@/components/Interview';
 
-import { InterviewType } from '@/types/domain';
+import { InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getInterviewsAPI } from '@/api';
 import { PAGE } from '@/constants';
@@ -38,15 +38,28 @@ const HomePage = () => {
   const [tabMenuStatus, setTabMenuStatus] = useState<TabMenuStatus>('doing');
 
   const [clickedInterviewId, setClickedInterviewId] = useState(-1);
+  const [clickedInterviewStatus, setClickedInterviewStatus] = useState<InterviewStatus>('EDITABLE');
+
+  const InterviewPridicate = ({ status }: InterviewType) =>
+    tabMenuStatus === 'done'
+      ? ['CREW_COMPLETED', 'COMPLETED'].includes(status)
+      : !['CREW_COMPLETED', 'COMPLETED'].includes(status);
 
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
   };
 
-  const getHandleClickDetailButton = (id: number) => () => {
-    setClickedInterviewId(id);
+  const getHandleClickDetailButton = (interviewId: number) => () => {
+    setClickedInterviewId(interviewId);
     handleOpenModalDetail();
   };
+
+  const getHandleClickCommentButton =
+    (interviewId: number, interviewStatus: InterviewStatus) => () => {
+      setClickedInterviewId(interviewId);
+      setClickedInterviewStatus(interviewStatus);
+      handleOpenModalComment();
+    };
 
   const updateInterviews = async () => {
     const response = await getInterviewsAPI();
@@ -55,6 +68,7 @@ const HomePage = () => {
 
   const afterDeleteInterview = () => {
     handleCloseModalComment();
+    handleCloseModalDetail();
     updateInterviews();
   };
 
@@ -66,7 +80,7 @@ const HomePage = () => {
     <>
       <S.TitleBox>
         <h2>나의 면담</h2>
-        <Link to={PAGE.RESERVATION_APPLY}>
+        <Link to={PAGE.INTERVIEW_APPLY}>
           <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>
@@ -81,11 +95,11 @@ const HomePage = () => {
       </S.TabMenuBox>
 
       <GridContainer minSize="25rem" pt="4rem">
-        {interviews.map((interview) => (
+        {interviews.filter(InterviewPridicate).map((interview) => (
           <Interview
             key={interview.id}
             handleClickDetailButton={getHandleClickDetailButton(interview.id)}
-            handleClickCompleteButton={handleOpenModalComment}
+            handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
             {...interview}
           />
         ))}
@@ -101,6 +115,9 @@ const HomePage = () => {
       <CommentModal
         show={showComment}
         display={displayComment}
+        memberRole={memberRole}
+        interviewId={clickedInterviewId}
+        interviewStatus={clickedInterviewStatus}
         handleCloseModal={handleCloseModalComment}
       />
     </>

@@ -1,18 +1,5 @@
 import styled from 'styled-components';
 
-export const TextArea = styled.textarea`
-  width: 100%;
-  height: 70px;
-  border-radius: 10px;
-  padding: 1rem;
-
-  font-size: 1.4rem;
-  resize: none;
-  outline: none;
-
-  border: 1px solid ${({ theme }) => theme.colors.gray_150};
-`;
-
 export const Icon = styled.img`
   position: absolute;
   top: 1rem;
@@ -33,8 +20,11 @@ export const ExampleBox = styled.div`
 `;
 
 export const ButtonBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  justify-content: center;
   margin-top: 1.5rem;
+`;
+
+export const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 `;

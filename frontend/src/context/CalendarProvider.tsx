@@ -128,7 +128,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
         return;
       }
 
-      selectMode === 'single'
+      selectMode === 'SINGLE'
         ? setSelectedDates([{ year, month: month + 1, day }])
         : setSelectedDates((prev) => [...prev, { year, month: month + 1, day }]);
     },

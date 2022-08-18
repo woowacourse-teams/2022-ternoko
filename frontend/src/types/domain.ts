@@ -25,7 +25,14 @@ export interface UserRequestBodyType {
   introduce?: string;
 }
 
-export type InterviewStatus = 'EDITABLE' | 'FIXED' | 'FEEDBACK' | 'COMPLETED' | 'CANCELED';
+export type InterviewStatus =
+  | 'EDITABLE'
+  | 'FIXED'
+  | 'COMMENT'
+  | 'COMPLETED'
+  | 'CREW_COMPLETED'
+  | 'COACH_COMPLETED'
+  | 'CANCELED';
 
 export interface InterviewType {
   id: number;
@@ -47,15 +54,15 @@ export interface CalendarTime {
 
 export type TimeStatus = 'OPEN' | 'USED';
 
-export type CrewSelectTime = {
+export interface CrewSelectTime {
   calendarTime: string;
   status: TimeStatus;
-};
+}
 
-type CoachAvailableTime = {
+interface CoachAvailableTime {
   time: string;
   availableDateTimeStatus: TimeStatus;
-};
+}
 
 export interface CoachScheduleRequestCalendarTime {
   year: number;
@@ -65,6 +72,16 @@ export interface CoachScheduleRequestCalendarTime {
 
 export interface CoachScheduleRequestBodyType {
   calendarTimes: CoachScheduleRequestCalendarTime[];
+}
+
+export interface CommentRequestBodyType {
+  comment: string;
+}
+
+export interface CommentType {
+  role: MemberRole;
+  commentId: number;
+  comment: string;
 }
 
 export type MemberRole = 'CREW' | 'COACH';
@@ -85,6 +102,6 @@ export type StringDictionary = {
   [key: string]: string[];
 };
 
-export type SelectMode = 'single' | 'multiple';
+export type SelectMode = 'SINGLE' | 'MULTIPLE';
 
 export type DayType = 'default' | 'disable' | 'active';

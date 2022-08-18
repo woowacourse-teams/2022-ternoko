@@ -19,7 +19,7 @@ const useTimes = ({ selectMode }: useTimesProps) => {
       return;
     }
 
-    selectMode === 'single'
+    selectMode === 'SINGLE'
       ? setSelectedTimes([time])
       : setSelectedTimes((prev) => [...prev, time]);
   };
