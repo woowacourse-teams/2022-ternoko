@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import theme from '@/styles/theme';
+
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -29,4 +31,4 @@ export const additionalDimmerStyle = `
   background-color: unset;
 `;
 
-export const additionalFrameStyle = 'width: 45rem;';
+export const additionalFrameStyle = `width: 45rem; background-color: ${theme.colors.white_50}; box-shadow: ${theme.shadows.basic}`;
