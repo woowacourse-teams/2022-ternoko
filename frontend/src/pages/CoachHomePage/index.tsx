@@ -45,6 +45,11 @@ const CoachHomePage = () => {
     handleOpenModalDetail();
   };
 
+  const afterPostAndPutComment = () => {
+    calendarRerenderkeyRef.current = Date.now();
+    handleCloseModalComment();
+  };
+
   const getHandleClickCommentButton =
     (interviewId: number, status: InterviewStatus = 'EDITABLE') =>
     () => {
@@ -82,6 +87,7 @@ const CoachHomePage = () => {
         memberRole={memberRole}
         interviewId={clickedInterviewId}
         interviewStatus={clickedInterviewStatus}
+        afterPostAndPutComment={afterPostAndPutComment}
         handleCloseModal={handleCloseModalComment}
       />
     </>

@@ -72,6 +72,11 @@ const HomePage = () => {
     updateInterviews();
   };
 
+  const afterPostAndPutComment = () => {
+    handleCloseModalComment();
+    updateInterviews();
+  };
+
   useEffect(() => {
     updateInterviews();
   }, []);
@@ -118,6 +123,7 @@ const HomePage = () => {
         memberRole={memberRole}
         interviewId={clickedInterviewId}
         interviewStatus={clickedInterviewStatus}
+        afterPostAndPutComment={afterPostAndPutComment}
         handleCloseModal={handleCloseModalComment}
       />
     </>

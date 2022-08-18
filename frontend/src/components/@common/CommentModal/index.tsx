@@ -23,6 +23,7 @@ type CommentModalProps = {
   memberRole: MemberRole;
   interviewId: number;
   interviewStatus: InterviewStatus;
+  afterPostAndPutComment: () => void;
   handleCloseModal: () => void;
 };
 
@@ -32,6 +33,7 @@ const CommentModal = ({
   memberRole,
   interviewId,
   interviewStatus,
+  afterPostAndPutComment,
   handleCloseModal,
 }: CommentModalProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -67,11 +69,13 @@ const CommentModal = ({
         onLoading();
         await postCommentAPI(interviewId, { comment });
         offLoading();
+        afterPostAndPutComment();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COMMENT);
       } else {
         onLoading();
         await putCommentAPI(interviewId, commentId, { comment });
         offLoading();
+        afterPostAndPutComment();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_COMMENT);
       }
     } catch (error) {
