@@ -26,7 +26,6 @@ const MyPage = () => {
   const { onLoading, offLoading } = useLoadingActions();
 
   const { initializeUser } = useUserActions();
-  const { onLoading, offLoading } = useLoadingActions();
 
   const [imageUrl, setImageUrl] = useState('');
   const [nickname, setNickname] = useState('');
