@@ -81,5 +81,8 @@ export const postCommentAPI = (interviewId: number, body: CommentRequestBodyType
 export const getCommentAPI = (interviewId: number) =>
   axios.get(`${process.env.SERVER_URL}/api/interviews/${interviewId}/comments`);
 
-export const putCommentAPI = (commentId: number) =>
-  axios.put(`${process.env.SERVER_URL}/api/interview/{interviewId}/comment/${commentId}`);
+export const putCommentAPI = (
+  interviewId: number,
+  commentId: number,
+  body: CommentRequestBodyType,
+) => axios.put(`${process.env.SERVER_URL}/api/interview/${interviewId}/comment/${commentId}`, body);
