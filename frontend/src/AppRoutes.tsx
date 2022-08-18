@@ -39,8 +39,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path={PAGE.LOGIN} element={<LoginPage />} />
         <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
-        <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
         <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
+        <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
 
         <Route path={PAGE.BASE} element={<Layout />}>
           <Route element={<PrivateRoute auth="ALL" />}>

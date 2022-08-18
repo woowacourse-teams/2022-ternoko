@@ -29,7 +29,7 @@ export type InterviewStatus =
   | 'EDITABLE'
   | 'FIXED'
   | 'COMMENT'
-  | 'COMPLETED'
+  | 'COMPLETE'
   | 'CREW_COMPLETED'
   | 'COACH_COMPLETED'
   | 'CANCELED';

@@ -45,9 +45,9 @@ const CommentModal = ({
   const { onLoading, offLoading } = useLoadingActions();
 
   const isCoachCompleted =
-    memberRole === 'COACH' && ['COACH_COMPLETED', 'COMPLETED'].includes(interviewStatus);
+    memberRole === 'COACH' && ['COACH_COMPLETED', 'COMPLETE'].includes(interviewStatus);
   const isCrewCompleted =
-    memberRole === 'CREW' && ['CREW_COMPLETED', 'COMPLETED'].includes(interviewStatus);
+    memberRole === 'CREW' && ['CREW_COMPLETED', 'COMPLETE'].includes(interviewStatus);
 
   const handleChangeCoachTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCoachComment(e.target.value);
