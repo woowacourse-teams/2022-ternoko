@@ -28,7 +28,7 @@ export interface UserRequestBodyType {
 export type InterviewStatus =
   | 'EDITABLE'
   | 'FIXED'
-  | 'FEEDBACK'
+  | 'COMMENT'
   | 'COMPLETED'
   | 'CREW_COMPLETED'
   | 'COACH_COMPLETED'

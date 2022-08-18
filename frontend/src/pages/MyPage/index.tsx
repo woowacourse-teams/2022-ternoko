@@ -69,11 +69,11 @@ const MyPage = () => {
       if (memberRole === 'CREW') {
         await patchCrewInfoAPI({ nickname, imageUrl });
         offLoading();
-        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_CREW_INFO);
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_CREW_INFO);
       } else {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
         offLoading();
-        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATED_COACH_INFO);
+        showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_COACH_INFO);
       }
     } catch (e) {
       offLoading();

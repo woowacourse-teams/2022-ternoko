@@ -273,7 +273,7 @@ const InterviewApplyPage = () => {
 
               <Button
                 width="100%"
-                height="40px"
+                height="4rem"
                 inActive={coachId === INITIAL_COACH_ID}
                 onClick={() => handleClickStepNextButton(0)}
               >
@@ -311,7 +311,7 @@ const InterviewApplyPage = () => {
 
               <Button
                 width="100%"
-                height="40px"
+                height="4rem"
                 inActive={!selectedTimes.length}
                 onClick={() => handleClickStepNextButton(1)}
               >
@@ -361,7 +361,7 @@ const InterviewApplyPage = () => {
                 <Button
                   type="submit"
                   width="100%"
-                  height="40px"
+                  height="4rem"
                   inActive={
                     !isValidApplyFormLength(answer1) ||
                     !isValidApplyFormLength(answer2) ||
