@@ -264,9 +264,9 @@ const InterviewApplyPage = () => {
                 {coaches.map((coach) => (
                   <CoachProfile
                     key={coach.id}
-                    {...coach}
                     currentCoachId={coachId}
                     getHandleClickProfile={getHandleClickProfile}
+                    {...coach}
                   />
                 ))}
               </GridContainer>
