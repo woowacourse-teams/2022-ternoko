@@ -59,7 +59,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ExceptionResponse> runtimeExceptionHandler(final RuntimeException e,
-                                                                       final HttpServletRequest request) {
+                                                                     final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.internalServerError().body(new ExceptionResponse(
@@ -69,7 +69,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     private void printFailedLog(final HttpServletRequest request,
-                                final Throwable e,
+                                final Exception e,
                                 final ContentCachingRequestWrapper cachingRequest) {
         try {
             log.info(FAILED_LOGGING_FORM,
