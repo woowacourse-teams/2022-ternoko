@@ -1,7 +1,13 @@
 package com.woowacourse.ternoko.interview.application;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
@@ -33,7 +39,6 @@ import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeReposit
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.AlarmResponse;
@@ -50,6 +55,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -126,38 +133,50 @@ class InterviewServiceTest {
     }
 
     @Test
+    @DisplayName("면담 예약시 해당 시간이 USED이면 예외가 발생해야 한다.")
+    void createUsedDateTimeInterview() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+
+        // when & then
+        assertThatThrownBy(() -> interviewService.create(CREW2.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS)))
+                .isInstanceOf(InvalidInterviewDateException.class)
+                .hasMessage(INVALID_AVAILABLE_DATE_TIME.getMessage());
+    }
+
+    @Test
     @DisplayName("면담 예약 선택 일자가 코치의 가능한 시간이 아닌 경우 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
         assertThatThrownBy(() -> interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_AVAILABLE_DATE_TIME.getMessage());
+                .hasMessage(INVALID_AVAILABLE_DATE_TIME.getMessage());
     }
 
     @Test
-    @DisplayName("없는 코치로 예약할 시 예외가 발생한다.")
-    void create_coachNotFound() {
-        assertThatThrownBy(() -> interviewService.create(CREW1.getId(),
-                new InterviewRequest(-1L, LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), FORM_ITEM_REQUESTS)))
-                .isInstanceOf(CoachNotFoundException.class);
-    }
-
-    @Test
-    @DisplayName("면담 예약 선택 일자와 시간이 크루가 이미 신청한 면담 시간일 경우 예외가 발생한다.")
+    @DisplayName("면담 예약 선택 일자와 시간이 크루가 다른 코치에게 이미 신청한 면담 시간일 경우 예외가 발생한다.")
     void create_WhenDuplicateReservation() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+
         interviewService.create(CREW1.getId(),
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
 
         // when & then
         assertThatThrownBy(() -> interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME.getMessage());
+                .hasMessage(INVALID_INTERVIEW_DUPLICATE_DATE_TIME.getMessage());
     }
 
     @Test
@@ -267,7 +286,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now(), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_DATE.getMessage());
+                .hasMessage(INVALID_INTERVIEW_DATE.getMessage());
     }
 
     @Test
@@ -281,7 +300,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_DATE.getMessage());
+                .hasMessage(INVALID_INTERVIEW_DATE.getMessage());
     }
 
     @Test
@@ -335,7 +354,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InterviewNotFoundException.class)
-                .hasMessage(100L + ExceptionType.INTERVIEW_NOT_FOUND.getMessage());
+                .hasMessage(100L + INTERVIEW_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -352,7 +371,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidInterviewCrewIdException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_CREW_ID.getMessage());
+                .hasMessage(INVALID_INTERVIEW_CREW_ID.getMessage());
     }
 
     @Test
@@ -369,11 +388,11 @@ class InterviewServiceTest {
                 new InterviewRequest(5L, LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(CoachNotFoundException.class)
-                .hasMessage(5L + ExceptionType.COACH_NOT_FOUND.getMessage());
+                .hasMessage(5L + COACH_NOT_FOUND.getMessage());
     }
 
     @Test
-    @DisplayName("면담 예약 수정 시 코치의 가능 시간이 아니라면 예외를 반환한다.")
+    @DisplayName("면담 예약 수정 시 USED 라면 예외를 반환한다.")
     void update_WhenInvalidAvailableDateTime() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
@@ -386,7 +405,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME),
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_AVAILABLE_DATE_TIME.getMessage());
+                .hasMessage(INVALID_AVAILABLE_DATE_TIME.getMessage());
     }
 
     @Test
@@ -404,7 +423,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now(), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_DATE.getMessage());
+                .hasMessage(INVALID_INTERVIEW_DATE.getMessage());
     }
 
     @Test
@@ -422,7 +441,7 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(LocalDate.now().minusDays(2), THIRD_TIME),
                         FORM_ITEM_REQUESTS)))
                 .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(ExceptionType.INVALID_INTERVIEW_DATE.getMessage());
+                .hasMessage(INVALID_INTERVIEW_DATE.getMessage());
     }
 
     @Test
@@ -528,5 +547,24 @@ class InterviewServiceTest {
                         true))
                 .isInstanceOf(InvalidInterviewCoachIdException.class)
                 .hasMessage(INVALID_INTERVIEW_COACH_ID.getMessage());
+    }
+
+    @Test
+    void test_con() {
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+        ExecutorService service = Executors.newCachedThreadPool();
+
+        for (Long i = 5L; i <= 6L; i++) {
+            final Long finalI = i;
+            service.execute(() -> {
+                try{
+                    interviewService.create(finalI,
+                            new InterviewRequest(COACH3.getId(),LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME),
+                                    FORM_ITEM_REQUESTS));
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 }

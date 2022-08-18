@@ -39,6 +39,7 @@ public class CommentService {
         return comment.getId();
     }
 
+    @Transactional(readOnly = true)
     public CommentsResponse findComments(final Long memberId, final Long interviewId) {
         final Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
