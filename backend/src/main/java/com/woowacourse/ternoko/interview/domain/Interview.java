@@ -118,26 +118,6 @@ public class Interview {
         this.interviewStatusType = EDITABLE;
     }
 
-//    public Interview forUpdate(final LocalDateTime interviewStartTime,
-//                                 final Coach coach,
-//                                 final List<FormItem> formItem){
-//        final List<FormItem> convertedFormItem = convertFormItem(interviewRequest.getInterviewQuestions());
-//        return new Interview(
-//                interviewStartTime,
-//                interviewStartTime.plusMinutes(30),
-//                coach,
-//                this.crew,
-//                formItem);
-//    }
-
-//    public void update(final Interview interiew) {
-//        validateInterviewStatus(FIXED, CANNOT_EDIT_INTERVIEW);
-//        this.interviewStartTime = interviewStartTime ;
-//        this.interviewEndTime = interviewStartTime.plusMinutes(30);
-//        this.coach = coach;
-//        updateFormItem(formItem);
-//    }
-
     public void update(Interview interview) {
         validateInterviewStatus(FIXED, CANNOT_EDIT_INTERVIEW);
         this.interviewStartTime = interview.getInterviewStartTime();
