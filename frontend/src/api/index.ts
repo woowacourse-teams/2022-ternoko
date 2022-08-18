@@ -85,4 +85,5 @@ export const putCommentAPI = (
   interviewId: number,
   commentId: number,
   body: CommentRequestBodyType,
-) => axios.put(`${process.env.SERVER_URL}/api/interview/${interviewId}/comment/${commentId}`, body);
+) =>
+  axios.put(`${process.env.SERVER_URL}/api/interviews/${interviewId}/comments/${commentId}`, body);

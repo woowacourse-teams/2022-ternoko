@@ -42,8 +42,8 @@ const HomePage = () => {
 
   const InterviewPridicate = ({ status }: InterviewType) =>
     tabMenuStatus === 'done'
-      ? ['CREW_COMPLETED', 'COMPLETED'].includes(status)
-      : !['CREW_COMPLETED', 'COMPLETED'].includes(status);
+      ? ['CREW_COMPLETED', 'COMPLETE'].includes(status)
+      : !['CREW_COMPLETED', 'COMPLETE'].includes(status);
 
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
@@ -69,6 +69,11 @@ const HomePage = () => {
   const afterDeleteInterview = () => {
     handleCloseModalComment();
     handleCloseModalDetail();
+    updateInterviews();
+  };
+
+  const afterPostAndPutComment = () => {
+    handleCloseModalComment();
     updateInterviews();
   };
 
@@ -118,6 +123,7 @@ const HomePage = () => {
         memberRole={memberRole}
         interviewId={clickedInterviewId}
         interviewStatus={clickedInterviewStatus}
+        afterPostAndPutComment={afterPostAndPutComment}
         handleCloseModal={handleCloseModalComment}
       />
     </>

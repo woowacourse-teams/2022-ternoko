@@ -23,6 +23,7 @@ type CommentModalProps = {
   memberRole: MemberRole;
   interviewId: number;
   interviewStatus: InterviewStatus;
+  afterPostAndPutComment: () => void;
   handleCloseModal: () => void;
 };
 
@@ -32,6 +33,7 @@ const CommentModal = ({
   memberRole,
   interviewId,
   interviewStatus,
+  afterPostAndPutComment,
   handleCloseModal,
 }: CommentModalProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -43,9 +45,9 @@ const CommentModal = ({
   const { onLoading, offLoading } = useLoadingActions();
 
   const isCoachCompleted =
-    memberRole === 'COACH' && ['CREW_COMPLETED', 'COMPLETED'].includes(interviewStatus);
+    memberRole === 'COACH' && ['COACH_COMPLETED', 'COMPLETE'].includes(interviewStatus);
   const isCrewCompleted =
-    memberRole === 'CREW' && ['COACH_COMPLETED', 'COMPLETED'].includes(interviewStatus);
+    memberRole === 'CREW' && ['CREW_COMPLETED', 'COMPLETE'].includes(interviewStatus);
 
   const handleChangeCoachTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCoachComment(e.target.value);
@@ -55,8 +57,7 @@ const CommentModal = ({
     setCrewComment(e.target.value);
   };
 
-  const handleSubmitForm = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleClickButton = async () => {
     isSubmitted || setIsSubmitted(true);
 
     try {
@@ -68,11 +69,13 @@ const CommentModal = ({
         onLoading();
         await postCommentAPI(interviewId, { comment });
         offLoading();
+        afterPostAndPutComment();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COMMENT);
       } else {
         onLoading();
         await putCommentAPI(interviewId, commentId, { comment });
         offLoading();
+        afterPostAndPutComment();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_COMMENT);
       }
     } catch (error) {
@@ -85,11 +88,11 @@ const CommentModal = ({
 
     (async () => {
       const response = await getCommentAPI(Number(interviewId));
-      const coachCommentItem = response.data.find(
-        ({ role }: CommentType) => role === 'CREW',
-      ) as CommentType;
-      const crewCommentItem = response.data.find(
+      const coachCommentItem = response.data.comments.find(
         ({ role }: CommentType) => role === 'COACH',
+      ) as CommentType;
+      const crewCommentItem = response.data.comments.find(
+        ({ role }: CommentType) => role === 'CREW',
       ) as CommentType;
 
       if (coachCommentItem) {
@@ -112,45 +115,57 @@ const CommentModal = ({
         <p>예시 1) 고민이 싹~ 해결되었네요!! 감사합니다.</p>
         <p>예시 2) 항상 덕분에 즐겁습니다. 오늘 하루도 행복하세요.</p>
       </S.ExampleBox>
-      <S.Form onSubmit={handleSubmitForm}>
-        {(memberRole === 'COACH' || isCoachCompleted) && (
+      <S.Form>
+        {(memberRole === 'COACH' || isCrewCompleted) && (
           <div>
             <TextAreaField
               id="coach-comment"
               label="코치의 한마디"
               value={coachComment}
               maxLength={COMMENT_MAX_LENGTH}
-              message={ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
+              message={isCrewCompleted ? '' : ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
               isSubmitted={isSubmitted}
-              disabled={isCoachCompleted}
+              disabled={isCrewCompleted}
               handleChange={handleChangeCoachTextarea}
-              checkValidation={isValidCommentLength}
+              checkValidation={isCrewCompleted ? () => true : isValidCommentLength}
             />
-            <S.ButtonBox>
-              <Button width="100%" inActive={!isValidCommentLength(coachComment)}>
-                면담 {commentId === -1 ? '완료' : '수정'}하기
-              </Button>
-            </S.ButtonBox>
+            {!isCrewCompleted && (
+              <S.ButtonBox>
+                <Button
+                  width="100%"
+                  inActive={!isValidCommentLength(coachComment)}
+                  onClick={handleClickButton}
+                >
+                  면담 {commentId === -1 ? '완료' : '수정'}하기
+                </Button>
+              </S.ButtonBox>
+            )}
           </div>
         )}
-        {(memberRole === 'CREW' || isCrewCompleted) && (
+        {(memberRole === 'CREW' || isCoachCompleted) && (
           <div>
             <TextAreaField
               id="coach-comment"
               label="크루의 한마디"
-              value={coachComment}
+              value={crewComment}
               maxLength={COMMENT_MAX_LENGTH}
-              message={ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
+              message={isCoachCompleted ? '' : ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
               isSubmitted={isSubmitted}
-              disabled={isCrewCompleted}
+              disabled={isCoachCompleted}
               handleChange={handleChangeCrewTextarea}
-              checkValidation={isValidCommentLength}
+              checkValidation={isCoachCompleted ? () => true : isValidCommentLength}
             />
-            <S.ButtonBox>
-              <Button width="100%" inActive={!isValidCommentLength(coachComment)}>
-                면담 {commentId === -1 ? '완료' : '수정'}하기
-              </Button>
-            </S.ButtonBox>
+            {!isCoachCompleted && (
+              <S.ButtonBox>
+                <Button
+                  width="100%"
+                  inActive={!isValidCommentLength(crewComment)}
+                  onClick={handleClickButton}
+                >
+                  면담 {commentId === -1 ? '완료' : '수정'}하기
+                </Button>
+              </S.ButtonBox>
+            )}
           </div>
         )}
       </S.Form>
