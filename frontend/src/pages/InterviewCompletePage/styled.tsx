@@ -6,8 +6,13 @@ export const Box = styled.div`
   align-items: center;
   justify-content: center;
   gap: 5rem;
-  width: 300px;
+  width: 350px;
+
   margin: 4rem auto 0;
+
+  @media ${({ theme }) => theme.devices.mobileM()} {
+    width: 300px;
+  }
 `;
 
 export const LogoBox = styled.div`
