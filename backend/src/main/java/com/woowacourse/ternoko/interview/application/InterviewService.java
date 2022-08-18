@@ -13,7 +13,6 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.comment.repository.CommentRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.domain.member.Coach;
@@ -34,7 +33,6 @@ import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdExcepti
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
-import com.woowacourse.ternoko.repository.MemberRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,11 +56,9 @@ public class InterviewService {
 
     private final CoachRepository coachRepository;
     private final CrewRepository crewRepository;
-    private final MemberRepository memberRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
     private final FormItemRepository formItemRepository;
-    private final CommentRepository commentRepository;
 
     public AlarmResponse create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTime(crewId, interviewRequest);
