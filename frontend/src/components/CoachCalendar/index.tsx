@@ -15,7 +15,7 @@ import {
 import { InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
-import { isUnderToday, separateFullDate } from '@/utils';
+import { isOverToday, separateFullDate } from '@/utils';
 
 type ScheduleType = {
   id: number;
@@ -95,7 +95,7 @@ const CoachCalendar = ({
               const day = getDay(index);
               const interviews = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times: [startTime, endTime], status }) =>
-                    isUnderToday(`${year}-${month}-${day} ${endTime}`) ? (
+                    isOverToday(`${year}-${month + 1}-${day} ${endTime}`) ? (
                       <S.Schedule key={id} status="COMMENT">
                         <S.CrewNickname onClick={getHandleClickSchedule(id)}>
                           {crewNickname}
