@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.support;
 
 public enum SlackMessageType {
+
     CREW_CREATE("#00a310", "터놓고 - 면담 예약 생성", "%s이(가) 면담 예약을 생성하였습니다.", "%s와(과)의 면담을 생성하였습니다."),
     CREW_UPDATE("#f2c744", "터놓고 - 면담 예약 수정", "%s이(가) 면담 예약을 수정하였습니다.", "%s와(과)의 면담을 수정하였습니다."),
     COACH_CANCEL("#EB4C60", "터놓고 - 면담 예약 취소", "%s와(과)의 면담 예약을 취소하였습니다.", "%s이(가) 면담을 취소하였습니다. 재예약 해주세요."),

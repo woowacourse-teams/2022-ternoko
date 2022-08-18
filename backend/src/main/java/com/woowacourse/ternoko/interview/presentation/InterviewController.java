@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.interview.presentation;
 
 import com.woowacourse.ternoko.interview.application.InterviewService;
-import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.dto.AlarmResponse;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
@@ -9,7 +9,6 @@ import com.woowacourse.ternoko.login.aop.CoachOnly;
 import com.woowacourse.ternoko.login.aop.CrewOnly;
 import com.woowacourse.ternoko.login.domain.AuthenticationPrincipal;
 import com.woowacourse.ternoko.support.SlackAlarm;
-import com.woowacourse.ternoko.support.SlackMessageType;
 import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -46,9 +45,9 @@ public class InterviewController {
     public ResponseEntity<Void> createInterview(@AuthenticationPrincipal final Long crewId,
                                                 @RequestBody final InterviewRequest interviewRequest)
             throws Exception {
-        final Interview interview = interviewService.create(crewId, interviewRequest);
-        slackAlarm.sendMessage(interview, SlackMessageType.CREW_CREATE);
-        return ResponseEntity.created(URI.create("/api/interviews/" + interview.getId())).build();
+        final AlarmResponse alarmResponse = interviewService.create(crewId, interviewRequest);
+        slackAlarm.sendCreateMessage(alarmResponse);
+        return ResponseEntity.created(URI.create("/api/interviews/" + alarmResponse.getInterviewId())).build();
     }
 
     @GetMapping("/interviews/{interviewId}")
@@ -69,10 +68,9 @@ public class InterviewController {
     @PutMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> updateInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId,
-                                                @RequestBody final InterviewRequest interviewRequest)
-            throws Exception {
-        final Interview updateInterview = interviewService.update(crewId, interviewId, interviewRequest);
-        slackAlarm.sendMessage(updateInterview, SlackMessageType.CREW_UPDATE);
+                                                @RequestBody final InterviewRequest interviewRequest) throws Exception {
+        final List<AlarmResponse> alarmResponses = interviewService.update(crewId, interviewId, interviewRequest);
+        slackAlarm.sendUpdateMessage(alarmResponses);
         return ResponseEntity.ok().build();
     }
 
@@ -80,8 +78,8 @@ public class InterviewController {
     @DeleteMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> deleteInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId) throws Exception {
-        final Interview interview = interviewService.delete(crewId, interviewId);
-        slackAlarm.sendMessage(interview, SlackMessageType.CREW_DELETE);
+        final AlarmResponse alarmResponse = interviewService.delete(crewId, interviewId);
+        slackAlarm.sendDeleteMessage(alarmResponse);
         return ResponseEntity.noContent().build();
     }
 
@@ -90,8 +88,9 @@ public class InterviewController {
     public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
                                                 @PathVariable final Long interviewId,
                                                 @RequestParam final boolean onlyInterview) throws Exception {
-        final Interview interview = interviewService.cancelAndDeleteAvailableTime(coachId, interviewId, onlyInterview);
-        slackAlarm.sendMessage(interview, SlackMessageType.COACH_CANCEL);
+        final AlarmResponse alarmResponse = interviewService.cancelAndDeleteAvailableTime(coachId, interviewId,
+                onlyInterview);
+        slackAlarm.sendCancelMessage(alarmResponse);
         return ResponseEntity.noContent().build();
     }
 }

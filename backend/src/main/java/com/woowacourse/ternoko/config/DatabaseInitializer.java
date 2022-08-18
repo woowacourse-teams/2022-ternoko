@@ -47,7 +47,7 @@ public class DatabaseInitializer {
         public void dbInit() {
             ArrayList<Coach> coaches = new ArrayList<>(12);
             Coach coach1 = new Coach(1L, "이름", "공원", "공원" + TEST_EMAIL,
-                    "U1234567890",
+                    "U03R55S2A9L",
                     "https://user-images.githubusercontent.com/26570275/177680173-9bb25eac-5922-407b-889b-bb49ac392c2a.png",
                     "안녕하세요.");
             coaches.add(coach1);
@@ -106,6 +106,8 @@ public class DatabaseInitializer {
             availableDateTimeRepository.save(new AvailableDateTime(1L, 13L,
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
             availableDateTimeRepository.save(new AvailableDateTime(2L, 13L,
+                    LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
+            availableDateTimeRepository.save(new AvailableDateTime(3L, 1L,
                     LocalDateTime.of(LocalDate.of(2022, 8, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
         }
     }
