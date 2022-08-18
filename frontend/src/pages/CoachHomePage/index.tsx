@@ -45,18 +45,10 @@ const CoachHomePage = () => {
     handleOpenModalDetail();
   };
 
-  const afterPostAndPutComment = () => {
-    calendarRerenderkeyRef.current = Date.now();
-    handleCloseModalComment();
+  const getHandleClickCommentButton = (status: InterviewStatus | null) => () => {
+    status && setClickedInterviewStatus(status);
+    handleOpenModalComment();
   };
-
-  const getHandleClickCommentButton =
-    (interviewId: number, status: InterviewStatus = 'EDITABLE') =>
-    () => {
-      setClickedInterviewId(interviewId);
-      setClickedInterviewStatus(status);
-      handleOpenModalComment();
-    };
 
   return (
     <>

@@ -28,7 +28,7 @@ type SchedulesType = { [key: number]: ScheduleType[] };
 
 type CoachCalendarProps = {
   getHandleClickSchedule: (interviewId: number) => () => void;
-  getHandleClickCommentButton: (interviewId: number, status: InterviewStatus) => () => void;
+  getHandleClickCommentButton: (interviewId: number, status: InterviewStatus | null) => () => void;
 };
 
 const CoachCalendar = ({
