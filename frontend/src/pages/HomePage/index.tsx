@@ -40,6 +40,11 @@ const HomePage = () => {
   const [clickedInterviewId, setClickedInterviewId] = useState(-1);
   const [clickedInterviewStatus, setClickedInterviewStatus] = useState<InterviewStatus>('EDITABLE');
 
+  const InterviewPridicate = ({ status }: InterviewType) =>
+    tabMenuStatus === 'done'
+      ? ['CREW_COMPLETED', 'COMPLETED'].includes(status)
+      : !['CREW_COMPLETED', 'COMPLETED'].includes(status);
+
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
   };
@@ -90,7 +95,7 @@ const HomePage = () => {
       </S.TabMenuBox>
 
       <GridContainer minSize="25rem" pt="4rem">
-        {interviews.map((interview) => (
+        {interviews.filter(InterviewPridicate).map((interview) => (
           <Interview
             key={interview.id}
             handleClickDetailButton={getHandleClickDetailButton(interview.id)}
