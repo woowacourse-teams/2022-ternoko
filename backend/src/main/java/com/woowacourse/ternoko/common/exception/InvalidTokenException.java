@@ -1,9 +1,10 @@
 package com.woowacourse.ternoko.common.exception;
 
-import com.woowacourse.ternoko.common.exception.form.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidTokenException extends UnauthorizedException {
-    public InvalidTokenException(ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+public class InvalidTokenException extends CommonException {
+
+    public InvalidTokenException(final ExceptionType exceptionType) {
+        super(HttpStatus.UNAUTHORIZED, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }

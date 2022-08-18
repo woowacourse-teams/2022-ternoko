@@ -1,11 +1,12 @@
 package com.woowacourse.ternoko.comment.exception;
 
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidCommentInterviewIdException extends BadRequestException {
+public class InvalidCommentInterviewIdException extends CommonException {
 
     public InvalidCommentInterviewIdException(final ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+        super(HttpStatus.BAD_REQUEST, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }

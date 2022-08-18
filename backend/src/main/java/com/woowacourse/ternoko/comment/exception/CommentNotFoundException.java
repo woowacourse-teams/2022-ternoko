@@ -1,11 +1,12 @@
 package com.woowacourse.ternoko.comment.exception;
 
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class CommentNotFoundException extends BadRequestException {
+public class CommentNotFoundException extends CommonException {
 
     public CommentNotFoundException(final ExceptionType exceptionType, final Long commentId) {
-        super(exceptionType.getStatusCode(), commentId + exceptionType.getMessage());
+        super(HttpStatus.NOT_FOUND, exceptionType.getStatusCode(), commentId + exceptionType.getMessage());
     }
 }

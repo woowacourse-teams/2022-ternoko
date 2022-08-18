@@ -1,10 +1,11 @@
 package com.woowacourse.ternoko.login.exception;
 
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class CrewNotAllowedException extends BadRequestException {
+public class CrewNotAllowedException extends CommonException {
     public CrewNotAllowedException(ExceptionType type) {
-        super(type.getStatusCode(), type.getMessage());
+        super(HttpStatus.FORBIDDEN, type.getStatusCode(), type.getMessage());
     }
 }

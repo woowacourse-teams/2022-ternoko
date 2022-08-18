@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.common.exception;
 
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class MemberNotFoundException extends BadRequestException {
+public class MemberNotFoundException extends CommonException {
 
     public MemberNotFoundException(final ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+        super(HttpStatus.NOT_FOUND, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }
