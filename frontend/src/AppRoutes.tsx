@@ -3,7 +3,6 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import AccessDenyPage from '@/pages/AccessDenyPage';
 import CoachHomePage from '@/pages/CoachHomePage';
 import CoachInterviewCreatePage from '@/pages/CoachInterviewCreatePage';
 import HomePage from '@/pages/HomePage';
@@ -12,6 +11,7 @@ import InterviewCompletePage from '@/pages/InterviewCompletePage';
 import LoginPage from '@/pages/LoginPage';
 import LoginRegisterPage from '@/pages/LoginRegisterPage';
 import MyPage from '@/pages/MyPage';
+import NotFoundPage from '@/pages/NotFoundPage';
 import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
 
 import TernokoLoading from '@/components/@common/TernokoLoading';
@@ -39,7 +39,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path={PAGE.LOGIN} element={<LoginPage />} />
         <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
-        <Route path={PAGE.ACCESS_DENY} element={<AccessDenyPage />} />
+        <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
+        <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
 
         <Route path={PAGE.BASE} element={<Layout />}>
           <Route element={<PrivateRoute auth="ALL" />}>
