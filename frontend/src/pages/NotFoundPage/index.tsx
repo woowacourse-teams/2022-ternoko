@@ -36,7 +36,9 @@ const NotFoundPage = ({ type }: NotFoundPageProps) => {
             ? '해당 페이지는 찾을 수 없습니다ㅠㅠㅠㅠ😭'
             : '접근 권한이 없다구용ㅠㅠㅠㅠ😭'}
         </p>
-        <Button onClick={handleClickButton}>홈으로 가즈앗🏃‍♂️</Button>
+        <Button onClick={handleClickButton}>
+          {type === 'DEFAULT' ? '로그인 페이지로 가즈앗🏃‍♂️' : '홈으로 가즈앗🏃‍♂️'}
+        </Button>
       </div>
     </S.Box>
   );
