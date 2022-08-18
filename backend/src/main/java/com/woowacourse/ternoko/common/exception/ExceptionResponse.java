@@ -12,5 +12,4 @@ public class ExceptionResponse {
 
     private int code;
     private String message;
-
 }

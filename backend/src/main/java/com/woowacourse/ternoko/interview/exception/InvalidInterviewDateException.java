@@ -1,11 +1,12 @@
 package com.woowacourse.ternoko.interview.exception;
 
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidInterviewDateException extends BadRequestException {
+public class InvalidInterviewDateException extends CommonException {
 
     public InvalidInterviewDateException(final ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+        super(HttpStatus.BAD_REQUEST, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }

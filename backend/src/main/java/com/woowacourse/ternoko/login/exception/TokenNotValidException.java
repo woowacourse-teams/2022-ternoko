@@ -1,10 +1,12 @@
 package com.woowacourse.ternoko.login.exception;
 
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class TokenNotValidException extends BadRequestException {
+public class TokenNotValidException extends CommonException {
+
     public TokenNotValidException(ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+        super(HttpStatus.BAD_REQUEST, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }

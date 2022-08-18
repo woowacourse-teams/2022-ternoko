@@ -1,9 +1,10 @@
 package com.woowacourse.ternoko.common.exception;
 
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class InterviewStatusException extends BadRequestException {
+public class InterviewStatusException extends CommonException {
+
     public InterviewStatusException(final ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+        super(HttpStatus.BAD_REQUEST, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }

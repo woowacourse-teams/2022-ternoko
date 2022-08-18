@@ -1,9 +1,10 @@
 package com.woowacourse.ternoko.common.exception;
 
-import com.woowacourse.ternoko.common.exception.form.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 
-public class ExpiredTokenException extends UnauthorizedException {
+public class ExpiredTokenException extends CommonException {
+
     public ExpiredTokenException(ExceptionType exceptionType) {
-        super(exceptionType.getStatusCode(), exceptionType.getMessage());
+        super(HttpStatus.FORBIDDEN, exceptionType.getStatusCode(), exceptionType.getMessage());
     }
 }

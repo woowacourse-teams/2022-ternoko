@@ -1,9 +1,10 @@
 package com.woowacourse.ternoko.common.exception;
 
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
+import org.springframework.http.HttpStatus;
 
-public class InvalidLengthException extends BadRequestException {
+public class InvalidLengthException extends CommonException {
+
     public InvalidLengthException(final ExceptionType exceptionType, final int length) {
-        super(exceptionType.getStatusCode(), length + exceptionType.getMessage());
+        super(HttpStatus.BAD_REQUEST, exceptionType.getStatusCode(), length + exceptionType.getMessage());
     }
 }

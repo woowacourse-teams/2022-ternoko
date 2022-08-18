@@ -4,10 +4,8 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.UNHANDLED_E
 import static com.woowacourse.ternoko.common.log.LogForm.FAILED_LOGGING_FORM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionResponse;
-import com.woowacourse.ternoko.common.exception.form.BadRequestException;
-import com.woowacourse.ternoko.common.exception.form.ForbiddenException;
-import com.woowacourse.ternoko.common.exception.form.UnauthorizedException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -18,42 +16,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 @RestControllerAdvice
+@EnableWebMvc
 @AllArgsConstructor
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
     private final ObjectMapper objectMapper;
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ExceptionResponse> badRequestHandler(final BadRequestException e,
-                                                               final HttpServletRequest request) {
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<ExceptionResponse> commonExceptionHandler(final CommonException e,
+                                                                    final HttpServletRequest request){
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
-        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getCode(), e.getMessage()));
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ExceptionResponse> unauthorizedHandler(final UnauthorizedException e,
-                                                                 final HttpServletRequest request) {
-        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-        printFailedLog(request, e, cachingRequest);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionResponse(e.getCode(), e.getMessage()));
-    }
-
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ExceptionResponse> forbiddenHandler(final UnauthorizedException e,
-                                                              final HttpServletRequest request) {
-        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-        printFailedLog(request, e, cachingRequest);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionResponse(e.getCode(), e.getMessage()));
+        return ResponseEntity
+                .status(e.getHttpStatusCode())
+                .body(new ExceptionResponse(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> exceptionHandler(final Exception e, final HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final Exception e, final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.internalServerError()
