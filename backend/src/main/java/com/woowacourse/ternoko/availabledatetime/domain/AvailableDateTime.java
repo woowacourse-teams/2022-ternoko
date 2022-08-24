@@ -46,8 +46,8 @@ public class AvailableDateTime {
         this.availableDateTimeStatus = availableDateTimeStatus;
     }
 
-    public void changeStatus(final AvailableDateTimeStatus status) {
-        this.availableDateTimeStatus = status;
+    public void changeStatus() {
+        this.availableDateTimeStatus = availableDateTimeStatus.change();
     }
 
     public void validateAvailableDateTime() {

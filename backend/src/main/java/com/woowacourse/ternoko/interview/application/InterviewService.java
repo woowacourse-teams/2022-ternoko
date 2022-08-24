@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.interview.application;
 
-import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
@@ -66,7 +64,7 @@ public class InterviewService {
         availableDateTime.validateUsableAvailableDateTime();
 
         final Interview interview = convertInterview(crewId, interviewRequest);
-        availableDateTime.changeStatus(USED);
+        availableDateTime.changeStatus();
 
         return AlarmResponse.from(interviewRepository.save(interview));
     }
@@ -190,8 +188,8 @@ public class InterviewService {
         final AvailableDateTime beforeAvailableDateTime = findAvailableTime(originalInterview.getCoach().getId(),
                 originalInterview.getInterviewStartTime());
         final AvailableDateTime afterAvailableDateTime = findAvailableTime(interviewRequest);
-        beforeAvailableDateTime.changeStatus(OPEN);
-        afterAvailableDateTime.changeStatus(USED);
+        beforeAvailableDateTime.changeStatus();
+        afterAvailableDateTime.changeStatus();
     }
 
     private void validateChangeAuthorization(Interview originalInterview, Long crewId) {
@@ -223,7 +221,7 @@ public class InterviewService {
             availableDateTimeRepository.delete(unAvailableTime);
             return AlarmResponse.from(canceledInterview);
         }
-        unAvailableTime.changeStatus(OPEN);
+        unAvailableTime.changeStatus();
         return AlarmResponse.from(canceledInterview);
     }
 
@@ -241,6 +239,6 @@ public class InterviewService {
         Optional<AvailableDateTime> time = availableDateTimeRepository
                 .findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
                         interview.getInterviewStartTime());
-        time.ifPresent(it -> it.changeStatus(OPEN));
+        time.ifPresent(it -> it.changeStatus());
     }
 }

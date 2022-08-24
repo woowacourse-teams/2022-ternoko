@@ -44,7 +44,7 @@ class AvailableDateTimeRepositoryTest {
         final AvailableDateTime availableDateTime = saveAvailableTime(availableTime);
         final AvailableDateTime startDateTime = saveAvailableTime(startTime);
         final AvailableDateTime reservedDateTime = saveAvailableTime(reservedTime);
-        startDateTime.changeStatus(USED);
+        startDateTime.changeStatus();
 
         // when
         saveInterview(startTime);
@@ -73,9 +73,9 @@ class AvailableDateTimeRepositoryTest {
 
         final AvailableDateTime availableDateTime = saveAvailableTime(availableTime);
         final AvailableDateTime startDateTime = saveAvailableTime(startTime);
-        startDateTime.changeStatus(USED);
+        startDateTime.changeStatus();
         final AvailableDateTime reservedDateTime = saveAvailableTime(reservedTime);
-        reservedDateTime.changeStatus(USED);
+        reservedDateTime.changeStatus();
 
         // when
         final Long interviewId = saveInterview(startTime);
@@ -89,7 +89,6 @@ class AvailableDateTimeRepositoryTest {
         assertThat(times).hasSize(2)
                 .containsExactly(new AvailableDateTime(startDateTime.getId(), COACH1.getId(), startTime, USED),
                         new AvailableDateTime(availableDateTime.getId(), COACH1.getId(), availableTime, OPEN));
-
     }
 
     private AvailableDateTime saveAvailableTime(final LocalDateTime startTime) {

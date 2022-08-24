@@ -7,4 +7,15 @@ public enum AvailableDateTimeStatus {
     public boolean matchType(final AvailableDateTimeStatus availableDateTimeStatus) {
         return this.equals(availableDateTimeStatus);
     }
+
+    public AvailableDateTimeStatus change() {
+        if (isUsed()) {
+            return OPEN;
+        }
+        return USED;
+    }
+
+    private boolean isUsed() {
+        return this.equals(USED);
+    }
 }
