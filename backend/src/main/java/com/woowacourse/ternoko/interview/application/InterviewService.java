@@ -128,18 +128,25 @@ public class InterviewService {
 
     @Transactional(readOnly = true)
     public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
+        final List<Interview> interviews = getInterviews(coachId, year, month);
+        final List<Interview> excludeCanceledInterviews = filteringCanceledInterview(interviews);
+        return ScheduleResponse.from(excludeCanceledInterviews);
+    }
+
+    private List<Interview> filteringCanceledInterview(final List<Interview> interviews) {
+        return interviews.stream()
+                .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Interview> getInterviews(final Long coachId, final Integer year, final Integer month) {
         final Integer lastDayOfMonth = LocalDate.of(year, month, FIRST_DAY_OF_MONTH).lengthOfMonth();
         final LocalDateTime startOfMonth = LocalDateTime.of(year, month, FIRST_DAY_OF_MONTH, START_HOUR, START_MINUTE);
         final LocalDateTime endOfMonth = LocalDateTime.of(year, month, lastDayOfMonth, END_HOUR, END_MINUTE);
 
         final List<Interview> interviews = interviewRepository
                 .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
-
-        final List<Interview> excludeCanceledInterviews = interviews.stream()
-                .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
-                .collect(Collectors.toList());
-
-        return ScheduleResponse.from(excludeCanceledInterviews);
+        return interviews;
     }
 
     public List<AlarmResponse> update(final Long crewId,
