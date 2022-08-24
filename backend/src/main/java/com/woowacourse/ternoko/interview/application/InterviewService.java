@@ -115,12 +115,6 @@ public class InterviewService {
                 .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
-    private AvailableDateTime findAvailableTime(final Long coachId, final LocalDateTime interviewDateTime) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId,
-                        interviewDateTime)
-                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
-    }
-
     @Transactional(readOnly = true)
     public InterviewResponse findInterviewResponseById(final Long interviewId) {
         final Interview interview = interviewRepository.findById(interviewId)
