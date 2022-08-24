@@ -1,8 +1,9 @@
 package com.woowacourse.ternoko.domain;
 
-import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -46,13 +47,14 @@ class InterviewTest {
                 CREW1,
                 FIXED
         );
-
-        // when & then
-        assertThatThrownBy(() -> interview.update(new Interview(
+        final Interview updateInterview = new Interview(
                 localDateTime,
                 localDateTime.plusMinutes(30),
-                COACH1,
-                CREW1
-        ))).isInstanceOf(InterviewStatusException.class);
+                COACH2,
+                CREW1);
+
+        // when & then
+        assertThatThrownBy(() -> interview.update(updateInterview))
+                .isInstanceOf(InterviewStatusException.class);
     }
 }

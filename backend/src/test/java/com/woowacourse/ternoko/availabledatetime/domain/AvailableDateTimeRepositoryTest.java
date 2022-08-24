@@ -76,9 +76,9 @@ class AvailableDateTimeRepositoryTest {
         final Long interviewId = saveInterview(startTime);
         final List<AvailableDateTime> times = availableDateTimeRepository
                 .findAvailableDateTimesByCoachIdAndInterviewId(interviewId,
-                COACH1.getId(),
-                NOW_PLUS_1_MONTH.getYear(),
-                NOW_PLUS_1_MONTH.getMonthValue());
+                        COACH1.getId(),
+                        NOW_PLUS_1_MONTH.getYear(),
+                        NOW_PLUS_1_MONTH.getMonthValue());
 
         // then
         assertThat(times).hasSize(2)

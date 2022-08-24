@@ -61,11 +61,23 @@ public class Interview {
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
-    @OneToMany(mappedBy = "interview", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "interview", cascade = CascadeType.PERSIST)
     private List<FormItem> formItems = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
+
+    public Interview(final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach, final Crew crew,
+                     final List<FormItem> formItems) {
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crew = crew;
+        this.formItems = new ArrayList<>(formItems);
+        this.interviewStatusType = EDITABLE;
+    }
 
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
@@ -77,7 +89,7 @@ public class Interview {
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
-        this.formItems = formItems;
+        this.formItems = new ArrayList<>(formItems);
         this.interviewStatusType = interviewStatusType;
     }
 
@@ -106,13 +118,19 @@ public class Interview {
         this.interviewStatusType = EDITABLE;
     }
 
-    public void update(Interview updateInterview) {
+    public void update(Interview interview) {
         validateInterviewStatus(FIXED, CANNOT_EDIT_INTERVIEW);
-        this.interviewStartTime = updateInterview.getInterviewStartTime();
-        this.interviewEndTime = updateInterview.getInterviewEndTime();
-        this.coach = updateInterview.getCoach();
-        this.crew = updateInterview.getCrew();
-        this.interviewStatusType = updateInterview.getInterviewStatusType();
+        this.interviewStartTime = interview.getInterviewStartTime();
+        this.interviewEndTime = interview.getInterviewEndTime();
+        this.coach = interview.getCoach();
+        updateFormItem(interview.getFormItems());
+    }
+
+    public void updateFormItem(final List<FormItem> formItem) {
+        //TODO : 일급컬렉션으로 빼기~
+        for (int i = 0; i < formItem.size(); i++) {
+            this.formItems.get(i).update(formItem.get(i));
+        }
     }
 
     public void cancel() {
@@ -124,7 +142,7 @@ public class Interview {
             this.interviewStatusType = COACH_COMPLETED;
             return;
         }
-        if ((this.interviewStatusType == FIXED) && (memberType == CREW)) {
+        if (this.interviewStatusType == FIXED && memberType == CREW) {
             this.interviewStatusType = CREW_COMPLETED;
             return;
         }
@@ -148,10 +166,6 @@ public class Interview {
         if (this.interviewStatusType == interviewStatusType) {
             throw new InterviewStatusException(exceptionType);
         }
-    }
-
-    public void validateCreateComment(final MemberType memberType) {
-        interviewStatusType.validateCreateComment(memberType);
     }
 
     public MemberType findMemberType(final Long memberId) {

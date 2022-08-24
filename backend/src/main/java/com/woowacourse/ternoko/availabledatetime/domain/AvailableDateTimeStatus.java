@@ -2,5 +2,9 @@ package com.woowacourse.ternoko.availabledatetime.domain;
 
 public enum AvailableDateTimeStatus {
     OPEN,
-    USED
+    USED;
+
+    public boolean matchType(final AvailableDateTimeStatus availableDateTimeStatus) {
+        return this.equals(availableDateTimeStatus);
+    }
 }

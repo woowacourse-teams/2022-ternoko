@@ -61,20 +61,26 @@ public class InterviewService {
     private final FormItemRepository formItemRepository;
 
     public AlarmResponse create(final Long crewId, final InterviewRequest interviewRequest) {
-        validateDuplicateStartTime(crewId, interviewRequest);
-        final Interview interview = convertInterview(crewId, interviewRequest);
-        final Interview savedInterview = interviewRepository.save(interview);
-
-        final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
-        for (FormItem formItem : formItems) {
-            formItem.addInterview(savedInterview);
-        }
-        formItemRepository.saveAll(formItems);
-
+        validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
         final AvailableDateTime availableDateTime = findAvailableTime(interviewRequest);
+        validateAvailableDateTime(availableDateTime);
+
+        final Interview interview = convertInterview(crewId, interviewRequest);
         availableDateTime.changeStatus(USED);
 
         return AlarmResponse.from(interviewRepository.save(interview));
+    }
+
+    private void validateDuplicateStartTimeByCrew(final Long crewId, final LocalDateTime interviewDateTime) {
+        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewDateTime)) {
+            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+        }
+    }
+
+    private void validateAvailableDateTime(final AvailableDateTime availableDateTime) {
+        if (availableDateTime.isUsed()) {
+            throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
+        }
     }
 
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
@@ -86,19 +92,20 @@ public class InterviewService {
         final Coach coach = coachRepository.findById(interviewRequest.getCoachId())
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest.getCoachId()));
 
-        validateInterviewStartTime(interviewDatetime);
-        return new Interview(
+        final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
+
+        final Interview interview = new Interview(
                 interviewDatetime,
                 interviewDatetime.plusMinutes(30),
                 coach,
-                crew);
-    }
+                crew,
+                formItems);
 
-    private void validateDuplicateStartTime(Long crewId, InterviewRequest interviewRequest) {
-        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId,
-                interviewRequest.getInterviewDatetime())) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+        for (FormItem formItem : formItems) {
+            formItem.addInterview(interview);
         }
+        validateInterviewStartTime(interviewDatetime);
+        return interview;
     }
 
     private void validateInterviewStartTime(final LocalDateTime interviewStartTime) {
@@ -152,21 +159,36 @@ public class InterviewService {
     public List<AlarmResponse> update(final Long crewId,
                                       final Long interviewId,
                                       final InterviewRequest interviewRequest) {
-        final Interview originalInterview = findInterviewById(interviewId);
+        final Interview interview = findInterviewById(interviewId);
+        validateChangeAuthorization(interview, crewId);
 
         List<AlarmResponse> alarmResponses = new ArrayList<>();
-        alarmResponses.add(AlarmResponse.from(originalInterview));
+        alarmResponses.add(AlarmResponse.from(interview));
 
-        validateChangeAuthorization(originalInterview, crewId);
+        final LocalDateTime interviewDatetime = interviewRequest.getInterviewDatetime();
 
-        Interview updateInterviewRequest = convertInterview(crewId, interviewRequest);
+        interview.update(generateUpdateInterview(interview.getCrew(), interviewRequest));
+        validateInterviewStartTime(interviewDatetime);
 
-        List<FormItem> updateInterviewFormItemsRequest = convertFormItem(interviewRequest.getInterviewQuestions());
+        changeAvailableDateTimeStatus(interviewRequest, interview);
 
-        updateFromItem(originalInterview, updateInterviewRequest, updateInterviewFormItemsRequest);
-        changeAvailableDateTimeStatus(interviewRequest, originalInterview);
-        alarmResponses.add(AlarmResponse.from(originalInterview));
+        alarmResponses.add(AlarmResponse.from(interview));
         return alarmResponses;
+    }
+
+    private Interview generateUpdateInterview(final Crew crew, final InterviewRequest interviewRequest) {
+
+        final Long coachId = interviewRequest.getCoachId();
+        final Coach coach = coachRepository.findById(coachId)
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+
+        return new Interview(
+                interviewRequest.getInterviewDatetime(),
+                interviewRequest.getInterviewDatetime().plusMinutes(30),
+                coach,
+                crew,
+                convertFormItem(interviewRequest.getInterviewQuestions())
+        );
     }
 
     private void changeAvailableDateTimeStatus(InterviewRequest interviewRequest, Interview originalInterview) {
@@ -175,16 +197,6 @@ public class InterviewService {
         final AvailableDateTime afterAvailableDateTime = findAvailableTime(interviewRequest);
         beforeAvailableDateTime.changeStatus(OPEN);
         afterAvailableDateTime.changeStatus(USED);
-    }
-
-    private void updateFromItem(Interview originalInterview, Interview updateInterviewRequest,
-                                List<FormItem> updateInterviewFormItemsRequest) {
-        List<FormItem> originalInterviewFormItems = originalInterview.getFormItems();
-
-        for (int i = 0; i < originalInterviewFormItems.size(); i++) {
-            originalInterviewFormItems.get(i).update(updateInterviewFormItemsRequest.get(i), originalInterview);
-        }
-        originalInterview.update(updateInterviewRequest);
     }
 
     private void validateChangeAuthorization(Interview originalInterview, Long crewId) {
