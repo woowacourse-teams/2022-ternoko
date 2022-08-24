@@ -83,7 +83,7 @@ public class InterviewService {
 
         availableTime.validateAvailableDateTime();
 
-        return Interview.from(interviewRequest.getInterviewDatetime(), crew, coach,
+        return Interview.from(interviewRequest.getInterviewDatetime(), coach, crew,
                 formItems);
     }
 
@@ -106,6 +106,12 @@ public class InterviewService {
     private AvailableDateTime findAvailableTime(final InterviewRequest interviewRequest) {
         return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
                         interviewRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
+    private AvailableDateTime findAvailableTime(final Interview interview) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
+                        interview.getInterviewStartTime())
                 .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
@@ -156,35 +162,19 @@ public class InterviewService {
         List<AlarmResponse> alarmResponses = new ArrayList<>();
         alarmResponses.add(AlarmResponse.from(interview));
 
-        interview.update(generateUpdateInterview(interview.getCrew(), interviewRequest));
-        final AvailableDateTime availableTime = findAvailableTime(interviewRequest);
-        availableTime.validateAvailableDateTime();
+        interview.update(convertInterview(crewId, interviewRequest));
         changeAvailableDateTimeStatus(interviewRequest, interview);
 
         alarmResponses.add(AlarmResponse.from(interview));
         return alarmResponses;
     }
 
-    private Interview generateUpdateInterview(final Crew crew, final InterviewRequest interviewRequest) {
-
-        final Long coachId = interviewRequest.getCoachId();
-        final Coach coach = findCoach(coachId);
-
-        return new Interview(
-                interviewRequest.getInterviewDatetime(),
-                interviewRequest.getInterviewDatetime().plusMinutes(30),
-                coach,
-                crew,
-                convertFormItem(interviewRequest.getInterviewQuestions())
-        );
-    }
-
     private void changeAvailableDateTimeStatus(InterviewRequest interviewRequest, Interview originalInterview) {
-        final AvailableDateTime beforeAvailableDateTime = findAvailableTime(originalInterview.getCoach().getId(),
-                originalInterview.getInterviewStartTime());
-        final AvailableDateTime afterAvailableDateTime = findAvailableTime(interviewRequest);
-        beforeAvailableDateTime.changeStatus();
-        afterAvailableDateTime.changeStatus();
+        final AvailableDateTime beforeUsedTime = findAvailableTime(originalInterview);
+        final AvailableDateTime afterUsedTime = findAvailableTime(interviewRequest);
+
+        beforeUsedTime.changeStatus();
+        afterUsedTime.changeStatus();
     }
 
     private void validateChangeAuthorization(Interview originalInterview, Long crewId) {
@@ -210,13 +200,12 @@ public class InterviewService {
     public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
                                                       final boolean onlyInterview) {
         final Interview canceledInterview = cancel(coachId, interviewId);
-        final AvailableDateTime unAvailableTime = findAvailableTime(coachId,
-                canceledInterview.getInterviewStartTime());
+        final AvailableDateTime unavailableTime = findAvailableTime(canceledInterview);
         if (!onlyInterview) {
-            availableDateTimeRepository.delete(unAvailableTime);
+            availableDateTimeRepository.delete(unavailableTime);
             return AlarmResponse.from(canceledInterview);
         }
-        unAvailableTime.changeStatus();
+        unavailableTime.changeStatus();
         return AlarmResponse.from(canceledInterview);
     }
 
