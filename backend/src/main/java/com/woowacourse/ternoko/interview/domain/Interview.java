@@ -86,8 +86,24 @@ public class Interview {
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
-        this.formItems = new ArrayList<>(formItems);
+        this.formItems = connectFormItem(formItems);
         this.interviewStatusType = interviewStatusType;
+    }
+
+    private List<FormItem> connectFormItem(final List<FormItem> formItems) {
+        if (this.formItems != null) {
+            removeFormItem();
+        }
+        for (FormItem formItem : formItems) {
+            formItem.addInterview(this);
+        }
+        return new ArrayList<>(formItems);
+    }
+
+    private void removeFormItem() {
+        for (int i = 0; i < formItems.size(); i++) {
+            formItems.remove(i);
+        }
     }
 
     public Interview(final LocalDateTime interviewStartTime,

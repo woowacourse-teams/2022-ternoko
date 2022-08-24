@@ -83,13 +83,8 @@ public class InterviewService {
 
         availableTime.validateAvailableDateTime();
 
-        final Interview interview = Interview.from(interviewRequest.getInterviewDatetime(), crew, coach,
+        return Interview.from(interviewRequest.getInterviewDatetime(), crew, coach,
                 formItems);
-
-        for (FormItem formItem : formItems) {
-            formItem.addInterview(interview);
-        }
-        return interview;
     }
 
     private Crew findCrew(final Long crewId) {
@@ -203,18 +198,18 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
-        public AlarmResponse delete(final Long crewId, final Long interviewId) {
-            final Interview interview = findInterviewById(interviewId);
-            validateChangeAuthorization(interview, crewId);
-            formItemRepository.deleteAll(interview.getFormItems());
-            interviewRepository.delete(interview);
-            openAvailableTime(interview);
-            return AlarmResponse.from(interview);
-        }
+    public AlarmResponse delete(final Long crewId, final Long interviewId) {
+        final Interview interview = findInterviewById(interviewId);
+        validateChangeAuthorization(interview, crewId);
+        formItemRepository.deleteAll(interview.getFormItems());
+        interviewRepository.delete(interview);
+        openAvailableTime(interview);
+        return AlarmResponse.from(interview);
+    }
 
-        public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
-        final boolean onlyInterview) {
-            final Interview canceledInterview = cancel(coachId, interviewId);
+    public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
+                                                      final boolean onlyInterview) {
+        final Interview canceledInterview = cancel(coachId, interviewId);
         final AvailableDateTime unAvailableTime = findAvailableTime(coachId,
                 canceledInterview.getInterviewStartTime());
         if (!onlyInterview) {
