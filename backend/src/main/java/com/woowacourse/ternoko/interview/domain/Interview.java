@@ -1,6 +1,8 @@
 package com.woowacourse.ternoko.interview.domain;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
@@ -18,6 +20,8 @@ import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdException;
+import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,9 +149,16 @@ public class Interview {
         this.interviewStatusType = COMPLETE;
     }
 
-    public boolean sameCrew(final Long crewId) {
-        return crew.sameMember(crewId);
+    public void validateWriter(final Long writerId, final MemberType memberType) {
+        if (memberType.isSameType(COACH) && !coach.sameMember(writerId)) {
+            throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
+        }
+
+        if (memberType.isSameType(CREW) && crew.sameMember(writerId)) {
+            throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
+        }
     }
+
 
     public boolean sameCoach(final Long coachId) {
         return coach.sameMember(coachId);

@@ -4,9 +4,9 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_F
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
+import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
@@ -24,8 +24,6 @@ import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
 import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdException;
-import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
@@ -33,7 +31,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -149,7 +146,8 @@ public class InterviewService {
                                       final Long interviewId,
                                       final InterviewRequest interviewRequest) {
         final Interview interview = findInterviewById(interviewId);
-        validateChangeAuthorization(interview, crewId);
+
+        interview.validateWriter(crewId, CREW);
 
         List<AlarmResponse> alarmResponses = new ArrayList<>();
         alarmResponses.add(AlarmResponse.from(interview));
@@ -169,30 +167,16 @@ public class InterviewService {
         afterUsedTime.changeStatus();
     }
 
-    private void validateChangeAuthorization(Interview originalInterview, Long crewId) {
-        if (!originalInterview.sameCrew(crewId)) {
-            throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
-        }
-    }
-
     private Interview findInterviewById(Long interviewId) {
         return interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
-    public AlarmResponse delete(final Long crewId, final Long interviewId) {
-        final Interview interview = findInterviewById(interviewId);
-        validateChangeAuthorization(interview, crewId);
-        interviewRepository.delete(interview);
-        openAvailableTime(interview);
-        return AlarmResponse.from(interview);
-    }
-
     public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
-                                                      final boolean onlyInterview) {
+                                                      final boolean isDeleted) {
         final Interview canceledInterview = cancel(coachId, interviewId);
         final AvailableDateTime unavailableTime = findAvailableTime(canceledInterview);
-        if (!onlyInterview) {
+        if (isDeleted) {
             availableDateTimeRepository.delete(unavailableTime);
             return AlarmResponse.from(canceledInterview);
         }
@@ -201,19 +185,18 @@ public class InterviewService {
     }
 
     private Interview cancel(final Long coachId, final Long interviewId) {
-        final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
-        if (!interview.sameCoach(coachId)) {
-            throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
-        }
+        final Interview interview = findInterviewById(interviewId);
+        interview.validateWriter(coachId, COACH);
         interview.cancel();
         return interview;
     }
 
-    private void openAvailableTime(final Interview interview) {
-        Optional<AvailableDateTime> time = availableDateTimeRepository
-                .findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
-                        interview.getInterviewStartTime());
-        time.ifPresent(it -> it.changeStatus());
+    public AlarmResponse delete(final Long crewId, final Long interviewId) {
+        final Interview interview = findInterviewById(interviewId);
+        interview.validateWriter(crewId, CREW);
+        interviewRepository.delete(interview);
+        final AvailableDateTime time = findAvailableTime(interview);
+        time.changeStatus();
+        return AlarmResponse.from(interview);
     }
 }
