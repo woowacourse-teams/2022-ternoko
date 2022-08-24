@@ -12,14 +12,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
+import com.woowacourse.ternoko.interview.domain.formitem.Answer;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.Question;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
+@Transactional
+@SpringBootTest
 class AvailableDateTimeRepositoryTest {
 
     @Autowired
@@ -96,8 +101,15 @@ class AvailableDateTimeRepositoryTest {
                 startTime,
                 startTime.plusMinutes(30),
                 COACH1,
-                CREW1
+                CREW1,
+                createFormItems()
         ));
         return interview.getId();
+    }
+
+    private List<FormItem> createFormItems() {
+        return List.of(new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")),
+                new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")),
+                new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")));
     }
 }

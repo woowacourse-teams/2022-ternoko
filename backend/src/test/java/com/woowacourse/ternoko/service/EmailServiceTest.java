@@ -1,8 +1,5 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS1;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS2;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS3;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
@@ -14,22 +11,24 @@ import static org.mockito.Mockito.verify;
 
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.interview.domain.FormItemRepository;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
+import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.Question;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Transactional
 class EmailServiceTest {
 
@@ -41,16 +40,17 @@ class EmailServiceTest {
 
     @MockBean
     private JavaMailSender javaMailSender;
-    @Autowired
-    private FormItemRepository formItemRepository;
 
     @Test
     @DisplayName("다음날 면담이 2개 존재할때 메일 전송은 2번 일어나야 한다.")
     void sendEmail() {
         // given
-        saveInterview(LocalDateTime.now().plusDays(1), COACH1, CREW1, FORM_ITEMS1);
-        saveInterview(LocalDateTime.now().plusDays(1), COACH2, CREW2, FORM_ITEMS2);
-        saveInterview(LocalDateTime.now().plusDays(2), COACH2, CREW3, FORM_ITEMS3);
+        saveInterview(LocalDateTime.now().plusDays(1), COACH1, CREW1,
+                createFormItems());
+        saveInterview(LocalDateTime.now().plusDays(1), COACH2, CREW2,
+                createFormItems());
+        saveInterview(LocalDateTime.now().plusDays(2), COACH2, CREW3,
+                createFormItems());
 
         // when
         emailService.sendEmail();
@@ -63,16 +63,20 @@ class EmailServiceTest {
                                final Coach coach,
                                final Crew crew,
                                final List<FormItem> formItems) {
+
         final Interview interview = interviewRepository.save(new Interview(
                 localDateTime,
                 localDateTime.plusMinutes(30),
                 coach,
-                crew
+                crew,
+                formItems
         ));
-        for (FormItem formItem : formItems) {
-            formItem.addInterview(interview);
-            formItemRepository.save(formItem);
-        }
         return interview.getId();
+    }
+
+    private List<FormItem> createFormItems() {
+        return List.of(new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")),
+                new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")),
+                new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")));
     }
 }

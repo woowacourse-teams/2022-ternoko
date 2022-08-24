@@ -67,7 +67,6 @@ public class Interview {
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
 
-
     public static Interview from(final LocalDateTime interviewDatetime, final Crew crew, final Coach coach,
                                  final List<FormItem> formItems) {
         return new Interview(
@@ -78,55 +77,25 @@ public class Interview {
                 formItems);
     }
 
-    public Interview(final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
+    public Interview(final Long id, final LocalDateTime interviewStartTime, final LocalDateTime interviewEndTime,
                      final Coach coach, final Crew crew,
-                     final List<FormItem> formItems) {
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = new ArrayList<>(formItems);
-        this.interviewStatusType = EDITABLE;
-    }
-
-    public Interview(final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach,
-                     final Crew crew,
                      final List<FormItem> formItems,
-                     final InterviewStatusType interviewStatusType) {
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = new ArrayList<>(formItems);
-        this.interviewStatusType = interviewStatusType;
-    }
-
-    public Interview(final Long id,
-                     final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach,
-                     final Crew crew,
                      final InterviewStatusType interviewStatusType) {
         this.id = id;
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
+        this.formItems = new ArrayList<>(formItems);
         this.interviewStatusType = interviewStatusType;
     }
 
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
-                     final Crew crew) {
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.interviewStatusType = EDITABLE;
+                     final Crew crew,
+                     final List<FormItem> formItems) {
+        this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
     }
 
     public void update(Interview interview) {

@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.domain;
 
+import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
@@ -24,7 +25,8 @@ class InterviewTest {
                 localDateTime,
                 localDateTime.plusMinutes(30),
                 COACH1,
-                CREW1
+                CREW1,
+                FORM_ITEMS1
         );
 
         // when
@@ -45,13 +47,15 @@ class InterviewTest {
                 localDateTime.plusMinutes(30),
                 COACH1,
                 CREW1,
+                FORM_ITEMS1,
                 FIXED
         );
         final Interview updateInterview = new Interview(
                 localDateTime,
                 localDateTime.plusMinutes(30),
                 COACH2,
-                CREW1);
+                CREW1,
+                FORM_ITEMS1);
 
         // when & then
         assertThatThrownBy(() -> interview.update(updateInterview))
