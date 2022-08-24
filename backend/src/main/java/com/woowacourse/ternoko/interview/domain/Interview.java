@@ -61,7 +61,7 @@ public class Interview {
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
-    @OneToMany(mappedBy = "interview", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "interview", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<FormItem> formItems = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

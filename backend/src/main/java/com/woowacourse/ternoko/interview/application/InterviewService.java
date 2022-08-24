@@ -14,7 +14,6 @@ import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.interview.domain.FormItemRepository;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
@@ -55,7 +54,6 @@ public class InterviewService {
     private final CrewRepository crewRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
-    private final FormItemRepository formItemRepository;
 
     public AlarmResponse create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
@@ -185,7 +183,6 @@ public class InterviewService {
     public AlarmResponse delete(final Long crewId, final Long interviewId) {
         final Interview interview = findInterviewById(interviewId);
         validateChangeAuthorization(interview, crewId);
-        formItemRepository.deleteAll(interview.getFormItems());
         interviewRepository.delete(interview);
         openAvailableTime(interview);
         return AlarmResponse.from(interview);
