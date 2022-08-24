@@ -62,8 +62,9 @@ public class InterviewService {
 
     public AlarmResponse create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
+
         final AvailableDateTime availableDateTime = findAvailableTime(interviewRequest);
-        validateAvailableDateTime(availableDateTime);
+        availableDateTime.validateAvailableDateTime();
 
         final Interview interview = convertInterview(crewId, interviewRequest);
         availableDateTime.changeStatus(USED);
@@ -77,11 +78,7 @@ public class InterviewService {
         }
     }
 
-    private void validateAvailableDateTime(final AvailableDateTime availableDateTime) {
-        if (availableDateTime.isUsed()) {
-            throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
-        }
-    }
+
 
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
         final LocalDateTime interviewDatetime = interviewRequest.getInterviewDatetime();

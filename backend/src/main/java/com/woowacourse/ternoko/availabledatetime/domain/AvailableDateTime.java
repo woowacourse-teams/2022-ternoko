@@ -1,7 +1,9 @@
 package com.woowacourse.ternoko.availabledatetime.domain;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
 
+import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,7 +48,13 @@ public class AvailableDateTime {
         this.availableDateTimeStatus = status;
     }
 
-    public boolean isUsed() {
+    public void validateAvailableDateTime() {
+        if (isUsed()) {
+            throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
+        }
+    }
+
+    private boolean isUsed() {
         return availableDateTimeStatus.matchType(USED);
     }
 }
