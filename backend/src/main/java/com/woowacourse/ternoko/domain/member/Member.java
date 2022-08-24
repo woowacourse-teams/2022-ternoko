@@ -44,7 +44,7 @@ public class Member {
     @Column(name = "ROLE")
     private MemberType memberType;
 
-    public boolean sameMember(Long id) {
+    public boolean isMember(Long id) {
         return this.id.equals(id);
     }
 }

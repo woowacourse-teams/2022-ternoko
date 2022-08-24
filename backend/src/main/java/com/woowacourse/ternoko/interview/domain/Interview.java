@@ -150,18 +150,13 @@ public class Interview {
     }
 
     public void validateWriter(final Long writerId, final MemberType memberType) {
-        if (memberType.isSameType(COACH) && !coach.sameMember(writerId)) {
+        if (memberType.isSameType(COACH) && !coach.isMember(writerId)) {
             throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
         }
 
-        if (memberType.isSameType(CREW) && crew.sameMember(writerId)) {
+        if (memberType.isSameType(CREW) && crew.isMember(writerId)) {
             throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
         }
-    }
-
-
-    public boolean sameCoach(final Long coachId) {
-        return coach.sameMember(coachId);
     }
 
     public void updateStatus(final InterviewStatusType interviewStatusType) {
@@ -176,11 +171,11 @@ public class Interview {
     }
 
     public MemberType findMemberType(final Long memberId) {
-        if (coach.sameMember(memberId)) {
+        if (coach.isMember(memberId)) {
             return coach.getMemberType();
         }
 
-        if (crew.sameMember(memberId)) {
+        if (crew.isMember(memberId)) {
             return crew.getMemberType();
         }
 
