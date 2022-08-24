@@ -67,6 +67,17 @@ public class Interview {
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
 
+
+    public static Interview from(final LocalDateTime interviewDatetime, final Crew crew, final Coach coach,
+                                 final List<FormItem> formItems) {
+        return new Interview(
+                interviewDatetime,
+                interviewDatetime.plusMinutes(30),
+                coach,
+                crew,
+                formItems);
+    }
+
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach, final Crew crew,

@@ -8,7 +8,6 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_N
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
@@ -64,7 +63,7 @@ public class InterviewService {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
 
         final AvailableDateTime availableDateTime = findAvailableTime(interviewRequest);
-        availableDateTime.validateAvailableDateTime();
+        availableDateTime.validateUsableAvailableDateTime();
 
         final Interview interview = convertInterview(crewId, interviewRequest);
         availableDateTime.changeStatus(USED);
@@ -83,36 +82,30 @@ public class InterviewService {
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
         final LocalDateTime interviewDatetime = interviewRequest.getInterviewDatetime();
 
-        final Crew crew = crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
-
-        final Coach coach = coachRepository.findById(interviewRequest.getCoachId())
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest.getCoachId()));
-
+        final Crew crew = findCrew(crewId);
+        final Coach coach = findCoach(interviewRequest.getCoachId());
         final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
+        final AvailableDateTime availableTime = findAvailableTime(interviewRequest);
 
-        final Interview interview = new Interview(
-                interviewDatetime,
-                interviewDatetime.plusMinutes(30),
-                coach,
-                crew,
+        availableTime.validateAvailableDateTime();
+
+        final Interview interview = Interview.from(interviewDatetime, crew, coach,
                 formItems);
 
         for (FormItem formItem : formItems) {
             formItem.addInterview(interview);
         }
-        validateInterviewStartTime(interviewDatetime);
         return interview;
     }
 
-    private void validateInterviewStartTime(final LocalDateTime interviewStartTime) {
-        //TODO: 날짜 컨트롤러에서 받아서 검증하는걸로 변경
-        final LocalDate nowDay = LocalDate.now();
-        final LocalDate interviewDay = interviewStartTime.toLocalDate();
+    private Crew findCrew(final Long crewId) {
+        return crewRepository.findById(crewId)
+                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
+    }
 
-        if (nowDay.isAfter(interviewDay) || nowDay.isEqual(interviewDay)) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DATE);
-        }
+    private Coach findCoach(final Long interviewRequest) {
+        return coachRepository.findById(interviewRequest)
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
     }
 
     private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
@@ -162,11 +155,9 @@ public class InterviewService {
         List<AlarmResponse> alarmResponses = new ArrayList<>();
         alarmResponses.add(AlarmResponse.from(interview));
 
-        final LocalDateTime interviewDatetime = interviewRequest.getInterviewDatetime();
-
         interview.update(generateUpdateInterview(interview.getCrew(), interviewRequest));
-        validateInterviewStartTime(interviewDatetime);
-
+        final AvailableDateTime availableTime = findAvailableTime(interviewRequest);
+        availableTime.validateAvailableDateTime();
         changeAvailableDateTimeStatus(interviewRequest, interview);
 
         alarmResponses.add(AlarmResponse.from(interview));
@@ -176,8 +167,7 @@ public class InterviewService {
     private Interview generateUpdateInterview(final Crew crew, final InterviewRequest interviewRequest) {
 
         final Long coachId = interviewRequest.getCoachId();
-        final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+        final Coach coach = findCoach(coachId);
 
         return new Interview(
                 interviewRequest.getInterviewDatetime(),
