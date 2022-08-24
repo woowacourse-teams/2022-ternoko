@@ -77,11 +77,7 @@ public class InterviewService {
         }
     }
 
-
-
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
-        final LocalDateTime interviewDatetime = interviewRequest.getInterviewDatetime();
-
         final Crew crew = findCrew(crewId);
         final Coach coach = findCoach(interviewRequest.getCoachId());
         final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
@@ -89,7 +85,7 @@ public class InterviewService {
 
         availableTime.validateAvailableDateTime();
 
-        final Interview interview = Interview.from(interviewDatetime, crew, coach,
+        final Interview interview = Interview.from(interviewRequest.getInterviewDatetime(), crew, coach,
                 formItems);
 
         for (FormItem formItem : formItems) {
@@ -112,6 +108,18 @@ public class InterviewService {
         return interviewQuestions.stream()
                 .map(FormItemRequest::toFormItem)
                 .collect(Collectors.toList());
+    }
+
+    private AvailableDateTime findAvailableTime(final InterviewRequest interviewRequest) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
+                        interviewRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
+    private AvailableDateTime findAvailableTime(final Long coachId, final LocalDateTime interviewDateTime) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId,
+                        interviewDateTime)
+                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
     @Transactional(readOnly = true)
@@ -197,18 +205,18 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
-    public AlarmResponse delete(final Long crewId, final Long interviewId) {
-        final Interview interview = findInterviewById(interviewId);
-        validateChangeAuthorization(interview, crewId);
-        formItemRepository.deleteAll(interview.getFormItems());
-        interviewRepository.delete(interview);
-        openAvailableTime(interview);
-        return AlarmResponse.from(interview);
-    }
+        public AlarmResponse delete(final Long crewId, final Long interviewId) {
+            final Interview interview = findInterviewById(interviewId);
+            validateChangeAuthorization(interview, crewId);
+            formItemRepository.deleteAll(interview.getFormItems());
+            interviewRepository.delete(interview);
+            openAvailableTime(interview);
+            return AlarmResponse.from(interview);
+        }
 
-    public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
-                                                      final boolean onlyInterview) {
-        final Interview canceledInterview = cancel(coachId, interviewId);
+        public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
+        final boolean onlyInterview) {
+            final Interview canceledInterview = cancel(coachId, interviewId);
         final AvailableDateTime unAvailableTime = findAvailableTime(coachId,
                 canceledInterview.getInterviewStartTime());
         if (!onlyInterview) {
@@ -227,18 +235,6 @@ public class InterviewService {
         }
         interview.cancel();
         return interview;
-    }
-
-    private AvailableDateTime findAvailableTime(final InterviewRequest interviewRequest) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
-                        interviewRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
-    }
-
-    private AvailableDateTime findAvailableTime(final Long coachId, final LocalDateTime interviewDateTime) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(coachId,
-                        interviewDateTime)
-                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
     private void openAvailableTime(final Interview interview) {
