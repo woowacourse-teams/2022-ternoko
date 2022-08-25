@@ -91,7 +91,7 @@ public class InterviewService {
         final Coach coach = getCoachById(interviewRequest.getCoachId());
         final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
 
-        return Interview.from(interviewRequest.getInterviewDatetime(), coach, crew,
+        return Interview.of(interviewRequest.getInterviewDatetime(), coach, crew,
                 formItems);
     }
 

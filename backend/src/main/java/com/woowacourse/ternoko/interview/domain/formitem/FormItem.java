@@ -40,8 +40,8 @@ public class FormItem {
         this(null, question, answer);
     }
 
-    public static FormItem from(String question, String answer) {
-        return new FormItem(Question.of(question), Answer.of(answer));
+    public static FormItem of(String question, String answer) {
+        return new FormItem(Question.from(question), Answer.from(answer));
     }
 
     public void addInterview(final Interview interview) {

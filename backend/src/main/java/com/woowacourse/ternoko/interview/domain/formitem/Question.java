@@ -22,7 +22,7 @@ public class Question {
         this.value = value;
     }
 
-    public static Question of(final String value) {
+    public static Question from(final String value) {
         if (value.length() > QUESTION_MAX_LENGTH) {
             throw new InvalidLengthException(OVER_LENGTH, QUESTION_MAX_LENGTH);
         }

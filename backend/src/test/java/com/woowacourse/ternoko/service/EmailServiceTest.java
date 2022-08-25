@@ -75,8 +75,8 @@ class EmailServiceTest {
     }
 
     private List<FormItem> createFormItems() {
-        return List.of(new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")),
-                new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")),
-                new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1")));
+        return List.of(new FormItem(null, Question.from("고정질문1"), Answer.from("고정답변1")),
+                new FormItem(null, Question.from("고정질문1"), Answer.from("고정답변1")),
+                new FormItem(null, Question.from("고정질문1"), Answer.from("고정답변1")));
     }
 }

@@ -13,9 +13,9 @@ import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CREW_
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 
-import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.MemberType;
@@ -92,8 +92,10 @@ public class Interview {
         this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
     }
 
-    public static Interview from(final LocalDateTime interviewDatetime, final Coach coach, final Crew crew,
-                                 final List<FormItem> formItems) {
+    public static Interview of(final LocalDateTime interviewDatetime,
+                               final Coach coach,
+                               final Crew crew,
+                               final List<FormItem> formItems) {
         return new Interview(
                 interviewDatetime,
                 interviewDatetime.plusMinutes(30),

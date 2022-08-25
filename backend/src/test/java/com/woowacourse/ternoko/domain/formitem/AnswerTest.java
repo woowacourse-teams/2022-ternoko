@@ -19,7 +19,7 @@ class AnswerTest {
     @MethodSource("validAnswerParameters")
     @DisplayName("answer에는 1000자 까지 들어갈 수 있다.")
     void answerLengthTest(String input, String testName) {
-        assertDoesNotThrow(() -> Answer.of(input));
+        assertDoesNotThrow(() -> Answer.from(input));
     }
 
     private static Stream<Arguments> validAnswerParameters() {
@@ -34,7 +34,7 @@ class AnswerTest {
     @Test
     @DisplayName("answer에는 1000자가 넘어가면 예외를 반환해야 한다.")
     void answerInvalidLengthTest() {
-        assertThatThrownBy(() -> Answer.of("한".repeat(1001)))
+        assertThatThrownBy(() -> Answer.from("한".repeat(1001)))
                 .isInstanceOf(InvalidLengthException.class)
                 .hasMessage(1000 + OVER_LENGTH.getMessage());
     }

@@ -23,6 +23,6 @@ public class FormItemRequest {
     }
 
     public FormItem toFormItem() {
-        return FormItem.from(question, answer);
+        return FormItem.of(question, answer);
     }
 }

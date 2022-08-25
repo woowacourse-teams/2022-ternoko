@@ -37,7 +37,7 @@ public class InterviewFixture {
             createFormItem(6));
 
     private static FormItem createFormItem(int count) {
-        return new FormItem(null, Question.of("고정질문" + count), Answer.of("고정답변" + count));
+        return new FormItem(null, Question.from("고정질문" + count), Answer.from("고정답변" + count));
     }
 
     public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),

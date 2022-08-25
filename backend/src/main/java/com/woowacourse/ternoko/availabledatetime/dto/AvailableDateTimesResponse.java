@@ -14,7 +14,7 @@ public class AvailableDateTimesResponse {
 
     private List<AvailableDateTimeResponse> calendarTimes;
 
-    public static AvailableDateTimesResponse of(final List<AvailableDateTime> availableDateTimes) {
+    public static AvailableDateTimesResponse from(final List<AvailableDateTime> availableDateTimes) {
         return new AvailableDateTimesResponse(availableDateTimes.stream()
                 .map(data -> new AvailableDateTimeResponse(data.getLocalDateTime(),
                         data.getAvailableDateTimeStatus()))
