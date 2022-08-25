@@ -43,8 +43,8 @@ public class AvailableDateTime {
         this.availableDateTimeStatus = availableDateTimeStatus;
     }
 
-    public void changeStatus() {
-        this.availableDateTimeStatus = availableDateTimeStatus.change();
+    public void changeStatus(AvailableDateTimeStatus status) {
+        this.availableDateTimeStatus = status;
     }
 
     public boolean isPast() {

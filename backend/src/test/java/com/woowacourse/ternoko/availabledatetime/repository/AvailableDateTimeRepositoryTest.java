@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.availabledatetime.domain;
+package com.woowacourse.ternoko.availabledatetime.repository;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
@@ -10,6 +10,7 @@ import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
@@ -44,7 +45,7 @@ class AvailableDateTimeRepositoryTest {
         final AvailableDateTime availableDateTime = saveAvailableTime(availableTime);
         final AvailableDateTime startDateTime = saveAvailableTime(startTime);
         final AvailableDateTime reservedDateTime = saveAvailableTime(reservedTime);
-        startDateTime.changeStatus();
+        startDateTime.changeStatus(USED);
 
         // when
         saveInterview(startTime);
@@ -73,9 +74,9 @@ class AvailableDateTimeRepositoryTest {
 
         final AvailableDateTime availableDateTime = saveAvailableTime(availableTime);
         final AvailableDateTime startDateTime = saveAvailableTime(startTime);
-        startDateTime.changeStatus();
+        startDateTime.changeStatus(USED);
         final AvailableDateTime reservedDateTime = saveAvailableTime(reservedTime);
-        reservedDateTime.changeStatus();
+        reservedDateTime.changeStatus(USED);
 
         // when
         final Long interviewId = saveInterview(startTime);

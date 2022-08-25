@@ -34,9 +34,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.availabledatetime.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.AlarmResponse;

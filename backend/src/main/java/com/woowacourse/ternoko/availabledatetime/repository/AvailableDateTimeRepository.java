@@ -1,5 +1,6 @@
-package com.woowacourse.ternoko.availabledatetime.domain;
+package com.woowacourse.ternoko.availabledatetime.repository;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

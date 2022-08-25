@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.interview.application;
 
+import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.COACH_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
@@ -9,7 +11,7 @@ import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALI
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.availabledatetime.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.domain.member.Coach;
@@ -60,7 +62,7 @@ public class InterviewService {
         final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
         validateOpenTime(availableDateTime);
         validateAfterToday(availableDateTime);
-        availableDateTime.changeStatus();
+        availableDateTime.changeStatus(USED);
 
         final Interview interview = convertInterview(crewId, interviewRequest);
         return AlarmResponse.from(interviewRepository.save(interview));
@@ -179,8 +181,8 @@ public class InterviewService {
         final AvailableDateTime beforeTime = getAvailableTime(originalInterview);
         final AvailableDateTime afterTime = getAvailableTime(interviewRequest);
 
-        beforeTime.changeStatus();
-        afterTime.changeStatus();
+        beforeTime.changeStatus(OPEN);
+        afterTime.changeStatus(USED);
     }
 
     private Interview getInterviewById(Long interviewId) {
@@ -197,7 +199,7 @@ public class InterviewService {
             availableDateTimeRepository.delete(unavailableTime);
             return AlarmResponse.from(canceledInterview);
         }
-        unavailableTime.changeStatus();
+        unavailableTime.changeStatus(OPEN);
         return AlarmResponse.from(canceledInterview);
     }
 
@@ -215,7 +217,7 @@ public class InterviewService {
                 interview.getCoach().getId(),
                 interview.getInterviewStartTime());
 
-        time.ifPresent(AvailableDateTime::changeStatus);
+        time.ifPresent(it -> it.changeStatus(OPEN));
 
         return AlarmResponse.from(interview);
     }
