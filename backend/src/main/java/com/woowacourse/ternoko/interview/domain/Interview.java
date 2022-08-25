@@ -20,13 +20,13 @@ import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItems;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdException;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,7 +34,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -65,14 +64,20 @@ public class Interview {
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
-    @OneToMany(mappedBy = "interview", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<FormItem> formItems = new ArrayList<>();
+//    @OneToMany(mappedBy = "interview", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//    private List<FormItem> formItems = new ArrayList<>();
+
+    @Embedded
+    private FormItems formItems;
 
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
 
-    public Interview(final Long id, final LocalDateTime interviewStartTime, final LocalDateTime interviewEndTime,
-                     final Coach coach, final Crew crew,
+    public Interview(final Long id,
+                     final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
                      final List<FormItem> formItems,
                      final InterviewStatusType interviewStatusType) {
         this.id = id;
@@ -80,7 +85,7 @@ public class Interview {
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
-        this.formItems = connectFormItem(formItems);
+        this.formItems = new FormItems(formItems, this);
         this.interviewStatusType = interviewStatusType;
     }
 
@@ -104,32 +109,16 @@ public class Interview {
                 formItems);
     }
 
-    private List<FormItem> connectFormItem(final List<FormItem> formItems) {
-        if (this.formItems != null) {
-            removeFormItem();
-        }
-        for (FormItem formItem : formItems) {
-            formItem.addInterview(this);
-        }
-        return new ArrayList<>(formItems);
-    }
-
-    private void removeFormItem() {
-        for (int i = 0; i < formItems.size(); i++) {
-            formItems.remove(i);
-        }
-    }
-
     public void update(Interview interview) {
         validateCrew(interview.crew.getId());
         validateInterviewStatus(FIXED, CANNOT_EDIT_INTERVIEW);
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
         this.coach = interview.getCoach();
-        updateFormItem(interview.getFormItems());
+        formItems.update(interview.getFormItems());
     }
 
-    private void validateCrew(final Long crewId){
+    private void validateCrew(final Long crewId) {
         if (!crew.isSameId(crewId)) {
             throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
         }
@@ -142,19 +131,12 @@ public class Interview {
         }
     }
 
-    private void updateFormItem(final List<FormItem> formItem) {
-        //TODO : 일급컬렉션으로 빼기~
-        for (int i = 0; i < formItem.size(); i++) {
-            this.formItems.get(i).update(formItem.get(i));
-        }
-    }
-
     public void cancel(final Long coachId) {
         validateCoach(coachId);
         this.interviewStatusType = CANCELED;
     }
 
-    private void validateCoach(final Long coachId){
+    private void validateCoach(final Long coachId) {
         if (!coach.isSameId(coachId)) {
             throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
         }
@@ -202,5 +184,10 @@ public class Interview {
 
     public boolean isCreatedBy(final Long crewId) {
         return crew.isSameId(crewId);
+    }
+
+
+    public List<FormItem> getFormItems() {
+        return formItems.getFormItems();
     }
 }
