@@ -28,6 +28,7 @@ public enum ExceptionType {
     INVALID_INTERVIEW_DUPLICATE_DATE_TIME(4003, "면담 예약은 같은 시간, 같은 코치에 단 한번 가능합니다."),
     OVER_LENGTH(4004, "자를 넘을 수 없습니다."),
     CANNOT_EDIT_INTERVIEW(4005, "이미 사전메일을 보낸 면담은 수정할 수 없습니다."),
+    INVALID_INTERVIEW_BY_MEMBER(4006, "다른 사용자의 인터뷰에 접근할 수 없습니다."),
 
     // Comment 관련 Exception
     INVALID_STATUS_CREATE_COMMENT(5001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),

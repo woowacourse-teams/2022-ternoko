@@ -472,6 +472,24 @@ class InterviewServiceTest {
                 new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
         // when
+        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), alarmResponse.getInterviewId(), true);
+        AlarmResponse deleteResponse = interviewService.delete(CREW1.getId(), alarmResponse.getInterviewId());
+
+        // then
+        assertThatThrownBy(() -> interviewService.findInterviewResponseById(deleteResponse.getInterviewId()))
+                .isInstanceOf(InterviewNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("크루 - 코치가 취소한 (되는시간까지 삭제한) 면담 예약을 삭제한다.")
+    void deleteCanceledInterviewWithEmptyTime() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
         interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), alarmResponse.getInterviewId(), false);
         AlarmResponse deleteResponse = interviewService.delete(CREW1.getId(), alarmResponse.getInterviewId());
 
