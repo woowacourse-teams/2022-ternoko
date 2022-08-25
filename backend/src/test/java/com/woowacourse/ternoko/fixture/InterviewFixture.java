@@ -10,7 +10,6 @@ import com.woowacourse.ternoko.interview.domain.formitem.Question;
 import com.woowacourse.ternoko.interview.dto.FormItemRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class InterviewFixture {
@@ -29,37 +28,17 @@ public class InterviewFixture {
             new FormItemRequest("수정질문2", "수정답변2"),
             new FormItemRequest("수정질문3", "수정답변3"));
 
-    public static final FormItem FORM_ITEM1 = new FormItem(null, Question.of("고정질문1"), Answer.of("고정답변1"));
-    public static final FormItem FORM_ITEM2 = new FormItem(null, Question.of("고정질문2"), Answer.of("고정답변2"));
-    public static final FormItem FORM_ITEM3 = new FormItem(null, Question.of("고정질문3"), Answer.of("고정답변3"));
-    public static final FormItem FORM_ITEM4 = new FormItem(null, Question.of("고정질문4"), Answer.of("고정답변4"));
-    public static final FormItem FORM_ITEM5 = new FormItem(null, Question.of("고정질문5"), Answer.of("고정답변5"));
-    public static final FormItem FORM_ITEM6 = new FormItem(null, Question.of("고정질문6"), Answer.of("고정답변6"));
+    public static final List<FormItem> FORM_ITEMS1 = List.of(createFormItem(1),
+            createFormItem(2),
+            createFormItem(3));
 
-    public static final ArrayList<FormItem> FORM_ITEMS1 = new ArrayList<>() {
-        {
-            add(FORM_ITEM1);
-            add(FORM_ITEM2);
-            add(FORM_ITEM3);
-        }
-    };
+    public static final List<FormItem> FORM_ITEMS2 = List.of(createFormItem(4),
+            createFormItem(5),
+            createFormItem(6));
 
-
-    public static final ArrayList<FormItem> FORM_ITEMS2 = new ArrayList<>() {
-        {
-            add(FORM_ITEM4);
-            add(FORM_ITEM5);
-            add(FORM_ITEM6);
-        }
-    };
-
-    public static final ArrayList<FormItem> FORM_ITEMS3 = new ArrayList<>() {
-        {
-            add(FORM_ITEM1);
-            add(FORM_ITEM2);
-            add(FORM_ITEM3);
-        }
-    };
+    private static FormItem createFormItem(int count) {
+        return new FormItem(null, Question.of("고정질문" + count), Answer.of("고정답변" + count));
+    }
 
     public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),
             NOW_PLUS_2_DAYS_FIRST_TIME,
