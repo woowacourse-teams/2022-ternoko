@@ -1,7 +1,6 @@
 package com.woowacourse.ternoko.interview.application;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
@@ -38,7 +37,6 @@ import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.AlarmResponse;
@@ -373,23 +371,6 @@ class InterviewServiceTest {
                         FORM_ITEM_UPDATE_REQUESTS)))
                 .isInstanceOf(InvalidInterviewCrewIdException.class)
                 .hasMessage(INVALID_INTERVIEW_CREW_ID.getMessage());
-    }
-
-    @Test
-    @DisplayName("면담 예약을 수정 시 선택한 코치가 존재하지 않는다면 예외를 반환한다.")
-    void update_WhenCoachNotFound() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
-
-        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
-        // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
-                new InterviewRequest(5L, LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
-                        FORM_ITEM_UPDATE_REQUESTS)))
-                .isInstanceOf(CoachNotFoundException.class)
-                .hasMessage(5L + COACH_NOT_FOUND.getMessage());
     }
 
     @Test

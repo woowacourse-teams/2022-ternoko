@@ -5,6 +5,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FO
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
@@ -57,18 +58,12 @@ public class InterviewService {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
 
         final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
-        availableDateTime.validateUsableAvailableDateTime();
-
-        final Interview interview = convertInterview(crewId, interviewRequest);
+        validateOpenTime(availableDateTime);
+        validateAfterToday(availableDateTime);
         availableDateTime.changeStatus();
 
+        final Interview interview = convertInterview(crewId, interviewRequest);
         return AlarmResponse.from(interviewRepository.save(interview));
-    }
-
-    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
-                        interviewRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
     private void validateDuplicateStartTimeByCrew(final Long crewId, final LocalDateTime interviewDateTime) {
@@ -77,13 +72,22 @@ public class InterviewService {
         }
     }
 
+    public void validateOpenTime(final AvailableDateTime availableDateTime) {
+        if (availableDateTime.isUsed()) {
+            throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
+        }
+    }
+
+    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
+                        interviewRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
         final Crew crew = getCrewById(crewId);
         final Coach coach = getCoachById(interviewRequest.getCoachId());
         final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
-        final AvailableDateTime availableTime = getAvailableTime(interviewRequest);
-
-        availableTime.validateAvailableDateTime();
 
         return Interview.from(interviewRequest.getInterviewDatetime(), coach, crew,
                 formItems);
@@ -154,11 +158,20 @@ public class InterviewService {
         final List<AlarmResponse> alarmResponses = new ArrayList<>();
         alarmResponses.add(AlarmResponse.from(interview));
 
-        interview.update(convertInterview(crewId, interviewRequest));
+        final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
+        validateAfterToday(availableDateTime);
         changeAvailableDateTimeStatus(interviewRequest, interview);
+
+        interview.update(convertInterview(crewId, interviewRequest));
 
         alarmResponses.add(AlarmResponse.from(interview));
         return alarmResponses;
+    }
+
+    private void validateAfterToday(final AvailableDateTime availableDateTime) {
+        if (availableDateTime.isPast() || availableDateTime.isToday()) {
+            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DATE);
+        }
     }
 
     private void changeAvailableDateTimeStatus(final InterviewRequest interviewRequest,
