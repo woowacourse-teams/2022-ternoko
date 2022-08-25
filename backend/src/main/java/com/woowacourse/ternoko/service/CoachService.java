@@ -40,18 +40,20 @@ public class CoachService {
 
     @Transactional(readOnly = true)
     public CoachResponse findCoach(final Long coachId) {
-        final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+        final Coach coach = getCoachById(coachId);
         return CoachResponse.from(coach);
+    }
+
+    private Coach getCoachById(final Long coachId) {
+        return coachRepository.findById(coachId)
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
     }
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
                                                final CalendarRequest calendarRequest) {
-        final Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+        final Coach coach = getCoachById(coachId);
 
-        final List<AvailableDateTimeRequest> availableDateTimeRequests = calendarRequest
-                .getCalendarTimes();
+        final List<AvailableDateTimeRequest> availableDateTimeRequests = calendarRequest.getCalendarTimes();
         for (AvailableDateTimeRequest availableDateTime : availableDateTimeRequests) {
             putAvailableTime(coach, availableDateTime);
         }
@@ -93,7 +95,9 @@ public class CoachService {
     }
 
     public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
-        coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId, coachUpdateRequest.getNickname(),
-                coachUpdateRequest.getImageUrl(), coachUpdateRequest.getIntroduce());
+        coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId,
+                coachUpdateRequest.getNickname(),
+                coachUpdateRequest.getImageUrl(),
+                coachUpdateRequest.getIntroduce());
     }
 }

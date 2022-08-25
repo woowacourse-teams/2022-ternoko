@@ -28,10 +28,13 @@ public class CrewService {
     }
 
     @Transactional(readOnly = true)
-    public CrewResponse findCrew(final Long crewId) {
-        final Crew crew = crewRepository.findById(crewId)
-                .orElseThrow(
-                        () -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
+    public CrewResponse findCrew(final Long crewId){
+        final Crew crew = getCrewById(crewId);
         return CrewResponse.from(crew);
+    }
+
+    private Crew getCrewById(final Long crewId) {
+        return crewRepository.findById(crewId)
+                .orElseThrow(() -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
     }
 }
