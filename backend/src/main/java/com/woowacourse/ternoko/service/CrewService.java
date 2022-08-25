@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.service;
 
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
-import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CrewResponse;
 import com.woowacourse.ternoko.dto.CrewUpdateRequest;

@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.comment.domain;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_MEMBER_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_COMMENT_MEMBER_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.woowacourse.ternoko.comment.exception.InvalidCommentInterviewIdException;

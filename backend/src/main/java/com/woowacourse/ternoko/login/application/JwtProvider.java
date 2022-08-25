@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.login.application;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZED_MEMBER;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.UNAUTHORIZED_MEMBER;
 
-import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.domain.member.Member;

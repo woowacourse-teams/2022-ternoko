@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.comment.application;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.COMMENT_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;

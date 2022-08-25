@@ -1,12 +1,12 @@
 package com.woowacourse.ternoko.interview.application;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.CREW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DATE;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;

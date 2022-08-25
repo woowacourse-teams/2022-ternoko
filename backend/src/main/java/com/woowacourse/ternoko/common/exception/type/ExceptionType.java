@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.common.exception;
+package com.woowacourse.ternoko.common.exception.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

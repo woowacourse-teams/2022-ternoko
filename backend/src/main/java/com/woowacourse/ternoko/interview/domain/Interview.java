@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.interview.domain;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.CANNOT_EDIT_INTERVIEW;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_COACH_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CANCELED;
@@ -13,7 +13,7 @@ import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CREW_
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 
-import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.domain.member.Coach;

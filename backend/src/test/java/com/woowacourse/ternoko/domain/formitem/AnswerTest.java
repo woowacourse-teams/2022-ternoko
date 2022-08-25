@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.domain.formitem;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.OVER_LENGTH;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 

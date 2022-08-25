@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_TOKEN;
 import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;

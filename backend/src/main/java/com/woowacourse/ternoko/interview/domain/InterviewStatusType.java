@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.interview.domain;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
 

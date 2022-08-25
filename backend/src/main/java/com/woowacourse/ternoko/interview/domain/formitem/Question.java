@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.interview.domain.formitem;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.OVER_LENGTH;
 
 import com.woowacourse.ternoko.common.exception.InvalidLengthException;
 import javax.persistence.Column;
