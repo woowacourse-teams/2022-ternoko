@@ -65,6 +65,12 @@ public class InterviewService {
         return AlarmResponse.from(interviewRepository.save(interview));
     }
 
+    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
+                        interviewRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    }
+
     private void validateDuplicateStartTimeByCrew(final Long crewId, final LocalDateTime interviewDateTime) {
         if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewDateTime)) {
             throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
@@ -72,8 +78,8 @@ public class InterviewService {
     }
 
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
-        final Crew crew = findCrew(crewId);
-        final Coach coach = findCoach(interviewRequest.getCoachId());
+        final Crew crew = getCrewById(crewId);
+        final Coach coach = getCoachById(interviewRequest.getCoachId());
         final List<FormItem> formItems = convertFormItem(interviewRequest.getInterviewQuestions());
         final AvailableDateTime availableTime = getAvailableTime(interviewRequest);
 
@@ -83,26 +89,20 @@ public class InterviewService {
                 formItems);
     }
 
-    private Crew findCrew(final Long crewId) {
-        return crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
-    }
-
-    private Coach findCoach(final Long interviewRequest) {
-        return coachRepository.findById(interviewRequest)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
-    }
-
     private List<FormItem> convertFormItem(final List<FormItemRequest> interviewQuestions) {
         return interviewQuestions.stream()
                 .map(FormItemRequest::toFormItem)
                 .collect(Collectors.toList());
     }
 
-    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
-                        interviewRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
+    private Crew getCrewById(final Long crewId) {
+        return crewRepository.findById(crewId)
+                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
+    }
+
+    private Coach getCoachById(final Long interviewRequest) {
+        return coachRepository.findById(interviewRequest)
+                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
     }
 
     private AvailableDateTime getAvailableTime(final Interview interview) {
@@ -113,8 +113,7 @@ public class InterviewService {
 
     @Transactional(readOnly = true)
     public InterviewResponse findInterviewResponseById(final Long interviewId) {
-        final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+        final Interview interview = getInterviewById(interviewId);
         return InterviewResponse.from(interview);
     }
 
@@ -130,14 +129,7 @@ public class InterviewService {
     @Transactional(readOnly = true)
     public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
         final List<Interview> interviews = getInterviews(coachId, year, month);
-        final List<Interview> excludeCanceledInterviews = filteringCanceledInterview(interviews);
-        return ScheduleResponse.from(excludeCanceledInterviews);
-    }
-
-    private List<Interview> filteringCanceledInterview(final List<Interview> interviews) {
-        return interviews.stream()
-                .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
-                .collect(Collectors.toList());
+        return ScheduleResponse.from(filterCanceledInterview(interviews));
     }
 
     private List<Interview> getInterviews(final Long coachId, final Integer year, final Integer month) {
@@ -145,16 +137,21 @@ public class InterviewService {
         final LocalDateTime startOfMonth = LocalDateTime.of(year, month, FIRST_DAY_OF_MONTH, START_HOUR, START_MINUTE);
         final LocalDateTime endOfMonth = LocalDateTime.of(year, month, lastDayOfMonth, END_HOUR, END_MINUTE);
 
-        final List<Interview> interviews = interviewRepository
+        return interviewRepository
                 .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
-        return interviews;
+    }
+
+    private List<Interview> filterCanceledInterview(final List<Interview> interviews) {
+        return interviews.stream()
+                .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
+                .collect(Collectors.toList());
     }
 
     public List<AlarmResponse> update(final Long crewId,
                                       final Long interviewId,
                                       final InterviewRequest interviewRequest) {
-        final Interview interview = findInterviewById(interviewId);
-        List<AlarmResponse> alarmResponses = new ArrayList<>();
+        final Interview interview = getInterviewById(interviewId);
+        final List<AlarmResponse> alarmResponses = new ArrayList<>();
         alarmResponses.add(AlarmResponse.from(interview));
 
         interview.update(convertInterview(crewId, interviewRequest));
@@ -164,15 +161,16 @@ public class InterviewService {
         return alarmResponses;
     }
 
-    private void changeAvailableDateTimeStatus(InterviewRequest interviewRequest, Interview originalInterview) {
-        final AvailableDateTime beforeUsedTime = getAvailableTime(originalInterview);
-        final AvailableDateTime afterUsedTime = getAvailableTime(interviewRequest);
+    private void changeAvailableDateTimeStatus(final InterviewRequest interviewRequest,
+                                               final Interview originalInterview) {
+        final AvailableDateTime beforeTime = getAvailableTime(originalInterview);
+        final AvailableDateTime afterTime = getAvailableTime(interviewRequest);
 
-        beforeUsedTime.changeStatus();
-        afterUsedTime.changeStatus();
+        beforeTime.changeStatus();
+        afterTime.changeStatus();
     }
 
-    private Interview findInterviewById(Long interviewId) {
+    private Interview getInterviewById(Long interviewId) {
         return interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
@@ -191,13 +189,13 @@ public class InterviewService {
     }
 
     private Interview cancel(final Long coachId, final Long interviewId) {
-        final Interview interview = findInterviewById(interviewId);
+        final Interview interview = getInterviewById(interviewId);
         interview.cancel(coachId);
         return interview;
     }
 
     public AlarmResponse delete(final Long crewId, final Long interviewId) {
-        final Interview interview = findInterviewById(interviewId);
+        final Interview interview = getInterviewById(interviewId);
         deleteInterview(crewId, interview);
 
         final Optional<AvailableDateTime> time = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
