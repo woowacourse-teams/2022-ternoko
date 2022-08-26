@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.comment.presentation;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
+import static com.woowacourse.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.support.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

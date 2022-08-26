@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2_UPDATE_REQUEST;
+import static com.woowacourse.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.support.fixture.MemberFixture.CREW2_UPDATE_REQUEST;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

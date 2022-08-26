@@ -1,14 +1,14 @@
 package com.woowacourse.ternoko.comment.application;
 
+import static com.woowacourse.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.support.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

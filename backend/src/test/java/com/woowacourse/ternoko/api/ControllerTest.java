@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
+import static com.woowacourse.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

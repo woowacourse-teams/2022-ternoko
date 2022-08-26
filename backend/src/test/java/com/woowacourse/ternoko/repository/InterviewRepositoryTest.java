@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.repository;
 
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS1;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
+import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEMS1;
+import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEMS2;
+import static com.woowacourse.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.domain.member.Coach;

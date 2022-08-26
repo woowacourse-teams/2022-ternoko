@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.TIME2;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
+import static com.woowacourse.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.support.fixture.MemberFixture.TIME2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;

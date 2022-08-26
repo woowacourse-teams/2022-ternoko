@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
+import static com.woowacourse.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.support.fixture.MemberFixture.CREW3;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

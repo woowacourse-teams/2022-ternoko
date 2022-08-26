@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.fixture;
+package com.woowacourse.support.fixture;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 

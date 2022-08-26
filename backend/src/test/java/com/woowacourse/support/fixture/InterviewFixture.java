@@ -1,8 +1,4 @@
-package com.woowacourse.ternoko.fixture;
-
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_FIRST_TIME;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_SECOND_TIME;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
+package com.woowacourse.support.fixture;
 
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
@@ -40,11 +36,11 @@ public class InterviewFixture {
         return new FormItem(null, Question.from("고정질문" + count), Answer.from("고정답변" + count));
     }
 
-    public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),
-            NOW_PLUS_2_DAYS_FIRST_TIME,
+    public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(MemberFixture.COACH1.getId(),
+            CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_FIRST_TIME,
             FORM_ITEM_REQUESTS);
 
-    public static final InterviewRequest COACH1_INTERVIEW_REQUEST2 = new InterviewRequest(COACH1.getId(),
-            NOW_PLUS_2_DAYS_SECOND_TIME,
+    public static final InterviewRequest COACH1_INTERVIEW_REQUEST2 = new InterviewRequest(MemberFixture.COACH1.getId(),
+            CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_SECOND_TIME,
             FORM_ITEM_REQUESTS);
 }

@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.domain;
 
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEMS1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEMS1;
+import static com.woowacourse.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

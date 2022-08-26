@@ -1,18 +1,18 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.INTERVIEW_TIME;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
+import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.support.fixture.InterviewFixture.INTERVIEW_TIME;
+import static com.woowacourse.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.support.fixture.MemberFixture.COACH4;
+import static com.woowacourse.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.support.fixture.MemberFixture.CREW3;
+import static com.woowacourse.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

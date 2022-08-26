@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
 
