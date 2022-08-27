@@ -1,16 +1,16 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-class MemberControllerTest extends ControllerTest {
+class MemberControllerTest extends ControllerSupporter {
 
     @Test
     @DisplayName("크루 - 코치 목록을 조회한다.")

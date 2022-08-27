@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.support.fixture.MemberFixture.CREW2;
-import static com.woowacourse.support.fixture.MemberFixture.CREW2_UPDATE_REQUEST;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2_UPDATE_REQUEST;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class CrewControllerTest extends ControllerTest {
+public class CrewControllerTest extends ControllerSupporter {
 
     @Test
     @DisplayName("크루 - 내 정보를 조회한다.")

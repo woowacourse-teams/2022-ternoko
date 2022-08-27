@@ -1,16 +1,16 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
-import static com.woowacourse.support.fixture.MemberFixture.COACH3;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
@@ -26,8 +26,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.jdbc.Sql;
 
-class MemberAcceptanceTest extends AcceptanceTest {
+@Sql({"/member.sql"})
+class MemberAcceptanceTest extends AcceptanceSupporter {
 
     @Test
     @DisplayName("코치 목록을 조회한다.")

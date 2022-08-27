@@ -1,10 +1,10 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.COACH2;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW2;
-import static com.woowacourse.support.fixture.MemberFixture.CREW3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW3;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,21 +16,19 @@ import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import com.woowacourse.ternoko.interview.domain.formitem.Question;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
+import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Transactional
-class EmailServiceTest {
+@ServiceTest
+class EmailServiceTest extends DatabaseSupporter {
 
     @Autowired
     private InterviewRepository interviewRepository;

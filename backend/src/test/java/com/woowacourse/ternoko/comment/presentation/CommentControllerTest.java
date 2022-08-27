@@ -1,19 +1,19 @@
 package com.woowacourse.ternoko.comment.presentation;
 
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.api.ControllerTest;
+import com.woowacourse.ternoko.api.ControllerSupporter;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class CommentControllerTest extends ControllerTest {
+public class CommentControllerTest extends ControllerSupporter {
 
     private static final Long FIXED_INTERVIEW_ID = 2L;
 

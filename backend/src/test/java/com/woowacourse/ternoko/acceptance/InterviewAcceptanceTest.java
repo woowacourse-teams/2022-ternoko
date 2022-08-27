@@ -1,18 +1,18 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
-import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
-import static com.woowacourse.support.fixture.InterviewFixture.INTERVIEW_TIME;
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.COACH2;
-import static com.woowacourse.support.fixture.MemberFixture.COACH3;
-import static com.woowacourse.support.fixture.MemberFixture.COACH4;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW3;
-import static com.woowacourse.support.fixture.MemberFixture.CREW4;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW_TIME;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -29,8 +29,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 
-class InterviewAcceptanceTest extends AcceptanceTest {
+@Sql({"/member.sql"})
+class InterviewAcceptanceTest extends AcceptanceSupporter {
 
     @Test
     @DisplayName("면담 예약을 생성한다.")
@@ -101,7 +103,7 @@ class InterviewAcceptanceTest extends AcceptanceTest {
                 .getList(".", InterviewResponse.class);
 
         // then
-        assertThat(InterviewResponses).hasSize(4); // data.sql에 들어가있는 테스트 때문에 2 추가
+        assertThat(InterviewResponses).hasSize(2);
     }
 
     @Test

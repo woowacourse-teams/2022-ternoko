@@ -1,25 +1,5 @@
 package com.woowacourse.ternoko.interview.application;
 
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
-import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
-import static com.woowacourse.support.fixture.InterviewFixture.FORM_ITEM_UPDATE_REQUESTS;
-import static com.woowacourse.support.fixture.InterviewFixture.INTERVIEW_TIME;
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.COACH2;
-import static com.woowacourse.support.fixture.MemberFixture.COACH3;
-import static com.woowacourse.support.fixture.MemberFixture.COACH4;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW2;
-import static com.woowacourse.support.fixture.MemberFixture.CREW3;
-import static com.woowacourse.support.fixture.MemberFixture.CREW4;
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
@@ -27,6 +7,26 @@ import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALI
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_UPDATE_REQUESTS;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW_TIME;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -49,6 +49,7 @@ import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdExcept
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.service.CoachService;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,11 +63,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
-@Transactional
+@Sql("/common.sql")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class InterviewServiceTest {
+class InterviewServiceTest extends DatabaseSupporter {
 
     @Autowired
     private InterviewService interviewService;

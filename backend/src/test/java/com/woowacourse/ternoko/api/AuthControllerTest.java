@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -19,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthControllerTest extends ControllerTest {
+public class AuthControllerTest extends ControllerSupporter {
 
     @MockBean
     private AuthService authService;

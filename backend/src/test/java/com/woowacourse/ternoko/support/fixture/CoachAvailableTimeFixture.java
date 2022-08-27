@@ -1,4 +1,4 @@
-package com.woowacourse.support.fixture;
+package com.woowacourse.ternoko.support.fixture;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 
@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+
 
 public class CoachAvailableTimeFixture {
 

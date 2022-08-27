@@ -1,12 +1,12 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class CoachControllerTest extends ControllerTest {
+public class CoachControllerTest extends ControllerSupporter {
 
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")

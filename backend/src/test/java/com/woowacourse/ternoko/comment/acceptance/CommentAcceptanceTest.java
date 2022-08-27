@@ -1,12 +1,12 @@
 package com.woowacourse.ternoko.comment.acceptance;
 
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.acceptance.AcceptanceTest;
+import com.woowacourse.ternoko.acceptance.AcceptanceSupporter;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.comment.dto.CommentResponse;
 import com.woowacourse.ternoko.comment.dto.CommentsResponse;
@@ -20,8 +20,10 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.jdbc.Sql;
 
-public class CommentAcceptanceTest extends AcceptanceTest {
+@Sql("/common.sql")
+public class CommentAcceptanceTest extends AcceptanceSupporter {
 
     @Test
     @DisplayName("[크루] 면담이 끝났을 때 한마디를 적을 수 있으며 작성 시 면담이 완료된다.")

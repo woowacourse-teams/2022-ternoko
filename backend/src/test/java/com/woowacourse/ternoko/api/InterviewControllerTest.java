@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
-import static com.woowacourse.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class InterviewControllerTest extends ControllerTest {
+public class InterviewControllerTest extends ControllerSupporter {
 
     @Test
     @DisplayName("크루 - 면담 예약을 생성한다.")

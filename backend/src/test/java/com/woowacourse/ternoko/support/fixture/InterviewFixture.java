@@ -1,4 +1,4 @@
-package com.woowacourse.support.fixture;
+package com.woowacourse.ternoko.support.fixture;
 
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;

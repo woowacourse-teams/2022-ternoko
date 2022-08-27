@@ -1,4 +1,4 @@
-package com.woowacourse.support.fixture;
+package com.woowacourse.ternoko.support.fixture;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
 
@@ -13,18 +13,29 @@ import java.util.List;
 
 public class MemberFixture {
 
-    public static final Coach COACH1 = new Coach(1L, "이름", "준", "test1@woowahan.com", "U1234567891", "imageUrl",
-            "안녕하세요.");
-    public static final Coach COACH2 = new Coach(2L, "이름", "브리", "test2@woowahan.com", "U1234567892", "imageUrl",
-            "안녕하세요.");
-    public static final Coach COACH3 = new Coach(3L, "이름", "토미", "test3@woowahan.com", "U1234567893", "imageUrl",
-            "안녕하세요.");
-    public static final Coach COACH4 = new Coach(4L, "이름", "네오", "test4@woowahan.com", "U1234567894", "imageUrl",
-            "안녕하세요.");
-    public static final Crew CREW1 = new Crew(5L, "허수진", "수달", "test5@woowahan.com", "U1234567895", "imageUrl");
-    public static final Crew CREW2 = new Crew(6L, "손수민", "앤지", "test6@email.com", "U1234567896", "imageUrl");
-    public static final Crew CREW3 = new Crew(7L, "김동호", "애쉬", "test7@email.com", "U1234567897", "imageUrl");
-    public static final Crew CREW4 = new Crew(8L, "김상록", "록바", "test8@email.com", "U1234567898", "imageUrl");
+    public static Coach COACH1 = createCoach(1L, "test1@woowahan.com", "준", "U1234567891");
+    public static Coach COACH2 = createCoach(2L, "test2@woowahan.com", "브리", "U1234567892");
+    public static Coach COACH3 = createCoach(3L, "test3@woowahan.com", "토미", "U1234567893");
+    public static Coach COACH4 = createCoach(4L, "test4@woowahan.com", "네오", "U1234567894");
+
+    private static Coach createCoach(final Long id,
+                                     final String email,
+                                     final String nickname,
+                                     final String userId) {
+        return new Coach(id, "이름", nickname, email, userId, "imageUrl", "안녕하세요.");
+    }
+
+    public static Crew CREW1 = createCrew(5L, "test5@gmail.com", "허수달", "U1234567895");
+    public static Crew CREW2 = createCrew(6L, "test6@gmail.com", "손앤지", "U1234567896");
+    public static Crew CREW3 = createCrew(7L, "test7@gmail.com", "김애쉬", "U1234567897");
+    public static Crew CREW4 = createCrew(8L, "test8@gmail.com", "김록바", "U1234567898");
+
+    private static Crew createCrew(final Long id,
+                                   final String email,
+                                   final String nickname,
+                                   final String userId) {
+        return new Crew(id, "이름", nickname, email, userId, "imageUrl");
+    }
 
     public static final LocalDateTime TIME2 = LocalDateTime.now().plusDays(2);
     public static final LocalDateTime TIME3 = LocalDateTime.now().plusDays(3);

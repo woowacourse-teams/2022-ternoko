@@ -1,27 +1,27 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
-import static com.woowacourse.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
+import com.woowacourse.ternoko.support.utils.ControllerTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-public class ControllerTest extends RestDocsTestSupport {
+@ControllerTest
+public class ControllerSupporter extends RestDocsTestSupporter {
 
     protected final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

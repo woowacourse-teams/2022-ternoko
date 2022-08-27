@@ -1,14 +1,14 @@
 package com.woowacourse.ternoko.comment.application;
 
-import static com.woowacourse.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.support.fixture.MemberFixture.COACH2;
-import static com.woowacourse.support.fixture.MemberFixture.CREW1;
-import static com.woowacourse.support.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_COMMENT_INTERVIEW_ID;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -24,17 +24,15 @@ import com.woowacourse.ternoko.interview.application.InterviewService;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
+import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CommentServiceTest {
+@ServiceTest
+public class CommentServiceTest extends DatabaseSupporter {
 
     private static final Long FIXED_INTERVIEW_ID = 2L;
     private static final long NOT_FOUNT_INTERVIEW_ID = -1L;

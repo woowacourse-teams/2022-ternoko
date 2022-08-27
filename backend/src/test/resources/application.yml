@@ -26,9 +26,6 @@ spring:
     console:
       enabled:
         true
-  sql:
-    init:
-      mode: always
 logging:
   level:
     org:
