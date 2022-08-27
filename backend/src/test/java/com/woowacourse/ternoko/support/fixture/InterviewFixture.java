@@ -1,5 +1,10 @@
 package com.woowacourse.ternoko.support.fixture;
 
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+
+import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.domain.formitem.Answer;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
 import com.woowacourse.ternoko.interview.domain.formitem.Question;
@@ -11,6 +16,12 @@ import java.util.List;
 public class InterviewFixture {
 
     public static final Long INTERVIEW_TIME = 30L;
+
+    public static final Interview INTERVIEW = new Interview(1L, LocalDateTime.now().plusDays(10),
+            LocalDateTime.now().minusDays(2),
+            COACH1, CREW1, List.of(createFormItem(1),
+            createFormItem(2),
+            createFormItem(3)), InterviewStatusType.FIXED);
 
     private static final LocalDateTime NOW = LocalDateTime.now().withNano(0).plusDays(2);
     public static final LocalDateTime AFTER_TWO_DAYS = LocalDateTime.of(NOW.getYear(), NOW.getMonthValue(),
@@ -24,6 +35,7 @@ public class InterviewFixture {
             new FormItemRequest("수정질문2", "수정답변2"),
             new FormItemRequest("수정질문3", "수정답변3"));
 
+
     public static final List<FormItem> FORM_ITEMS1 = List.of(createFormItem(1),
             createFormItem(2),
             createFormItem(3));
@@ -36,11 +48,11 @@ public class InterviewFixture {
         return new FormItem(null, Question.from("고정질문" + count), Answer.from("고정답변" + count));
     }
 
-    public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(MemberFixture.COACH1.getId(),
+    public static final InterviewRequest COACH1_INTERVIEW_REQUEST1 = new InterviewRequest(COACH1.getId(),
             CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_FIRST_TIME,
             FORM_ITEM_REQUESTS);
 
-    public static final InterviewRequest COACH1_INTERVIEW_REQUEST2 = new InterviewRequest(MemberFixture.COACH1.getId(),
+    public static final InterviewRequest COACH1_INTERVIEW_REQUEST2 = new InterviewRequest(COACH1.getId(),
             CoachAvailableTimeFixture.NOW_PLUS_2_DAYS_SECOND_TIME,
             FORM_ITEM_REQUESTS);
 }

@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.support.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.ternoko.api.ControllerSupporter;
+import com.woowacourse.ternoko.common.log.LogInterceptor;
 import com.woowacourse.ternoko.config.WebConfig;
 import com.woowacourse.ternoko.login.aop.MemberTypeCache;
 import com.woowacourse.ternoko.login.application.AuthInterceptor;
@@ -20,7 +21,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @WebMvcTest(includeFilters = @Filter(type = FilterType.ANNOTATION, classes = RestController.class))
 @Import({JwtProvider.class, WebConfig.class, AuthenticationPrincipalConfig.class,
-        MemberTypeCache.class, AuthInterceptor.class})
+        MemberTypeCache.class, AuthInterceptor.class, LogInterceptor.class})
 public abstract class WebMVCTest extends ControllerSupporter {
 
     @Autowired
@@ -32,7 +33,10 @@ public abstract class WebMVCTest extends ControllerSupporter {
     @Autowired
     protected AuthInterceptor authInterceptor;
 
-    @Autowired
+    @MockBean
+    protected LogInterceptor logInterceptor;
+
+    @MockBean
     protected MemberTypeCache memberTypeCache;
 
     @MockBean

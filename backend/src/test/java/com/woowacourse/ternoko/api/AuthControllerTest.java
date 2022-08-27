@@ -8,21 +8,20 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.ternoko.controller.AuthController;
 import com.woowacourse.ternoko.domain.member.MemberType;
-import com.woowacourse.ternoko.login.application.AuthService;
 import com.woowacourse.ternoko.login.domain.dto.LoginResponse;
+import com.woowacourse.ternoko.support.utils.WebMVCTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+@WebMvcTest(AuthController.class)
 @ExtendWith(MockitoExtension.class)
-public class AuthControllerTest extends ControllerSupporter {
-
-    @MockBean
-    private AuthService authService;
+public class AuthControllerTest extends WebMVCTest {
 
     @Test
     @DisplayName("Coach/Crew - 로그인을 한다.")
