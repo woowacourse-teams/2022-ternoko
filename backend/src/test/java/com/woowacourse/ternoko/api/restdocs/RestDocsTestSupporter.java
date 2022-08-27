@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.api.restdocs;
 
-import com.woowacourse.ternoko.login.application.JwtProvider;
-import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(value = {RestDocumentationExtension.class, SpringExtension.class})
 @Import(RestDocsConfiguration.class)
-public class RestDocsTestSupporter extends DatabaseSupporter {
-
-    protected MockMvc mockMvc;
+public class RestDocsTestSupporter {
 
     @Autowired
-    public JwtProvider jwtProvider;
+    protected MockMvc mockMvc;
 
     @Autowired
     protected RestDocumentationResultHandler restDocs;

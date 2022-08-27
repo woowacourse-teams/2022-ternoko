@@ -14,7 +14,9 @@ import com.woowacourse.ternoko.comment.dto.CommentRequest;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.Member;
+import com.woowacourse.ternoko.login.application.JwtProvider;
 import com.woowacourse.ternoko.support.utils.ControllerTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,6 +24,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @ControllerTest
 public class ControllerSupporter extends RestDocsTestSupporter {
+
+    @Autowired
+    public JwtProvider jwtProvider;
 
     protected final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
