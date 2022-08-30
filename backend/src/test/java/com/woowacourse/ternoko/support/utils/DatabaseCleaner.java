@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.support.utils;
 import com.google.common.base.CaseFormat;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,7 +20,6 @@ public class DatabaseCleaner implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         tableNames = entityManager.getMetamodel().getEntities().stream()
-                .filter(entityType -> entityType.getJavaType().getAnnotation(Entity.class) != null)
                 .map(entityType -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entityType.getName()))
                 .collect(Collectors.toList());
     }

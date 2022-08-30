@@ -28,7 +28,7 @@ public class CrewService {
     }
 
     @Transactional(readOnly = true)
-    public CrewResponse findCrew(final Long crewId){
+    public CrewResponse findCrew(final Long crewId) {
         final Crew crew = getCrewById(crewId);
         return CrewResponse.from(crew);
     }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public abstract class DatabaseSupporter {
+
     @Autowired
     private DatabaseCleaner databaseCleaner;
 

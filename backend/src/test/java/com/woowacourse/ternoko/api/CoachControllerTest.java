@@ -15,33 +15,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.controller.CoachController;
+import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
 import com.woowacourse.ternoko.dto.CoachResponse;
-import com.woowacourse.ternoko.interview.application.InterviewService;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
-import com.woowacourse.ternoko.interview.presentation.InterviewController;
-import com.woowacourse.ternoko.service.CoachService;
-import com.woowacourse.ternoko.support.SlackAlarm;
-import com.woowacourse.ternoko.support.utils.WebMVCTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@WebMvcTest({CoachController.class, InterviewController.class})
-public class CoachControllerTest extends WebMVCTest {
-
-    @MockBean
-    private CoachService coachService;
-
-    @MockBean
-    private InterviewService interviewService;
-
-    @MockBean
-    private SlackAlarm slackAlarm;
+public class CoachControllerTest extends RestDocsTestSupporter {
 
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")

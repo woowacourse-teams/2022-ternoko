@@ -19,7 +19,6 @@ public class CustomLoggingFilter extends OncePerRequestFilter {
                                     final FilterChain filterChain)
             throws ServletException, IOException {
         ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
-
         filterChain.doFilter(wrappingRequest, response);
     }
 }

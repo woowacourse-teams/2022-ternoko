@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface AvailableDateTimeRepository extends JpaRepository<AvailableDateTime, Long> {
 
@@ -15,9 +16,9 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "where a.coachId = :coachId "
             + "and YEAR(a.localDateTime) = :year "
             + "and MONTH(a.localDateTime) = :month")
-    void deleteAllByCoachAndYearAndMonth(final Long coachId,
-                                         final int year,
-                                         final int month);
+    void deleteAllByCoachAndYearAndMonth(@Param("coachId") final Long coachId,
+                                         @Param("year") final int year,
+                                         @Param("month") final int month);
 
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "
@@ -25,15 +26,15 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "and MONTH(a.localDateTime) = :month "
             + "and a.availableDateTimeStatus = 'OPEN' "
             + "order by a.localDateTime")
-    List<AvailableDateTime> findOpenAvailableDateTimesByCoachId(final Long coachId,
-                                                                final int year,
-                                                                final int month);
+    List<AvailableDateTime> findOpenAvailableDateTimesByCoachId(@Param("coachId") final Long coachId,
+                                                                @Param("year") final int year,
+                                                                @Param("month") final int month);
 
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "
             + "and a.localDateTime = :interviewDateTime")
-    Optional<AvailableDateTime> findByCoachIdAndInterviewDateTime(final Long coachId,
-                                                                  final LocalDateTime interviewDateTime);
+    Optional<AvailableDateTime> findByCoachIdAndInterviewDateTime(@Param("coachId") final Long coachId,
+                                                                  @Param("interviewDateTime") final LocalDateTime interviewDateTime);
 
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "
@@ -42,8 +43,8 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "and a.availableDateTimeStatus = 'OPEN' "
             + "or a.localDateTime = (select i.interviewStartTime from Interview i where i.id = :interviewId) "
             + "order by a.localDateTime")
-    List<AvailableDateTime> findAvailableDateTimesByCoachIdAndInterviewId(final Long interviewId,
-                                                                          final Long coachId,
-                                                                          final int year,
-                                                                          final int month);
+    List<AvailableDateTime> findAvailableDateTimesByCoachIdAndInterviewId(@Param("interviewId") final Long interviewId,
+                                                                          @Param("coachId") final Long coachId,
+                                                                          @Param("year") final int year,
+                                                                          @Param("month") final int month);
 }

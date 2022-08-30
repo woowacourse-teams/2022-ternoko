@@ -39,7 +39,8 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final Exception e, final HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final Exception e,
+                                                                       final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.internalServerError()

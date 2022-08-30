@@ -12,28 +12,18 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.interview.application.InterviewService;
+import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
 import com.woowacourse.ternoko.interview.dto.AlarmResponse;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
-import com.woowacourse.ternoko.interview.presentation.InterviewController;
-import com.woowacourse.ternoko.support.SlackAlarm;
-import com.woowacourse.ternoko.support.utils.WebMVCTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@WebMvcTest(InterviewController.class)
-public class InterviewControllerTest extends WebMVCTest {
+public class InterviewControllerTest extends RestDocsTestSupporter {
 
-    @MockBean
-    private InterviewService interviewService;
 
-    @MockBean
-    private SlackAlarm slackAlarm;
 
     @Test
     @DisplayName("크루 - 면담 예약을 생성한다.")

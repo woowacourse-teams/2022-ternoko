@@ -8,27 +8,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.controller.MemberController;
+import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
 import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.dto.NicknameResponse;
-import com.woowacourse.ternoko.service.CoachService;
-import com.woowacourse.ternoko.service.MemberService;
-import com.woowacourse.ternoko.support.utils.WebMVCTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@WebMvcTest(MemberController.class)
-class MemberControllerTest extends WebMVCTest {
-
-    @MockBean
-    private CoachService coachService;
-    @MockBean
-    private MemberService memberService;
+class MemberControllerTest extends RestDocsTestSupporter {
 
     @Test
     @DisplayName("크루 - 코치 목록을 조회한다.")

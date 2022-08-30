@@ -9,22 +9,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.controller.CrewController;
+import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
 import com.woowacourse.ternoko.dto.CrewResponse;
-import com.woowacourse.ternoko.service.CrewService;
-import com.woowacourse.ternoko.support.utils.WebMVCTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@WebMvcTest(CrewController.class)
-public class CrewControllerTest extends WebMVCTest {
-
-    @MockBean
-    private CrewService crewService;
+public class CrewControllerTest extends RestDocsTestSupporter {
 
     @Test
     @DisplayName("크루 - 내 정보를 조회한다.")
