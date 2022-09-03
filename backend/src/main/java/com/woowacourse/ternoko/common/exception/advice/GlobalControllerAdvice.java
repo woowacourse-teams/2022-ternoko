@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.common.exception.advice;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.UNHANDLED_EXCEPTION;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.UNHANDLED_EXCEPTION;
 import static com.woowacourse.ternoko.common.log.LogForm.FAILED_LOGGING_FORM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +39,8 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final Exception e, final HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> unhandledExceptionHandler(final Exception e,
+                                                                       final HttpServletRequest request) {
         final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         printFailedLog(request, e, cachingRequest);
         return ResponseEntity.internalServerError()

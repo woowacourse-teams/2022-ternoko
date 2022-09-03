@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.comment.application;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.COMMENT_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
 import com.woowacourse.ternoko.comment.domain.Comment;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;

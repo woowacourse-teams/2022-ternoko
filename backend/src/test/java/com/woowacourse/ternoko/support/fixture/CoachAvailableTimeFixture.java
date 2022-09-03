@@ -1,7 +1,10 @@
-package com.woowacourse.ternoko.fixture;
+package com.woowacourse.ternoko.support.fixture;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.dto.CalendarRequest;
@@ -9,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+
 
 public class CoachAvailableTimeFixture {
 
@@ -26,6 +30,10 @@ public class CoachAvailableTimeFixture {
     public static final LocalTime FIRST_TIME = LocalTime.of(11, 0);
     public static final LocalTime SECOND_TIME = LocalTime.of(14, 0);
     public static final LocalTime THIRD_TIME = LocalTime.of(16, 0);
+
+    public static final AvailableDateTime AVAILABLE_DATE_TIME = new AvailableDateTime(COACH1.getId(),
+            LocalDateTime.now(),
+            AvailableDateTimeStatus.OPEN);
 
     public static final AvailableDateTimeRequest PAST_TIME_REQUEST = new AvailableDateTimeRequest(
             LocalDate.now().getYear(),

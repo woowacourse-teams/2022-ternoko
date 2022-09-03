@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_TOKEN;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,19 +20,20 @@ import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.login.application.AuthService;
 import com.woowacourse.ternoko.login.application.JwtProvider;
 import com.woowacourse.ternoko.login.domain.dto.LoginResponse;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
+import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+@ServiceTest
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
-public class AuthServiceTest {
+public class AuthServiceTest extends DatabaseSupporter {
 
     @Autowired
     private AuthService authService;

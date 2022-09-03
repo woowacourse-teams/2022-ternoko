@@ -1,7 +1,9 @@
 package com.woowacourse.ternoko.interview.domain;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.CANNOT_EDIT_INTERVIEW;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_COACH_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.domain.member.MemberType.CREW;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CANCELED;
@@ -11,18 +13,20 @@ import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.CREW_
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
 
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.domain.member.Coach;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.domain.member.MemberType;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.interview.domain.formitem.FormItems;
+import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdException;
+import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,7 +34,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -61,80 +64,79 @@ public class Interview {
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
-    @OneToMany(mappedBy = "interview", cascade = CascadeType.PERSIST)
-    private List<FormItem> formItems = new ArrayList<>();
+    @Embedded
+    private FormItems formItems;
 
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
-
-    public Interview(final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach, final Crew crew,
-                     final List<FormItem> formItems) {
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = new ArrayList<>(formItems);
-        this.interviewStatusType = EDITABLE;
-    }
-
-    public Interview(final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach,
-                     final Crew crew,
-                     final List<FormItem> formItems,
-                     final InterviewStatusType interviewStatusType) {
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = new ArrayList<>(formItems);
-        this.interviewStatusType = interviewStatusType;
-    }
 
     public Interview(final Long id,
                      final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
                      final Crew crew,
+                     final List<FormItem> formItems,
                      final InterviewStatusType interviewStatusType) {
         this.id = id;
         this.interviewStartTime = interviewStartTime;
         this.interviewEndTime = interviewEndTime;
         this.coach = coach;
         this.crew = crew;
+        this.formItems = new FormItems(formItems, this);
         this.interviewStatusType = interviewStatusType;
     }
 
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
-                     final Crew crew) {
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.interviewStatusType = EDITABLE;
+                     final Crew crew,
+                     final List<FormItem> formItems) {
+        this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
+    }
+
+    public static Interview of(final LocalDateTime interviewDatetime,
+                               final Coach coach,
+                               final Crew crew,
+                               final List<FormItem> formItems) {
+        return new Interview(
+                interviewDatetime,
+                interviewDatetime.plusMinutes(30),
+                coach,
+                crew,
+                formItems);
     }
 
     public void update(Interview interview) {
+        validateCrew(interview.crew.getId());
         validateInterviewStatus(FIXED, CANNOT_EDIT_INTERVIEW);
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
         this.coach = interview.getCoach();
-        updateFormItem(interview.getFormItems());
+        formItems.update(interview.getFormItems());
     }
 
-    public void updateFormItem(final List<FormItem> formItem) {
-        //TODO : 일급컬렉션으로 빼기~
-        for (int i = 0; i < formItem.size(); i++) {
-            this.formItems.get(i).update(formItem.get(i));
+    private void validateCrew(final Long crewId) {
+        if (!crew.isSameId(crewId)) {
+            throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
         }
     }
 
-    public void cancel() {
+    private void validateInterviewStatus(final InterviewStatusType interviewStatusType,
+                                         final ExceptionType exceptionType) {
+        if (this.interviewStatusType == interviewStatusType) {
+            throw new InterviewStatusException(exceptionType);
+        }
+    }
+
+    public void cancel(final Long coachId) {
+        validateCoach(coachId);
         this.interviewStatusType = CANCELED;
+    }
+
+    private void validateCoach(final Long coachId) {
+        if (!coach.isSameId(coachId)) {
+            throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
+        }
     }
 
     public void complete(final MemberType memberType) {
@@ -149,31 +151,16 @@ public class Interview {
         this.interviewStatusType = COMPLETE;
     }
 
-    public boolean sameCrew(final Long crewId) {
-        return crew.sameMember(crewId);
-    }
-
-    public boolean sameCoach(final Long coachId) {
-        return coach.sameMember(coachId);
-    }
-
     public void updateStatus(final InterviewStatusType interviewStatusType) {
         this.interviewStatusType = interviewStatusType;
     }
 
-    private void validateInterviewStatus(final InterviewStatusType interviewStatusType,
-                                         final ExceptionType exceptionType) {
-        if (this.interviewStatusType == interviewStatusType) {
-            throw new InterviewStatusException(exceptionType);
-        }
-    }
-
     public MemberType findMemberType(final Long memberId) {
-        if (coach.sameMember(memberId)) {
+        if (coach.isSameId(memberId)) {
             return coach.getMemberType();
         }
 
-        if (crew.sameMember(memberId)) {
+        if (crew.isSameId(memberId)) {
             return crew.getMemberType();
         }
 
@@ -190,5 +177,13 @@ public class Interview {
 
     public boolean isSame(final Long interviewId) {
         return id.equals(interviewId);
+    }
+
+    public boolean isCreatedBy(final Long crewId) {
+        return crew.isSameId(crewId);
+    }
+
+    public List<FormItem> getFormItems() {
+        return formItems.getFormItems();
     }
 }

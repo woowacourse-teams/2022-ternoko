@@ -1,28 +1,38 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
+import com.woowacourse.ternoko.dto.CoachResponse;
+import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class CoachControllerTest extends ControllerTest {
+public class CoachControllerTest extends RestDocsTestSupporter {
 
     @Test
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllInterviewByCoach() throws Exception {
         // given
-        createCalendarTimes(COACH1);
-        createInterviews(CREW1);
-
+        given(interviewService.findAllByCoach(any(), any(), any()))
+                .willReturn(ScheduleResponse.from(
+                        List.of(INTERVIEW)));
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/schedules")
@@ -36,6 +46,8 @@ public class CoachControllerTest extends ControllerTest {
     @Test
     @DisplayName("코치 - 면담 가능 시간을 저장한다.")
     void saveCalendarTimes() throws Exception {
+        doNothing().when(coachService).putAvailableDateTimesByCoachId(any(), any());
+
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/calendar/times")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -50,8 +62,8 @@ public class CoachControllerTest extends ControllerTest {
     @DisplayName("코치 - 면담 가능 시간 목록을 조회한다.")
     void findCalendarTimes() throws Exception {
         // given
-        createCalendarTimes(COACH1);
-
+        given(coachService.findAvailableDateTimesByCoachId(any(), anyInt(), anyInt()))
+                .willReturn(List.of(AVAILABLE_DATE_TIME));
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/calendar/times")
@@ -67,12 +79,12 @@ public class CoachControllerTest extends ControllerTest {
     @DisplayName("크루 - 면담 수정시 면담 가능 시간 목록을 조회한다.")
     void findCalendarTimesByInterviewId() throws Exception {
         // given
-        createCalendarTimes(COACH1);
-        final Long interviewId = createInterview(CREW1);
+        given(coachService.findAvailableDateTimesByCoachIdAndInterviewId(any(), any(), anyInt(), anyInt()))
+                .willReturn(List.of(AVAILABLE_DATE_TIME));
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/interviews/{interviewId}/calendar/times", interviewId)
+                        .get("/api/interviews/{interviewId}/calendar/times", INTERVIEW.getId())
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(CREW1))
                         .queryParam("coachId", String.valueOf(COACH1.getId()))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
@@ -84,7 +96,10 @@ public class CoachControllerTest extends ControllerTest {
     @Test
     @DisplayName("코치 - 내 정보를 조회한다.")
     void findCoach() throws Exception {
-        // given, when, then
+        // given
+        given(coachService.findCoach(any()))
+                .willReturn(CoachResponse.from(COACH1));
+        // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/coaches/me")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1)))
@@ -95,6 +110,7 @@ public class CoachControllerTest extends ControllerTest {
     @Test
     @DisplayName("코치 - 내 정보를 수정한다.")
     void updateCoach() throws Exception {
+        doNothing().when(coachService).partUpdateCrew(any(), any());
         // given, when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/coaches/me")

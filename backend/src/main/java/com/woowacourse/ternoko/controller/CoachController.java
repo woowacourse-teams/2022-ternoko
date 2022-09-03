@@ -33,7 +33,7 @@ public class CoachController {
                                                                         @RequestParam final int month) {
         final List<AvailableDateTime> availableDateTimes = coachService
                 .findAvailableDateTimesByCoachId(coachId, year, month);
-        final AvailableDateTimesResponse response = AvailableDateTimesResponse.of(availableDateTimes);
+        final AvailableDateTimesResponse response = AvailableDateTimesResponse.from(availableDateTimes);
         return ResponseEntity.ok(response);
     }
 
@@ -68,7 +68,7 @@ public class CoachController {
             @RequestParam final int month) {
         final List<AvailableDateTime> availableDateTimes = coachService
                 .findAvailableDateTimesByCoachIdAndInterviewId(interviewId, coachId, year, month);
-        final AvailableDateTimesResponse response = AvailableDateTimesResponse.of(availableDateTimes);
+        final AvailableDateTimesResponse response = AvailableDateTimesResponse.from(availableDateTimes);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,33 +1,32 @@
 package com.woowacourse.ternoko.interview.application;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.FIRST_TIME;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.SECOND_TIME;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.THIRD_TIME;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.FORM_ITEM_UPDATE_REQUESTS;
-import static com.woowacourse.ternoko.fixture.InterviewFixture.INTERVIEW_TIME;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH4;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW4;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_COACH_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DATE;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.PAST_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_UPDATE_REQUESTS;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW_TIME;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH4;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -35,10 +34,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.availabledatetime.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.dto.CalendarRequest;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.dto.AlarmResponse;
@@ -51,6 +49,7 @@ import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdExcept
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.service.CoachService;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,11 +63,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
-@Transactional
+@Sql("/common.sql")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class InterviewServiceTest {
+class InterviewServiceTest extends DatabaseSupporter {
 
     @Autowired
     private InterviewService interviewService;
@@ -376,23 +375,6 @@ class InterviewServiceTest {
     }
 
     @Test
-    @DisplayName("면담 예약을 수정 시 선택한 코치가 존재하지 않는다면 예외를 반환한다.")
-    void update_WhenCoachNotFound() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
-
-        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
-        // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), alarmResponse.getInterviewId(),
-                new InterviewRequest(5L, LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
-                        FORM_ITEM_UPDATE_REQUESTS)))
-                .isInstanceOf(CoachNotFoundException.class)
-                .hasMessage(5L + COACH_NOT_FOUND.getMessage());
-    }
-
-    @Test
     @DisplayName("면담 예약 수정 시 USED 라면 예외를 반환한다.")
     void update_WhenInvalidAvailableDateTime() {
         // given
@@ -465,6 +447,24 @@ class InterviewServiceTest {
     @Test
     @DisplayName("크루 - 코치가 취소한 면담 예약을 삭제한다.")
     void deleteCanceledInterview() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final AlarmResponse alarmResponse = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), alarmResponse.getInterviewId(), true);
+        AlarmResponse deleteResponse = interviewService.delete(CREW1.getId(), alarmResponse.getInterviewId());
+
+        // then
+        assertThatThrownBy(() -> interviewService.findInterviewResponseById(deleteResponse.getInterviewId()))
+                .isInstanceOf(InterviewNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("크루 - 코치가 취소한 (되는시간까지 삭제한) 면담 예약을 삭제한다.")
+    void deleteCanceledInterviewWithEmptyTime() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
 

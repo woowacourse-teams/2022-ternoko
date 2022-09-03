@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.interview.domain.formitem;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.OVER_LENGTH;
 
 import com.woowacourse.ternoko.common.exception.InvalidLengthException;
 import javax.persistence.Column;
@@ -22,7 +22,7 @@ public class Answer {
         this.value = value;
     }
 
-    public static Answer of(final String value) {
+    public static Answer from(final String value) {
         if (value.length() > ANSWER_MAX_LENGTH) {
             throw new InvalidLengthException(OVER_LENGTH, ANSWER_MAX_LENGTH);
         }

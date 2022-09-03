@@ -1,26 +1,38 @@
 package com.woowacourse.ternoko.comment.presentation;
 
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
 import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.api.ControllerTest;
+import com.woowacourse.ternoko.comment.domain.Comment;
 import com.woowacourse.ternoko.comment.dto.CommentRequest;
+import com.woowacourse.ternoko.comment.dto.CommentsResponse;
+import com.woowacourse.ternoko.domain.member.MemberType;
+import com.woowacourse.ternoko.support.utils.WebMVCTest;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class CommentControllerTest extends ControllerTest {
+@WebMvcTest(CommentController.class)
+public class CommentControllerTest extends WebMVCTest {
 
-    private static final Long FIXED_INTERVIEW_ID = 2L;
+    private Long FIXED_INTERVIEW_ID = 2L;
 
     @Test
     @DisplayName("코치 - 코멘트를 생성한다.")
     void createCommentByCoach() throws Exception {
-        // given
+        when(commentService.create(any(), any(), any())).thenReturn(1L);
+
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments")
@@ -36,6 +48,8 @@ public class CommentControllerTest extends ControllerTest {
     @DisplayName("크루 - 코멘트를 생성한다.")
     void createCommentByCrew() throws Exception {
         // given
+        when(commentService.create(any(), any(), any())).thenReturn(1L);
+
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments")
@@ -50,9 +64,9 @@ public class CommentControllerTest extends ControllerTest {
     @Test
     @DisplayName("코멘트를 조회한다.")
     void findCommentByCrew() throws Exception {
-        // given
-        createComment(FIXED_INTERVIEW_ID, new CommentRequest("코치의 코멘트 입니다."), COACH1);
-        createComment(FIXED_INTERVIEW_ID, new CommentRequest("크루의 코멘트 입니다."), CREW2);
+        given(commentService.findComments(any(), any()))
+                .willReturn(CommentsResponse.of(List.of(Comment.create(1L, INTERVIEW, "테스트 코멘트", MemberType.CREW)),
+                        INTERVIEW));
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -65,13 +79,10 @@ public class CommentControllerTest extends ControllerTest {
     @Test
     @DisplayName("크루 - 코멘트를 수정한다.")
     void updateCommentByCrew() throws Exception {
-        // given
-        createComment(FIXED_INTERVIEW_ID, new CommentRequest("코치의 코멘트 입니다."), COACH1);
-        final Long commentId = createComment(FIXED_INTERVIEW_ID, new CommentRequest("크루의 코멘트 입니다."), CREW2);
-
+        doNothing().when(commentService).update(any(), any(), any(), any());
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments/" + commentId)
+                        .put("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments/" + 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(objectMapper.writeValueAsString(new CommentRequest("수정할게용.")))
@@ -83,13 +94,10 @@ public class CommentControllerTest extends ControllerTest {
     @Test
     @DisplayName("코치 - 코멘트를 수정한다.")
     void updateCommentByCoach() throws Exception {
-        // given
-        final Long commentId = createComment(FIXED_INTERVIEW_ID, new CommentRequest("코치의 코멘트 입니다."), COACH1);
-        createComment(FIXED_INTERVIEW_ID, new CommentRequest("크루의 코멘트 입니다."), CREW2);
-
+        doNothing().when(commentService).update(any(), any(), any(), any());
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments/" + commentId)
+                        .put("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments/" + 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(objectMapper.writeValueAsString(new CommentRequest("수정할게용.")))

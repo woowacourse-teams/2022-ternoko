@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.service;
 
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
-import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CrewResponse;
 import com.woowacourse.ternoko.dto.CrewUpdateRequest;
@@ -29,9 +29,12 @@ public class CrewService {
 
     @Transactional(readOnly = true)
     public CrewResponse findCrew(final Long crewId) {
-        final Crew crew = crewRepository.findById(crewId)
-                .orElseThrow(
-                        () -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
+        final Crew crew = getCrewById(crewId);
         return CrewResponse.from(crew);
+    }
+
+    private Crew getCrewById(final Long crewId) {
+        return crewRepository.findById(crewId)
+                .orElseThrow(() -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
     }
 }

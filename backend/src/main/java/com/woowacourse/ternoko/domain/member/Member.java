@@ -11,12 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Member {
@@ -44,7 +46,7 @@ public class Member {
     @Column(name = "ROLE")
     private MemberType memberType;
 
-    public boolean sameMember(Long id) {
+    public boolean isSameId(Long id) {
         return this.id.equals(id);
     }
 }

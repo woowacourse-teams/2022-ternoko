@@ -30,18 +30,22 @@ public class FormItem {
     @JoinColumn(name = "interview_id")
     private Interview interview;
 
-    private FormItem(final Question question, final Answer answer) {
+    public FormItem(final Long id, final Question question, final Answer answer) {
+        this.id = id;
         this.question = question;
         this.answer = answer;
     }
 
-    public static FormItem from(String question, String answer) {
-        return new FormItem(Question.of(question), Answer.of(answer));
+    private FormItem(final Question question, final Answer answer) {
+        this(null, question, answer);
+    }
+
+    public static FormItem of(String question, String answer) {
+        return new FormItem(Question.from(question), Answer.from(answer));
     }
 
     public void addInterview(final Interview interview) {
         this.interview = interview;
-        interview.getFormItems().add(this);
     }
 
     public void update(FormItem formItem) {

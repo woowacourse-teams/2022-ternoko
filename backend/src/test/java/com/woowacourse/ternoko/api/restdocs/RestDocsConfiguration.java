@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.api;
+package com.woowacourse.ternoko.api.restdocs;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.domain.formitem;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.OVER_LENGTH;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -19,7 +19,7 @@ class QuestionTest {
     @MethodSource("validQuestionParameters")
     @DisplayName("question에는 255자 까지 들어갈 수 있다.")
     void questionLengthTest(String input, String testName) {
-        assertDoesNotThrow(() -> Question.of(input));
+        assertDoesNotThrow(() -> Question.from(input));
     }
 
     private static Stream<Arguments> validQuestionParameters() {
@@ -34,7 +34,7 @@ class QuestionTest {
     @Test
     @DisplayName("question에는 255자가 넘어가면 예외를 반환해야 한다.")
     void questionInvalidLengthTest() {
-        assertThatThrownBy(() -> Question.of("한".repeat(256)))
+        assertThatThrownBy(() -> Question.from("한".repeat(256)))
                 .isInstanceOf(InvalidLengthException.class)
                 .hasMessage(255 + OVER_LENGTH.getMessage());
     }

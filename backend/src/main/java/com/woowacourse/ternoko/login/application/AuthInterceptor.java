@@ -2,8 +2,8 @@ package com.woowacourse.ternoko.login.application;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.type.ExceptionType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

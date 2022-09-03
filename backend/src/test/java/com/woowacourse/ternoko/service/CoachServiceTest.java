@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.ternoko.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
-import static com.woowacourse.ternoko.fixture.MemberFixture.COACH3;
-import static com.woowacourse.ternoko.fixture.MemberFixture.TIME2;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.TIME2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -18,18 +18,16 @@ import com.woowacourse.ternoko.dto.CoachResponse;
 import com.woowacourse.ternoko.dto.CoachUpdateRequest;
 import com.woowacourse.ternoko.dto.CoachesResponse;
 import com.woowacourse.ternoko.repository.CoachRepository;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
+import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CoachServiceTest {
+@ServiceTest
+public class CoachServiceTest extends DatabaseSupporter {
 
     @Autowired
     private CoachService coachService;

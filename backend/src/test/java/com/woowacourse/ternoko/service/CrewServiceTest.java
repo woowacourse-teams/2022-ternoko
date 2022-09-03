@@ -6,16 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.ternoko.domain.member.Crew;
 import com.woowacourse.ternoko.dto.CrewResponse;
 import com.woowacourse.ternoko.dto.CrewUpdateRequest;
+import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
+import com.woowacourse.ternoko.support.utils.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CrewServiceTest {
+@ServiceTest
+public class CrewServiceTest extends DatabaseSupporter {
 
     @Autowired
     private CrewService crewService;

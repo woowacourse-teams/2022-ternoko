@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.login.presentation;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
+import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_TOKEN;
 
 import com.woowacourse.ternoko.login.aop.MemberTypeCache;
 import com.woowacourse.ternoko.login.application.JwtProvider;

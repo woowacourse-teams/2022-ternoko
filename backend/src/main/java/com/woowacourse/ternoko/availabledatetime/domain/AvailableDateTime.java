@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.availabledatetime.domain;
 
 import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.USED;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,8 +43,20 @@ public class AvailableDateTime {
         this.availableDateTimeStatus = availableDateTimeStatus;
     }
 
-    public void changeStatus(final AvailableDateTimeStatus status) {
+    public void changeStatus(AvailableDateTimeStatus status) {
         this.availableDateTimeStatus = status;
+    }
+
+    public boolean isPast() {
+        final LocalDate nowDay = LocalDate.now();
+        final LocalDate targetDay = localDateTime.toLocalDate();
+        return targetDay.isBefore(nowDay);
+    }
+
+    public boolean isToday() {
+        final LocalDate nowDay = LocalDate.now();
+        final LocalDate targetDay = localDateTime.toLocalDate();
+        return targetDay.isEqual(nowDay);
     }
 
     public boolean isUsed() {
