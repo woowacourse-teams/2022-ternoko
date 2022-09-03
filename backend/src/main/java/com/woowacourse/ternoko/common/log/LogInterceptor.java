@@ -21,18 +21,14 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 public class LogInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
-//    private final RequestContext requestContext;
 
     @Override
-    public void afterCompletion(@NotNull final HttpServletRequest request,
-                                final HttpServletResponse response,
-                                @NotNull final Object handler,
-                                final Exception ex) throws IOException {
+    public void afterCompletion(@NotNull final HttpServletRequest request, final HttpServletResponse response,
+                                @NotNull final Object handler, final Exception ex) throws IOException {
         if (isSuccess(response.getStatus())) {
 
             ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
-            log.info(SUCCESS_LOGGING_FORM, request.getMethod(),
-                    request.getRequestURI(),
+            log.info(SUCCESS_LOGGING_FORM, request.getMethod(), request.getRequestURI(),
                     StringUtils.hasText(request.getHeader("Authorization")),
                     objectMapper.readTree(wrappingRequest.getContentAsByteArray()));
         }

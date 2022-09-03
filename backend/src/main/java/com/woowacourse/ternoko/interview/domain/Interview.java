@@ -64,9 +64,6 @@ public class Interview {
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
-//    @OneToMany(mappedBy = "interview", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-//    private List<FormItem> formItems = new ArrayList<>();
-
     @Embedded
     private FormItems formItems;
 
@@ -185,7 +182,6 @@ public class Interview {
     public boolean isCreatedBy(final Long crewId) {
         return crew.isSameId(crewId);
     }
-
 
     public List<FormItem> getFormItems() {
         return formItems.getFormItems();

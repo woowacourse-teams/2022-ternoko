@@ -74,16 +74,11 @@ public class InterviewService {
         }
     }
 
-    public void validateOpenTime(final AvailableDateTime availableDateTime) {
+    private void validateOpenTime(final AvailableDateTime availableDateTime) {
         if (availableDateTime.isUsed()) {
             throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
         }
-    }
 
-    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
-                        interviewRequest.getInterviewDatetime())
-                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
@@ -109,6 +104,12 @@ public class InterviewService {
     private Coach getCoachById(final Long interviewRequest) {
         return coachRepository.findById(interviewRequest)
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
+    }
+
+    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
+                        interviewRequest.getInterviewDatetime())
+                .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
     private AvailableDateTime getAvailableTime(final Interview interview) {
