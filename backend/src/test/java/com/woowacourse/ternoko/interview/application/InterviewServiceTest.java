@@ -101,10 +101,10 @@ class InterviewServiceTest extends DatabaseSupporter {
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME)),
                 () -> assertThat(interviewResponse.getInterviewQuestions())
                         .extracting("question")
-                        .contains("고정질문1", "고정질문2", "고정질문3"),
+                        .containsExactly("고정질문1", "고정질문2", "고정질문3"),
                 () -> assertThat(interviewResponse.getInterviewQuestions())
                         .extracting("answer")
-                        .contains("답변1", "답변2", "답변3")
+                        .containsExactly("답변1", "답변2", "답변3")
         );
     }
 
