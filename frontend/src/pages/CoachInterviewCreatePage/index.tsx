@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styled';
@@ -59,7 +59,18 @@ const CoachInterviewCreatePage = () => {
   const { showToast } = useToastActions();
 
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
+
   const [isApplied, setIsApplied] = useState(false);
+
+  const haveTimeDays = useMemo(
+    () =>
+      new Set(
+        calendarTimes
+          .find((calendarTime) => calendarTime.year === year && calendarTime.month === month + 1)
+          ?.times.map((time) => Number(separateFullDate(time).day)) ?? [],
+      ),
+    [calendarTimes],
+  );
 
   const getDayType = (day: number) => (isSelectedDate(day) ? 'active' : 'default');
 
@@ -198,7 +209,11 @@ const CoachInterviewCreatePage = () => {
 
       <S.Box>
         <S.DateBox>
-          <Calendar getHandleClickDay={getHandleClickDay} getDayType={getDayType} />
+          <Calendar
+            getHandleClickDay={getHandleClickDay}
+            getDayType={getDayType}
+            haveTimeDays={haveTimeDays}
+          />
 
           <ScrollContainer>
             {defaultTimes.map((defaultTime, index) => (

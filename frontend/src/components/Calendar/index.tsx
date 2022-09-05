@@ -17,13 +17,19 @@ export type CalendarProps = {
   rerenderCondition?: number;
   getHandleClickDay: (day: number) => () => void;
   getDayType: (day: number) => DayType;
+  haveTimeDays: Set<number>;
 };
 
-const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: CalendarProps) => {
+const Calendar = ({
+  rerenderCondition,
+  getHandleClickDay,
+  getDayType,
+  haveTimeDays,
+}: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
-  const { daysLength, isToday, isBeforeToday, isOverFirstDay, getDay } = useCalendarUtils();
+  const { daysLength, isToday, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (
@@ -52,20 +58,7 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: Calendar
             if (isOverFirstDay(index)) {
               const day = getDay(index);
 
-              if (isToday(day)) {
-                return (
-                  <S.CalendarDay
-                    key={index}
-                    type={getDayType(day)}
-                    today
-                    onClick={getHandleClickDay(day)}
-                  >
-                    {day}
-                  </S.CalendarDay>
-                );
-              }
-
-              if (isBeforeToday(day)) {
+              if (isBelowToday(day)) {
                 return (
                   <S.CalendarDay key={index} type="disable" onClick={getHandleClickDay(day)}>
                     {day}
@@ -74,7 +67,12 @@ const Calendar = ({ rerenderCondition, getHandleClickDay, getDayType }: Calendar
               }
 
               return (
-                <S.CalendarDay key={index} type={getDayType(day)} onClick={getHandleClickDay(day)}>
+                <S.CalendarDay
+                  key={index}
+                  type={getDayType(day)}
+                  onClick={getHandleClickDay(day)}
+                  mark={haveTimeDays.has(day)}
+                >
                   {day}
                   <span />
                   <span />

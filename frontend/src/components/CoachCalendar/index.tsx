@@ -38,7 +38,7 @@ const CoachCalendar = ({
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
-  const { daysLength, isToday, isBeforeToday, isOverFirstDay, getDay } = useCalendarUtils();
+  const { daysLength, isToday, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
 
   const [schedules, setSchedules] = useState<SchedulesType>({});
 
@@ -121,7 +121,7 @@ const CoachCalendar = ({
                 );
               }
 
-              if (isBeforeToday(day)) {
+              if (isBelowToday(day)) {
                 return (
                   <S.CalendarDay key={index} type="disable">
                     {day}
