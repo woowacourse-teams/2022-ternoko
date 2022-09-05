@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         hasError: false,
       });
 
-      return <Navigate to={PAGE.ACCESS_DENY} />;
+      return <Navigate to={PAGE.LOGIN} />;
     }
 
     return children;
