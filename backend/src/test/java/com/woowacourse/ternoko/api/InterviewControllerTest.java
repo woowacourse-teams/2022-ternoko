@@ -9,11 +9,9 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
-import com.woowacourse.ternoko.interview.dto.AlarmResponse;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -24,15 +22,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 public class InterviewControllerTest extends RestDocsTestSupporter {
 
 
-
     @Test
     @DisplayName("크루 - 면담 예약을 생성한다.")
     void createInterview() throws Exception {
 
         given(interviewService.create(any(), any()))
-                .willReturn(AlarmResponse.from(INTERVIEW));
-
-        doNothing().when(slackAlarm).sendCreateMessage(any());
+                .willReturn(1L);
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -76,8 +71,6 @@ public class InterviewControllerTest extends RestDocsTestSupporter {
     @Test
     @DisplayName("크루 - 면담 예약 내역을 수정한다.")
     void updateInterview() throws Exception {
-        given(interviewService.update(any(), any(), any()))
-                .willReturn(List.of(AlarmResponse.from(INTERVIEW)));
 
         // when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -93,8 +86,6 @@ public class InterviewControllerTest extends RestDocsTestSupporter {
     @Test
     @DisplayName("크루 - 면담 예약을 취소한다.")
     void deleteInterview() throws Exception {
-        given(interviewService.delete(any(), any()))
-                .willReturn(AlarmResponse.from(INTERVIEW));
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -109,8 +100,6 @@ public class InterviewControllerTest extends RestDocsTestSupporter {
     @Test
     @DisplayName("코치 - 면담 예약을 취소한다.")
     void cancelInterview() throws Exception {
-        given(interviewService.delete(any(), any()))
-                .willReturn(AlarmResponse.from(INTERVIEW));
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders
@@ -126,8 +115,6 @@ public class InterviewControllerTest extends RestDocsTestSupporter {
     @Test
     @DisplayName("코치 - 면담 예약을 취소 + 되는 시간을 삭제한다.")
     void cancelInterviewWithDeleteAvailableDateTime() throws Exception {
-        given(interviewService.delete(any(), any()))
-                .willReturn(AlarmResponse.from(INTERVIEW));
 
         //when, then
         mockMvc.perform(MockMvcRequestBuilders

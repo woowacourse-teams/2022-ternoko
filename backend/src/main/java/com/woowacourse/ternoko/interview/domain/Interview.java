@@ -75,6 +75,22 @@ public class Interview {
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
                      final Crew crew,
+                     final FormItems formItems,
+                     final InterviewStatusType interviewStatusType) {
+        this.id = id;
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crew = crew;
+        this.formItems = formItems;
+        this.interviewStatusType = interviewStatusType;
+    }
+
+    public Interview(final Long id,
+                     final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
                      final List<FormItem> formItems,
                      final InterviewStatusType interviewStatusType) {
         this.id = id;
@@ -186,4 +202,15 @@ public class Interview {
     public List<FormItem> getFormItems() {
         return formItems.getFormItems();
     }
+
+    public Interview copyOf() {
+        return new Interview(this.id,
+                this.interviewStartTime,
+                this.interviewEndTime,
+                this.coach,
+                this.crew,
+                this.formItems,
+                this.interviewStatusType);
+    }
 }
+
