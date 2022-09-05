@@ -217,6 +217,35 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
+    @DisplayName("코치의 면담예약 목록 조회에는 인터뷰의 상태가 포함되어야 한다.")
+    void findAllByCoach_contains_interviewStatus() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+        interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        interviewService.create(CREW2.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+        interviewService.create(CREW3.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        interviewService.create(CREW4.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+
+        // when
+        final ScheduleResponse scheduleResponses = interviewService.findAllByCoach(COACH4.getId(),
+                NOW.getYear(),
+                NOW.getMonthValue());
+
+        // then
+        assertThat(scheduleResponses.getCalendar()).extracting("interviewStatus")
+                .hasSize(4)
+                .containsExactly("EDITABLE", "EDITABLE", "EDITABLE", "EDITABLE");
+    }
+
+    @Test
     @DisplayName("코치별로 면담예약 목록을 조회한다.")
     void findAllByCoach() {
         // given
@@ -247,7 +276,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
     @Test
     @DisplayName("코치별로 면담예약 목록을 조회할 시, 취소된 면담은 제외하고 보낸다.")
-    void findAllByCoach_except_interviewStatus_canceled() {
+    void findAllByCoach_exclude_interviewStatus_canceled() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
         interviewService.create(CREW1.getId(),
