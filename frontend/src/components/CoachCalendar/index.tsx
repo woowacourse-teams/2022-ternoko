@@ -106,8 +106,7 @@ const CoachCalendar = ({
                       </S.Schedule>
                     ) : (
                       <S.Schedule key={id} status="EDITABLE" onClick={getHandleClickSchedule(id)}>
-                        {crewNickname}
-                        {startTime}~{endTime}
+                        {crewNickname} ({startTime}~{endTime})
                       </S.Schedule>
                     ),
                   )
