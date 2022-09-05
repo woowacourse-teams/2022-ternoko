@@ -3,7 +3,6 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import AccessDenyPage from '@/pages/AccessDenyPage';
 import CoachHomePage from '@/pages/CoachHomePage';
 import CoachInterviewCreatePage from '@/pages/CoachInterviewCreatePage';
 import HomePage from '@/pages/HomePage';
