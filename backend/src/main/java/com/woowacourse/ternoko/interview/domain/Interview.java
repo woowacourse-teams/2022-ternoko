@@ -35,6 +35,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class Interview {
 
     @Id
@@ -69,22 +71,6 @@ public class Interview {
 
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
-
-    public Interview(final Long id,
-                     final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach,
-                     final Crew crew,
-                     final FormItems formItems,
-                     final InterviewStatusType interviewStatusType) {
-        this.id = id;
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = formItems;
-        this.interviewStatusType = interviewStatusType;
-    }
 
     public Interview(final Long id,
                      final LocalDateTime interviewStartTime,
