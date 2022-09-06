@@ -188,6 +188,7 @@ const InterviewApplyPage = () => {
         navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
       }
     } catch (error) {
+      showToast('ERROR', ERROR_MESSAGE.ALREADY_INTERVIEWED_TIME);
       offLoading();
     }
   };
