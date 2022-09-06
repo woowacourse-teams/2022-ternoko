@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.comment.presentation;
 
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
@@ -11,10 +11,11 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.ternoko.comment.domain.Comment;
-import com.woowacourse.ternoko.comment.dto.CommentRequest;
-import com.woowacourse.ternoko.comment.dto.CommentsResponse;
-import com.woowacourse.ternoko.domain.member.MemberType;
+import com.woowacourse.ternoko.core.domain.comment.Comment;
+import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
+import com.woowacourse.ternoko.core.application.response.CommentsResponse;
+import com.woowacourse.ternoko.core.presentation.CommentController;
+import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.support.utils.WebMVCTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

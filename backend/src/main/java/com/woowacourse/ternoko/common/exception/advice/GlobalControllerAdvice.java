@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.common.exception.advice;
 
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.UNHANDLED_EXCEPTION;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.UNHANDLED_EXCEPTION;
 import static com.woowacourse.ternoko.common.log.LogForm.FAILED_LOGGING_FORM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

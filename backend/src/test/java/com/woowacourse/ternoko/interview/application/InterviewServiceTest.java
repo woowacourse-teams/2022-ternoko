@@ -1,12 +1,12 @@
 package com.woowacourse.ternoko.interview.application;
 
-import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INTERVIEW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_CREW_ID;
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DATE;
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
@@ -34,21 +34,22 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.availabledatetime.repository.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.dto.CalendarRequest;
-import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
-import com.woowacourse.ternoko.interview.dto.FormItemDto;
-import com.woowacourse.ternoko.interview.dto.InterviewRequest;
-import com.woowacourse.ternoko.interview.dto.InterviewResponse;
-import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
-import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.interview.exception.InvalidInterviewCoachIdException;
-import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
-import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
-import com.woowacourse.ternoko.service.CoachService;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.presentation.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.core.presentation.request.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.application.InterviewService;
+import com.woowacourse.ternoko.core.presentation.request.CalendarRequest;
+import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.application.response.FormItemResponse;
+import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
+import com.woowacourse.ternoko.core.application.response.InterviewResponse;
+import com.woowacourse.ternoko.core.application.response.ScheduleResponse;
+import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
+import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
+import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
+import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
+import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -355,11 +356,11 @@ class InterviewServiceTest extends DatabaseSupporter {
                 () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
                 () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemDto::getQuestion)
+                        .map(FormItemResponse::getQuestion)
                         .collect(Collectors.toList()))
                         .contains("수정질문1", "수정질문2", "수정질문3"),
                 () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemDto::getAnswer)
+                        .map(FormItemResponse::getAnswer)
                         .collect(Collectors.toList()))
                         .contains("수정답변1", "수정답변2", "수정답변3")
         );
@@ -394,11 +395,11 @@ class InterviewServiceTest extends DatabaseSupporter {
                 () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
                 () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemDto::getQuestion)
+                        .map(FormItemResponse::getQuestion)
                         .collect(Collectors.toList()))
                         .contains("수정질문1", "수정질문2", "수정질문3"),
                 () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemDto::getAnswer)
+                        .map(FormItemResponse::getAnswer)
                         .collect(Collectors.toList()))
                         .contains("수정답변1", "수정답변2", "수정답변3"),
                 () -> assertThat(updatedInterviewResponse.getStatus())

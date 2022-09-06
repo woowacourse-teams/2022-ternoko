@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.domain.formitem;
 
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.OVER_LENGTH;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.woowacourse.ternoko.common.exception.InvalidLengthException;
-import com.woowacourse.ternoko.interview.domain.formitem.Answer;
+import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

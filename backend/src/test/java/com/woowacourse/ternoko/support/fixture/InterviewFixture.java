@@ -3,13 +3,13 @@ package com.woowacourse.ternoko.support.fixture;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 
-import com.woowacourse.ternoko.interview.domain.Interview;
-import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
-import com.woowacourse.ternoko.interview.domain.formitem.Answer;
-import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
-import com.woowacourse.ternoko.interview.domain.formitem.Question;
-import com.woowacourse.ternoko.interview.dto.FormItemRequest;
-import com.woowacourse.ternoko.interview.dto.InterviewRequest;
+import com.woowacourse.ternoko.core.domain.interview.Interview;
+import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
+import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
+import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
+import com.woowacourse.ternoko.core.presentation.request.FormItemRequest;
+import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 

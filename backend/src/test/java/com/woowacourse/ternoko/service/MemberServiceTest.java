@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.woowacourse.ternoko.core.application.MemberService;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import org.junit.jupiter.api.DisplayName;

@@ -1,13 +1,13 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 
-import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.domain.member.Member;
-import com.woowacourse.ternoko.interview.dto.InterviewRequest;
-import com.woowacourse.ternoko.login.application.JwtProvider;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import com.woowacourse.ternoko.core.domain.member.Member;
+import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
+import com.woowacourse.ternoko.auth.application.JwtProvider;
 import com.woowacourse.ternoko.support.utils.AcceptanceTest;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import io.restassured.RestAssured;

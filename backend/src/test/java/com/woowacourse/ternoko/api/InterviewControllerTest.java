@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST1;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.COACH1_INTERVIEW_REQUEST2;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW;
@@ -12,7 +12,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
-import com.woowacourse.ternoko.interview.dto.InterviewResponse;
+import com.woowacourse.ternoko.core.application.response.InterviewResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

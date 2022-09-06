@@ -8,11 +8,12 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.domain.member.Coach;
-import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.interview.domain.Interview;
-import com.woowacourse.ternoko.interview.domain.InterviewRepository;
-import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
+import com.woowacourse.ternoko.core.domain.member.coach.Coach;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import com.woowacourse.ternoko.core.domain.interview.Interview;
+import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
+import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
+import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;

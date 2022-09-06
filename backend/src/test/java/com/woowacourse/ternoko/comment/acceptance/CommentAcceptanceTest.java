@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.acceptance.AcceptanceSupporter;
-import com.woowacourse.ternoko.comment.dto.CommentRequest;
-import com.woowacourse.ternoko.comment.dto.CommentResponse;
-import com.woowacourse.ternoko.comment.dto.CommentsResponse;
-import com.woowacourse.ternoko.domain.member.MemberType;
-import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
-import com.woowacourse.ternoko.interview.dto.InterviewResponse;
+import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
+import com.woowacourse.ternoko.core.application.response.CommentResponse;
+import com.woowacourse.ternoko.core.application.response.CommentsResponse;
+import com.woowacourse.ternoko.core.domain.member.MemberType;
+import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.application.response.InterviewResponse;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

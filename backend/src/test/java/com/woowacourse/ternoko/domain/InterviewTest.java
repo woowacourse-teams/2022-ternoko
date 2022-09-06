@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.domain;
 
-import static com.woowacourse.ternoko.interview.domain.InterviewStatusType.FIXED;
+import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.FIXED;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
-import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.core.domain.interview.Interview;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
