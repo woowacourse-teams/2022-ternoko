@@ -18,6 +18,9 @@ public class DatabaseCleaner {
         tableNames = entityManager.getMetamodel().getEntities().stream()
                 .map(entityType -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entityType.getName()))
                 .collect(Collectors.toList());
+        tableNames.remove("member");
+        tableNames.remove("crew");
+        tableNames.remove("coach");
     }
 
     @Transactional

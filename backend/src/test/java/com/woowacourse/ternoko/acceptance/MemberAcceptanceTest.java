@@ -14,10 +14,10 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.core.dto.response.AvailableDateTimeResponse;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimeResponse;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
@@ -26,9 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
-@Sql({"/member.sql"})
 class MemberAcceptanceTest extends AcceptanceSupporter {
 
     @Test

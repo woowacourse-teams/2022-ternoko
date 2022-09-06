@@ -26,9 +26,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
-@Sql({"/member.sql"})
 public class CoachAcceptanceTest extends AcceptanceSupporter {
 
     @Test

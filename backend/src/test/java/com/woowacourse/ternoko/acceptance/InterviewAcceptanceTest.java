@@ -16,8 +16,8 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -29,9 +29,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
-@Sql({"/member.sql"})
 class InterviewAcceptanceTest extends AcceptanceSupporter {
 
     @Test
