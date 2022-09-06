@@ -34,8 +34,8 @@ const AskDeleteTimeModal = ({
         await deleteCoachInterviewAPI(interviewId, onlyInterview);
         offLoading();
         showToast('SUCCESS', message);
-        afterDeleteInterview();
         handleCloseModal();
+        afterDeleteInterview();
       } catch (e) {
         offLoading();
       }
