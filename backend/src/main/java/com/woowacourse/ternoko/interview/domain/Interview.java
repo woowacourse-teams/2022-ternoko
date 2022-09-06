@@ -114,6 +114,7 @@ public class Interview {
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
         this.coach = interview.getCoach();
+        this.interviewStatusType = interview.getInterviewStatusType();
         formItems.update(interview.getFormItems());
     }
 
