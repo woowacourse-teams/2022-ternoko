@@ -2,8 +2,6 @@ package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
@@ -37,8 +35,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.application.InterviewService;
@@ -384,47 +380,6 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("코치가 취소한 면담 예약 수정 시 InterviewStatusType은 CANCELED에서 EDITABLE로 변경되어야한다.")
-    void update_WhenCoachCanceledInterview() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
-
-        final Long interviewId = interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
-
-        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interviewId, true);
-
-        // when
-        interviewService.update(CREW1.getId(), interviewId,
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
-                        FORM_ITEM_UPDATE_REQUESTS));
-
-        // then
-        InterviewResponse updatedInterviewResponse = interviewService.findInterviewResponseById(interviewId);
-
-        assertAll(
-                () -> assertThat(updatedInterviewResponse.getId()).isNotNull(),
-                () -> assertThat(updatedInterviewResponse.getCoachNickname())
-                        .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(updatedInterviewResponse.getInterviewStartTime())
-                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME)),
-                () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
-                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
-                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemResponse::getQuestion)
-                        .collect(Collectors.toList()))
-                        .contains("수정질문1", "수정질문2", "수정질문3"),
-                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemResponse::getAnswer)
-                        .collect(Collectors.toList()))
-                        .contains("수정답변1", "수정답변2", "수정답변3"),
-                () -> assertThat(updatedInterviewResponse.getStatus())
-                        .isEqualTo(InterviewStatusType.EDITABLE)
-        );
-    }
-
-    @Test
     @DisplayName("면담 예약을 수정 시 존재하지 않는 예약이라면 예외를 반환한다.")
     void update_WhenInvalidInterviewId() {
         // given
@@ -442,24 +397,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("면담 예약을 수정 시 크루 본인의 예약이 아니라면 예외를 반환한다.")
-    void update_WhenInvalidCrewId() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
-
-        final Long interviewId = interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
-        // when & then
-        assertThatThrownBy(() -> interviewService.update(CREW2.getId(), interviewId,
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
-                        FORM_ITEM_UPDATE_REQUESTS)))
-                .isInstanceOf(InvalidInterviewCrewIdException.class)
-                .hasMessage(INVALID_INTERVIEW_CREW_ID.getMessage());
-    }
-
-    @Test
-    @DisplayName("면담 예약 수정 시 USED 라면 예외를 반환한다.")
+    @DisplayName("면담 예약 수정 시 되는 시간이 USED 라면 예외를 반환한다.")
     void update_WhenInvalidAvailableDateTime() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
@@ -476,7 +414,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("면담 수정 시, 당일 예약을 시도하면 에러가 발생한다.")
+    @DisplayName("면담 수정 시,  당일 예약을 시도하면 에러가 발생한다.")
     void updateInterviewTodayException() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
@@ -629,22 +567,6 @@ class InterviewServiceTest extends DatabaseSupporter {
                 () -> assertThat(canceledInterview.getStatus()).isEqualTo(InterviewStatusType.CANCELED),
                 () -> assertFalse(dateTime.isPresent())
         );
-    }
-
-    @Test
-    @DisplayName("코치가 면담 예약을 취소 시 본인의 면담 예약이 아닌 경우 예외를 반환한다.")
-    void cancel_WhenInvalidCoachId() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
-
-        final Long interviewId = interviewService.create(CREW1.getId(),
-                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
-        // when  && then
-        assertThatThrownBy(
-                () -> interviewService.cancelAndDeleteAvailableTime(COACH2.getId(), interviewId, true))
-                .isInstanceOf(InvalidInterviewCoachIdException.class)
-                .hasMessage(INVALID_INTERVIEW_COACH_ID.getMessage());
     }
 
     @Test

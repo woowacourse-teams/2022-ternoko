@@ -4,10 +4,11 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
+import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
@@ -18,7 +19,9 @@ import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -39,7 +42,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Interview {
+public class  Interview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,7 +90,7 @@ public class Interview {
                      final Coach coach,
                      final Crew crew,
                      final List<FormItem> formItems) {
-        this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, InterviewStatusType.EDITABLE);
+        this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
     }
 
     public static Interview of(final LocalDateTime interviewDatetime,
@@ -104,7 +107,7 @@ public class Interview {
 
     public void update(Interview interview) {
         validateCrew(interview.crew.getId());
-        validateInterviewStatus(InterviewStatusType.FIXED, CANNOT_EDIT_INTERVIEW);
+        validateUpdateInterviewStatus();
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
         this.coach = interview.getCoach();
@@ -118,16 +121,30 @@ public class Interview {
         }
     }
 
-    private void validateInterviewStatus(final InterviewStatusType interviewStatusType,
-                                         final ExceptionType exceptionType) {
-        if (this.interviewStatusType == interviewStatusType) {
-            throw new InterviewStatusException(exceptionType);
+    private void validateUpdateInterviewStatus() {
+        final List<InterviewStatusType> invalidUpdateStatus = findInvalidUpdateStatus();
+        for (InterviewStatusType invalidStatus : invalidUpdateStatus) {
+            validateInterviewStatus(invalidStatus);
+        }
+    }
+
+    private List<InterviewStatusType> findInvalidUpdateStatus() {
+        final List<InterviewStatusType> status = Arrays.stream(InterviewStatusType.values())
+                .collect(Collectors.toList());
+        status.remove(EDITABLE);
+        status.remove(CANCELED);
+        return status;
+    }
+
+    private void validateInterviewStatus(final InterviewStatusType invalidStatus) {
+        if (this.interviewStatusType == invalidStatus) {
+            throw new InterviewStatusException(CANNOT_EDIT_INTERVIEW);
         }
     }
 
     public void cancel(final Long coachId) {
         validateCoach(coachId);
-        this.interviewStatusType = InterviewStatusType.CANCELED;
+        this.interviewStatusType = CANCELED;
     }
 
     private void validateCoach(final Long coachId) {
