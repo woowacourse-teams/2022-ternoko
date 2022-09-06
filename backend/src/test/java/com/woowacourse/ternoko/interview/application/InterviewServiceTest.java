@@ -30,6 +30,7 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -525,6 +526,26 @@ class InterviewServiceTest extends DatabaseSupporter {
         // then
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(interviewId))
                 .isInstanceOf(InterviewNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("크루 - 코치가 취소한 (되는시간까지 삭제한) 면담 예약을 수정한다.")
+    void updateCanceledInterviewWithEmptyTime() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Long interviewId = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interviewId, false);
+
+        // then
+        assertDoesNotThrow(
+                () -> interviewService.update(CREW1.getId(), interviewId, new InterviewRequest(COACH3.getId(),
+                        LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS))
+        );
     }
 
     @Test
