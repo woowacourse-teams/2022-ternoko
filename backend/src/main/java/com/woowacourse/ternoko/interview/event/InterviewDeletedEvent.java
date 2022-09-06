@@ -5,11 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class InterviewDeletedEvent extends ApplicationEvent {
 
-    private Interview interview;
-
-    public InterviewDeletedEvent(Object source) {
-        super(source);
-    }
+    private final Interview interview;
 
     public InterviewDeletedEvent(Object source, Interview interview) {
         super(source);

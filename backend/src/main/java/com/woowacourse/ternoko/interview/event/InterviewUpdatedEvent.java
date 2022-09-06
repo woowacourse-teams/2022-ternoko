@@ -1,17 +1,12 @@
 package com.woowacourse.ternoko.interview.event;
 
 import com.woowacourse.ternoko.interview.domain.Interview;
-import java.time.Clock;
 import org.springframework.context.ApplicationEvent;
 
 public class InterviewUpdatedEvent extends ApplicationEvent {
 
-    private Interview origin;
-    private Interview update;
-
-    public InterviewUpdatedEvent(Object source) {
-        super(source);
-    }
+    private final Interview origin;
+    private final Interview update;
 
     public InterviewUpdatedEvent(Object source, Interview origin, Interview update) {
         super(source);

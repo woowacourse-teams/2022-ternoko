@@ -5,11 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class InterviewCreatedEvent extends ApplicationEvent {
 
-    private Interview interview;
-
-    public InterviewCreatedEvent(Object source) {
-        super(source);
-    }
+    private final Interview interview;
 
     public InterviewCreatedEvent(Object source, Interview interview) {
         super(source);

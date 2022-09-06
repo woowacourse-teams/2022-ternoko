@@ -5,11 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class InterviewCanceledEvent extends ApplicationEvent {
 
-    private Interview interview;
-
-    public InterviewCanceledEvent(Object source) {
-        super(source);
-    }
+    private final Interview interview;
 
     public InterviewCanceledEvent(Object source, Interview interview) {
         super(source);
