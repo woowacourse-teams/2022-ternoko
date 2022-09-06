@@ -186,9 +186,8 @@ public class InterviewService {
         changeAvailableTimeStatusIfPresent(originalInterview.getCoach().getId(),
                 originalInterview.getInterviewStartTime(),
                 OPEN);
-        changeAvailableTimeStatusIfPresent(interviewRequest.getCoachId(),
-                interviewRequest.getInterviewDatetime(),
-                USED);
+        final AvailableDateTime afterTime = getAvailableTime(interviewRequest);
+        afterTime.changeStatus(USED);
     }
 
     private Interview getInterviewById(Long interviewId) {
