@@ -1,15 +1,17 @@
 package com.woowacourse.ternoko.interview.event;
 
 import com.woowacourse.ternoko.support.SlackAlarm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class InterviewHandler {
 
-    @Autowired
-    private SlackAlarm slackAlarm;
+    private final SlackAlarm slackAlarm;
+
+    public InterviewHandler(SlackAlarm slackAlarm) {
+        this.slackAlarm = slackAlarm;
+    }
 
     @EventListener
     public void create(InterviewCreatedEvent interviewCreatedEvent) throws Exception {
