@@ -30,6 +30,7 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -538,29 +539,13 @@ class InterviewServiceTest extends DatabaseSupporter {
                         FORM_ITEM_REQUESTS));
         // when
         interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interviewId, false);
-        interviewService.update(CREW1.getId(), interviewId, new InterviewRequest(COACH3.getId(),
-                LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
-                FORM_ITEM_UPDATE_REQUESTS));
 
-        final InterviewResponse updatedInterviewResponse = interviewService.findInterviewResponseById(interviewId);
         // then
-        assertAll(
-                () -> assertThat(updatedInterviewResponse.getId()).isNotNull(),
-                () -> assertThat(updatedInterviewResponse.getCoachNickname())
-                        .isEqualTo(COACH3.getNickname()),
-                () -> assertThat(updatedInterviewResponse.getInterviewStartTime())
-                        .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME)),
-                () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
-                        .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
-                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemDto::getQuestion)
-                        .collect(Collectors.toList()))
-                        .contains("수정질문1", "수정질문2", "수정질문3"),
-                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
-                        .map(FormItemDto::getAnswer)
-                        .collect(Collectors.toList()))
-                        .contains("수정답변1", "수정답변2", "수정답변3"));
-
+        assertDoesNotThrow(
+                () -> interviewService.update(CREW1.getId(), interviewId, new InterviewRequest(COACH3.getId(),
+                        LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS))
+        );
     }
 
     @Test
