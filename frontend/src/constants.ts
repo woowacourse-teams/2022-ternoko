@@ -38,6 +38,7 @@ export const ERROR_MESSAGE = {
   ENTER_IN_RANGE_INTRODUCE_LENGTH: `한 줄 소개는 ${COACH_INTRODUCE_MIN_LENGTH}글자 이상 ${COACH_INTRODUCE_MAX_LENGTH}글자 이하를 입력해주세용~`,
   ENTER_IN_RANGE_COMMENT: `코멘트는 ${COMMENT_MIN_LENGTH}글자 이상 ${COMMENT_MAX_LENGTH}글자 이하로 입력해주세용~`,
   CREATE_SCHEDULE: '면담 스케쥴 생성이 실패했어용~',
+  ALREADY_INTERVIEWED_TIME: '이미 예약된 시간대입니다. ',
   DUPLICATED_NICKNAME: '닉네임이 중복됐어용~',
 };
 
