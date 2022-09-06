@@ -294,6 +294,7 @@ const InterviewApplyPage = () => {
                   rerenderCondition={rerenderCondition}
                   getHandleClickDay={getHandleClickDay}
                   getDayType={getDayType}
+                  haveTimeDays={new Set()}
                 />
 
                 <S.TimeContainer key={timeRerenderKey} heightUnit={availableTimes.length}>

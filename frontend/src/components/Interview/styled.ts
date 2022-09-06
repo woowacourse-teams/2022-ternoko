@@ -16,7 +16,6 @@ export const Box = styled.div<BoxProps>`
   box-shadow: ${({ theme }) => theme.shadows.basic};
 
   transition: transform 0.2s ease-in-out;
-  cursor: pointer;
 
   ${({ theme, status }) =>
     status === 'CANCELED' &&
