@@ -1,18 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as S from './styled';
 
 type AccordionProps = {
   title: string;
   description: string;
+  show: boolean;
 };
 
-const Accordion = ({ title, description }: AccordionProps) => {
+const Accordion = ({ title, description, show }: AccordionProps) => {
   const [open, setOpen] = useState(true);
 
   const handleToggleHeader = () => {
     setOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!show) {
+      setOpen(true);
+    }
+  }, [show]);
 
   return (
     <S.Box>
