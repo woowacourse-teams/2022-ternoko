@@ -7,7 +7,7 @@ module.exports = () =>
     devtool: 'inline-source-map',
     devServer: {
       https: true,
-      open: false,
+      open: true,
       hot: true,
       compress: true,
       port: 3000,

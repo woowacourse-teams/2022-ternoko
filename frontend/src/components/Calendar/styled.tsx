@@ -16,9 +16,11 @@ export const Box = styled.div`
 type CalendarDayProps = {
   type?: DayType;
   today?: boolean;
+  mark?: boolean;
 };
 
 export const CalendarDay = styled(Day)<CalendarDayProps>`
+  position: relative;
   display: grid;
   place-items: center;
   width: 6rem;
@@ -49,5 +51,19 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
       color: ${({ theme }) => theme.colors.gray_150};
       pointer-events: none;
       cursor: default;
+    `}
+
+    ${({ mark }) =>
+    mark &&
+    css`
+      :after {
+        content: '';
+        position: absolute;
+        bottom: 10%;
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 100%;
+        background-color: ${({ theme }) => theme.colors.pink_100};
+      }
     `}
 `;

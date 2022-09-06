@@ -8,7 +8,6 @@ export const TitleBox = styled.div`
 
   h2 {
     font-size: 3rem;
-    cursor: pointer;
   }
 `;
 
