@@ -9,11 +9,13 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -21,6 +23,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class InterviewControllerTest extends RestDocsTestSupporter {
 
+    @BeforeEach
+    void setUp() throws Exception {
+        given(authService.isValid(any())).willReturn(true);
+        doNothing().when(handler).create(any());
+        doNothing().when(handler).canceled(any());
+        doNothing().when(handler).update(any());
+        doNothing().when(handler).delete(any());
+    }
 
     @Test
     @DisplayName("크루 - 면담 예약을 생성한다.")

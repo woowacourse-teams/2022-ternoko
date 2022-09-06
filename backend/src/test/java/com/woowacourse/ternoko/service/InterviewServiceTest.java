@@ -42,16 +42,17 @@ import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.application.InterviewService;
-import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
-import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
-import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.domain.interview.event.InterviewHandler;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
+import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
+import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,7 +69,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.jdbc.Sql;
 
 @Sql("/common.sql")
@@ -76,7 +76,7 @@ import org.springframework.test.context.jdbc.Sql;
 class InterviewServiceTest extends DatabaseSupporter {
 
     @MockBean
-    private ApplicationEventPublisher applicationEventPublisher;
+    private InterviewHandler handler;
 
     @Autowired
     private InterviewService interviewService;
@@ -87,11 +87,14 @@ class InterviewServiceTest extends DatabaseSupporter {
     @Autowired
     private AvailableDateTimeRepository availableDateTimeRepository;
 
-
     @BeforeEach
-    void setUp() {
-        doNothing().when(applicationEventPublisher).publishEvent(any());
+    void setUp() throws Exception {
+        doNothing().when(handler).create(any());
+        doNothing().when(handler).canceled(any());
+        doNothing().when(handler).update(any());
+        doNothing().when(handler).delete(any());
     }
+
 
     @Test
     @DisplayName("면담 예약을 생성한다.")

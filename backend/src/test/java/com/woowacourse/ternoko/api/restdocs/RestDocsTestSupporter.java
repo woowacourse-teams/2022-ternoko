@@ -17,6 +17,7 @@ import com.woowacourse.ternoko.core.application.CommentService;
 import com.woowacourse.ternoko.core.application.CrewService;
 import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.application.MemberService;
+import com.woowacourse.ternoko.core.domain.interview.event.InterviewHandler;
 import com.woowacourse.ternoko.support.application.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +49,9 @@ public class RestDocsTestSupporter {
 
     @Autowired
     protected JwtProvider jwtProvider;
+
+    @MockBean
+    protected InterviewHandler handler;
 
     @MockBean
     protected AuthService authService;
