@@ -18,7 +18,6 @@ import com.woowacourse.ternoko.service.CoachService;
 import com.woowacourse.ternoko.service.CrewService;
 import com.woowacourse.ternoko.service.EmailService;
 import com.woowacourse.ternoko.service.MemberService;
-import com.woowacourse.ternoko.support.SlackAlarm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,9 +69,6 @@ public class RestDocsTestSupporter {
 
     @MockBean
     protected EmailService emailService;
-
-    @MockBean
-    protected SlackAlarm slackAlarm;
 
     @Autowired
     protected ObjectMapper objectMapper;

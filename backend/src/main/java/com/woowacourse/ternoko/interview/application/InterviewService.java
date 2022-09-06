@@ -20,11 +20,14 @@ import com.woowacourse.ternoko.interview.domain.Interview;
 import com.woowacourse.ternoko.interview.domain.InterviewRepository;
 import com.woowacourse.ternoko.interview.domain.InterviewStatusType;
 import com.woowacourse.ternoko.interview.domain.formitem.FormItem;
-import com.woowacourse.ternoko.interview.dto.AlarmResponse;
 import com.woowacourse.ternoko.interview.dto.FormItemRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
+import com.woowacourse.ternoko.interview.event.InterviewCanceledEvent;
+import com.woowacourse.ternoko.interview.event.InterviewCreatedEvent;
+import com.woowacourse.ternoko.interview.event.InterviewDeletedEvent;
+import com.woowacourse.ternoko.interview.event.InterviewUpdatedEvent;
 import com.woowacourse.ternoko.interview.exception.InterviewNotFoundException;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.interview.exception.InvalidInterviewDateException;
@@ -32,11 +35,11 @@ import com.woowacourse.ternoko.repository.CoachRepository;
 import com.woowacourse.ternoko.repository.CrewRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +58,9 @@ public class InterviewService {
     private final CrewRepository crewRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public AlarmResponse create(final Long crewId, final InterviewRequest interviewRequest) {
+    public Long create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
 
         final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
@@ -65,7 +69,9 @@ public class InterviewService {
         availableDateTime.changeStatus(USED);
 
         final Interview interview = convertInterview(crewId, interviewRequest);
-        return AlarmResponse.from(interviewRepository.save(interview));
+
+        applicationEventPublisher.publishEvent(new InterviewCreatedEvent(this, interview));
+        return interviewRepository.save(interview).getId();
     }
 
     private void validateDuplicateStartTimeByCrew(final Long crewId, final LocalDateTime interviewDateTime) {
@@ -154,21 +160,18 @@ public class InterviewService {
                 .collect(Collectors.toList());
     }
 
-    public List<AlarmResponse> update(final Long crewId,
-                                      final Long interviewId,
-                                      final InterviewRequest interviewRequest) {
+    public void update(final Long crewId,
+                       final Long interviewId,
+                       final InterviewRequest interviewRequest) {
         final Interview interview = getInterviewById(interviewId);
-        final List<AlarmResponse> alarmResponses = new ArrayList<>();
-        alarmResponses.add(AlarmResponse.from(interview));
+        final Interview origin = interview.copyOf();
 
         final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
         validateAfterToday(availableDateTime);
         changeAvailableDateTimeStatus(interviewRequest, interview);
 
         interview.update(convertInterview(crewId, interviewRequest));
-
-        alarmResponses.add(AlarmResponse.from(interview));
-        return alarmResponses;
+        applicationEventPublisher.publishEvent(new InterviewUpdatedEvent(this, origin, interview));
     }
 
     private void validateAfterToday(final AvailableDateTime availableDateTime) {
@@ -191,26 +194,26 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
-    public AlarmResponse cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
-                                                      final boolean onlyInterview) {
+    public void cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
+                                             final boolean onlyInterview) {
         final Interview canceledInterview = cancel(coachId, interviewId);
 
         final AvailableDateTime unavailableTime = getAvailableTime(canceledInterview);
         if (!onlyInterview) {
             availableDateTimeRepository.delete(unavailableTime);
-            return AlarmResponse.from(canceledInterview);
+            return;
         }
         unavailableTime.changeStatus(OPEN);
-        return AlarmResponse.from(canceledInterview);
     }
 
     private Interview cancel(final Long coachId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         interview.cancel(coachId);
+        applicationEventPublisher.publishEvent(new InterviewCanceledEvent(this, interview));
         return interview;
     }
 
-    public AlarmResponse delete(final Long crewId, final Long interviewId) {
+    public void delete(final Long crewId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         deleteInterview(crewId, interview);
 
@@ -219,8 +222,7 @@ public class InterviewService {
                 interview.getInterviewStartTime());
 
         time.ifPresent(it -> it.changeStatus(OPEN));
-
-        return AlarmResponse.from(interview);
+        applicationEventPublisher.publishEvent(new InterviewDeletedEvent(this, interview));
     }
 
     private void deleteInterview(final Long crewId, final Interview interview) {
