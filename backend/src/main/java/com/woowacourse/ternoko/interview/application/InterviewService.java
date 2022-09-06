@@ -24,7 +24,7 @@ import com.woowacourse.ternoko.interview.dto.FormItemRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewRequest;
 import com.woowacourse.ternoko.interview.dto.InterviewResponse;
 import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
-import com.woowacourse.ternoko.interview.event.InterviewCanceldEvent;
+import com.woowacourse.ternoko.interview.event.InterviewCanceledEvent;
 import com.woowacourse.ternoko.interview.event.InterviewCreatedEvent;
 import com.woowacourse.ternoko.interview.event.InterviewDeletedEvent;
 import com.woowacourse.ternoko.interview.event.InterviewUpdatedEvent;
@@ -209,7 +209,7 @@ public class InterviewService {
     private Interview cancel(final Long coachId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         interview.cancel(coachId);
-        applicationEventPublisher.publishEvent(new InterviewCanceldEvent(this, interview));
+        applicationEventPublisher.publishEvent(new InterviewCanceledEvent(this, interview));
         return interview;
     }
 

@@ -24,8 +24,8 @@ public class InterviewHandler {
     }
 
     @EventListener
-    public void canceled(InterviewCanceldEvent interviewCanceldEvent) throws Exception {
-        slackAlarm.sendCancelMessage(interviewCanceldEvent.getInterview());
+    public void canceled(InterviewCanceledEvent interviewCanceledEvent) throws Exception {
+        slackAlarm.sendCancelMessage(interviewCanceledEvent.getInterview());
     }
 
     @EventListener
