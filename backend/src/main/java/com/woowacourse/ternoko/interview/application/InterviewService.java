@@ -11,6 +11,7 @@ import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALI
 import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 
 import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
+import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.availabledatetime.repository.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
@@ -168,7 +169,7 @@ public class InterviewService {
 
         final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
         validateAfterToday(availableDateTime);
-        changeAvailableDateTimeStatus(interviewRequest, interview);
+        changeAvailableDateTimeStatus(interview, interviewRequest);
 
         interview.update(convertInterview(crewId, interviewRequest));
         applicationEventPublisher.publishEvent(new InterviewUpdatedEvent(this, origin, interview));
@@ -180,13 +181,14 @@ public class InterviewService {
         }
     }
 
-    private void changeAvailableDateTimeStatus(final InterviewRequest interviewRequest,
-                                               final Interview originalInterview) {
-        final AvailableDateTime beforeTime = getAvailableTime(originalInterview);
-        final AvailableDateTime afterTime = getAvailableTime(interviewRequest);
-
-        beforeTime.changeStatus(OPEN);
-        afterTime.changeStatus(USED);
+    private void changeAvailableDateTimeStatus(final Interview originalInterview,
+                                               final InterviewRequest interviewRequest) {
+        changeAvailableTimeStatusIfPresent(originalInterview.getCoach().getId(),
+                originalInterview.getInterviewStartTime(),
+                OPEN);
+        changeAvailableTimeStatusIfPresent(interviewRequest.getCoachId(),
+                interviewRequest.getInterviewDatetime(),
+                USED);
     }
 
     private Interview getInterviewById(Long interviewId) {
@@ -217,12 +219,18 @@ public class InterviewService {
         final Interview interview = getInterviewById(interviewId);
         deleteInterview(crewId, interview);
 
-        final Optional<AvailableDateTime> time = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
-                interview.getCoach().getId(),
-                interview.getInterviewStartTime());
-
-        time.ifPresent(it -> it.changeStatus(OPEN));
+        changeAvailableTimeStatusIfPresent(interview.getCoach().getId(), interview.getInterviewStartTime(), OPEN);
         applicationEventPublisher.publishEvent(new InterviewDeletedEvent(this, interview));
+    }
+
+    private void changeAvailableTimeStatusIfPresent(final Long coachId,
+                                                    final LocalDateTime startTime,
+                                                    final AvailableDateTimeStatus statusType) {
+        final Optional<AvailableDateTime> time = availableDateTimeRepository.findByCoachIdAndInterviewDateTime(
+                coachId,
+                startTime);
+
+        time.ifPresent(it -> it.changeStatus(statusType));
     }
 
     private void deleteInterview(final Long crewId, final Interview interview) {
