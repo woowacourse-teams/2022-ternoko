@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.repository;
+package com.woowacourse.ternoko.domain.interview;
 
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS1;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS2;
@@ -8,12 +8,12 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.core.domain.member.coach.Coach;
-import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
+import com.woowacourse.ternoko.core.domain.member.coach.Coach;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;

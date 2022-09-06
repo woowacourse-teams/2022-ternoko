@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.availabledatetime.repository;
+package com.woowacourse.ternoko.domain.availabledatetime;
 
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
@@ -11,16 +11,16 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
-import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.core.domain.member.coach.Coach;
-import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
+import com.woowacourse.ternoko.core.domain.member.coach.Coach;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;

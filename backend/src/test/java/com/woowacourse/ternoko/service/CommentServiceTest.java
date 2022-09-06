@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.comment.application;
+package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
@@ -12,19 +12,19 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.ternoko.core.application.CommentService;
-import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
-import com.woowacourse.ternoko.core.application.response.CommentResponse;
-import com.woowacourse.ternoko.core.application.response.CommentsResponse;
+import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
+import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.common.exception.exception.CommentNotFoundException;
 import com.woowacourse.ternoko.common.exception.exception.InvalidCommentInterviewIdException;
 import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
-import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
-import com.woowacourse.ternoko.core.domain.member.MemberType;
+import com.woowacourse.ternoko.core.application.CommentService;
 import com.woowacourse.ternoko.core.application.InterviewService;
-import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.application.response.CommentResponse;
+import com.woowacourse.ternoko.core.application.response.CommentsResponse;
 import com.woowacourse.ternoko.core.application.response.InterviewResponse;
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
+import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.domain.member.MemberType;
+import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.util.stream.Collectors;

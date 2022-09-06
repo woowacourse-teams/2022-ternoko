@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain;
+package com.woowacourse.ternoko.domain.interview;
 
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.FIXED;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS1;

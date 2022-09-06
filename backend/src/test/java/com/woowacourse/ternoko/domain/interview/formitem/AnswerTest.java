@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain.formitem;
+package com.woowacourse.ternoko.domain.interview.formitem;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

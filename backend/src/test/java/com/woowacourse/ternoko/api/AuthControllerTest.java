@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
-import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.auth.application.response.LoginResponse;
+import com.woowacourse.ternoko.core.domain.member.MemberType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
