@@ -365,6 +365,47 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
+    @DisplayName("코치가 취소한 면담 예약 수정 시 InterviewStatusType은 CANCELED에서 EDITABLE로 변경되어야한다.")
+    void update_WhenCoachCanceledInterview() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Long interviewId = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+
+        interviewService.cancelAndDeleteAvailableTime(COACH3.getId(), interviewId, true);
+
+        // when
+        interviewService.update(CREW1.getId(), interviewId,
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS));
+
+        // then
+        InterviewResponse updatedInterviewResponse = interviewService.findInterviewResponseById(interviewId);
+
+        assertAll(
+                () -> assertThat(updatedInterviewResponse.getId()).isNotNull(),
+                () -> assertThat(updatedInterviewResponse.getCoachNickname())
+                        .isEqualTo(COACH3.getNickname()),
+                () -> assertThat(updatedInterviewResponse.getInterviewStartTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME)),
+                () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
+                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
+                        .map(FormItemDto::getQuestion)
+                        .collect(Collectors.toList()))
+                        .contains("수정질문1", "수정질문2", "수정질문3"),
+                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
+                        .map(FormItemDto::getAnswer)
+                        .collect(Collectors.toList()))
+                        .contains("수정답변1", "수정답변2", "수정답변3"),
+                () -> assertThat(updatedInterviewResponse.getStatus())
+                        .isEqualTo(InterviewStatusType.EDITABLE)
+        );
+    }
+
+    @Test
     @DisplayName("면담 예약을 수정 시 존재하지 않는 예약이라면 예외를 반환한다.")
     void update_WhenInvalidInterviewId() {
         // given
