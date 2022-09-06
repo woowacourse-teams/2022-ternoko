@@ -8,8 +8,8 @@ import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
-import com.woowacourse.ternoko.core.presentation.request.FormItemRequest;
-import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.request.FormItemRequest;
+import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 

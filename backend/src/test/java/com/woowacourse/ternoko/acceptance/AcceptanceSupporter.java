@@ -6,7 +6,7 @@ import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM
 
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.Member;
-import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.auth.application.JwtProvider;
 import com.woowacourse.ternoko.support.utils.AcceptanceTest;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;

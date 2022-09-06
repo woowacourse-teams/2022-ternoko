@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.auth.application.response;
+package com.woowacourse.ternoko.auth.dto.response;
 
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import lombok.AllArgsConstructor;

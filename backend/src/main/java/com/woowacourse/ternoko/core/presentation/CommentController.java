@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.core.presentation;
 
-import com.woowacourse.ternoko.core.application.CommentService;
-import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
-import com.woowacourse.ternoko.core.application.response.CommentsResponse;
 import com.woowacourse.ternoko.auth.presentation.annotation.AuthenticationPrincipal;
+import com.woowacourse.ternoko.core.application.CommentService;
+import com.woowacourse.ternoko.core.dto.request.CommentRequest;
+import com.woowacourse.ternoko.core.dto.response.CommentsResponse;
 import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

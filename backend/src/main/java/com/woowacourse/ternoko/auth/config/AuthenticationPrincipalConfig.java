@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.auth.config;
 
-import com.woowacourse.ternoko.auth.presentation.AuthenticationPrincipalArgumentResolver;
-import com.woowacourse.ternoko.auth.presentation.AuthInterceptor;
 import com.woowacourse.ternoko.auth.application.JwtProvider;
+import com.woowacourse.ternoko.auth.presentation.AuthInterceptor;
+import com.woowacourse.ternoko.auth.presentation.AuthenticationPrincipalArgumentResolver;
 import com.woowacourse.ternoko.auth.presentation.MemberTypeCache;
 import java.util.List;
 import org.springframework.context.annotation.Bean;

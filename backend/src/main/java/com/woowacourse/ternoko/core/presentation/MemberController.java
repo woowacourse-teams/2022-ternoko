@@ -1,9 +1,9 @@
 package com.woowacourse.ternoko.core.presentation;
 
-import com.woowacourse.ternoko.core.application.response.CoachesResponse;
-import com.woowacourse.ternoko.core.application.response.NicknameResponse;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.application.MemberService;
+import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
+import com.woowacourse.ternoko.core.dto.response.NicknameResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

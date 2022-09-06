@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.core.application;
 
-import com.woowacourse.ternoko.core.application.response.NicknameResponse;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
+import com.woowacourse.ternoko.core.dto.response.NicknameResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

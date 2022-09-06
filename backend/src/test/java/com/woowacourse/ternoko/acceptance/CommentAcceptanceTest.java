@@ -6,12 +6,12 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.core.application.response.CommentResponse;
-import com.woowacourse.ternoko.core.application.response.CommentsResponse;
-import com.woowacourse.ternoko.core.application.response.InterviewResponse;
+import com.woowacourse.ternoko.core.dto.response.CommentResponse;
+import com.woowacourse.ternoko.core.dto.response.CommentsResponse;
+import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
-import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
+import com.woowacourse.ternoko.core.dto.request.CommentRequest;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

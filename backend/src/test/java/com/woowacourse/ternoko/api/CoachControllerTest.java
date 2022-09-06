@@ -16,8 +16,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
-import com.woowacourse.ternoko.core.application.response.CoachResponse;
-import com.woowacourse.ternoko.core.application.response.ScheduleResponse;
+import com.woowacourse.ternoko.core.dto.response.CoachResponse;
+import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

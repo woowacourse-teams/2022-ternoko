@@ -16,9 +16,9 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.core.application.response.AvailableDateTimesResponse;
-import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
-import com.woowacourse.ternoko.core.application.response.InterviewResponse;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
+import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;

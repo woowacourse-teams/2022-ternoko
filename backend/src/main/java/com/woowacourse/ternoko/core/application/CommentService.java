@@ -4,16 +4,16 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
-import com.woowacourse.ternoko.core.domain.comment.Comment;
-import com.woowacourse.ternoko.core.presentation.request.CommentRequest;
-import com.woowacourse.ternoko.core.application.response.CommentsResponse;
+import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
 import com.woowacourse.ternoko.common.exception.exception.CommentNotFoundException;
 import com.woowacourse.ternoko.common.exception.exception.InvalidStatusFindCommentException;
+import com.woowacourse.ternoko.core.domain.comment.Comment;
 import com.woowacourse.ternoko.core.domain.comment.CommentRepository;
-import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
+import com.woowacourse.ternoko.core.domain.member.MemberType;
+import com.woowacourse.ternoko.core.dto.request.CommentRequest;
+import com.woowacourse.ternoko.core.dto.response.CommentsResponse;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

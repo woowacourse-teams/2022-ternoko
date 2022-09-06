@@ -13,12 +13,12 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.core.presentation.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.core.application.response.AvailableDateTimeResponse;
-import com.woowacourse.ternoko.core.presentation.request.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.core.application.response.AvailableDateTimesResponse;
-import com.woowacourse.ternoko.core.presentation.request.CalendarRequest;
-import com.woowacourse.ternoko.core.application.response.CoachesResponse;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimeResponse;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
+import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
+import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

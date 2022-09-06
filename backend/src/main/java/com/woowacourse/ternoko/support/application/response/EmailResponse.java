@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.support.application.response;
 
-import com.woowacourse.ternoko.core.application.response.FormItemResponse;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
+import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

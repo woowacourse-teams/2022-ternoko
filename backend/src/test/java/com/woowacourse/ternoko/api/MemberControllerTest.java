@@ -9,9 +9,9 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
-import com.woowacourse.ternoko.core.application.response.CoachResponse;
-import com.woowacourse.ternoko.core.application.response.CoachesResponse;
-import com.woowacourse.ternoko.core.application.response.NicknameResponse;
+import com.woowacourse.ternoko.core.dto.response.CoachResponse;
+import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
+import com.woowacourse.ternoko.core.dto.response.NicknameResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

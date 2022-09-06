@@ -4,9 +4,9 @@ import com.woowacourse.ternoko.auth.presentation.annotation.AuthenticationPrinci
 import com.woowacourse.ternoko.auth.presentation.annotation.CoachOnly;
 import com.woowacourse.ternoko.auth.presentation.annotation.CrewOnly;
 import com.woowacourse.ternoko.core.application.InterviewService;
-import com.woowacourse.ternoko.core.application.response.InterviewResponse;
-import com.woowacourse.ternoko.core.application.response.ScheduleResponse;
-import com.woowacourse.ternoko.core.presentation.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
+import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;

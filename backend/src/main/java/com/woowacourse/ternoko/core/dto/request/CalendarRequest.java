@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.core.presentation.request;
+package com.woowacourse.ternoko.core.dto.request;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvailableDateTimesRequest {
+public class CalendarRequest {
 
     private List<AvailableDateTimeRequest> calendarTimes;
 }

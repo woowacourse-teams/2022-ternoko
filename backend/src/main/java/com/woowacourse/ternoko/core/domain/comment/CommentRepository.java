@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.core.domain.comment;
 
-import com.woowacourse.ternoko.core.domain.comment.Comment;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

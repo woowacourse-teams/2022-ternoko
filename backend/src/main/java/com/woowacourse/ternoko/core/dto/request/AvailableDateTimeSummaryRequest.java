@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.core.presentation.request;
+package com.woowacourse.ternoko.core.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;

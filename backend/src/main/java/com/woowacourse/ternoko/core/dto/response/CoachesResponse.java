@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.core.application.response;
+package com.woowacourse.ternoko.core.dto.response;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

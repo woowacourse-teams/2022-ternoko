@@ -1,8 +1,8 @@
 package com.woowacourse.ternoko.config;
 
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
-import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;

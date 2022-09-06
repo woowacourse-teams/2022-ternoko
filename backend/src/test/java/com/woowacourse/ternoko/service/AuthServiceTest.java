@@ -19,7 +19,7 @@ import com.woowacourse.ternoko.common.exception.InvalidTokenException;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.auth.application.AuthService;
 import com.woowacourse.ternoko.auth.application.JwtProvider;
-import com.woowacourse.ternoko.auth.application.response.LoginResponse;
+import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.io.IOException;

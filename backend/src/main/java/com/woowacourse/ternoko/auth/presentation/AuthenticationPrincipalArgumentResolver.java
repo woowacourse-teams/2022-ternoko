@@ -4,9 +4,8 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOK
 
 import com.woowacourse.ternoko.auth.application.AuthorizationExtractor;
 import com.woowacourse.ternoko.auth.application.JwtProvider;
-import com.woowacourse.ternoko.auth.presentation.annotation.AuthenticationPrincipal;
 import com.woowacourse.ternoko.auth.exception.TokenNotValidException;
-import com.woowacourse.ternoko.auth.presentation.MemberTypeCache;
+import com.woowacourse.ternoko.auth.presentation.annotation.AuthenticationPrincipal;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;

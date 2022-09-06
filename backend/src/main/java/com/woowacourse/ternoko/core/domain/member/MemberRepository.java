@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.core.domain.member;
 
-import com.woowacourse.ternoko.core.domain.member.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

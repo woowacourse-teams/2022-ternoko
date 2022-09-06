@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.core.application.response;
+package com.woowacourse.ternoko.core.dto.response;
 
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import lombok.AllArgsConstructor;

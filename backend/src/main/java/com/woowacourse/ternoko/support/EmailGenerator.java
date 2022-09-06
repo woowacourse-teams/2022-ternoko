@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.support;
 
+import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
 import com.woowacourse.ternoko.support.application.response.EmailResponse;
-import com.woowacourse.ternoko.core.application.response.FormItemResponse;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.mail.SimpleMailMessage;

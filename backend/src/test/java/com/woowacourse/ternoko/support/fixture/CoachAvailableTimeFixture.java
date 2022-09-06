@@ -5,9 +5,9 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
-import com.woowacourse.ternoko.core.presentation.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.core.presentation.request.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.core.presentation.request.CalendarRequest;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.core.presentation.request;
+package com.woowacourse.ternoko.core.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "coachUpdateBuilder")
-public class CoachUpdateRequest {
+@Builder(builderMethodName = "crewUpdateBuilder")
+public class CrewUpdateRequest {
 
     private String nickname;
     private String imageUrl;
-    private String introduce;
 }

@@ -2,12 +2,12 @@ package com.woowacourse.ternoko.auth.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZED_MEMBER;
 
+import com.woowacourse.ternoko.auth.exception.TokenNotValidException;
+import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
-import com.woowacourse.ternoko.auth.exception.TokenNotValidException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

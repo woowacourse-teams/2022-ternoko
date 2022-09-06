@@ -1,13 +1,15 @@
-package com.woowacourse.ternoko.core.application.response;
+package com.woowacourse.ternoko.core.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NicknameResponse {
+public class CommentRequest {
 
-    private boolean exists;
+    private String comment;
 }

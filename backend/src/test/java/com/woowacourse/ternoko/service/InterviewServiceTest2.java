@@ -33,8 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
 import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
@@ -52,7 +50,6 @@ import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
-import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,25 +57,21 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.jdbc.Sql;
 
 @Sql("/common.sql")
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class InterviewServiceTest extends DatabaseSupporter {
+class InterviewServiceTest2 {
 
-    @MockBean
+    @Mock
     private ApplicationEventPublisher applicationEventPublisher;
 
-    @Autowired
+
     private InterviewService interviewService;
 
     @Autowired
@@ -88,10 +81,10 @@ class InterviewServiceTest extends DatabaseSupporter {
     private AvailableDateTimeRepository availableDateTimeRepository;
 
 
-    @BeforeEach
-    void setUp() {
-        doNothing().when(applicationEventPublisher).publishEvent(any());
-    }
+//    @BeforeEach
+//    void setUp() {
+//        doNothing().when(applicationEventPublisher).publishEvent(any());
+//    }
 
     @Test
     @DisplayName("면담 예약을 생성한다.")

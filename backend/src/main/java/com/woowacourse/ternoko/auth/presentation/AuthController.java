@@ -2,8 +2,8 @@ package com.woowacourse.ternoko.auth.presentation;
 
 import com.slack.api.methods.SlackApiException;
 import com.woowacourse.ternoko.auth.application.AuthService;
+import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
 import com.woowacourse.ternoko.auth.presentation.annotation.AuthenticationPrincipal;
-import com.woowacourse.ternoko.auth.application.response.LoginResponse;
 import java.io.IOException;
 import java.util.Locale;
 import lombok.AllArgsConstructor;
