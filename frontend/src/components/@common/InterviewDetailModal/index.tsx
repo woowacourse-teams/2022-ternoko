@@ -126,7 +126,7 @@ const InterviewDetailModal = ({
       </S.InfoContainer>
       <S.AccordionContainer>
         {interview?.interviewQuestions.map(({ question, answer }) => (
-          <Accordion key={question} title={question} description={answer} />
+          <Accordion key={question} title={question} description={answer} show={show} />
         ))}
       </S.AccordionContainer>
       <AskDeleteTimeModal
