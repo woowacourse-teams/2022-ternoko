@@ -74,6 +74,12 @@ const InterviewApplyPage = () => {
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
 
+  const initializeDateStatuses = () => {
+    setAvailableTimes([]);
+    resetSelectedDates();
+    resetTimes();
+  };
+
   const getDayType = (day: number) =>
     selectedDates.length && isSameDate(selectedDates[0], day)
       ? 'active'
@@ -82,27 +88,32 @@ const InterviewApplyPage = () => {
       : 'disable';
 
   const getCoachScheduleAPIForPage = async () => {
-    const response = await (initRef.current && interviewId
+    const response = await (interviewId
       ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
       : getCoachScheduleAPI(coachId, year, month + 1));
 
     return response;
   };
 
-  const setTimesOnModifyPage = (schedules: StringDictionary, calendarTimes: CrewSelectTime[]) => {
-    if (!initRef.current) return;
+  const updateStatusWhenCalendarShow = (
+    schedules: StringDictionary,
+    calendarTimes: CrewSelectTime[],
+  ) => {
+    setAvailableSchedules(schedules);
+
+    if (!interviewId || (interviewId && !initRef.current)) {
+      initializeDateStatuses();
+    } else if (interviewId && initRef.current) {
+      setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+      setSelectedTimes([
+        separateFullDate(
+          (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
+            .calendarTime,
+        ).time,
+      ]);
+    }
 
     initRef.current = false;
-
-    if (!interviewId) return;
-
-    setAvailableTimes(schedules[selectedDates[0].day] ?? []);
-    setSelectedTimes([
-      separateFullDate(
-        (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
-          .calendarTime,
-      ).time,
-    ]);
   };
 
   const handleClickStepTitle = (step: number) => {
@@ -236,17 +247,12 @@ const InterviewApplyPage = () => {
           {} as StringDictionary,
         );
 
-        setAvailableSchedules(schedules);
-        setTimesOnModifyPage(schedules, response.data.calendarTimes);
+        updateStatusWhenCalendarShow(schedules, response.data.calendarTimes);
       })();
     }
   }, [stepStatus, year, month]);
 
-  useEffect(() => {
-    resetTimes();
-    setAvailableTimes([]);
-    resetSelectedDates();
-  }, [year, month]);
+  useEffect(initializeDateStatuses, [year, month]);
 
   return (
     <>
