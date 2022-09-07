@@ -36,6 +36,7 @@ import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -143,7 +144,7 @@ public class InterviewService {
     @Transactional(readOnly = true)
     public ScheduleResponse findAllByCoach(final Long coachId, final Integer year, final Integer month) {
         final List<Interview> interviews = getInterviews(coachId, year, month);
-        return ScheduleResponse.from(filterCanceledInterview(interviews));
+        return ScheduleResponse.from(filterAndSortCanceledInterview(interviews));
     }
 
     private List<Interview> getInterviews(final Long coachId, final Integer year, final Integer month) {
@@ -155,9 +156,10 @@ public class InterviewService {
                 .findAllByCoachIdAndDateRange(startOfMonth, endOfMonth, coachId);
     }
 
-    private List<Interview> filterCanceledInterview(final List<Interview> interviews) {
+    private List<Interview> filterAndSortCanceledInterview(final List<Interview> interviews) {
         return interviews.stream()
                 .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
+                .sorted(Comparator.comparing(Interview::getInterviewStartTime))
                 .collect(Collectors.toList());
     }
 
