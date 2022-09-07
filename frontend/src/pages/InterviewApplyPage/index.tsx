@@ -69,6 +69,7 @@ const InterviewApplyPage = () => {
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
+  const changeCoachIdRef = useRef(false);
   const initRef = useRef(true);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
@@ -87,21 +88,13 @@ const InterviewApplyPage = () => {
       ? 'default'
       : 'disable';
 
-  const getCoachScheduleAPIForPage = async () => {
-    const response = await (interviewId
-      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-      : getCoachScheduleAPI(coachId, year, month + 1));
-
-    return response;
-  };
-
   const updateStatusWhenCalendarShow = (
     schedules: StringDictionary,
     calendarTimes: CrewSelectTime[],
   ) => {
     setAvailableSchedules(schedules);
 
-    if (!interviewId || (interviewId && !initRef.current)) {
+    if (changeCoachIdRef.current) {
       initializeDateStatuses();
     } else if (interviewId && initRef.current) {
       setAvailableTimes(schedules[selectedDates[0].day] ?? []);
@@ -133,8 +126,11 @@ const InterviewApplyPage = () => {
   };
 
   const getHandleClickProfile = (id: number) => () => {
+    if (id === coachId) return;
+
     const coach = coaches.find((coach) => coach.id === id);
 
+    changeCoachIdRef.current = true;
     showToast('SUCCESS', SUCCESS_MESSAGE.SELECT_COACH((coach as CoachType).nickname));
     setCoachId(id);
   };
@@ -150,6 +146,7 @@ const InterviewApplyPage = () => {
     setAvailableTimes(times);
     setDay(day);
     resetTimes();
+    changeCoachIdRef.current = false;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -234,7 +231,9 @@ const InterviewApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await getCoachScheduleAPIForPage();
+        const response = await (interviewId
+          ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
+          : getCoachScheduleAPI(coachId, year, month + 1));
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
