@@ -164,6 +164,7 @@ public class InterviewService {
     public void update(final Long crewId,
                        final Long interviewId,
                        final InterviewRequest interviewRequest) {
+        validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
         final Interview interview = getInterviewById(interviewId);
         final Interview origin = interview.copyOf();
 

@@ -450,6 +450,27 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
+    @DisplayName("면담 예약 수정 시 같은 시간에 다른 면담이 있으면 수정이 불가능하다. ")
+    void update_WhenDuplicateReservation() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+        coachService.putAvailableDateTimesByCoachId(COACH4.getId(), MONTH_REQUEST);
+
+        interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        final Long interviewId = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when & then
+        assertThatThrownBy(() -> interviewService.update(CREW1.getId(), interviewId,
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_UPDATE_REQUESTS)))
+                .isInstanceOf(InvalidInterviewDateException.class)
+                .hasMessage(INVALID_INTERVIEW_DUPLICATE_DATE_TIME.getMessage());
+    }
+
+    @Test
     @DisplayName("크루가 면담 예약을 삭제한다.")
     void delete() {
         // given
