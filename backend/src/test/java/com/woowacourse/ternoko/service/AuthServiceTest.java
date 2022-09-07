@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.common.exception.type.ExceptionType.INVALID_TOKEN;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_TOKEN;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,10 +16,10 @@ import com.slack.api.methods.request.openid.connect.OpenIDConnectUserInfoRequest
 import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.common.exception.InvalidTokenException;
-import com.woowacourse.ternoko.domain.member.MemberType;
-import com.woowacourse.ternoko.login.application.AuthService;
-import com.woowacourse.ternoko.login.application.JwtProvider;
-import com.woowacourse.ternoko.login.domain.dto.LoginResponse;
+import com.woowacourse.ternoko.core.domain.member.MemberType;
+import com.woowacourse.ternoko.auth.application.AuthService;
+import com.woowacourse.ternoko.auth.application.JwtProvider;
+import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.io.IOException;

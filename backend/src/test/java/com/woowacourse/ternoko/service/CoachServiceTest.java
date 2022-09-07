@@ -10,14 +10,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.domain.member.Coach;
-import com.woowacourse.ternoko.dto.CalendarRequest;
-import com.woowacourse.ternoko.dto.CoachResponse;
-import com.woowacourse.ternoko.dto.CoachUpdateRequest;
-import com.woowacourse.ternoko.dto.CoachesResponse;
-import com.woowacourse.ternoko.repository.CoachRepository;
+import com.woowacourse.ternoko.core.application.CoachService;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.member.coach.Coach;
+import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
+import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
+import com.woowacourse.ternoko.core.dto.request.CoachUpdateRequest;
+import com.woowacourse.ternoko.core.dto.response.CoachResponse;
+import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.util.List;
@@ -50,6 +51,8 @@ public class CoachServiceTest extends DatabaseSupporter {
                 () -> assertThat(foundCoach.getImageUrl()).isEqualTo(savedCoach.getImageUrl()),
                 () -> assertThat(foundCoach.getIntroduce()).isEqualTo(savedCoach.getIntroduce())
         );
+
+        coachRepository.delete(coach);
     }
 
     @Test
@@ -71,9 +74,10 @@ public class CoachServiceTest extends DatabaseSupporter {
         final String imageUrl = ".png";
         final String nickname = "도깨비";
         final String introduce = "안녕하세요. 도깨비 입니다.";
-        final String userId = "U123456789";
+        final String userId = "U223456789";
 
-        final Coach savedCoach = coachRepository.save(new Coach("공유", " share@woowahan.com", userId, imageUrl));
+        final Coach savedCoach = coachRepository.save(
+                new Coach("공지철", "공유", " share@woowahan.com", userId, imageUrl, "null"));
 
         //when
         coachService.partUpdateCrew(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
@@ -84,6 +88,8 @@ public class CoachServiceTest extends DatabaseSupporter {
                 () -> assertThat(foundCoach.getNickname()).isEqualTo(nickname),
                 () -> assertThat(foundCoach.getIntroduce()).isEqualTo(introduce)
         );
+
+        coachRepository.delete(savedCoach);
     }
 
     @Test

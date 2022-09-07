@@ -1,11 +1,11 @@
 package com.woowacourse.ternoko.config;
 
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus;
-import com.woowacourse.ternoko.availabledatetime.repository.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.domain.member.Coach;
-import com.woowacourse.ternoko.repository.CoachRepository;
-import com.woowacourse.ternoko.repository.CrewRepository;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
+import com.woowacourse.ternoko.core.domain.member.coach.Coach;
+import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
+import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

@@ -1,13 +1,13 @@
 package com.woowacourse.ternoko.support.fixture;
 
-import static com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus.OPEN;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTime;
-import com.woowacourse.ternoko.availabledatetime.domain.AvailableDateTimeStatus;
-import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.availabledatetime.dto.AvailableDateTimeSummaryRequest;
-import com.woowacourse.ternoko.dto.CalendarRequest;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
+import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

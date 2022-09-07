@@ -17,7 +17,7 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW3;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW4;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
+import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -26,9 +26,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
-@Sql({"/member.sql"})
 public class CoachAcceptanceTest extends AcceptanceSupporter {
 
     @Test

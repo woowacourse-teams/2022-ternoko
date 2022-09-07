@@ -11,7 +11,7 @@ import com.slack.api.model.block.SectionBlock;
 import com.slack.api.model.block.composition.MarkdownTextObject;
 import com.slack.api.model.block.composition.PlainTextObject;
 import com.slack.api.model.block.element.ImageElement;
-import com.woowacourse.ternoko.interview.domain.Interview;
+import com.woowacourse.ternoko.core.domain.interview.Interview;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

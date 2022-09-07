@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.api;
 
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.AUTHORIZATION;
-import static com.woowacourse.ternoko.login.presentation.AuthorizationExtractor.BEARER_TYPE;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.AUTHORIZATION;
+import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.AVAILABLE_DATE_TIME;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_MONTH_REQUEST;
@@ -16,8 +16,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.ternoko.api.restdocs.RestDocsTestSupporter;
-import com.woowacourse.ternoko.dto.CoachResponse;
-import com.woowacourse.ternoko.interview.dto.ScheduleResponse;
+import com.woowacourse.ternoko.core.dto.response.CoachResponse;
+import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

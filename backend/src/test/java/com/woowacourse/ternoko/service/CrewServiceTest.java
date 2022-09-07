@@ -3,9 +3,10 @@ package com.woowacourse.ternoko.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.domain.member.Crew;
-import com.woowacourse.ternoko.dto.CrewResponse;
-import com.woowacourse.ternoko.dto.CrewUpdateRequest;
+import com.woowacourse.ternoko.core.application.CrewService;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import com.woowacourse.ternoko.core.dto.response.CrewResponse;
+import com.woowacourse.ternoko.core.dto.request.CrewUpdateRequest;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import org.junit.jupiter.api.DisplayName;

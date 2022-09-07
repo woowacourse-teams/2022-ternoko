@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.common.log;
 
-import static com.woowacourse.ternoko.common.log.LogForm.SUCCESS_LOGGING_FORM;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +26,7 @@ public class LogInterceptor implements HandlerInterceptor {
         if (isSuccess(response.getStatus())) {
 
             ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
-            log.info(SUCCESS_LOGGING_FORM, request.getMethod(), request.getRequestURI(),
+            log.info(LogForm.SUCCESS_LOGGING_FORM, request.getMethod(), request.getRequestURI(),
                     StringUtils.hasText(request.getHeader("Authorization")),
                     objectMapper.readTree(wrappingRequest.getContentAsByteArray()));
         }
