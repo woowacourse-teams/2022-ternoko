@@ -20,8 +20,8 @@ type CalendarDayProps = {
 
 export const CalendarDay = styled(Day)<CalendarDayProps>`
   text-align: center;
-  /* height: 10rem; */
-  min-height: 10rem;
+  height: 10rem;
+  overflow-y: scroll;
 
   ${({ today }) =>
     today &&
