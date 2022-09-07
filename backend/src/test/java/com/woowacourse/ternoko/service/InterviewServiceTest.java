@@ -268,11 +268,11 @@ class InterviewServiceTest extends DatabaseSupporter {
         interviewService.create(CREW2.getId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
                         FORM_ITEM_REQUESTS));
-        interviewService.create(CREW3.getId(),
-                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
-                        FORM_ITEM_REQUESTS));
         interviewService.create(CREW4.getId(),
                 new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME),
+                        FORM_ITEM_REQUESTS));
+        interviewService.create(CREW3.getId(),
+                new InterviewRequest(COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
                         FORM_ITEM_REQUESTS));
 
         // when
@@ -281,9 +281,17 @@ class InterviewServiceTest extends DatabaseSupporter {
                 NOW.getMonthValue());
 
         // then
-        assertThat(scheduleResponses.getCalendar()).extracting("crewNickname")
-                .hasSize(4)
-                .contains("수달", "앤지", "애쉬", "록바");
+        assertAll(
+                () -> assertThat(scheduleResponses.getCalendar())
+                        .extracting("crewNickname")
+                        .hasSize(4),
+                () -> assertThat(scheduleResponses.getCalendar())
+                        .extracting("interviewStartTime")
+                        .containsExactly(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                                LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME),
+                                LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME),
+                                LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME))
+        );
     }
 
     @Test
