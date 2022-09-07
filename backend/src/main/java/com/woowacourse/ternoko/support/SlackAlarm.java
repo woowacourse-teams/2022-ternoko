@@ -2,11 +2,11 @@ package com.woowacourse.ternoko.support;
 
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.impl.MethodsClientImpl;
-import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.block.ContextBlock;
 import com.slack.api.model.block.DividerBlock;
 import com.slack.api.model.block.HeaderBlock;
+import com.slack.api.model.block.LayoutBlock;
 import com.slack.api.model.block.SectionBlock;
 import com.slack.api.model.block.composition.MarkdownTextObject;
 import com.slack.api.model.block.composition.PlainTextObject;
@@ -16,8 +16,12 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 public class SlackAlarm {
@@ -30,11 +34,14 @@ public class SlackAlarm {
     private static final int UPDATE_RESPONSE = 1;
 
     private final String botToken;
+    private final String url;
     private final MethodsClientImpl slackMethodClient;
 
-    public SlackAlarm(final MethodsClientImpl slackMethodClient, @Value("${slack.botToken}") final String botToken) {
+    public SlackAlarm(final MethodsClientImpl slackMethodClient, @Value("${slack.botToken}") final String botToken,
+                      @Value("${slack.url}") final String url) {
         this.slackMethodClient = slackMethodClient;
         this.botToken = botToken;
+        this.url = url;
     }
 
     public void sendCreateMessage(final Interview interview) throws Exception {
@@ -65,68 +72,99 @@ public class SlackAlarm {
 
     private void postCrewMessage(final SlackMessageType slackMessageType,
                                  final Interview interview) throws IOException, SlackApiException {
-        final ChatPostMessageRequest crewRequest = ChatPostMessageRequest.builder()
-                .text(String.format(slackMessageType.getCrewPreviewMessage(), interview.getCoach().getNickname()))
-                .attachments(generateAttachment(slackMessageType, interview, TERNOKO_CREW_URL))
+        SlackPostMessageRequest request = SlackPostMessageRequest.builder()
                 .channel(interview.getCrew().getUserId())
-                .token(botToken)
+                .text(String.format(slackMessageType.getCrewPreviewMessage(), interview.getCoach().getNickname()))
                 .build();
-        slackMethodClient.chatPostMessage(crewRequest);
+        WebClient client = WebClient.create(url);
+        client.post()
+                .uri("/api/send")
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
+                .header("Authorization", botToken)
+                .body(BodyInserters.fromValue(request));
     }
 
     private void postCoachMessage(final SlackMessageType slackMessageType,
                                   final Interview interview) throws IOException, SlackApiException {
-        final ChatPostMessageRequest coachRequest = ChatPostMessageRequest.builder()
-                .text(String.format(slackMessageType.getCoachPreviewMessage(), interview.getCrew().getNickname()))
-                .attachments(generateAttachment(slackMessageType, interview, TERNOKO_COACH_URL))
+        SlackPostMessageRequest request = SlackPostMessageRequest.builder()
                 .channel(interview.getCoach().getUserId())
-                .token(botToken)
+                .text(String.format(slackMessageType.getCoachPreviewMessage(), interview.getCrew().getNickname()))
                 .build();
-        slackMethodClient.chatPostMessage(coachRequest);
+        WebClient client = WebClient.create("http://43.200.246.162:8080");
+        client.post()
+                .uri("/api/send")
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
+                .header("Authorization", botToken)
+                .body(BodyInserters.fromValue(request));
     }
 
     private List<Attachment> generateAttachment(final SlackMessageType slackMessageType,
                                                 final Interview interview,
                                                 final String homeUrl) {
-        return List.of(Attachment.builder()
+        return List.of(getAttachment(slackMessageType, interview, homeUrl));
+    }
+
+    private Attachment getAttachment(SlackMessageType slackMessageType, Interview interview, String homeUrl) {
+        return Attachment.builder()
                 .color(slackMessageType.getColor())
-                .blocks(List.of(HeaderBlock.builder()
-                                        .text(PlainTextObject.builder().text(slackMessageType.getAttachmentMessage()).build())
-                                        .build(),
-                                DividerBlock.builder().build(),
-                                SectionBlock.builder().fields(
-                                        List.of(MarkdownTextObject.builder()
-                                                        .text(":clock3: *면담일시*"
-                                                                + System.lineSeparator()
-                                                                + DATE_FORMAT.format(interview.getInterviewStartTime()))
-                                                        .build(),
-                                                MarkdownTextObject.builder()
-                                                        .text(":smiley: *크루*"
-                                                                + System.lineSeparator()
-                                                                + interview.getCrew().getNickname())
-                                                        .build(),
-                                                MarkdownTextObject.builder()
-                                                        .text(" ")
-                                                        .build(),
-                                                MarkdownTextObject.builder()
-                                                        .text(":smiley: *코치*"
-                                                                + System.lineSeparator()
-                                                                + interview.getCoach().getNickname())
-                                                        .build())
-                                ).build(),
-                                ContextBlock.builder().elements(List.of(
-                                                MarkdownTextObject.builder()
-                                                        .text("<" + homeUrl + "|터놓고로 이동>").build(),
-                                                ImageElement.builder()
-                                                        .imageUrl(interview.getCoach().getImageUrl())
-                                                        .altText("코치 이미지")
-                                                        .build(),
-                                                ImageElement.builder()
-                                                        .imageUrl(interview.getCrew().getImageUrl())
-                                                        .altText("크루 이미지")
-                                                        .build()))
-                                        .build()
-                        )
-                ).build());
+                .blocks(getBlocks(slackMessageType, interview, homeUrl)
+                ).build();
+    }
+
+    @NotNull
+    private List<LayoutBlock> getBlocks(SlackMessageType slackMessageType, Interview interview, String homeUrl) {
+        return List.of(
+                getHeaderBlock(slackMessageType),
+                getDividerBlock(),
+                getSectionBlock(interview),
+                getContextBlock(interview, homeUrl));
+    }
+
+    private HeaderBlock getHeaderBlock(SlackMessageType slackMessageType) {
+        return HeaderBlock.builder()
+                .text(PlainTextObject.builder().text(slackMessageType.getAttachmentMessage()).build())
+                .build();
+    }
+
+    private DividerBlock getDividerBlock() {
+        return DividerBlock.builder().build();
+    }
+
+    private SectionBlock getSectionBlock(Interview interview) {
+        return SectionBlock.builder().fields(
+                List.of(MarkdownTextObject.builder()
+                                .text(":clock3: *면담일시*"
+                                        + System.lineSeparator()
+                                        + DATE_FORMAT.format(interview.getInterviewStartTime()))
+                                .build(),
+                        MarkdownTextObject.builder()
+                                .text(":smiley: *크루*"
+                                        + System.lineSeparator()
+                                        + interview.getCrew().getNickname())
+                                .build(),
+                        MarkdownTextObject.builder()
+                                .text(" ")
+                                .build(),
+                        MarkdownTextObject.builder()
+                                .text(":smiley: *코치*"
+                                        + System.lineSeparator()
+                                        + interview.getCoach().getNickname())
+                                .build())
+        ).build();
+    }
+
+    private ContextBlock getContextBlock(Interview interview, String homeUrl) {
+        return ContextBlock.builder().elements(List.of(
+                        MarkdownTextObject.builder()
+                                .text("<" + homeUrl + "|터놓고로 이동>").build(),
+                        ImageElement.builder()
+                                .imageUrl(interview.getCoach().getImageUrl())
+                                .altText("코치 이미지")
+                                .build(),
+                        ImageElement.builder()
+                                .imageUrl(interview.getCrew().getImageUrl())
+                                .altText("크루 이미지")
+                                .build()))
+                .build();
     }
 }

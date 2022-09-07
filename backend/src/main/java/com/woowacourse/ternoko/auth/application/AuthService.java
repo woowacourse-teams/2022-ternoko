@@ -100,7 +100,6 @@ public class AuthService {
                     userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
             return LoginResponse.of(COACH, jwtProvider.createToken(coach), false);
         }
-
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
 
