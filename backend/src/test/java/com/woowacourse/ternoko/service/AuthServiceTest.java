@@ -99,6 +99,17 @@ public class AuthServiceTest extends DatabaseSupporter {
         assertThat(loginResponse.getMemberRole()).isEqualTo(MemberType.COACH);
     }
 
+    @DisplayName("터놓고 최초 로그인 시도시, Coach로 회원가입이 된다.")
+    @Test
+    void signup_ternoko() throws SlackApiException, IOException {
+        // given
+        final String coachEmail = "ternoko.official@gmail.com";
+        setSlackMockData(coachEmail);
+        // when
+        final LoginResponse loginResponse = authService.login("temp_code", "temp_redirectUrl");
+        assertThat(loginResponse.getMemberRole()).isEqualTo(MemberType.COACH);
+    }
+
     @DisplayName("Crew가 최초 로그인 시도시, Crew로 회원가입이 된다.")
     @Test
     void signup_crew() throws SlackApiException, IOException {

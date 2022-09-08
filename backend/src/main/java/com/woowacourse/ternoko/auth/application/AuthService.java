@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private static final String WOOWAHAN_COACH_EMAIL = "woowahan.com";
+    private static final String TERNOKO_EMAIL = "ternoko.official@gmail.com";
 
     private final MethodsClientImpl slackMethodClient;
 
@@ -95,7 +96,8 @@ public class AuthService {
     }
 
     private LoginResponse signUp(final OpenIDConnectUserInfoResponse userInfoResponse) {
-        if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL)) {
+        if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL) || userInfoResponse.getEmail()
+                .equals(TERNOKO_EMAIL)) {
             final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
                     userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
             return LoginResponse.of(COACH, jwtProvider.createToken(coach), false);
