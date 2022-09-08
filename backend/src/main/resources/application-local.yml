@@ -28,10 +28,10 @@ spring:
     password:
 
 slack:
-  url: 'url'
   clientId: '524707623267.4042285006293'
-  clientSecret: 'I'm Secret'
+  clientSecret: 'Im Secret'
   botToken: 'botToken'
+  url: 'url'
 
 security:
   jwt:

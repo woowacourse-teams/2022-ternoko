@@ -37,7 +37,8 @@ public class SlackAlarm {
     private final String url;
     private final MethodsClientImpl slackMethodClient;
 
-    public SlackAlarm(final MethodsClientImpl slackMethodClient, @Value("${slack.botToken}") final String botToken,
+    public SlackAlarm(final MethodsClientImpl slackMethodClient,
+                      @Value("${slack.botToken}") final String botToken,
                       @Value("${slack.url}") final String url) {
         this.slackMethodClient = slackMethodClient;
         this.botToken = botToken;
