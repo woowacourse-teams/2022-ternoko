@@ -69,10 +69,17 @@ const InterviewApplyPage = () => {
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
+  const changeCoachIdRef = useRef(false);
   const initRef = useRef(true);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
+
+  const initializeDateStatuses = () => {
+    setAvailableTimes([]);
+    resetSelectedDates();
+    resetTimes();
+  };
 
   const getDayType = (day: number) =>
     selectedDates.length && isSameDate(selectedDates[0], day)
@@ -81,28 +88,25 @@ const InterviewApplyPage = () => {
       ? 'default'
       : 'disable';
 
-  const getCoachScheduleAPIForPage = async () => {
-    const response = await (initRef.current && interviewId
-      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-      : getCoachScheduleAPI(coachId, year, month + 1));
+  const updateStatusWhenCalendarShow = (
+    schedules: StringDictionary,
+    calendarTimes: CrewSelectTime[],
+  ) => {
+    setAvailableSchedules(schedules);
 
-    return response;
-  };
-
-  const setTimesOnModifyPage = (schedules: StringDictionary, calendarTimes: CrewSelectTime[]) => {
-    if (!initRef.current) return;
+    if (changeCoachIdRef.current) {
+      initializeDateStatuses();
+    } else if (interviewId && initRef.current) {
+      setAvailableTimes(schedules[selectedDates[0].day] ?? []);
+      setSelectedTimes([
+        separateFullDate(
+          (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
+            .calendarTime,
+        ).time,
+      ]);
+    }
 
     initRef.current = false;
-
-    if (!interviewId) return;
-
-    setAvailableTimes(schedules[selectedDates[0].day] ?? []);
-    setSelectedTimes([
-      separateFullDate(
-        (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
-          .calendarTime,
-      ).time,
-    ]);
   };
 
   const handleClickStepTitle = (step: number) => {
@@ -122,8 +126,11 @@ const InterviewApplyPage = () => {
   };
 
   const getHandleClickProfile = (id: number) => () => {
+    if (id === coachId) return;
+
     const coach = coaches.find((coach) => coach.id === id);
 
+    changeCoachIdRef.current = true;
     showToast('SUCCESS', SUCCESS_MESSAGE.SELECT_COACH((coach as CoachType).nickname));
     setCoachId(id);
   };
@@ -139,6 +146,7 @@ const InterviewApplyPage = () => {
     setAvailableTimes(times);
     setDay(day);
     resetTimes();
+    changeCoachIdRef.current = false;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -188,6 +196,7 @@ const InterviewApplyPage = () => {
         navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
       }
     } catch (error) {
+      showToast('ERROR', ERROR_MESSAGE.CHECK_DAY_AND_TIME);
       offLoading();
     }
   };
@@ -222,7 +231,9 @@ const InterviewApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await getCoachScheduleAPIForPage();
+        const response = await (interviewId
+          ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
+          : getCoachScheduleAPI(coachId, year, month + 1));
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
@@ -235,17 +246,12 @@ const InterviewApplyPage = () => {
           {} as StringDictionary,
         );
 
-        setAvailableSchedules(schedules);
-        setTimesOnModifyPage(schedules, response.data.calendarTimes);
+        updateStatusWhenCalendarShow(schedules, response.data.calendarTimes);
       })();
     }
   }, [stepStatus, year, month]);
 
-  useEffect(() => {
-    resetTimes();
-    setAvailableTimes([]);
-    resetSelectedDates();
-  }, [year, month]);
+  useEffect(initializeDateStatuses, [year, month]);
 
   return (
     <>

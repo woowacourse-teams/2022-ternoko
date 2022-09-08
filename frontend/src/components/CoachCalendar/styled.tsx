@@ -21,6 +21,7 @@ type CalendarDayProps = {
 export const CalendarDay = styled(Day)<CalendarDayProps>`
   text-align: center;
   height: 10rem;
+  overflow-y: scroll;
 
   ${({ today }) =>
     today &&
@@ -38,8 +39,6 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
     type === 'disable' &&
     css`
       background-color: ${({ theme }) => theme.colors.gray_100};
-      color: ${({ theme }) => theme.colors.gray_150};
-      pointer-events: none;
       cursor: default;
     `}
 `;
@@ -71,7 +70,8 @@ export const CrewNickname = styled.p`
   align-items: center;
   height: 4rem;
   padding: 0 1rem;
-
   border-radius: 10px;
+  cursor: pointer;
+
   background-color: ${({ theme }) => theme.colors.pink_50};
 `;

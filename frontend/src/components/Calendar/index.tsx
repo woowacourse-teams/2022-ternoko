@@ -29,7 +29,7 @@ const Calendar = ({
   const { year, month, showMonthPicker } = useCalendarState();
   const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
     useCalendarActions();
-  const { daysLength, isToday, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
+  const { daysLength, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (

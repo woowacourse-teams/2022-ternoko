@@ -2,7 +2,7 @@ export const PAGE = {
   BASE: '/',
   LOGIN: '/login',
   LOGIN_REGISTER: '/login/register',
-  SLACK_LOGIN_SERVER: `https://${process.env.SLACK_OAUTH_DOMAIN}/oauth?client_id=${process.env.SLACK_CLIENT_ID}&scope=&user_scope=openid%2Cemail%2Cprofile&redirect_uri=${process.env.SLACK_REDIRECT_URL}&state=&granular_bot_scope=1&single_channel=0&install_redirect=&tracked=1&openid_connect=1&response_type=code&team=`,
+  SLACK_LOGIN_SERVER: `https://slack.com/openid/connect/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=openid%2Cemail&2Cprofile&redirect_uri=${process.env.SLACK_REDIRECT_URL}&state=&granular_bot_scope=1&single_channel=0&install_redirect=&tracked=1&openid_connect=1&response_type=code&team=`,
   CREW_HOME: '/',
   INTERVIEW_APPLY: '/interview/apply',
   INTERVIEW_COMPLETE: '/interview/complete',
@@ -38,6 +38,7 @@ export const ERROR_MESSAGE = {
   ENTER_IN_RANGE_INTRODUCE_LENGTH: `한 줄 소개는 ${COACH_INTRODUCE_MIN_LENGTH}글자 이상 ${COACH_INTRODUCE_MAX_LENGTH}글자 이하를 입력해주세용~`,
   ENTER_IN_RANGE_COMMENT: `코멘트는 ${COMMENT_MIN_LENGTH}글자 이상 ${COMMENT_MAX_LENGTH}글자 이하로 입력해주세용~`,
   CREATE_SCHEDULE: '면담 스케쥴 생성이 실패했어용~',
+  CHECK_DAY_AND_TIME: '날짜 및 시간을 다시 확인해주세요.',
   DUPLICATED_NICKNAME: '닉네임이 중복됐어용~',
 };
 

@@ -42,7 +42,7 @@ const CoachHomePage = () => {
 
   const afterDeleteInterview = () => {
     calendarRerenderkeyRef.current = Date.now();
-    handleOpenModalDetail();
+    handleCloseModalDetail();
   };
 
   const afterPostAndPutComment = () => {
