@@ -19,12 +19,12 @@ import com.woowacourse.ternoko.common.exception.exception.InvalidCommentIntervie
 import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.core.application.CommentService;
 import com.woowacourse.ternoko.core.application.InterviewService;
-import com.woowacourse.ternoko.core.dto.response.CommentResponse;
-import com.woowacourse.ternoko.core.dto.response.CommentsResponse;
-import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.core.dto.request.CommentRequest;
+import com.woowacourse.ternoko.core.dto.response.CommentResponse;
+import com.woowacourse.ternoko.core.dto.response.CommentsResponse;
+import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.util.stream.Collectors;
