@@ -28,7 +28,7 @@ spring:
     password:
 
 slack:
-  clientId: '524707623267.4042285006293'
+  clientId: '3756998338916.3821665111344'
   clientSecret: 'secret'
   botToken: 'botToken'
   url: 'url'

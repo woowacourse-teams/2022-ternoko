@@ -96,16 +96,26 @@ public class AuthService {
     }
 
     private LoginResponse signUp(final OpenIDConnectUserInfoResponse userInfoResponse) {
-        if (userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL) || userInfoResponse.getEmail()
-                .equals(TERNOKO_EMAIL)) {
-            final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(), userInfoResponse.getEmail(),
-                    userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
+        if (hasCoachEmailSuffix(userInfoResponse) || isAdministratorEmail(userInfoResponse)) {
+            final Coach coach = coachRepository.save(new Coach(userInfoResponse.getName(),
+                    userInfoResponse.getEmail(),
+                    userInfoResponse.getUserId(),
+                    userInfoResponse.getUserImage192()));
             return LoginResponse.of(COACH, jwtProvider.createToken(coach), false);
         }
         final Crew crew = crewRepository.save(new Crew(userInfoResponse.getName(), userInfoResponse.getEmail(),
                 userInfoResponse.getUserId(), userInfoResponse.getUserImage192()));
 
         return LoginResponse.of(CREW, jwtProvider.createToken(crew), false);
+    }
+
+    private boolean hasCoachEmailSuffix(final OpenIDConnectUserInfoResponse userInfoResponse) {
+        return userInfoResponse.getEmail().contains(WOOWAHAN_COACH_EMAIL);
+    }
+
+    private boolean isAdministratorEmail(final OpenIDConnectUserInfoResponse userInfoResponse) {
+        return userInfoResponse.getEmail()
+                .equals(TERNOKO_EMAIL);
     }
 
     public boolean isValid(final String header) {
