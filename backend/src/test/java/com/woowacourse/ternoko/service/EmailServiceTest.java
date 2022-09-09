@@ -9,14 +9,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.woowacourse.ternoko.support.application.EmailService;
-import com.woowacourse.ternoko.core.domain.member.coach.Coach;
-import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
+import com.woowacourse.ternoko.core.domain.member.coach.Coach;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import com.woowacourse.ternoko.support.application.EmailService;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
 import java.time.LocalDateTime;

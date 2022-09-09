@@ -2,10 +2,10 @@ package com.woowacourse.ternoko.support.fixture;
 
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 
-import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
-import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
+import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.core.dto.request.CoachUpdateRequest;
 import com.woowacourse.ternoko.core.dto.request.CrewUpdateRequest;
 import java.time.LocalDateTime;
