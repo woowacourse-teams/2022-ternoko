@@ -44,14 +44,6 @@ public class InterviewFixture {
             createFormItem(5L),
             createFormItem(6L));
 
-//    public static final List<FormItem> FORM_ITEMS1 = List.of(createFormItem(1),
-//            createFormItem(2),
-//            createFormItem(3));
-//
-//    public static final List<FormItem> FORM_ITEMS2 = List.of(createFormItem(4),
-//            createFormItem(5),
-//            createFormItem(6));
-
     private static FormItem createFormItem(Long count) {
         return new FormItem(null, Question.from("고정질문" + count), Answer.from("고정답변" + count));
     }
