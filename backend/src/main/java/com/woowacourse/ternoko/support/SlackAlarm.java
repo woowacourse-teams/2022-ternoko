@@ -26,16 +26,19 @@ public class SlackAlarm {
     private static final String TERNOKO_CREW_URL = "https://ternoko.site/";
     private static final String TERNOKO_COACH_URL = "https://ternoko.site/coach/home";
     private static final String DATE_MESSAGE = "yyyy년 MM월 dd일(E) HH시 mm분";
-    public static final String ALARM_BOT_URI = "/api/send";
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(DATE_MESSAGE, Locale.KOREAN);
 
     private final String botToken;
     private final WebClient webClient;
+    private final String sendApi;
 
-    public SlackAlarm(@Value("${slack.botToken}") final String botToken, @Value("${slack.url}") final String url) {
-        this.webClient = WebClient.create(url);
+    public SlackAlarm(@Value("${slack.botToken}") final String botToken,
+                      @Value("${slack.url}") final String url,
+                      @Value("${slack.sendApi}") final String sendApi) {
         this.botToken = botToken;
+        this.webClient = WebClient.create(url);
+        this.sendApi = sendApi;
     }
 
     public void sendCreateMessage(final Interview interview) {
@@ -87,7 +90,7 @@ public class SlackAlarm {
 
     private void postWebClient(ChatPostMessageRequest request) {
         webClient.post()
-                .uri(ALARM_BOT_URI)
+                .uri(sendApi)
                 .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .header(AUTHORIZATION_HEADER, botToken)
                 .bodyValue(request)
