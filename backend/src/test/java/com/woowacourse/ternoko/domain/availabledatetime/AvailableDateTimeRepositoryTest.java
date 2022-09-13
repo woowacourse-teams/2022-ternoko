@@ -91,14 +91,13 @@ class AvailableDateTimeRepositoryTest {
     @Test
     @DisplayName("코치의 되는 시간 여부를 당일을 제외하고, 한달 단위로 반환한다.")
     void countByCoachId_1day_expect_today() {
-        final LocalDateTime start = LocalDateTime.now();
+        final LocalDateTime start = LocalDateTime.of(LocalDate.from(LocalDateTime.now()), FIRST_TIME);
         final LocalDateTime end = start.plusMonths(1);
-        final LocalDateTime startTime = LocalDateTime.of(LocalDate.from(start.plusDays(1)), FIRST_TIME);
+        final LocalDateTime startTime = LocalDateTime.of(LocalDate.from(start.plusDays(1)), THIRD_TIME);
         final LocalDateTime reservedTime = LocalDateTime.of(LocalDate.from(start.plusDays(32)), SECOND_TIME);
         availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), reservedTime, OPEN));
         availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
         availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), start, OPEN));
-
 
         final Long size = availableDateTimeRepository.countByCoachId(COACH2.getId(), start.plusDays(1), end);
 
