@@ -41,6 +41,7 @@ slack:
   clientSecret: '7db0d45bf9ae307a3a93522aa0cc4131'
   botToken: 'botToken'
   url: 'url'
+  sendApi: 'botUri'
 
 security:
   jwt:
