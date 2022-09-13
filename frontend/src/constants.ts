@@ -2,7 +2,7 @@ export const PAGE = {
   BASE: '/',
   LOGIN: '/login',
   LOGIN_REGISTER: '/login/register',
-  SLACK_LOGIN_SERVER: `https://slack.com/openid/connect/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=openid%2Cemail&2Cprofile&redirect_uri=${process.env.SLACK_REDIRECT_URL}&state=&granular_bot_scope=1&single_channel=0&install_redirect=&tracked=1&openid_connect=1&response_type=code&team=`,
+  SLACK_LOGIN_SERVER: `https://slack.com/openid/connect/authorize?scope=openid,email,profile&response_type=code&redirect_uri=${process.env.SLACK_REDIRECT_URL}&client_id=${process.env.SLACK_CLIENT_ID}`,
   CREW_HOME: '/',
   INTERVIEW_APPLY: '/interview/apply',
   INTERVIEW_COMPLETE: '/interview/complete',
