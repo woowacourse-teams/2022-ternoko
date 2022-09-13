@@ -9,6 +9,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
+import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
@@ -62,6 +63,7 @@ public class InterviewService {
     private final AvailableDateTimeRepository availableDateTimeRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
+    @Transactional(isolation = SERIALIZABLE)
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
 
