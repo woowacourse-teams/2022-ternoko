@@ -205,7 +205,7 @@ const CoachInterviewCreatePage = () => {
 
   return (
     <>
-      <TitleBox to={PAGE.COACH_HOME} title="면담 스케쥴 만들기" />
+      <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
 
       <S.Box>
         <S.DateBox>
