@@ -265,7 +265,7 @@ const InterviewApplyPage = () => {
               <h3>
                 코치를 선택해주세요.
                 <S.EmphasizedText>
-                  {coaches.find((coach) => coach.id === coachId)?.name ?? ''}
+                  {coaches.find((coach) => coach.id === coachId)?.nickname ?? ''}
                 </S.EmphasizedText>
               </h3>
             </div>
