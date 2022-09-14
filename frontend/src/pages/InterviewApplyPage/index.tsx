@@ -264,9 +264,9 @@ const InterviewApplyPage = () => {
               <S.Circle>1</S.Circle>
               <h3>
                 코치를 선택해주세요.
-                <S.DisplayClickedText>
+                <S.EmphasizedText>
                   {coaches.find((coach) => coach.id === coachId)?.name ?? ''}
-                </S.DisplayClickedText>
+                </S.EmphasizedText>
               </h3>
             </div>
 
@@ -298,10 +298,10 @@ const InterviewApplyPage = () => {
               <S.Circle>2</S.Circle>
               <h3>
                 날짜 및 시간을 선택해주세요.
-                <S.DisplayClickedText>
+                <S.EmphasizedText>
                   {selectedTimes.length > 0 &&
                     `${selectedDates[0].year}년 ${selectedDates[0].month}월 ${selectedDates[0].day}일 ${selectedTimes[0]}`}
-                </S.DisplayClickedText>
+                </S.EmphasizedText>
               </h3>
             </div>
 
@@ -376,9 +376,7 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                   isSubmitted={isSubmitted}
                 />
-                <S.DisplayClickedText>
-                  *사전 메일은 면담 전날 23시 59분에 발송됩니다.
-                </S.DisplayClickedText>
+                <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
                 <Button
                   type="submit"
                   width="100%"
