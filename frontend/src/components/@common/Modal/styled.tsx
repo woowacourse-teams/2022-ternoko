@@ -38,8 +38,9 @@ export const Dimmer = styled.div<DimmerProps>`
 export const Frame = styled.div<ModalProps>`
   position: relative;
   top: -200%;
-  padding: 3rem 3rem;
+  width: 40%;
   max-height: 92%;
+  padding: 3rem 3rem;
   overflow-y: auto;
   transform: scale(0.5);
   transition: opacity 0.5s ease-in-out, top 1s ease-in-out, transform 1s ease-in-out;

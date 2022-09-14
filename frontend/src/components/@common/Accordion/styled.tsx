@@ -6,7 +6,7 @@ type ToggleProps = {
 
 export const Box = styled.div`
   position: relative;
-  width: 50rem;
+  width: 100%;
 
   background: ${({ theme }) => theme.colors.white_50};
   box-shadow: ${({ theme }) => theme.shadows.basic};
