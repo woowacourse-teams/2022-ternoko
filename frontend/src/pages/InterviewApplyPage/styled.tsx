@@ -202,6 +202,7 @@ export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
 `;
 
 export const DisplayClickedText = styled.span`
+  font-size: 1.3rem;
   margin-left: 1rem;
 
   color: ${({ theme }) => theme.colors.pink_200};

@@ -257,7 +257,7 @@ const InterviewApplyPage = () => {
     <>
       <Header />
       <S.Body>
-        <TitleBox to={PAGE.CREW_HOME} title={interviewId ? '면담 수정하기' : '면담 신청하기'} />
+        <TitleBox to={PAGE.CREW_HOME}>{interviewId ? '면담 수정하기' : '면담 신청하기'}</TitleBox>
         <S.Container>
           <S.Box stepStatus={stepStatus[0]}>
             <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
@@ -376,6 +376,9 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                   isSubmitted={isSubmitted}
                 />
+                <S.DisplayClickedText>
+                  *사전 메일은 면담 전날 23시 59분에 발송됩니다.
+                </S.DisplayClickedText>
                 <Button
                   type="submit"
                   width="100%"
