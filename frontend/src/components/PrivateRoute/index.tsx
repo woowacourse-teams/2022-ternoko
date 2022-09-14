@@ -16,7 +16,7 @@ type PrivateRouteProps = {
 };
 
 const Pending = ({ auth }: PrivateRouteProps) => {
-  useQuery('authorization', () => validateAccessTokenAPI(auth), {
+  useQuery(`authorization-${auth}`, () => validateAccessTokenAPI(auth), {
     suspense: true,
     retry: 0,
     staleTime: 0,
