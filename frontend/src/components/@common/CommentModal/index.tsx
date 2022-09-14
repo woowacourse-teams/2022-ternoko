@@ -108,7 +108,12 @@ const CommentModal = ({
   }, [show]);
 
   return (
-    <Modal show={show} display={display} handleCloseModal={handleCloseModal}>
+    <Modal
+      show={show}
+      display={display}
+      handleCloseModal={handleCloseModal}
+      additionalFrameStyle={S.additionalFrameStyle}
+    >
       <h2>자유롭게 한마디를 작성해줘잉~~😎</h2>
       <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
       <S.ExampleBox>
