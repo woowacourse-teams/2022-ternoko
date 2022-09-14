@@ -14,11 +14,6 @@ const Time = styled.div<TimeProps>`
   text-align: center;
   cursor: pointer;
 
-  :hover {
-    background-color: ${({ theme }) => theme.colors.pink_50};
-    border: 1px solid ${({ theme }) => theme.colors.pink_200};
-  }
-
   ${({ active }) =>
     active &&
     css`
