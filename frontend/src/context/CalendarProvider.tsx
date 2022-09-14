@@ -76,7 +76,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
 
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
-  const firstDay = new Date(`${year}/${month + 1}/1`).getDay();
+  const firstDay = new Date(year, month, 1).getDay();
   const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysLength = daysOfMonth[month] + firstDay;
 
@@ -91,7 +91,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
 
   const isBelowToday = (day: number) => {
     const today = new Date().getTime();
-    const date = new Date(`${year}-${month + 1}-${day}`).getTime();
+    const date = new Date(year, month, day).getTime();
 
     return date <= today;
   };

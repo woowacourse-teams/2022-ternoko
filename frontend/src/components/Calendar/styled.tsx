@@ -49,7 +49,6 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
     css`
       background-color: ${({ theme }) => theme.colors.gray_100};
       color: ${({ theme }) => theme.colors.gray_150};
-      pointer-events: none;
       cursor: default;
     `}
 

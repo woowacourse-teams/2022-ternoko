@@ -60,7 +60,7 @@ const Calendar = ({
 
               if (isBelowToday(day)) {
                 return (
-                  <S.CalendarDay key={index} type="disable" onClick={getHandleClickDay(day)}>
+                  <S.CalendarDay key={index} type="disable">
                     {day}
                   </S.CalendarDay>
                 );
