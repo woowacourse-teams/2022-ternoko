@@ -4,8 +4,6 @@ import styled, { css, keyframes } from 'styled-components';
 
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 
-import Time from '@/components/Time/styled';
-
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,6 +47,7 @@ export const Body = styled.div`
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
+  margin-top: 2rem;
 
   .sub-title {
     display: flex;
