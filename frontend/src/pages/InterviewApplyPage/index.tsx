@@ -70,6 +70,7 @@ const InterviewApplyPage = () => {
   const [answer3, setAnswer3] = useState('');
 
   const changeCoachIdRef = useRef(false);
+  const originCoachIdRef = useRef(INITIAL_COACH_ID);
   const initRef = useRef(true);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
@@ -87,6 +88,11 @@ const InterviewApplyPage = () => {
       : availableSchedules[day]
       ? 'default'
       : 'disable';
+
+  const coachScheduleAPI = () =>
+    interviewId && coachId === originCoachIdRef.current
+      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
+      : getCoachScheduleAPI(coachId, year, month + 1);
 
   const updateStatusWhenCalendarShow = (
     schedules: StringDictionary,
@@ -216,6 +222,7 @@ const InterviewApplyPage = () => {
         ({ nickname }: CoachType) => nickname === coachNickname,
       );
       setCoachId(coach.id);
+      originCoachIdRef.current = coach.id;
 
       setAnswer1(interviewQuestions[0].answer);
       setAnswer2(interviewQuestions[1].answer);
@@ -231,9 +238,7 @@ const InterviewApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await (interviewId
-          ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-          : getCoachScheduleAPI(coachId, year, month + 1));
+        const response = await coachScheduleAPI();
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {

@@ -47,6 +47,7 @@ export const Body = styled.div`
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
+  margin-top: 2rem;
 
   .sub-title {
     display: flex;

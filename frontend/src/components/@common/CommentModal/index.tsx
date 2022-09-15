@@ -141,7 +141,7 @@ const CommentModal = ({
                   inActive={!isValidCommentLength(coachComment)}
                   onClick={handleClickButton}
                 >
-                  면담 {commentId === -1 ? '완료' : '수정'}하기
+                  코멘트 {commentId === -1 ? '완료' : '수정'}하기
                 </Button>
               </S.ButtonBox>
             )}
@@ -167,7 +167,7 @@ const CommentModal = ({
                   inActive={!isValidCommentLength(crewComment)}
                   onClick={handleClickButton}
                 >
-                  면담 {commentId === -1 ? '완료' : '수정'}하기
+                  코멘트 {commentId === -1 ? '완료' : '수정'}하기
                 </Button>
               </S.ButtonBox>
             )}
