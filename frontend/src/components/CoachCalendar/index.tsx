@@ -77,12 +77,6 @@ const CoachCalendar = ({
   return (
     <S.Box>
       <C.Header>
-        {/* <C.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</C.MonthPicker> */}
-        {/* <C.YearPicker>
-          <C.YearChange onClick={handleClickPrevYear}>{'<'}</C.YearChange>
-          <p>{year}</p>
-          <C.YearChange onClick={handleClickNextYear}>{'>'}</C.YearChange>
-        </C.YearPicker> */}
         <C.YearPicker>
           <C.DateChange onClick={handleClickPrevYear}>{'<'}</C.DateChange>
           <p>{year}</p>
