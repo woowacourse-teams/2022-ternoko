@@ -201,10 +201,6 @@ export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
   animation: ${toLeft} 1s;
 
   height: ${({ heightUnit }) => Math.min(47, heightUnit * 8)}rem;
-
-  ${Time}:not(:first-child) {
-    border-top: none;
-  }
 `;
 
 export const EmphasizedText = styled.span`
