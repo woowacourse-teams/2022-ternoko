@@ -27,31 +27,42 @@ const Calendar = ({
   haveTimeDays,
 }: CalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
-  const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
-    useCalendarActions();
+  const {
+    handleClickPrevYear,
+    handleClickNextYear,
+    handleClickPrevMonth,
+    handleClickNextMonth,
+    handleClickMonthPicker,
+    getHandleClickMonth,
+  } = useCalendarActions();
   const { daysLength, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   return (
     <S.Box>
       <C.Header>
-        <C.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</C.MonthPicker>
         <C.YearPicker>
-          <C.YearChange onClick={handleClickPrevYear}>{'<'}</C.YearChange>
+          <C.DateChange onClick={handleClickPrevYear}>{'<'}</C.DateChange>
           <p>{year}</p>
-          <C.YearChange onClick={handleClickNextYear}>{'>'}</C.YearChange>
+          <C.DateChange onClick={handleClickNextYear}>{'>'}</C.DateChange>
         </C.YearPicker>
+
+        <C.MonthPicker>
+          <C.DateChange onClick={handleClickPrevMonth}>{'<'}</C.DateChange>
+          <p onClick={handleClickMonthPicker}>{monthNames[month]}</p>
+          <C.DateChange onClick={handleClickNextMonth}>{'>'}</C.DateChange>
+        </C.MonthPicker>
       </C.Header>
 
       <C.Body>
         <C.WeekDay>
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
+          <div>일</div>
+          <div>월</div>
+          <div>화</div>
+          <div>수</div>
+          <div>목</div>
+          <div>금</div>
+          <div>토</div>
         </C.WeekDay>
         <C.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
