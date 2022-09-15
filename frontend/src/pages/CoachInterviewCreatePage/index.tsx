@@ -215,7 +215,7 @@ const CoachInterviewCreatePage = () => {
             haveTimeDays={haveTimeDays}
           />
 
-          <ScrollContainer>
+          <S.TimeContainer>
             {defaultTimes.map((defaultTime, index) => (
               <Time
                 key={index}
@@ -225,7 +225,7 @@ const CoachInterviewCreatePage = () => {
                 {defaultTime}
               </Time>
             ))}
-          </ScrollContainer>
+          </S.TimeContainer>
         </S.DateBox>
         <S.ButtonContainer>
           <Link to={PAGE.COACH_HOME}>

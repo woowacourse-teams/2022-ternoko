@@ -4,6 +4,8 @@ import styled, { css, keyframes } from 'styled-components';
 
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 
+import Time from '@/components/Time/styled';
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -199,6 +201,10 @@ export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
   animation: ${toLeft} 1s;
 
   height: ${({ heightUnit }) => Math.min(47, heightUnit * 8)}rem;
+
+  ${Time}:not(:first-child) {
+    border-top: none;
+  }
 `;
 
 export const EmphasizedText = styled.span`
