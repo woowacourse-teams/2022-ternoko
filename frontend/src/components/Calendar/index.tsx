@@ -66,10 +66,16 @@ const Calendar = ({
                 );
               }
 
-              return (
+              const dayType = getDayType(day);
+
+              return dayType === 'disable' ? (
+                <S.CalendarDay key={index} type={dayType}>
+                  {day}
+                </S.CalendarDay>
+              ) : (
                 <S.CalendarDay
                   key={index}
-                  type={getDayType(day)}
+                  type={dayType}
                   onClick={getHandleClickDay(day)}
                   mark={haveTimeDays.has(day)}
                 >
