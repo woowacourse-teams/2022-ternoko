@@ -235,7 +235,7 @@ const CoachInterviewCreatePage = () => {
           </Link>
 
           <Button width="100%" height="35px" onClick={handleClickApplyButton}>
-            승인하기
+            스케쥴 생성
           </Button>
         </S.ButtonContainer>
       </S.Box>
