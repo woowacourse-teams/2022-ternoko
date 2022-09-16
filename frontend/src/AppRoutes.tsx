@@ -95,7 +95,6 @@ const Layout = () => {
   return (
     <>
       <Header />
-
       <S.Body>
         <Outlet />
       </S.Body>
@@ -113,7 +112,7 @@ const S = {
       padding: 3rem 25rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.laptop()} {
+    @media ${({ theme }) => theme.devices.laptop(50)} {
       padding: 3rem 5rem 0;
     }
 
@@ -121,7 +120,7 @@ const S = {
       padding: 2rem 5rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.mobileL()} {
+    @media ${({ theme }) => theme.devices.mobileL(30)} {
       padding: 2rem 2rem 0;
     }
 
