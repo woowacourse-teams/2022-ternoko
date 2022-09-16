@@ -91,7 +91,7 @@ public class CoachService {
             final int month) {
 
         return availableDateTimeRepository
-                .findAvailableDateTimesByCoachIdAndInterviewId(interviewId, coachId, year, month);
+                .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId, coachId, year, month);
     }
 
     public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
