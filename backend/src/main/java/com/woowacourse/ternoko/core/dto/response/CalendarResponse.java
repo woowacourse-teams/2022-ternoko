@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.core.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class CalendarResponse {
     private LocalDateTime interviewStartTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewEndTime;
+    @JsonProperty(value = "status")
     private String interviewStatus;
 
     public static CalendarResponse from(final Interview interview) {
