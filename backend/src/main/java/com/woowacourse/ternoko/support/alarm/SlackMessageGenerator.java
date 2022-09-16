@@ -24,7 +24,7 @@ public class SlackMessageGenerator {
     public static ChatPostMessageRequest getCoachMessageRequest(final SlackMessageType slackMessageType,
                                                                 final Interview interview,
                                                                 final String botToken) {
-        System.out.println("Request 생성자 : "+interview.getCoach().getUserId());
+        System.out.println("Request 생성자 : " + interview.getCoach().getUserId());
         return ChatPostMessageRequest.builder()
                 .text(String.format(slackMessageType.getCoachPreviewMessage(), interview.getCrew().getNickname()))
                 .attachments(generateAttachment(slackMessageType, interview, TERNOKO_COACH_URL))
