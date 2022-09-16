@@ -42,6 +42,7 @@ slack:
   botToken: 'botToken'
   url: 'url'
   sendApi: 'botUri'
+  destination: 'destination'
 
 security:
   jwt:
