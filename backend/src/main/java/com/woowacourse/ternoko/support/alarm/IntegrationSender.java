@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.support;
+package com.woowacourse.ternoko.support.alarm;
 
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import com.woowacourse.ternoko.core.domain.interview.Interview;

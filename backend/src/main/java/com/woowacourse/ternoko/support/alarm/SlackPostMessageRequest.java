@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.support;
+package com.woowacourse.ternoko.support.alarm;
 
 import com.slack.api.model.Attachment;
 import java.util.List;

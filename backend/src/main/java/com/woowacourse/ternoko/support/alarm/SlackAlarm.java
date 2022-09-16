@@ -1,8 +1,6 @@
-package com.woowacourse.ternoko.support;
+package com.woowacourse.ternoko.support.alarm;
 
 import com.woowacourse.ternoko.core.domain.interview.Interview;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
