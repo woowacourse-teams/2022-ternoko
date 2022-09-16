@@ -7,6 +7,7 @@ import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -88,12 +89,13 @@ class AvailableDateTimeRepositoryTest {
 
     @Test
     @DisplayName("해당 코치의 면담가능한 시간과 interview startTime이 포함된 정렬된 AvailableTime List를 반환해야 한다.")
-    void findAvailableDateTimesByCoachIdAndInterviewId() {
+    void findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime() {
         // given
         final LocalDateTime startTime = LocalDateTime.of(NOW_PLUS_1_MONTH, FIRST_TIME);
         final LocalDateTime reservedTime = LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME);
         final LocalDateTime availableTime = LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME);
 
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
         final AvailableDateTime availableDateTime = saveAvailableTime(availableTime, OPEN);
         final AvailableDateTime startDateTime = saveAvailableTime(startTime, USED);
         saveAvailableTime(reservedTime, USED);
@@ -101,7 +103,7 @@ class AvailableDateTimeRepositoryTest {
         // when
         final Long interviewId = saveInterview(startTime);
         final List<AvailableDateTime> times = availableDateTimeRepository
-                .findAvailableDateTimesByCoachIdAndInterviewId(interviewId,
+                .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId,
                         coach.getId(),
                         NOW_PLUS_1_MONTH.getYear(),
                         NOW_PLUS_1_MONTH.getMonthValue());
