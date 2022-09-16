@@ -36,7 +36,6 @@ public class SlackMessageGenerator {
     public static ChatPostMessageRequest getCrewMessageRequest(final SlackMessageType slackMessageType,
                                                                final Interview interview,
                                                                final String botToken) {
-        System.out.println("Request 생성자 : "+interview.getCrew().getUserId());
         return ChatPostMessageRequest.builder()
                 .text(String.format(slackMessageType.getCrewPreviewMessage(), interview.getCoach().getNickname()))
                 .attachments(generateAttachment(slackMessageType, interview, TERNOKO_CREW_URL))
@@ -56,22 +55,22 @@ public class SlackMessageGenerator {
                                 DividerBlock.builder().build(),
                                 SectionBlock.builder().fields(
                                         List.of(MarkdownTextObject.builder()
-                                                        .text(":clock3: *면담일시*" +
-                                                                System.lineSeparator() +
-                                                                DATE_FORMAT.format(interview.getInterviewStartTime()))
+                                                        .text(":clock3: *면담일시*"
+                                                                + System.lineSeparator()
+                                                                + DATE_FORMAT.format(interview.getInterviewStartTime()))
                                                         .build(),
                                                 MarkdownTextObject.builder()
-                                                        .text(":smiley: *크루*" +
-                                                                System.lineSeparator() +
-                                                                interview.getCrew().getNickname())
+                                                        .text(":smiley: *크루*"
+                                                                + System.lineSeparator()
+                                                                + interview.getCrew().getNickname())
                                                         .build(),
                                                 MarkdownTextObject.builder()
                                                         .text(" ")
                                                         .build(),
                                                 MarkdownTextObject.builder()
-                                                        .text(":smiley: *코치*" +
-                                                                System.lineSeparator() +
-                                                                interview.getCoach().getNickname())
+                                                        .text(":smiley: *코치*"
+                                                                + System.lineSeparator()
+                                                                + interview.getCoach().getNickname())
                                                         .build())
                                 ).build(),
                                 ContextBlock.builder().elements(List.of(
