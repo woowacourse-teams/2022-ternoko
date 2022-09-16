@@ -115,7 +115,11 @@ const CommentModal = ({
       additionalFrameStyle={S.additionalFrameStyle}
     >
       <h2>자유롭게 한마디를 작성해줘잉~~😎</h2>
-      <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
+      <picture>
+        <source srcSet="/assets/icon/close.avif" />
+        <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
+      </picture>
+
       <S.ExampleBox>
         <p>예시 1) 고민이 싹~ 해결되었네요!! 감사합니다.</p>
         <p>예시 2) 항상 덕분에 즐겁습니다. 오늘 하루도 행복하세요.</p>

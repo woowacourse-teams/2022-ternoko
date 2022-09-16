@@ -79,19 +79,25 @@ const InterviewDetailModal = ({
       handleCloseModal={handleCloseModal}
     >
       <S.IconContainer>
-        <S.Icon
-          src="/assets/icon/delete.png"
-          alt="삭제 아이콘"
-          active
-          onClick={handleClickDeleteButton}
-        />
-        <S.Icon
-          src="/assets/icon/close.png"
-          alt="모달 창 닫기 아이콘"
-          active
-          agg
-          onClick={handleCloseModal}
-        />
+        <picture>
+          <source srcSet="/assets/icon/delete.avif" />
+          <S.Icon
+            src="/assets/icon/delete.png"
+            alt="삭제 아이콘"
+            active
+            onClick={handleClickDeleteButton}
+          />
+        </picture>
+        <picture>
+          <source srcSet="/assets/icon/close.avif" />
+          <S.Icon
+            src="/assets/icon/close.png"
+            alt="모달 창 닫기 아이콘"
+            active
+            agg
+            onClick={handleCloseModal}
+          />
+        </picture>
       </S.IconContainer>
       <S.Profile>
         <img src={interview?.crewImageUrl} alt="프로필" />
@@ -101,20 +107,30 @@ const InterviewDetailModal = ({
         {role === 'CREW' && (
           <S.Info>
             <S.IconBox>
-              <S.Icon src="/assets/icon/human.png" alt="코치 아이콘" />
+              <picture>
+                <source srcSet="/assets/icon/human.avif" />
+                <S.Icon src="/assets/icon/human.png" alt="코치 아이콘" />
+              </picture>
             </S.IconBox>
+
             <p>{interview?.coachNickname}</p>
           </S.Info>
         )}
         <S.Info>
           <S.IconBox>
-            <S.Icon src="/assets/icon/calendar.png" alt="달력 아이콘" />
+            <picture>
+              <source srcSet="/assets/icon/calendar.avif" />
+              <S.Icon src="/assets/icon/calendar.png" alt="달력 아이콘" />
+            </picture>
           </S.IconBox>
           <p>{interview && getDateString(interview.interviewStartTime)}</p>
         </S.Info>
         <S.Info>
           <S.IconBox>
-            <S.Icon src="/assets/icon/clock.png" alt="시간 아이콘" />
+            <picture>
+              <source srcSet="/assets/icon/clock.avif" />
+              <S.Icon src="/assets/icon/clock.png" alt="시간 아이콘" />
+            </picture>
           </S.IconBox>
           <p>
             {interview &&
