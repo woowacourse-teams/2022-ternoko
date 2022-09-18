@@ -207,7 +207,9 @@ const CoachInterviewCreatePage = () => {
     <S.Box>
       <S.HeaderBox>
         <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
-        <Button>{month + 1}월 한번에 보기</Button>
+        <Button onClick={() => alert('해당 기능은 준비중입니다.')}>
+          {month + 1}월 한번에 보기
+        </Button>
       </S.HeaderBox>
 
       <S.DateBox>
