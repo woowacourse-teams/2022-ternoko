@@ -1,7 +1,9 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
 const dotenv = require('dotenv');
-const webpack = require('webpack');
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (mode = {}) => {
   dotenv.config({
@@ -20,6 +22,7 @@ module.exports = (mode = {}) => {
       ],
     },
     plugins: [
+      new BundleAnalyzerPlugin(),
       new webpack.EnvironmentPlugin(process.env),
       new HtmlWebpackPlugin({
         template: `${path.resolve(__dirname, '../public')}/index.html`,
