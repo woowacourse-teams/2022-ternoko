@@ -65,6 +65,7 @@ export const LoginButton = styled.button`
 
   img {
     width: 3rem;
+    height: 3rem;
   }
 `;
 
@@ -81,5 +82,6 @@ export const LogoBox = styled.div`
 
   img {
     width: 12rem;
+    aspect-ratio: 1.2;
   }
 `;

@@ -19,6 +19,7 @@ export const Box = styled.div`
 
     img {
       width: 7rem;
+      aspect-ratio: 1.2;
     }
   }
 
