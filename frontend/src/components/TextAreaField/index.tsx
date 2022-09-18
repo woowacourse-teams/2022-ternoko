@@ -32,12 +32,12 @@ const TextAreaField = ({
         id={id}
         value={value}
         maxLength={maxLength}
-        isError={isSubmitted && !checkValidation(value)}
+        isError={!checkValidation(value)}
         disabled={disabled ?? false}
         onChange={handleChange}
       />
       <S.DescriptionBox>
-        <p>{isSubmitted && !checkValidation(value) && <ErrorMessage>{message}</ErrorMessage>}</p>
+        <p>{!checkValidation(value) && <ErrorMessage>{message}</ErrorMessage>}</p>
         <p>
           {value.length}/{maxLength}
         </p>
