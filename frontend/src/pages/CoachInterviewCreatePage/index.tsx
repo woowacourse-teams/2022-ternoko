@@ -237,7 +237,7 @@ const CoachInterviewCreatePage = () => {
         </Link>
 
         <Button width="100%" height="35px" onClick={handleClickApplyButton}>
-          스케쥴 생성
+          스케쥴 저장
         </Button>
       </S.ButtonContainer>
     </S.Box>
