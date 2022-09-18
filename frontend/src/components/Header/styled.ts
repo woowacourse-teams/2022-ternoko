@@ -8,7 +8,7 @@ export const Box = styled.div`
   padding: 0 30rem;
 
   h1 {
-    font-family: 'EarlyFontDiary';
+    font-family: 'SubsetEarlyFontDiary';
     font-size: 3rem;
   }
 

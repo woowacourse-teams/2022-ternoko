@@ -76,7 +76,7 @@ export const LogoBox = styled.div`
   margin-bottom: 4rem;
 
   h1 {
-    font-family: EarlyFontDiary;
+    font-family: 'SubsetEarlyFontDiary';
     font-size: 6rem;
   }
 
