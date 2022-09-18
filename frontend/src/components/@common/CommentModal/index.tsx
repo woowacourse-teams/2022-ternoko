@@ -84,7 +84,10 @@ const CommentModal = ({
   };
 
   useEffect(() => {
-    if (!show) return;
+    if (!show) {
+      memberRole === 'CREW' ? setCrewComment('') : setCoachComment('');
+      return;
+    }
 
     (async () => {
       const response = await getCommentAPI(Number(interviewId));
