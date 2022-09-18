@@ -1,13 +1,10 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { InterviewStatus } from '@/types/domain';
 
-type BoxProps = {
-  status: InterviewStatus;
-};
-
-export const Box = styled.div<BoxProps>`
+export const Box = styled.div`
   position: relative;
+
   width: 28rem;
   padding: 1rem 1.5rem 5rem;
 
@@ -17,15 +14,20 @@ export const Box = styled.div<BoxProps>`
 
   transition: transform 0.2s ease-in-out;
 
-  ${({ theme, status }) =>
-    status === 'CANCELED' &&
-    css`
-      background: ${theme.colors.pink_100};
-    `}
-
   :hover {
     transform: translateY(-0.5rem);
   }
+`;
+
+export const Tag = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0.6rem;
+  font-size: 1.2rem;
+
+  color: ${({ theme }) => theme.colors.white_50};
+  background-color: ${({ theme }) => theme.colors.green_50};
 `;
 
 export const ImageTextBox = styled.div`
