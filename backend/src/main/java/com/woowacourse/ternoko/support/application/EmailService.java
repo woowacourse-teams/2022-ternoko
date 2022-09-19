@@ -3,7 +3,7 @@ package com.woowacourse.ternoko.support.application;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
-import com.woowacourse.ternoko.support.EmailGenerator;
+import com.woowacourse.ternoko.support.alarm.EmailGenerator;
 import com.woowacourse.ternoko.support.application.response.EmailResponse;
 import java.time.LocalDateTime;
 import java.util.List;

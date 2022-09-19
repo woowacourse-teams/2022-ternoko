@@ -33,6 +33,7 @@ slack:
   botToken: 'botToken'
   url: 'https://slack.com'
   sendApi: '/api/chat.postMessage'
+  destination: 'develop'
 
 security:
   jwt:
