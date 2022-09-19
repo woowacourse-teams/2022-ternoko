@@ -36,7 +36,6 @@ const CommentModal = ({
   afterPostAndPutComment,
   handleCloseModal,
 }: CommentModalProps) => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [commentId, setCommentId] = useState(-1);
   const [coachComment, setCoachComment] = useState('');
   const [crewComment, setCrewComment] = useState('');
@@ -58,8 +57,6 @@ const CommentModal = ({
   };
 
   const handleClickButton = async () => {
-    isSubmitted || setIsSubmitted(true);
-
     try {
       const comment = memberRole === 'CREW' ? crewComment : coachComment;
 
@@ -136,7 +133,6 @@ const CommentModal = ({
               value={coachComment}
               maxLength={COMMENT_MAX_LENGTH}
               message={isCrewCompleted ? '' : ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
-              isSubmitted={isSubmitted}
               disabled={isCrewCompleted}
               handleChange={handleChangeCoachTextarea}
               checkValidation={isCrewCompleted ? () => true : isValidCommentLength}
@@ -162,7 +158,6 @@ const CommentModal = ({
               value={crewComment}
               maxLength={COMMENT_MAX_LENGTH}
               message={isCoachCompleted ? '' : ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
-              isSubmitted={isSubmitted}
               disabled={isCoachCompleted}
               handleChange={handleChangeCrewTextarea}
               checkValidation={isCoachCompleted ? () => true : isValidCommentLength}

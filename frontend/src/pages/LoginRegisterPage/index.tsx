@@ -38,7 +38,6 @@ const LoginRegisterPage = () => {
   const [nickname, setNickname] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -50,7 +49,6 @@ const LoginRegisterPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    isSubmitted || setIsSubmitted(true);
 
     if (
       !isValidNicknameLength(nickname) ||
@@ -115,7 +113,6 @@ const LoginRegisterPage = () => {
               label="닉네임*"
               value={nickname}
               message={ERROR_MESSAGE.ENTER_IN_RANGE_NICKNAME}
-              isSubmitted={isSubmitted}
               handleChange={handleChangeNickname}
               checkValidation={isValidNicknameLength}
             />
@@ -126,7 +123,6 @@ const LoginRegisterPage = () => {
                 value={introduce}
                 maxLength={COACH_INTRODUCE_MAX_LENGTH}
                 message={ERROR_MESSAGE.ENTER_IN_RANGE_INTRODUCE_LENGTH}
-                isSubmitted={isSubmitted}
                 handleChange={handleChangeIntroduce}
                 checkValidation={isValidIntroduceLength}
               />

@@ -60,7 +60,6 @@ const InterviewApplyPage = () => {
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [availableSchedules, setAvailableSchedules] = useState<StringDictionary>({});
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
@@ -157,7 +156,6 @@ const InterviewApplyPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    isSubmitted || setIsSubmitted(true);
 
     if (
       !isValidApplyFormLength(answer1) ||
@@ -359,7 +357,6 @@ const InterviewApplyPage = () => {
                   message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                   handleChange={getHandleChangeAnswer(setAnswer1)}
                   checkValidation={isValidApplyFormLength}
-                  isSubmitted={isSubmitted}
                 />
                 <TextAreaField
                   id="example2"
@@ -369,7 +366,6 @@ const InterviewApplyPage = () => {
                   message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                   handleChange={getHandleChangeAnswer(setAnswer2)}
                   checkValidation={isValidApplyFormLength}
-                  isSubmitted={isSubmitted}
                 />
                 <TextAreaField
                   id="example3"
@@ -379,7 +375,6 @@ const InterviewApplyPage = () => {
                   message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                   handleChange={getHandleChangeAnswer(setAnswer3)}
                   checkValidation={isValidApplyFormLength}
-                  isSubmitted={isSubmitted}
                 />
                 <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
                 <Button

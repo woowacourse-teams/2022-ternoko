@@ -8,7 +8,6 @@ export type TextAreaFieldProps = {
   value: string;
   maxLength: number;
   message: string;
-  isSubmitted: boolean;
   disabled?: boolean;
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   checkValidation: (text: string) => boolean;
@@ -20,7 +19,6 @@ const TextAreaField = ({
   value,
   maxLength,
   message,
-  isSubmitted,
   disabled,
   handleChange,
   checkValidation,
