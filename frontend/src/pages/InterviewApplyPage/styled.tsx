@@ -66,7 +66,7 @@ export const Box = styled.div<BoxProps>`
 
   .fold-box {
     overflow: hidden;
-    margin-top: 2rem;
+    padding-top: 2rem;
   }
 
   ${({ stepStatus }) =>
@@ -116,6 +116,25 @@ export const Box = styled.div<BoxProps>`
     `}
 `;
 
+export const StatusBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 1.4rem;
+
+  border: 1px solid ${({ theme }) => theme.colors.gray_150};
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+`;
+
 export const TitleBox = styled.div`
   display: flex;
   justify-content: space-between;
@@ -156,6 +175,17 @@ export const Circle = styled.div`
 
   background-color: ${({ theme }) => theme.colors.pink_200};
   color: ${({ theme }) => theme.colors.white_50};
+`;
+
+type SmallCircleProps = {
+  green?: boolean;
+};
+
+export const SmallCircle = styled(Circle)<SmallCircleProps>`
+  width: 1.2rem;
+  height: 1.2rem;
+
+  background-color: ${({ theme, green }) => green && theme.colors.green_100};
 `;
 
 export const Bar = styled.div`

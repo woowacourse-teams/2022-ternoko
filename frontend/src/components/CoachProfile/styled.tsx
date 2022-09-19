@@ -13,7 +13,7 @@ export const CoachProfileImage = styled.img`
   width: 110px;
   height: 110px;
   border: 1px solid ${({ theme }) => theme.colors.gray_100};
-  border-radius: 25px;
+  border-radius: 20px;
   margin-bottom: 0.5rem;
 
   @media ${({ theme }) => theme.devices.tablet()} {
@@ -34,9 +34,11 @@ export const CoachProfileImage = styled.img`
 
 type BoxProps = {
   active?: boolean;
+  hasOpenTime: boolean;
 };
 
 export const Box = styled.div<BoxProps>`
+  position: relative;
   width: fit-content;
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
@@ -56,4 +58,17 @@ export const Box = styled.div<BoxProps>`
         background-color: ${({ theme }) => theme.colors.pink_50};
       }
     `}
+
+  :after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 100%;
+
+    background-color: ${({ theme, hasOpenTime }) =>
+      hasOpenTime ? theme.colors.green_100 : theme.colors.pink_200};
+  }
 `;

@@ -271,6 +271,16 @@ const InterviewApplyPage = () => {
                   {coaches.find((coach) => coach.id === coachId)?.nickname ?? ''}
                 </S.EmphasizedText>
               </h3>
+              <S.StatusBox>
+                <div>
+                  <S.SmallCircle />
+                  면담 불가
+                </div>
+                <div>
+                  <S.SmallCircle green />
+                  면담 가능
+                </div>
+              </S.StatusBox>
             </div>
 
             <div className="fold-box">
