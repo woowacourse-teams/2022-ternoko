@@ -83,7 +83,7 @@ public class CommentAcceptanceTest extends AcceptanceSupporter {
         // then
         final ExtractableResponse<Response> findResponse = get("/api/interviews/" + interviewId, crewHeader);
         final InterviewResponse newInterviewResponse = findResponse.body().as(InterviewResponse.class);
-        assertThat(newInterviewResponse.getStatus()).isEqualTo(InterviewStatusType.COMPLETE);
+        assertThat(newInterviewResponse.getStatus()).isEqualTo(InterviewStatusType.COMPLETED);
     }
 
     @Test

@@ -162,7 +162,7 @@ public class  Interview {
             this.interviewStatusType = InterviewStatusType.CREW_COMPLETED;
             return;
         }
-        this.interviewStatusType = InterviewStatusType.COMPLETE;
+        this.interviewStatusType = InterviewStatusType.COMPLETED;
     }
 
     public void updateStatus(final InterviewStatusType interviewStatusType) {
