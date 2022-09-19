@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Box = styled.div`
   width: fit-content;
@@ -21,5 +21,20 @@ export const ButtonContainer = styled.div`
 
   > * {
     width: 48%;
+  }
+`;
+
+export const HeaderBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-right: 2.5rem;
+  margin-bottom: 2rem;
+
+  button {
+    transition: all 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.15);
   }
 `;

@@ -204,42 +204,43 @@ const CoachInterviewCreatePage = () => {
   }, [year, month, isApplied, id]);
 
   return (
-    <>
-      <TitleBox to={PAGE.COACH_HOME} title="면담 스케쥴 만들기" />
+    <S.Box>
+      <S.HeaderBox>
+        <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
+        <Button>{month + 1}월 한번에 보기</Button>
+      </S.HeaderBox>
 
-      <S.Box>
-        <S.DateBox>
-          <Calendar
-            getHandleClickDay={getHandleClickDay}
-            getDayType={getDayType}
-            haveTimeDays={haveTimeDays}
-          />
+      <S.DateBox>
+        <Calendar
+          getHandleClickDay={getHandleClickDay}
+          getDayType={getDayType}
+          haveTimeDays={haveTimeDays}
+        />
 
-          <ScrollContainer>
-            {defaultTimes.map((defaultTime, index) => (
-              <Time
-                key={index}
-                active={selectedTimes.includes(defaultTime)}
-                onClick={getHandleClickTime(defaultTime)}
-              >
-                {defaultTime}
-              </Time>
-            ))}
-          </ScrollContainer>
-        </S.DateBox>
-        <S.ButtonContainer>
-          <Link to={PAGE.COACH_HOME}>
-            <Button width="100%" height="35px" white={true}>
-              홈으로
-            </Button>
-          </Link>
-
-          <Button width="100%" height="35px" onClick={handleClickApplyButton}>
-            승인하기
+        <ScrollContainer>
+          {defaultTimes.map((defaultTime, index) => (
+            <Time
+              key={index}
+              active={selectedTimes.includes(defaultTime)}
+              onClick={getHandleClickTime(defaultTime)}
+            >
+              {defaultTime}
+            </Time>
+          ))}
+        </ScrollContainer>
+      </S.DateBox>
+      <S.ButtonContainer>
+        <Link to={PAGE.COACH_HOME}>
+          <Button width="100%" height="35px" white={true}>
+            홈으로
           </Button>
-        </S.ButtonContainer>
-      </S.Box>
-    </>
+        </Link>
+
+        <Button width="100%" height="35px" onClick={handleClickApplyButton}>
+          스케쥴 생성
+        </Button>
+      </S.ButtonContainer>
+    </S.Box>
   );
 };
 

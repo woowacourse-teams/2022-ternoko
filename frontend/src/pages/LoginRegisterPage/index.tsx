@@ -135,7 +135,7 @@ const LoginRegisterPage = () => {
         </S.LeftBox>
         <S.RightBox>
           <S.ProfileBox>
-            <img src={imageUrl} alt="코치 프로필" />
+            <img src={imageUrl} alt="프로필" />
             <S.Nickname>{nickname || '닉네임'}</S.Nickname>
             {memberRole === 'COACH' && (
               <S.Introduce>{introduce || '한 줄 소개를 입력해주세요.'}</S.Introduce>

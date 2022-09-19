@@ -43,20 +43,20 @@ const AppRoutes = () => {
         <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
 
         <Route path={PAGE.BASE} element={<Layout />}>
-          <Route element={<PrivateRoute auth="ALL" />}>
+          <Route element={<PrivateRoute auth="ALL" checkNickname={false} />}>
             <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
           </Route>
-          <Route element={<PrivateRoute auth="CREW" />}>
+          <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
             <Route path={PAGE.CREW_HOME} element={<HomePage />} />
           </Route>
 
-          <Route element={<PrivateRoute auth="CREW" />}>
+          <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
             <Route
               path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
               element={<InterviewCompletePage />}
             />
           </Route>
-          <Route element={<PrivateRoute auth="COACH" />}>
+          <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
             <Route
               path={PAGE.COACH_INTERVIEW_CREATE}
               element={
@@ -66,15 +66,15 @@ const AppRoutes = () => {
               }
             />
           </Route>
-          <Route element={<PrivateRoute auth="COACH" />}>
+          <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
             <Route path={PAGE.COACH_HOME} element={<CoachHomePage />} />
           </Route>
-          <Route element={<PrivateRoute auth="ALL" />}>
+          <Route element={<PrivateRoute auth="ALL" checkNickname={true} />}>
             <Route path={PAGE.MY_PAGE} element={<MyPage />} />
           </Route>
         </Route>
 
-        <Route element={<PrivateRoute auth="CREW" />}>
+        <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
           <Route
             path={PAGE.INTERVIEW_APPLY}
             element={

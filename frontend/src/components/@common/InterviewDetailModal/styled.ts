@@ -1,5 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import theme from '@/styles/theme';
+
 export const IconContainer = styled.div`
   position: absolute;
   right: 3rem;
@@ -104,23 +106,35 @@ export const additionalFrameStyle = `
     transition: opacity 0.3s ease-in-out 0.2s;
 
     opacity: 1;
-  }
+  };
 
   ${Profile} {
     transition: opacity 0.3s ease-in-out 0.25s;
 
     opacity: 1;
-  }
+  };
 
   ${InfoContainer} {
     transition: opacity 0.3s ease-in-out 0.3s;
 
     opacity: 1;
-  }
+  };
 
   ${AccordionContainer} {
     transition: opacity 0.3s ease-in-out 0.35s;
 
     opacity: 1;
-  }
+  };
+
+  @media ${theme.devices.laptop(200)} {
+    width: 60%;
+  };
+
+  @media ${theme.devices.tablet()} {
+    width: 70%;
+  };
+
+  @media ${theme.devices.tabletM()} {
+    width: 90%;
+  };
 `;

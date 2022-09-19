@@ -99,7 +99,7 @@ const MyPage = () => {
 
   return (
     <>
-      <TitleBox title="마이 페이지" />
+      <TitleBox>마이 페이지</TitleBox>
 
       <S.Box>
         <S.ProfileBox>
