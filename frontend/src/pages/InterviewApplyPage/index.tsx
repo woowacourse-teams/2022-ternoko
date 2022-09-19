@@ -70,6 +70,7 @@ const InterviewApplyPage = () => {
   const [answer3, setAnswer3] = useState('');
 
   const changeCoachIdRef = useRef(false);
+  const originCoachIdRef = useRef(INITIAL_COACH_ID);
   const initRef = useRef(true);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
@@ -87,6 +88,11 @@ const InterviewApplyPage = () => {
       : availableSchedules[day]
       ? 'default'
       : 'disable';
+
+  const coachScheduleAPI = () =>
+    interviewId && coachId === originCoachIdRef.current
+      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
+      : getCoachScheduleAPI(coachId, year, month + 1);
 
   const updateStatusWhenCalendarShow = (
     schedules: StringDictionary,
@@ -216,6 +222,7 @@ const InterviewApplyPage = () => {
         ({ nickname }: CoachType) => nickname === coachNickname,
       );
       setCoachId(coach.id);
+      originCoachIdRef.current = coach.id;
 
       setAnswer1(interviewQuestions[0].answer);
       setAnswer2(interviewQuestions[1].answer);
@@ -231,9 +238,7 @@ const InterviewApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await (interviewId
-          ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-          : getCoachScheduleAPI(coachId, year, month + 1));
+        const response = await coachScheduleAPI();
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
@@ -257,12 +262,17 @@ const InterviewApplyPage = () => {
     <>
       <Header />
       <S.Body>
-        <TitleBox to={PAGE.CREW_HOME} title={interviewId ? '면담 수정하기' : '면담 신청하기'} />
+        <TitleBox to={PAGE.CREW_HOME}>{interviewId ? '면담 수정하기' : '면담 신청하기'}</TitleBox>
         <S.Container>
           <S.Box stepStatus={stepStatus[0]}>
             <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
               <S.Circle>1</S.Circle>
-              <h3>코치를 선택해주세요.</h3>
+              <h3>
+                코치를 선택해주세요.
+                <S.EmphasizedText>
+                  {coaches.find((coach) => coach.id === coachId)?.nickname ?? ''}
+                </S.EmphasizedText>
+              </h3>
             </div>
 
             <div className="fold-box">
@@ -291,7 +301,13 @@ const InterviewApplyPage = () => {
           <S.Box stepStatus={stepStatus[1]}>
             <div className="sub-title" onClick={() => handleClickStepTitle(1)}>
               <S.Circle>2</S.Circle>
-              <h3>날짜 및 시간을 선택해주세요.</h3>
+              <h3>
+                날짜 및 시간을 선택해주세요.
+                <S.EmphasizedText>
+                  {selectedTimes.length > 0 &&
+                    `${selectedDates[0].year}년 ${selectedDates[0].month}월 ${selectedDates[0].day}일 ${selectedTimes[0]}`}
+                </S.EmphasizedText>
+              </h3>
             </div>
 
             <div className="fold-box">
@@ -365,6 +381,7 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                   isSubmitted={isSubmitted}
                 />
+                <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
                 <Button
                   type="submit"
                   width="100%"

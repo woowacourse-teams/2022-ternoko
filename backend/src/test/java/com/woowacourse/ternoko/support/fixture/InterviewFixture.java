@@ -19,9 +19,9 @@ public class InterviewFixture {
 
     public static final Interview INTERVIEW = new Interview(1L, LocalDateTime.now().plusDays(10),
             LocalDateTime.now().minusDays(2),
-            COACH1, CREW1, List.of(createFormItem(1),
-            createFormItem(2),
-            createFormItem(3)), InterviewStatusType.FIXED);
+            COACH1, CREW1, List.of(createFormItem(1L),
+            createFormItem(2L),
+            createFormItem(3L)), InterviewStatusType.FIXED);
 
     private static final LocalDateTime NOW = LocalDateTime.now().withNano(0).plusDays(2);
     public static final LocalDateTime AFTER_TWO_DAYS = LocalDateTime.of(NOW.getYear(), NOW.getMonthValue(),
@@ -36,15 +36,15 @@ public class InterviewFixture {
             new FormItemRequest("수정질문3", "수정답변3"));
 
 
-    public static final List<FormItem> FORM_ITEMS1 = List.of(createFormItem(1),
-            createFormItem(2),
-            createFormItem(3));
+    public static final List<FormItem> FORM_ITEMS1 = List.of(createFormItem(1L),
+            createFormItem(2L),
+            createFormItem(3L));
 
-    public static final List<FormItem> FORM_ITEMS2 = List.of(createFormItem(4),
-            createFormItem(5),
-            createFormItem(6));
+    public static final List<FormItem> FORM_ITEMS2 = List.of(createFormItem(4L),
+            createFormItem(5L),
+            createFormItem(6L));
 
-    private static FormItem createFormItem(int count) {
+    private static FormItem createFormItem(Long count) {
         return new FormItem(null, Question.from("고정질문" + count), Answer.from("고정답변" + count));
     }
 

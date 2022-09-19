@@ -47,6 +47,7 @@ export const Body = styled.div`
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
+  margin-top: 2rem;
 
   .sub-title {
     display: flex;
@@ -199,4 +200,11 @@ export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
   animation: ${toLeft} 1s;
 
   height: ${({ heightUnit }) => Math.min(47, heightUnit * 8)}rem;
+`;
+
+export const EmphasizedText = styled.span`
+  font-size: 1.6rem;
+  margin-left: 1rem;
+
+  color: ${({ theme }) => theme.colors.pink_200};
 `;

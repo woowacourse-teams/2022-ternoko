@@ -20,7 +20,7 @@ export const YearPicker = styled.div`
   }
 `;
 
-export const YearChange = styled.p`
+export const DateChange = styled.p`
   display: grid;
   place-items: center;
   width: 3rem;
@@ -37,10 +37,16 @@ export const YearChange = styled.p`
 `;
 
 export const MonthPicker = styled.p`
-  transition: all 0.2s;
-  cursor: pointer;
+  display: flex;
+  gap: 1rem;
 
-  :hover {
+  p {
+    font-size: 2.5rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  p:hover {
     transform: scale(1.2);
     font-weight: 600;
   }

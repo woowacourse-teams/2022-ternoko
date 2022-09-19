@@ -33,16 +33,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class  Interview {
+public class Interview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -162,7 +160,7 @@ public class  Interview {
             this.interviewStatusType = InterviewStatusType.CREW_COMPLETED;
             return;
         }
-        this.interviewStatusType = InterviewStatusType.COMPLETE;
+        this.interviewStatusType = InterviewStatusType.COMPLETED;
     }
 
     public void updateStatus(final InterviewStatusType interviewStatusType) {

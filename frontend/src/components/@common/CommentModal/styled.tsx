@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import theme from '@/styles/theme';
+
 export const Icon = styled.img`
   position: absolute;
   top: 1rem;
@@ -27,4 +29,18 @@ export const Form = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+`;
+
+export const additionalFrameStyle = `
+  @media ${theme.devices.laptop(200)} {
+    width: 60%;
+  };
+
+  @media ${theme.devices.tablet()} {
+    width: 70%;
+  };
+
+  @media ${theme.devices.tabletM()} {
+    width: 90%;
+  };
 `;

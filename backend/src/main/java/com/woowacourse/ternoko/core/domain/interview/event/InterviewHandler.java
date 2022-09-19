@@ -1,6 +1,6 @@
 package com.woowacourse.ternoko.core.domain.interview.event;
 
-import com.woowacourse.ternoko.support.SlackAlarm;
+import com.woowacourse.ternoko.support.alarm.SlackAlarm;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

@@ -13,7 +13,7 @@ import com.woowacourse.ternoko.auth.application.JwtProvider;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
-import com.woowacourse.ternoko.support.SlackAlarm;
+import com.woowacourse.ternoko.support.alarm.SlackAlarm;
 import com.woowacourse.ternoko.support.utils.AcceptanceTest;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import io.restassured.RestAssured;

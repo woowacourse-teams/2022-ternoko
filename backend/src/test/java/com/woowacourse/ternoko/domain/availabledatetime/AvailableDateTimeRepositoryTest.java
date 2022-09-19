@@ -7,6 +7,7 @@ import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +22,7 @@ import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -87,13 +89,29 @@ class AvailableDateTimeRepositoryTest {
     }
 
     @Test
+    @DisplayName("코치의 되는 시간 여부를 한달 단위로 반환한다.")
+    void countByCoachId_1day() {
+        final LocalDateTime start = LocalDateTime.now();
+        final LocalDateTime end = start.plusMonths(1);
+        final LocalDateTime startTime = LocalDateTime.of(LocalDate.from(start.plusDays(1)), FIRST_TIME);
+        final LocalDateTime reservedTime = LocalDateTime.of(LocalDate.from(start.plusDays(32)), SECOND_TIME);
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), reservedTime, OPEN));
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
+
+        final Long size = availableDateTimeRepository.countByCoachId(COACH2.getId(), start, end);
+
+        assertThat(size).isEqualTo(1);
+    }
+
+    @Test
     @DisplayName("해당 코치의 면담가능한 시간과 interview startTime이 포함된 정렬된 AvailableTime List를 반환해야 한다.")
-    void findAvailableDateTimesByCoachIdAndInterviewId() {
+    void findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime() {
         // given
         final LocalDateTime startTime = LocalDateTime.of(NOW_PLUS_1_MONTH, FIRST_TIME);
         final LocalDateTime reservedTime = LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME);
         final LocalDateTime availableTime = LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME);
 
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
         final AvailableDateTime availableDateTime = saveAvailableTime(availableTime, OPEN);
         final AvailableDateTime startDateTime = saveAvailableTime(startTime, USED);
         saveAvailableTime(reservedTime, USED);
@@ -101,7 +119,7 @@ class AvailableDateTimeRepositoryTest {
         // when
         final Long interviewId = saveInterview(startTime);
         final List<AvailableDateTime> times = availableDateTimeRepository
-                .findAvailableDateTimesByCoachIdAndInterviewId(interviewId,
+                .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId,
                         coach.getId(),
                         NOW_PLUS_1_MONTH.getYear(),
                         NOW_PLUS_1_MONTH.getMonthValue());

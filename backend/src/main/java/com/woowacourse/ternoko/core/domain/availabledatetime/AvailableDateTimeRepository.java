@@ -40,10 +40,18 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "and YEAR(a.localDateTime) = :year "
             + "and MONTH(a.localDateTime) = :month "
             + "and a.availableDateTimeStatus = 'OPEN' "
-            + "or a.localDateTime = (select i.interviewStartTime from Interview i where i.id = :interviewId) "
+            + "or (a.localDateTime = (select i.interviewStartTime from Interview i where i.id = :interviewId) and a.coachId = :coachId) "
             + "order by a.localDateTime")
-    List<AvailableDateTime> findAvailableDateTimesByCoachIdAndInterviewId(@Param("interviewId") final Long interviewId,
-                                                                          @Param("coachId") final Long coachId,
-                                                                          @Param("year") final int year,
-                                                                          @Param("month") final int month);
+    List<AvailableDateTime> findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(
+            @Param("interviewId") final Long interviewId,
+            @Param("coachId") final Long coachId,
+            @Param("year") final int year,
+            @Param("month") final int month);
+
+    @Query("select count(a.id) from AvailableDateTime a "
+            + "where a.coachId = :coachId "
+            + "and a.localDateTime between :startDateTime and :endDateTime ")
+    Long countByCoachId(@Param("coachId") final Long coachId,
+            @Param("startDateTime") final LocalDateTime startDateTime,
+            @Param("endDateTime")  final LocalDateTime endDateTime);
 }

@@ -1,18 +1,19 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
 type TitleBoxProps = {
   to?: string;
-  title: string;
+  children: React.ReactNode;
 };
 
-const TitleBox = ({ to, title }: TitleBoxProps) => {
+const TitleBox = ({ to, children }: TitleBoxProps) => {
   return (
     <S.TitleBox>
       <h2>
         {to && <Link to={to}>{'<'}</Link>}
-        {title}
+        {children}
       </h2>
     </S.TitleBox>
   );
