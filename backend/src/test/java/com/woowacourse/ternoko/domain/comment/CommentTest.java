@@ -32,7 +32,7 @@ public class CommentTest {
 
     @DisplayName("면담의 상태가 코멘트를 멘트를 생성하면 예외를 반환한다.")
     @ParameterizedTest
-    @EnumSource(value = InterviewStatusType.class, names = {"EDITABLE", "COMPLETE", "CANCELED"})
+    @EnumSource(value = InterviewStatusType.class, names = {"EDITABLE", "COMPLETED", "CANCELED"})
     void create_comment(InterviewStatusType type) {
         final Interview 코멘트_불가_상태_면담 = new Interview(null, LocalDateTime.now().minusDays(1),
                 LocalDateTime.now().minusDays(1).plusMinutes(30), COACH1, CREW1, FORM_ITEMS1, type);
