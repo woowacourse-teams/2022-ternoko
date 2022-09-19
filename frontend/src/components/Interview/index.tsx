@@ -14,13 +14,13 @@ type InterviewProps = InterviewType & {
   handleClickCommentButton: () => void;
 };
 
-const TRANSLATED_STATUS = {
+const STATUS_MESSAGE = {
   EDITABLE: '편집 가능 ✏️',
   FIXED: '편집 불가 ❌',
   COMMENT: '코멘트 가능 💬',
   COMPLETE: '면담 완료 ✅',
   CREW_COMPLETED: '면담 완료 ✅',
-  COACH_COMPLETED: '면담 완료 ✅',
+  COACH_COMPLETED: '코멘트 가능 💬',
   CANCELED: '재예약 필요 👀',
 } as const;
 
@@ -36,7 +36,7 @@ const Interview = ({
 }: InterviewProps) => {
   return (
     <S.Box>
-      <S.Tag>{TRANSLATED_STATUS[status]}</S.Tag>
+      <S.Tag>{STATUS_MESSAGE[status]}</S.Tag>
       <S.ImageTextBox>
         <S.ProfileImage src={coachImageUrl} alt="코치 프로필" />
         <S.CoachName>{coachNickname}</S.CoachName>
