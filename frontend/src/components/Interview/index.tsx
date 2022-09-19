@@ -18,7 +18,7 @@ const STATUS_MESSAGE = {
   EDITABLE: '편집 가능 ✏️',
   FIXED: '편집 불가 ❌',
   COMMENT: '코멘트 가능 💬',
-  COMPLETE: '면담 완료 ✅',
+  COMPLETED: '면담 완료 ✅',
   CREW_COMPLETED: '면담 완료 ✅',
   COACH_COMPLETED: '코멘트 가능 💬',
   CANCELED: '재예약 필요 👀',
