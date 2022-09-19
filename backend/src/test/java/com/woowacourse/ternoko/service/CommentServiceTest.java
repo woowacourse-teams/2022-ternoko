@@ -77,7 +77,7 @@ public class CommentServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("[크루] 코치가 한마디 작성 후 크루가 작성한다면 면담 상태는 COMPLETE가 된다.")
+    @DisplayName("[크루] 코치가 한마디 작성 후 크루가 작성한다면 면담 상태는 COMPLETED가 된다.")
     void createComment_Complete_ByCrew() {
         // given
         final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
@@ -89,11 +89,11 @@ public class CommentServiceTest extends DatabaseSupporter {
         // then
         InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(FIXED_INTERVIEW_ID);
         assertThat(commentId).isNotNull();
-        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETE);
+        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETED);
     }
 
     @Test
-    @DisplayName("[코치] 크루가 한마디 작성 후 코치가 작성한다면 면담 상태는 COMPLETE가 된다.")
+    @DisplayName("[코치] 크루가 한마디 작성 후 코치가 작성한다면 면담 상태는 COMPLETED가 된다.")
     void createComment_Complete_ByCoach() {
         // given
         final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
@@ -105,7 +105,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         // then
         InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(FIXED_INTERVIEW_ID);
         assertThat(commentId).isNotNull();
-        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETE);
+        assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETED);
     }
 
     @Test
@@ -168,7 +168,7 @@ public class CommentServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("[크루] CREW_COMMENT, COMPLETE 상태에서 조회가 가능하다.")
+    @DisplayName("[크루] CREW_COMMENT, COMPLETED 상태에서 조회가 가능하다.")
     void findComment_Complete_ByCrew() {
         // given
         final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
@@ -184,7 +184,7 @@ public class CommentServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("[코치] CREW_COMMENT, COMPLETE 상태에서 조회가 가능하다.")
+    @DisplayName("[코치] CREW_COMMENT, COMPLETED 상태에서 조회가 가능하다.")
     void findComment_Complete_ByCoach() {
         // given
         final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
@@ -200,7 +200,7 @@ public class CommentServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("[크루/코치] 크루,코치 모두 한마디를 작성한 경우(COMPLETE 상태) 조회가 가능하다.")
+    @DisplayName("[크루/코치] 크루,코치 모두 한마디를 작성한 경우(COMPLETED 상태) 조회가 가능하다.")
     void findComment_Complete_ByBothMember() {
         // given
         final CommentRequest coachCommentRequest = new CommentRequest("재밌는 시간 고마워요. 고민이 해결되기를 바랄게요.");

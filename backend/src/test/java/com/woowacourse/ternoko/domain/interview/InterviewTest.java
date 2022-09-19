@@ -2,7 +2,7 @@ package com.woowacourse.ternoko.domain.interview;
 
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.COACH_COMPLETED;
-import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.COMPLETE;
+import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.COMPLETED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CREW_COMPLETED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.FIXED;
@@ -159,8 +159,8 @@ class InterviewTest {
 
     @ParameterizedTest
     @EnumSource(value = InterviewStatusType.class, names = {"COMMENT", "FIXED", "COACH_COMPLETED", "CREW_COMPLETED",
-            "COMPLETE"})
-    @DisplayName("COMMENT,FIX,COACH_COMPLETED,CREW_COMPLETED,COMPLETE 상태인 인터뷰의 상태를 수정할 수 없다.")
+            "COMPLETED"})
+    @DisplayName("COMMENT,FIX,COACH_COMPLETED,CREW_COMPLETED,COMPLETED 상태인 인터뷰의 상태를 수정할 수 없다.")
     void invalidUpdateInterview(InterviewStatusType type) {
         // given
         final Interview interview = getInterview(type);
@@ -264,7 +264,7 @@ class InterviewTest {
         // when
         interview.complete(CREW);
         // then
-        assertThat(interview.getInterviewStatusType().name().equals(COMPLETE.name()));
+        assertThat(interview.getInterviewStatusType().name().equals(COMPLETED.name()));
     }
 
     @DisplayName("면담의 코치 아이디와 일치할 경우, Coach memberType 을 반환한다.")
@@ -316,7 +316,7 @@ class InterviewTest {
 
     @ParameterizedTest
     @EnumSource(value = InterviewStatusType.class, names = {"COACH_COMPLETED", "CREW_COMPLETED",
-            "COMPLETE"})
+            "COMPLETED"})
     @DisplayName("코멘트를 찾을 수 있는  면담인지 확인한다.")
     void canCreateCommentBy_false(InterviewStatusType type) {
         // given
