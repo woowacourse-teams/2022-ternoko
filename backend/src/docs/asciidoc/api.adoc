@@ -116,7 +116,8 @@ operation::coach-controller-test/update-coach[snippets='http-request,http-respon
 
 GET /api/crews/me
 
-operation::crew-controller-test/find-coach[snippets='http-request,http-response']
+operation::crew-controller-test/find-crew[snippets='http-request,http-response']
+
 ==== Error Response
 
 |===
@@ -140,7 +141,7 @@ operation::crew-controller-test/find-coach[snippets='http-request,http-response'
 
 PATCH /api/crews/me
 
-operation::crew-controller-test/update-coach[snippets='http-request,http-response']
+operation::crew-controller-test/update-crew[snippets='http-request,http-response']
 ==== Error Response
 
 |===
