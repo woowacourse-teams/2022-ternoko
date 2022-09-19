@@ -36,7 +36,9 @@ const Interview = ({
 }: InterviewProps) => {
   return (
     <S.Box>
-      <S.Tag>{STATUS_MESSAGE[status]}</S.Tag>
+      <S.Tag>
+        {STATUS_MESSAGE[status === 'FIXED' && isOverToday(interviewEndTime) ? 'COMMENT' : status]}
+      </S.Tag>
       <S.ImageTextBox>
         <S.ProfileImage src={coachImageUrl} alt="코치 프로필" />
         <S.CoachName>{coachNickname}</S.CoachName>
