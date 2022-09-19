@@ -18,7 +18,7 @@ public class CoachResponse {
     private String email;
     private String imageUrl;
     private String introduce;
-    private boolean possible;
+    private boolean hasOpenTime;
 
     public static CoachResponse from(final Coach coach) {
         return coachResponseBuilder()
@@ -39,7 +39,7 @@ public class CoachResponse {
                 .nickname(coach.getNickname())
                 .imageUrl(coach.getImageUrl())
                 .introduce(coach.getIntroduce())
-                .possible(count > 0)
+                .hasOpenTime(count > 0)
                 .build();
     }
 }
