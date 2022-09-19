@@ -64,6 +64,7 @@ public class AuthService {
         if (member.isEmpty()) {
             return signUp(userInfoResponse);
         }
+
         boolean hasNickname = member.get().getNickname() != null;
 
         if (coachRepository.findById(member.get().getId()).isPresent()) {

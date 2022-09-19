@@ -5,12 +5,14 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH
 import com.woowacourse.ternoko.common.exception.InvalidLengthException;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Question {
 
     private static final int QUESTION_MAX_LENGTH = 255;
