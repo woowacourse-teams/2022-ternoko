@@ -56,6 +56,8 @@ const CoachInterviewCreatePage = () => {
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'MULTIPLE',
   });
+  const isAllSelectedTimes = selectedTimes.length === defaultTimes.length;
+
   const { showToast } = useToastActions();
 
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
@@ -176,6 +178,10 @@ const CoachInterviewCreatePage = () => {
     }
   };
 
+  const handleClickAllTimeButton = () => {
+    setSelectedTimes(isAllSelectedTimes ? [] : [...defaultTimes]);
+  };
+
   useEffect(() => {
     if (id === INITIAL_COACH_ID) return;
 
@@ -220,6 +226,10 @@ const CoachInterviewCreatePage = () => {
         />
 
         <ScrollContainer>
+          <S.AllTimeButton active={isAllSelectedTimes} onClick={handleClickAllTimeButton}>
+            {isAllSelectedTimes ? '전체 해제' : '전체 선택'}
+          </S.AllTimeButton>
+
           {defaultTimes.map((defaultTime, index) => (
             <Time
               key={index}
