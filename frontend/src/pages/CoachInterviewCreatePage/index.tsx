@@ -126,6 +126,8 @@ const CoachInterviewCreatePage = () => {
   };
 
   const handleClickApplyButton = async () => {
+    if (!selectedDates.length) return;
+
     calendarTimes
       .filter((calendarTime: CalendarTime) =>
         selectedDates.some(
@@ -248,7 +250,12 @@ const CoachInterviewCreatePage = () => {
           </Button>
         </Link>
 
-        <Button width="100%" height="35px" onClick={handleClickApplyButton}>
+        <Button
+          width="100%"
+          height="35px"
+          onClick={handleClickApplyButton}
+          inActive={selectedDates.length === 0}
+        >
           스케쥴 저장
         </Button>
       </S.ButtonContainer>
