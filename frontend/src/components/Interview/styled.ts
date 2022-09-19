@@ -19,7 +19,11 @@ export const Box = styled.div`
   }
 `;
 
-export const Tag = styled.div`
+type TagProps = {
+  status: InterviewStatus;
+};
+
+export const Tag = styled.div<TagProps>`
   position: absolute;
   right: 0;
   top: 0;
@@ -27,7 +31,8 @@ export const Tag = styled.div`
   font-size: 1.2rem;
 
   color: ${({ theme }) => theme.colors.white_50};
-  background-color: ${({ theme }) => theme.colors.green_50};
+  background-color: ${({ theme, status }) =>
+    status === 'CANCELED' ? theme.colors.pink_200 : theme.colors.green_50};
 `;
 
 export const ImageTextBox = styled.div`

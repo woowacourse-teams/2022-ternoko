@@ -36,7 +36,7 @@ const Interview = ({
 }: InterviewProps) => {
   return (
     <S.Box>
-      <S.Tag>
+      <S.Tag status={status}>
         {STATUS_MESSAGE[status === 'FIXED' && isOverToday(interviewEndTime) ? 'COMMENT' : status]}
       </S.Tag>
       <S.ImageTextBox>
