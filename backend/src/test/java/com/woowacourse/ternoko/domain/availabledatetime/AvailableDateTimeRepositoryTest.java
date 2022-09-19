@@ -22,6 +22,7 @@ import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -85,6 +86,21 @@ class AvailableDateTimeRepositoryTest {
                 availableTime, OPEN);
         assertThat(times).hasSize(2)
                 .containsExactly(expect1, expect2);
+    }
+
+    @Test
+    @DisplayName("코치의 되는 시간 여부를 한달 단위로 반환한다.")
+    void countByCoachId_1day() {
+        final LocalDateTime start = LocalDateTime.now();
+        final LocalDateTime end = start.plusMonths(1);
+        final LocalDateTime startTime = LocalDateTime.of(LocalDate.from(start.plusDays(1)), FIRST_TIME);
+        final LocalDateTime reservedTime = LocalDateTime.of(LocalDate.from(start.plusDays(32)), SECOND_TIME);
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), reservedTime, OPEN));
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
+
+        final Long size = availableDateTimeRepository.countByCoachId(COACH2.getId(), start, end);
+
+        assertThat(size).isEqualTo(1);
     }
 
     @Test

@@ -13,6 +13,7 @@ import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
 import com.woowacourse.ternoko.core.dto.request.CoachUpdateRequest;
 import com.woowacourse.ternoko.core.dto.response.CoachResponse;
 import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,11 @@ public class CoachService {
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
         final List<Coach> coaches = coachRepository.findAll();
+        final LocalDateTime now = LocalDateTime.now();
 
         final List<CoachResponse> coachResponses = coaches.stream()
-                .map(CoachResponse::from)
+                .map(coach -> CoachResponse.of(coach, availableDateTimeRepository.countByCoachId(coach.getId(),
+                        now, now.plusMonths(1))))
                 .collect(Collectors.toList());
 
         return new CoachesResponse(coachResponses);
@@ -40,8 +43,10 @@ public class CoachService {
 
     @Transactional(readOnly = true)
     public CoachResponse findCoach(final Long coachId) {
+        final LocalDateTime now = LocalDateTime.now();
+
         final Coach coach = getCoachById(coachId);
-        return CoachResponse.from(coach);
+        return CoachResponse.of(coach, availableDateTimeRepository.countByCoachId(coachId, now, now.plusMonths(1)));
     }
 
     private Coach getCoachById(final Long coachId) {

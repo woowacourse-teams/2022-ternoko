@@ -18,6 +18,7 @@ public class CoachResponse {
     private String email;
     private String imageUrl;
     private String introduce;
+    private boolean possible;
 
     public static CoachResponse from(final Coach coach) {
         return coachResponseBuilder()
@@ -27,6 +28,18 @@ public class CoachResponse {
                 .nickname(coach.getNickname())
                 .imageUrl(coach.getImageUrl())
                 .introduce(coach.getIntroduce())
+                .build();
+    }
+
+    public static CoachResponse of(final Coach coach, final Long count) {
+        return coachResponseBuilder()
+                .id(coach.getId())
+                .name(coach.getName())
+                .email(coach.getEmail())
+                .nickname(coach.getNickname())
+                .imageUrl(coach.getImageUrl())
+                .introduce(coach.getIntroduce())
+                .possible(count > 0)
                 .build();
     }
 }
