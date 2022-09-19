@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
@@ -12,19 +12,10 @@ const Header = () => {
   const navigate = useNavigate();
   const { nickname, imageUrl } = useUserState();
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const DropdownContainerRef = useRef(null);
 
   const memberRole = LocalStorage.getMemberRole();
 
   const toggleDropdown = () => setIsOpenDropdown((prev) => !prev);
-
-  const handleDetectOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === DropdownContainerRef.current) {
-      return;
-    }
-
-    setIsOpenDropdown(false);
-  };
 
   const handleLogout = () => {
     LocalStorage.removeAccessToken();
@@ -55,7 +46,7 @@ const Header = () => {
           <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
           <S.ProfileImage src={imageUrl} alt="프로필" onClick={toggleDropdown} />
 
-          <S.DropdownContainer open={isOpenDropdown} ref={DropdownContainerRef}>
+          <S.DropdownContainer open={isOpenDropdown}>
             <Link to={PAGE.MY_PAGE}>
               <S.DropdownItem onClick={toggleDropdown}>마이 페이지</S.DropdownItem>
             </Link>
@@ -63,7 +54,7 @@ const Header = () => {
           </S.DropdownContainer>
         </S.MenuBox>
       )}
-      {isOpenDropdown && <S.Dimmer onClick={handleDetectOutsideClick} />}
+      {isOpenDropdown && <S.Dimmer onClick={toggleDropdown} />}
     </S.Box>
   );
 };
