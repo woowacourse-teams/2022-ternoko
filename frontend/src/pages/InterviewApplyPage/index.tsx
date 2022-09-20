@@ -306,7 +306,7 @@ const InterviewApplyPage = () => {
             </div>
           </S.Box>
 
-          <S.Box stepStatus={stepStatus[1]}>
+          <S.Box stepStatus={stepStatus[1]} isHiddenFoldBoxOverflow>
             <div className="sub-title" onClick={() => handleClickStepTitle(1)}>
               <S.Circle>2</S.Circle>
               <h3>

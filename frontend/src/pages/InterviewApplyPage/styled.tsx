@@ -8,10 +8,12 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 2rem;
 `;
 
 type BoxProps = {
   stepStatus: StepStatus;
+  isHiddenFoldBoxOverflow?: boolean;
 };
 
 export const Body = styled.div`
@@ -47,14 +49,13 @@ export const Body = styled.div`
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
-  margin-top: 2rem;
 
   .sub-title {
     display: flex;
     align-items: center;
     width: fit-content;
     gap: 1rem;
-    margin-bottom: 1.8rem;
+    margin-bottom: 3.8rem;
 
     font-weight: bold;
     cursor: pointer;
@@ -64,10 +65,13 @@ export const Box = styled.div<BoxProps>`
     }
   }
 
-  .fold-box {
-    overflow: hidden;
-    padding-top: 2rem;
-  }
+  ${({ isHiddenFoldBoxOverflow }) =>
+    isHiddenFoldBoxOverflow &&
+    css`
+      .fold-box {
+        overflow: hidden;
+      }
+    `}
 
   ${({ stepStatus }) =>
     stepStatus === 'show' &&
