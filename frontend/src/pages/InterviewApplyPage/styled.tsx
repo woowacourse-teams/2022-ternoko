@@ -11,11 +11,6 @@ export const Container = styled.div`
   margin-top: 2rem;
 `;
 
-type BoxProps = {
-  stepStatus: StepStatus;
-  isHiddenFoldBoxOverflow?: boolean;
-};
-
 export const Body = styled.div`
   height: calc(100% - 60px);
 
@@ -46,6 +41,11 @@ export const Body = styled.div`
   }
 `;
 
+type BoxProps = {
+  stepStatus: StepStatus;
+  hideFoldBoxOverflow?: boolean;
+};
+
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
@@ -65,8 +65,8 @@ export const Box = styled.div<BoxProps>`
     }
   }
 
-  ${({ isHiddenFoldBoxOverflow }) =>
-    isHiddenFoldBoxOverflow &&
+  ${({ hideFoldBoxOverflow }) =>
+    hideFoldBoxOverflow &&
     css`
       .fold-box {
         overflow: hidden;

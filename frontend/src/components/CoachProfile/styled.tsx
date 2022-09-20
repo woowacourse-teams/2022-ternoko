@@ -4,7 +4,7 @@ export const CoachName = styled.p`
   padding: 0.3rem 0;
   text-align: center;
 
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   border-radius: 10px;
 `;
