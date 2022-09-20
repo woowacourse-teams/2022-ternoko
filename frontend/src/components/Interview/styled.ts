@@ -28,7 +28,7 @@ export const Tag = styled.div<TagProps>`
   right: 0;
   top: 0;
   padding: 0.6rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 
   color: ${({ theme }) => theme.colors.white_50};
   background-color: ${({ theme, status }) =>
@@ -43,8 +43,20 @@ export const ImageTextBox = styled.div`
 `;
 
 export const CoachName = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
+
+  @media ${({ theme }) => theme.devices.mobileL(30)} {
+    font-size: 1.7rem;
+  }
+`;
+
+export const DateText = styled.p`
+  font-size: 1.3rem;
+
+  @media ${({ theme }) => theme.devices.mobileL(30)} {
+    font-size: 1.6rem;
+  }
 `;
 
 export const ProfileImage = styled.img`

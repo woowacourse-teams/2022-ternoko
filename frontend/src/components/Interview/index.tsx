@@ -48,16 +48,16 @@ const Interview = ({
           <source srcSet="/assets/icon/calendar.avif" />
           <S.IconImage src="/assets/icon/calendar.png" alt="달력 아이콘" />
         </picture>
-        <p>{getDateString(interviewStartTime)}</p>
+        <S.DateText>{getDateString(interviewStartTime)}</S.DateText>
       </S.ImageTextBox>
       <S.ImageTextBox>
         <picture>
           <source srcSet="/assets/icon/clock.avif" />
           <S.IconImage src="/assets/icon/clock.png" alt="시계 아이콘" />
         </picture>
-        <p>
+        <S.DateText>
           {getTimeString(interviewStartTime)} ~ {getTimeString(interviewEndTime)}
-        </p>
+        </S.DateText>
       </S.ImageTextBox>
 
       <S.ButtonBox>
