@@ -25,12 +25,18 @@ const Header = () => {
     <S.Box>
       {memberRole === 'COACH' ? (
         <Link to={PAGE.COACH_HOME}>
-          <img src="/assets/logo/mainLogo.png" alt="로고" />
+          <picture>
+            <source srcSet="/assets/logo/mainLogo.avif" />
+            <img src="/assets/logo/mainLogo.png" alt="로고" />
+          </picture>
           <h1>코치도 터놓고</h1>
         </Link>
       ) : (
         <Link to={PAGE.CREW_HOME}>
-          <img src="/assets/logo/mainLogo.png" alt="로고" />
+          <picture>
+            <source srcSet="/assets/logo/mainLogo.avif" />
+            <img src="/assets/logo/mainLogo.png" alt="로고" />
+          </picture>
           <h1>크루도 터놓고</h1>
         </Link>
       )}

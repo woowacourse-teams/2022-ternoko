@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 export const Box = styled.div`
   display: flex;
@@ -64,7 +64,8 @@ export const LoginButton = styled.button`
   cursor: pointer;
 
   img {
-    width: 30px;
+    width: 3rem;
+    height: 3rem;
   }
 `;
 
@@ -75,11 +76,12 @@ export const LogoBox = styled.div`
   margin-bottom: 4rem;
 
   h1 {
-    font-family: EarlyFontDiary;
+    font-family: 'SubsetEarlyFontDiary';
     font-size: 6rem;
   }
 
   img {
-    width: 100px;
+    width: 12rem;
+    aspect-ratio: 1.2;
   }
 `;

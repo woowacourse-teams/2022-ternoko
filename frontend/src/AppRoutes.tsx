@@ -1,18 +1,7 @@
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
-
-import CoachHomePage from '@/pages/CoachHomePage';
-import CoachInterviewCreatePage from '@/pages/CoachInterviewCreatePage';
-import HomePage from '@/pages/HomePage';
-import InterviewApplyPage from '@/pages/InterviewApplyPage';
-import InterviewCompletePage from '@/pages/InterviewCompletePage';
-import LoginPage from '@/pages/LoginPage';
-import LoginRegisterPage from '@/pages/LoginRegisterPage';
-import MyPage from '@/pages/MyPage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import OAuthRedirectHandlerPage from '@/pages/OAuthRedirectHandlerPage';
 
 import TernokoLoading from '@/components/@common/TernokoLoading';
 import Toast from '@/components/@common/Toast';
@@ -26,6 +15,22 @@ import { useUserActions } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
 
+// 크루 도메인
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const InterviewApplyPage = lazy(() => import('@/pages/InterviewApplyPage'));
+const InterviewCompletePage = lazy(() => import('@/pages/InterviewCompletePage'));
+
+// 코치 도메인
+const CoachHomePage = lazy(() => import('@/pages/CoachHomePage'));
+const CoachInterviewCreatePage = lazy(() => import('@/pages/CoachInterviewCreatePage'));
+
+// 공통 도메인
+const LoginPage = lazy(() => import('@/pages/LoginPage'));
+const LoginRegisterPage = lazy(() => import('@/pages/LoginRegisterPage'));
+const MyPage = lazy(() => import('@/pages/MyPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
+const OAuthRedirectHandlerPage = lazy(() => import('@/pages/OAuthRedirectHandlerPage'));
+
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
   const { show } = useLoadingState();
@@ -36,55 +41,57 @@ const AppRoutes = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path={PAGE.LOGIN} element={<LoginPage />} />
-        <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
-        <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
-        <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
+      <Suspense fallback={<TernokoLoading />}>
+        <Routes>
+          <Route path={PAGE.LOGIN} element={<LoginPage />} />
+          <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
+          <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
+          <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
 
-        <Route path={PAGE.BASE} element={<Layout />}>
-          <Route element={<PrivateRoute auth="ALL" checkNickname={false} />}>
-            <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
-          </Route>
-          <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
-            <Route path={PAGE.CREW_HOME} element={<HomePage />} />
+          <Route path={PAGE.BASE} element={<Layout />}>
+            <Route element={<PrivateRoute auth="ALL" checkNickname={false} />}>
+              <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
+            </Route>
+            <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
+              <Route path={PAGE.CREW_HOME} element={<HomePage />} />
+            </Route>
+
+            <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
+              <Route
+                path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
+                element={<InterviewCompletePage />}
+              />
+            </Route>
+            <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
+              <Route
+                path={PAGE.COACH_INTERVIEW_CREATE}
+                element={
+                  <CalendarProvider selectMode="MULTIPLE">
+                    <CoachInterviewCreatePage />
+                  </CalendarProvider>
+                }
+              />
+            </Route>
+            <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
+              <Route path={PAGE.COACH_HOME} element={<CoachHomePage />} />
+            </Route>
+            <Route element={<PrivateRoute auth="ALL" checkNickname={true} />}>
+              <Route path={PAGE.MY_PAGE} element={<MyPage />} />
+            </Route>
           </Route>
 
           <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
             <Route
-              path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
-              element={<InterviewCompletePage />}
-            />
-          </Route>
-          <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
-            <Route
-              path={PAGE.COACH_INTERVIEW_CREATE}
+              path={PAGE.INTERVIEW_APPLY}
               element={
-                <CalendarProvider selectMode="MULTIPLE">
-                  <CoachInterviewCreatePage />
+                <CalendarProvider selectMode="SINGLE">
+                  <InterviewApplyPage />
                 </CalendarProvider>
               }
             />
           </Route>
-          <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
-            <Route path={PAGE.COACH_HOME} element={<CoachHomePage />} />
-          </Route>
-          <Route element={<PrivateRoute auth="ALL" checkNickname={true} />}>
-            <Route path={PAGE.MY_PAGE} element={<MyPage />} />
-          </Route>
-        </Route>
-
-        <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
-          <Route
-            path={PAGE.INTERVIEW_APPLY}
-            element={
-              <CalendarProvider selectMode="SINGLE">
-                <InterviewApplyPage />
-              </CalendarProvider>
-            }
-          />
-        </Route>
-      </Routes>
+        </Routes>
+      </Suspense>
       <Toast />
       {show && <TernokoLoading />}
     </BrowserRouter>
@@ -95,7 +102,6 @@ const Layout = () => {
   return (
     <>
       <Header />
-
       <S.Body>
         <Outlet />
       </S.Body>
@@ -113,7 +119,7 @@ const S = {
       padding: 3rem 25rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.laptop()} {
+    @media ${({ theme }) => theme.devices.laptop(50)} {
       padding: 3rem 5rem 0;
     }
 
@@ -121,7 +127,7 @@ const S = {
       padding: 2rem 5rem 0;
     }
 
-    @media ${({ theme }) => theme.devices.mobileL()} {
+    @media ${({ theme }) => theme.devices.mobileL(30)} {
       padding: 2rem 2rem 0;
     }
 
