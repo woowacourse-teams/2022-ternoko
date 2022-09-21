@@ -73,7 +73,7 @@ public class CoachService {
     }
 
     private void putAvailableTime(final Coach coach, final AvailableDateTimeRequest availableDateTime) {
-        availableDateTimeRepository.deleteAllByCoachAndYearAndMonth(
+        availableDateTimeRepository.deleteAllByCoachAndYearAndMonthAndOpen(
                 coach.getId(),
                 availableDateTime.getYear(),
                 availableDateTime.getMonth());

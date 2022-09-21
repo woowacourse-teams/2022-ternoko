@@ -14,10 +14,13 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
     @Query("delete from AvailableDateTime a "
             + "where a.coachId = :coachId "
             + "and YEAR(a.localDateTime) = :year "
-            + "and MONTH(a.localDateTime) = :month")
-    void deleteAllByCoachAndYearAndMonth(@Param("coachId") final Long coachId,
-                                         @Param("year") final int year,
-                                         @Param("month") final int month);
+            + "and MONTH(a.localDateTime) = :month "
+            + "and a.availableDateTimeStatus = 'OPEN'")
+    void deleteAllByCoachAndYearAndMonthAndOpen(@Param("coachId") final Long coachId,
+                                                @Param("year") final int year,
+                                                @Param("month") final int month);
+
+    List<AvailableDateTime> findAllByCoachId(final Long coachId);
 
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "

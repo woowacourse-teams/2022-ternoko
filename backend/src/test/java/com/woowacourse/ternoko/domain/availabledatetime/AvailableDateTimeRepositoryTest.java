@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.domain.availabledatetime;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
@@ -59,6 +60,24 @@ class AvailableDateTimeRepositoryTest {
         interviewRepository.deleteAll();
         memberRepository.delete(COACH1);
         memberRepository.delete(CREW1);
+    }
+
+    @Test
+    @DisplayName("해당 연, 월에 해당하는 면담가능한 시간중 OPEN 만 삭제한다.")
+    void deleteAllByCoachAndYearAndMonthAndOpen() {
+        // given
+        saveAvailableTime(LocalDateTime.of(NOW_PLUS_1_MONTH, FIRST_TIME), OPEN);
+        saveAvailableTime(LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME), OPEN);
+        saveAvailableTime(LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME), USED);
+
+        // when
+        availableDateTimeRepository.deleteAllByCoachAndYearAndMonthAndOpen(coach.getId(),
+                NOW.getYear(),
+                NOW_PLUS_1_MONTH.getMonthValue());
+        final List<AvailableDateTime> availableDateTimes = availableDateTimeRepository.findAllByCoachId(coach.getId());
+
+        // then
+        assertThat(availableDateTimes.size()).isEqualTo(1);
     }
 
     @Test
