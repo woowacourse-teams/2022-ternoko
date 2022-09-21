@@ -94,7 +94,7 @@ export const DropdownContainer = styled.div<DropdownContainerProps>`
   right: 0;
   font-size: 1.5rem;
   text-align: center;
-  z-index: 1;
+  z-index: 100;
   max-height: 0;
   transition: max-height 0.6s cubic-bezier(0, 1, 0, 1);
 
@@ -117,4 +117,13 @@ export const DropdownItem = styled.div`
     background: ${({ theme }) => theme.colors.gray_100};
     font-weight: 600;
   }
+`;
+
+export const Dimmer = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
 `;

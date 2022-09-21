@@ -144,10 +144,6 @@ const CoachCalendar = ({
                 <S.CalendarDay key={index}>
                   {day}
                   {interviews}
-                  <span />
-                  <span />
-                  <span />
-                  <span />
                 </S.CalendarDay>
               );
             }

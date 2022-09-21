@@ -16,6 +16,11 @@ export const ProfileBox = styled.div`
     border-radius: 100%;
     object-fit: cover;
   }
+
+  @media ${({ theme }) => theme.devices.tabletM()} {
+    flex-direction: column;
+    gap: 5rem;
+  }
 `;
 
 export const InfoBox = styled.div`
@@ -23,7 +28,12 @@ export const InfoBox = styled.div`
   flex-direction: column;
   gap: 4rem;
   width: 69%;
+
   padding-top: 1rem;
+
+  @media ${({ theme }) => theme.devices.tabletM()} {
+    width: 100%;
+  }
 `;
 
 export const Info = styled.div`
@@ -65,7 +75,7 @@ export const EditModeBox = styled.div`
 
 export const Textarea = styled.textarea`
   width: 100%;
-  height: 70px;
+  height: 55px;
   border-radius: 10px;
   padding: 1rem;
 
@@ -88,7 +98,7 @@ export const DescriptionBox = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 7rem;
+  margin-top: 9rem;
 
   a {
     width: 47%;

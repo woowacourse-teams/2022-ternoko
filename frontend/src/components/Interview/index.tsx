@@ -14,6 +14,16 @@ type InterviewProps = InterviewType & {
   handleClickCommentButton: () => void;
 };
 
+const STATUS_MESSAGE = {
+  EDITABLE: '편집 가능 ✏️',
+  FIXED: '편집 불가 ❌',
+  COMMENT: '코멘트 가능 💬',
+  COMPLETED: '면담 완료 ✅',
+  CREW_COMPLETED: '면담 완료 ✅',
+  COACH_COMPLETED: '코멘트 가능 💬',
+  CANCELED: '재예약 필요 👀',
+} as const;
+
 const Interview = ({
   id,
   coachNickname,
@@ -25,7 +35,10 @@ const Interview = ({
   handleClickCommentButton,
 }: InterviewProps) => {
   return (
-    <S.Box status={status}>
+    <S.Box>
+      <S.Tag status={status}>
+        {STATUS_MESSAGE[status === 'FIXED' && isOverToday(interviewEndTime) ? 'COMMENT' : status]}
+      </S.Tag>
       <S.ImageTextBox>
         <S.ProfileImage src={coachImageUrl} alt="코치 프로필" />
         <S.CoachName>{coachNickname}</S.CoachName>
@@ -35,16 +48,16 @@ const Interview = ({
           <source srcSet="/assets/icon/calendar.avif" />
           <S.IconImage src="/assets/icon/calendar.png" alt="달력 아이콘" />
         </picture>
-        <p>{getDateString(interviewStartTime)}</p>
+        <S.DateText>{getDateString(interviewStartTime)}</S.DateText>
       </S.ImageTextBox>
       <S.ImageTextBox>
         <picture>
           <source srcSet="/assets/icon/clock.avif" />
           <S.IconImage src="/assets/icon/clock.png" alt="시계 아이콘" />
         </picture>
-        <p>
+        <S.DateText>
           {getTimeString(interviewStartTime)} ~ {getTimeString(interviewEndTime)}
-        </p>
+        </S.DateText>
       </S.ImageTextBox>
 
       <S.ButtonBox>
