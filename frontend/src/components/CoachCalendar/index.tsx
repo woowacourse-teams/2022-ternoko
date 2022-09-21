@@ -125,7 +125,7 @@ const CoachCalendar = ({
               if (isToday(day)) {
                 return (
                   <S.CalendarDay key={index} today>
-                    {day}
+                    <S.Today>{day}</S.Today>
                     {interviews}
                   </S.CalendarDay>
                 );

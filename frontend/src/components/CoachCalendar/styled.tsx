@@ -19,15 +19,12 @@ type CalendarDayProps = {
 };
 
 export const CalendarDay = styled(Day)<CalendarDayProps>`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   text-align: center;
   height: 10rem;
   overflow-y: scroll;
-
-  ${({ today }) =>
-    today &&
-    css`
-      background-color: ${({ theme }) => theme.colors.pink_50};
-    `}
 
   ${({ type }) =>
     type === 'active' &&
@@ -35,12 +32,24 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
       border: 1px solid ${({ theme }) => theme.colors.pink_200};
     `}
 
-   ${({ type }) =>
+  ${({ type }) =>
     type === 'disable' &&
     css`
       background-color: ${({ theme }) => theme.colors.gray_100};
       cursor: default;
     `}
+`;
+
+export const Today = styled.p`
+  width: 2.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 100%;
+
+  background-color: ${({ theme }) => theme.colors.pink_200};
+  color: white;
 `;
 
 type ScheduleProps = {
@@ -49,9 +58,11 @@ type ScheduleProps = {
 
 export const Schedule = styled.div<ScheduleProps>`
   padding: 0.5rem;
-
   border-radius: 10px;
   font-weight: 600;
+  font-size: 1.3rem;
+  line-break: anywhere;
+
   background-color: ${({ theme }) => theme.colors.pink_50};
 
   ${({ theme, status }) =>
@@ -62,6 +73,11 @@ export const Schedule = styled.div<ScheduleProps>`
       justify-content: space-between;
 
       background-color: ${theme.colors.white_50};
+
+      @media ${theme.devices.tabletM(50)} {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     `};
 `;
 
