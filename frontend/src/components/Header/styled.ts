@@ -8,7 +8,7 @@ export const Box = styled.div`
   padding: 0 30rem;
 
   h1 {
-    font-family: 'EarlyFontDiary';
+    font-family: 'SubsetEarlyFontDiary';
     font-size: 3rem;
   }
 
@@ -17,8 +17,9 @@ export const Box = styled.div`
     align-items: center;
     gap: 1rem;
 
-    > img {
-      width: 50px;
+    img {
+      width: 7rem;
+      aspect-ratio: 1.2;
     }
   }
 
@@ -26,27 +27,17 @@ export const Box = styled.div`
     padding: 0 25rem;
   }
 
-  @media ${({ theme }) => theme.devices.laptop()} {
+  @media ${({ theme }) => theme.devices.laptop(50)} {
     padding: 0 5rem;
   }
 
-  @media ${({ theme }) => theme.devices.tablet()} {
-    padding: 0 5rem;
-
+  @media ${({ theme }) => theme.devices.tabletM()} {
     h1 {
       font-size: 2.3rem;
     }
   }
 
-  @media ${({ theme }) => theme.devices.tabletM()} {
-    padding: 0 5rem;
-
-    h1 {
-      font-size: 1.5rem;
-    }
-  }
-
-  @media ${({ theme }) => theme.devices.mobileL()} {
+  @media ${({ theme }) => theme.devices.mobileL(30)} {
     padding: 0 2rem;
 
     a {
@@ -54,7 +45,7 @@ export const Box = styled.div`
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.3rem;
     }
   }
 
@@ -66,7 +57,7 @@ export const Box = styled.div`
     }
 
     h1 {
-      font-size: 1.7rem;
+      font-size: 2rem;
     }
   }
 `;

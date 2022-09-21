@@ -31,11 +31,17 @@ const Interview = ({
         <S.CoachName>{coachNickname}</S.CoachName>
       </S.ImageTextBox>
       <S.ImageTextBox>
-        <S.IconImage src="/assets/icon/calendar.png" alt="달력 아이콘" />
+        <picture>
+          <source srcSet="/assets/icon/calendar.avif" />
+          <S.IconImage src="/assets/icon/calendar.png" alt="달력 아이콘" />
+        </picture>
         <p>{getDateString(interviewStartTime)}</p>
       </S.ImageTextBox>
       <S.ImageTextBox>
-        <S.IconImage src="/assets/icon/clock.png" alt="시계 아이콘" />
+        <picture>
+          <source srcSet="/assets/icon/clock.avif" />
+          <S.IconImage src="/assets/icon/clock.png" alt="시계 아이콘" />
+        </picture>
         <p>
           {getTimeString(interviewStartTime)} ~ {getTimeString(interviewEndTime)}
         </p>
@@ -43,20 +49,29 @@ const Interview = ({
 
       <S.ButtonBox>
         <Button orange={true} onClick={handleClickDetailButton}>
-          <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
+          <picture>
+            <source srcSet="/assets/icon/magnifier.avif" />
+            <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
+          </picture>
           상세보기
         </Button>
         {['EDITABLE', 'CANCELED'].includes(status) && (
           <Link to={`${PAGE.INTERVIEW_APPLY}?interviewId=${id}`}>
             <Button orange={true}>
-              <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
+              <picture>
+                <source srcSet="/assets/icon/edit.avif" />
+                <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
+              </picture>
               편집
             </Button>
           </Link>
         )}
         {isOverToday(interviewEndTime) && (
           <Button orange={true} onClick={handleClickCommentButton}>
-            <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
+            <picture>
+              <source srcSet="/assets/icon/success.avif" />
+              <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
+            </picture>
             코멘트
           </Button>
         )}
