@@ -14,6 +14,7 @@ const theme = {
     pink_300: '#f03e3e',
     orange: '#ffd24d4d',
     purple: '#4a154b',
+    green_50: '#6dd5a7',
     green_100: '#37b24d',
     red_100: '#c74244',
   },

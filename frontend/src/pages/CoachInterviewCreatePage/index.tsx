@@ -56,6 +56,8 @@ const CoachInterviewCreatePage = () => {
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'MULTIPLE',
   });
+  const isAllSelectedTimes = selectedTimes.length === defaultTimes.length;
+
   const { showToast } = useToastActions();
 
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
@@ -124,6 +126,8 @@ const CoachInterviewCreatePage = () => {
   };
 
   const handleClickApplyButton = async () => {
+    if (!selectedDates.length) return;
+
     calendarTimes
       .filter((calendarTime: CalendarTime) =>
         selectedDates.some(
@@ -176,6 +180,10 @@ const CoachInterviewCreatePage = () => {
     }
   };
 
+  const handleClickAllTimeButton = () => {
+    setSelectedTimes(isAllSelectedTimes ? [] : [...defaultTimes]);
+  };
+
   useEffect(() => {
     if (id === INITIAL_COACH_ID) return;
 
@@ -207,7 +215,9 @@ const CoachInterviewCreatePage = () => {
     <S.Box>
       <S.HeaderBox>
         <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
-        <Button>{month + 1}월 한번에 보기</Button>
+        <Button onClick={() => alert('해당 기능은 준비중입니다.')}>
+          {month + 1}월 한눈에 보기
+        </Button>
       </S.HeaderBox>
 
       <S.DateBox>
@@ -218,6 +228,10 @@ const CoachInterviewCreatePage = () => {
         />
 
         <ScrollContainer>
+          <S.AllTimeButton active={isAllSelectedTimes} onClick={handleClickAllTimeButton}>
+            {isAllSelectedTimes ? '전체 해제' : '전체 선택'}
+          </S.AllTimeButton>
+
           {defaultTimes.map((defaultTime, index) => (
             <Time
               key={index}
@@ -236,8 +250,13 @@ const CoachInterviewCreatePage = () => {
           </Button>
         </Link>
 
-        <Button width="100%" height="35px" onClick={handleClickApplyButton}>
-          스케쥴 생성
+        <Button
+          width="100%"
+          height="35px"
+          onClick={handleClickApplyButton}
+          inActive={selectedDates.length === 0}
+        >
+          스케쥴 저장
         </Button>
       </S.ButtonContainer>
     </S.Box>

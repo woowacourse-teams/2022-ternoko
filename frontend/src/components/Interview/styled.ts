@@ -1,13 +1,10 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { InterviewStatus } from '@/types/domain';
 
-type BoxProps = {
-  status: InterviewStatus;
-};
-
-export const Box = styled.div<BoxProps>`
+export const Box = styled.div`
   position: relative;
+
   width: 28rem;
   padding: 1rem 1.5rem 5rem;
 
@@ -17,15 +14,25 @@ export const Box = styled.div<BoxProps>`
 
   transition: transform 0.2s ease-in-out;
 
-  ${({ theme, status }) =>
-    status === 'CANCELED' &&
-    css`
-      background: ${theme.colors.pink_100};
-    `}
-
   :hover {
     transform: translateY(-0.5rem);
   }
+`;
+
+type TagProps = {
+  status: InterviewStatus;
+};
+
+export const Tag = styled.div<TagProps>`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0.6rem;
+  font-size: 1.4rem;
+
+  color: ${({ theme }) => theme.colors.white_50};
+  background-color: ${({ theme, status }) =>
+    status === 'CANCELED' ? theme.colors.pink_200 : theme.colors.green_50};
 `;
 
 export const ImageTextBox = styled.div`
@@ -36,8 +43,20 @@ export const ImageTextBox = styled.div`
 `;
 
 export const CoachName = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
+
+  @media ${({ theme }) => theme.devices.mobileL(30)} {
+    font-size: 1.7rem;
+  }
+`;
+
+export const DateText = styled.p`
+  font-size: 1.3rem;
+
+  @media ${({ theme }) => theme.devices.mobileL(30)} {
+    font-size: 1.6rem;
+  }
 `;
 
 export const ProfileImage = styled.img`
