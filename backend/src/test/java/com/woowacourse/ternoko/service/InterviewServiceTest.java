@@ -41,7 +41,6 @@ import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
-import com.woowacourse.ternoko.core.domain.interview.event.InterviewHandler;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeSummaryRequest;
 import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
@@ -49,6 +48,8 @@ import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
+import com.woowacourse.ternoko.support.alarm.AlarmResponseCache;
+import com.woowacourse.ternoko.support.alarm.SlackAlarm;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -72,7 +73,10 @@ import org.springframework.test.context.jdbc.Sql;
 class InterviewServiceTest extends DatabaseSupporter {
 
     @MockBean
-    private InterviewHandler handler;
+    private SlackAlarm slackAlarm;
+
+    @MockBean
+    private AlarmResponseCache cache;
 
     @Autowired
     private InterviewService interviewService;
@@ -85,12 +89,11 @@ class InterviewServiceTest extends DatabaseSupporter {
 
     @BeforeEach
     void setUp() throws Exception {
-        doNothing().when(handler).create(any());
-        doNothing().when(handler).canceled(any());
-        doNothing().when(handler).update(any());
-        doNothing().when(handler).delete(any());
+        doNothing().when(slackAlarm).sendCreateMessage(any());
+        doNothing().when(slackAlarm).sendCancelMessage(any());
+        doNothing().when(slackAlarm).sendUpdateMessage(any(),any());
+        doNothing().when(slackAlarm).sendDeleteMessage(any());
     }
-
 
     @Test
     @DisplayName("면담 예약을 생성한다.")

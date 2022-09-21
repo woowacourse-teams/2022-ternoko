@@ -1,7 +1,6 @@
 package com.woowacourse.ternoko.support.alarm;
 
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
-import com.woowacourse.ternoko.core.domain.interview.Interview;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +18,13 @@ public class IntegrationSender extends Sender {
     }
 
     @Override
-    public void postCrewMessage(final SlackMessageType slackMessageType, final Interview interview) {
-        postRestTemplate(SlackMessageGenerator.getCrewMessageRequest(slackMessageType, interview, botToken));
+    public void postCrewMessage(final SlackMessageType slackMessageType, final AlarmResponse response) {
+        postRestTemplate(SlackMessageGenerator.getCrewMessageRequest(slackMessageType, response, botToken));
     }
 
     @Override
-    public void postCoachMessage(final SlackMessageType slackMessageType, final Interview interview) {
-        postRestTemplate(SlackMessageGenerator.getCoachMessageRequest(slackMessageType, interview, botToken));
+    public void postCoachMessage(final SlackMessageType slackMessageType, final AlarmResponse response) {
+        postRestTemplate(SlackMessageGenerator.getCoachMessageRequest(slackMessageType, response, botToken));
     }
 
     private void postRestTemplate(ChatPostMessageRequest request) {

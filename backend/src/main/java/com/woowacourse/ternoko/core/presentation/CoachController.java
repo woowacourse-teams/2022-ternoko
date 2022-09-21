@@ -59,7 +59,6 @@ public class CoachController {
         return ResponseEntity.ok().build();
     }
 
-    // TODO: AvailableDateTimeController 로 옮기기
     @GetMapping("/interviews/{interviewId}/calendar/times")
     public ResponseEntity<AvailableDateTimesResponse> findCalendarTimesByInterviewId(
             @PathVariable final Long interviewId,
