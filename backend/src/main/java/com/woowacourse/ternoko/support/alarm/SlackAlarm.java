@@ -1,6 +1,5 @@
 package com.woowacourse.ternoko.support.alarm;
 
-import com.woowacourse.ternoko.core.domain.interview.Interview;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +15,13 @@ public class SlackAlarm {
         this.sender = AlarmSenderPicker.of(destination, botToken, sendApi, url);
     }
 
-    public void sendCreateMessage(final Interview interview) {
-        sender.postCrewMessage(SlackMessageType.CREW_CREATE, interview);
-        sender.postCoachMessage(SlackMessageType.CREW_CREATE, interview);
+    public void sendCreateMessage(final AlarmResponse response) {
+        sender.postCrewMessage(SlackMessageType.CREW_CREATE, response);
+        sender.postCoachMessage(SlackMessageType.CREW_CREATE, response);
     }
 
-    public void sendUpdateMessage(final Interview origin, final Interview update) {
-        if (!origin.getCoach().getNickname().equals(update.getCoach().getNickname())) {
+    public void sendUpdateMessage(final AlarmResponse origin, final AlarmResponse update) {
+        if (!origin.getCoachNickname().equals(update.getCoachNickname())) {
             sender.postCrewMessage(SlackMessageType.CREW_UPDATE, update);
             sender.postCoachMessage(SlackMessageType.CREW_DELETE, origin);
             sender.postCoachMessage(SlackMessageType.CREW_CREATE, update);
@@ -32,13 +31,13 @@ public class SlackAlarm {
         sender.postCoachMessage(SlackMessageType.CREW_UPDATE, update);
     }
 
-    public void sendDeleteMessage(final Interview interview) {
-        sender.postCrewMessage(SlackMessageType.CREW_DELETE, interview);
-        sender.postCoachMessage(SlackMessageType.CREW_DELETE, interview);
+    public void sendDeleteMessage(final AlarmResponse response) {
+        sender.postCrewMessage(SlackMessageType.CREW_DELETE, response);
+        sender.postCoachMessage(SlackMessageType.CREW_DELETE, response);
     }
 
-    public void sendCancelMessage(final Interview interview) {
-        sender.postCrewMessage(SlackMessageType.COACH_CANCEL, interview);
-        sender.postCoachMessage(SlackMessageType.COACH_CANCEL, interview);
+    public void sendCancelMessage(final AlarmResponse response) {
+        sender.postCrewMessage(SlackMessageType.COACH_CANCEL, response);
+        sender.postCoachMessage(SlackMessageType.COACH_CANCEL, response);
     }
 }

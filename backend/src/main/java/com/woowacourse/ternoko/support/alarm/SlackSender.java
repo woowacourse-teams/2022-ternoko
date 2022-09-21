@@ -3,7 +3,6 @@ package com.woowacourse.ternoko.support.alarm;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.impl.MethodsClientImpl;
 import com.slack.api.util.http.SlackHttpClient;
-import com.woowacourse.ternoko.core.domain.interview.Interview;
 import java.io.IOException;
 
 public class SlackSender extends Sender {
@@ -16,10 +15,10 @@ public class SlackSender extends Sender {
     }
 
     @Override
-    public void postCrewMessage(final SlackMessageType slackMessageType, final Interview interview) {
+    public void postCrewMessage(final SlackMessageType slackMessageType, final AlarmResponse response) {
         try {
             slackClient.chatPostMessage(
-                    SlackMessageGenerator.getCrewMessageRequest(slackMessageType, interview, botToken));
+                    SlackMessageGenerator.getCrewMessageRequest(slackMessageType, response, botToken));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SlackApiException e) {
@@ -28,10 +27,10 @@ public class SlackSender extends Sender {
     }
 
     @Override
-    public void postCoachMessage(final SlackMessageType slackMessageType, final Interview interview) {
+    public void postCoachMessage(final SlackMessageType slackMessageType, final AlarmResponse response) {
         try {
             slackClient.chatPostMessage(
-                    SlackMessageGenerator.getCoachMessageRequest(slackMessageType, interview, botToken));
+                    SlackMessageGenerator.getCoachMessageRequest(slackMessageType, response, botToken));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SlackApiException e) {

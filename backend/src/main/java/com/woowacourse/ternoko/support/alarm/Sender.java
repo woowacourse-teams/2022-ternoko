@@ -1,7 +1,5 @@
 package com.woowacourse.ternoko.support.alarm;
 
-import com.woowacourse.ternoko.core.domain.interview.Interview;
-
 public abstract class Sender {
 
     final String botToken;
@@ -14,7 +12,7 @@ public abstract class Sender {
         this.sendApi = sendApi;
     }
 
-    abstract void postCrewMessage(final SlackMessageType slackMessageType, final Interview interview);
+    abstract void postCrewMessage(final SlackMessageType slackMessageType, final AlarmResponse response);
 
-    abstract void postCoachMessage(final SlackMessageType slackMessageType, final Interview interview);
+    abstract void postCoachMessage(final SlackMessageType slackMessageType, final AlarmResponse response);
 }
