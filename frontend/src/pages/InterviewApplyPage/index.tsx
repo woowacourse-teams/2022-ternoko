@@ -71,9 +71,15 @@ const InterviewApplyPage = () => {
   const changeCoachIdRef = useRef(false);
   const originCoachIdRef = useRef(INITIAL_COACH_ID);
   const initRef = useRef(true);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
+
+  const isNotValidForm =
+    !isValidApplyFormLength(answer1) ||
+    !isValidApplyFormLength(answer2) ||
+    !isValidApplyFormLength(answer3);
 
   const initializeDateStatuses = () => {
     setAvailableTimes([]);
@@ -157,12 +163,11 @@ const InterviewApplyPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !isValidApplyFormLength(answer1) ||
-      !isValidApplyFormLength(answer2) ||
-      !isValidApplyFormLength(answer3)
-    )
-      return;
+    if (timerRef.current) return;
+
+    timerRef.current = setTimeout(() => (timerRef.current = null), 700);
+
+    if (isNotValidForm) return;
 
     const body = {
       coachId,
@@ -387,16 +392,7 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                 />
                 <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
-                <Button
-                  type="submit"
-                  width="100%"
-                  height="4rem"
-                  inActive={
-                    !isValidApplyFormLength(answer1) ||
-                    !isValidApplyFormLength(answer2) ||
-                    !isValidApplyFormLength(answer3)
-                  }
-                >
+                <Button type="submit" width="100%" s height="4rem" inActive={isNotValidForm}>
                   {interviewId ? '수정 완료' : '신청 완료'}
                 </Button>
               </S.Form>

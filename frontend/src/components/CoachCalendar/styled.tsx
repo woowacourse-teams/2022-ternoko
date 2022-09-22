@@ -23,19 +23,13 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
   height: 10rem;
   overflow-y: scroll;
 
-  ${({ today }) =>
-    today &&
-    css`
-      background-color: ${({ theme }) => theme.colors.pink_50};
-    `}
-
   ${({ type }) =>
     type === 'active' &&
     css`
       border: 1px solid ${({ theme }) => theme.colors.pink_200};
     `}
 
-   ${({ type }) =>
+  ${({ type }) =>
     type === 'disable' &&
     css`
       background-color: ${({ theme }) => theme.colors.gray_100};
@@ -43,15 +37,34 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
     `}
 `;
 
+export const Today = styled.p`
+  width: 2.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 100%;
+
+  background-color: ${({ theme }) => theme.colors.pink_200};
+  color: white;
+`;
+
 type ScheduleProps = {
   status: InterviewStatus;
+  padding?: number;
 };
 
 export const Schedule = styled.div<ScheduleProps>`
-  padding: 0.5rem;
-
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: ${({ padding }) => padding ?? 0.5}rem;
+  margin-top: 0.5rem;
   border-radius: 10px;
   font-weight: 600;
+  font-size: 1.3rem;
+
   background-color: ${({ theme }) => theme.colors.pink_50};
 
   ${({ theme, status }) =>
@@ -62,15 +75,21 @@ export const Schedule = styled.div<ScheduleProps>`
       justify-content: space-between;
 
       background-color: ${theme.colors.white_50};
+
+      @media ${theme.devices.tabletM(50)} {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     `};
 `;
 
 export const CrewNickname = styled.p`
+  width: 48%;
   display: flex;
-  align-items: center;
-  height: 4rem;
-  padding: 0 1rem;
+  justify-content: center;
+  padding: 0.5rem;
   border-radius: 10px;
+  font-size: 1.3rem;
   cursor: pointer;
 
   background-color: ${({ theme }) => theme.colors.pink_50};

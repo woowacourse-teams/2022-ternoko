@@ -106,11 +106,15 @@ const CoachCalendar = ({
               const interviews = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times: [startTime, endTime], status }) =>
                     isOverToday(`${year}-${month + 1}-${day} ${endTime}`) ? (
-                      <S.Schedule key={id} status="COMMENT">
+                      <S.Schedule key={id} status="COMMENT" padding={0}>
                         <S.CrewNickname onClick={getHandleClickSchedule(id)}>
                           {crewNickname}
                         </S.CrewNickname>
-                        <Button height="4rem" onClick={getHandleClickCommentButton(id, status)}>
+                        <Button
+                          width="48%"
+                          padding="0.5rem"
+                          onClick={getHandleClickCommentButton(id, status)}
+                        >
                           코멘트
                         </Button>
                       </S.Schedule>
@@ -125,7 +129,7 @@ const CoachCalendar = ({
               if (isToday(day)) {
                 return (
                   <S.CalendarDay key={index} today>
-                    {day}
+                    <S.Today>{day}</S.Today>
                     {interviews}
                   </S.CalendarDay>
                 );
