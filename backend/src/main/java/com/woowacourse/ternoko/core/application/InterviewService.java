@@ -63,8 +63,7 @@ public class InterviewService {
 
     @Transactional(isolation = SERIALIZABLE)
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
-        validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
-
+        validateDuplicateStartTimeByCrew(crewId, interviewRequest);
         final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
         validateOpenTime(availableDateTime);
         validateAfterToday(availableDateTime);
@@ -77,8 +76,11 @@ public class InterviewService {
         return interviewRepository.save(interview).getId();
     }
 
-    private void validateDuplicateStartTimeByCrew(final Long crewId, final LocalDateTime interviewDateTime) {
-        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewDateTime)) {
+    private void validateDuplicateStartTimeByCrew(final Long crewId,
+                                                  final InterviewRequest interviewRequest) {
+        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewRequest.getInterviewDatetime()) &&
+                !getAvailableTime(interviewRequest).isUsed()) {
+            AvailableDateTime availableTime = getAvailableTime(interviewRequest);
             throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
     }
@@ -172,7 +174,7 @@ public class InterviewService {
     public void update(final Long crewId,
                        final Long interviewId,
                        final InterviewRequest interviewRequest) {
-        validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
+        validateDuplicateStartTimeByCrew(crewId, interviewRequest);
         final Interview interview = getInterviewById(interviewId);
         final Interview origin = interview.copyOf();
 
