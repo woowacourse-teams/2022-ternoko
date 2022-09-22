@@ -356,7 +356,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("면담 예약을 수정한다.")
+    @DisplayName("면담 예약을 다른 일시로 수정한다.")
     void update() {
         // given
         coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
@@ -379,6 +379,41 @@ class InterviewServiceTest extends DatabaseSupporter {
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME)),
                 () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
                         .isEqualTo(LocalDateTime.of(NOW_PLUS_3_DAYS, SECOND_TIME).plusMinutes(INTERVIEW_TIME)),
+                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
+                        .map(FormItemResponse::getQuestion)
+                        .collect(Collectors.toList()))
+                        .contains("수정질문1", "수정질문2", "수정질문3"),
+                () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
+                        .map(FormItemResponse::getAnswer)
+                        .collect(Collectors.toList()))
+                        .contains("수정답변1", "수정답변2", "수정답변3")
+        );
+    }
+
+    @Test
+    @DisplayName("면담 예약을 면담 내용만 수정한다.")
+    void update_SameDateTime() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(COACH3.getId(), MONTH_REQUEST);
+
+        final Long interviewId = interviewService.create(CREW1.getId(),
+                new InterviewRequest(COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                        FORM_ITEM_REQUESTS));
+        // when
+        interviewService.update(CREW1.getId(), interviewId, new InterviewRequest(COACH3.getId(),
+                LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME),
+                FORM_ITEM_UPDATE_REQUESTS));
+
+        InterviewResponse updatedInterviewResponse = interviewService.findInterviewResponseById(interviewId);
+        // then
+        assertAll(
+                () -> assertThat(updatedInterviewResponse.getId()).isNotNull(),
+                () -> assertThat(updatedInterviewResponse.getCoachNickname())
+                        .isEqualTo(COACH3.getNickname()),
+                () -> assertThat(updatedInterviewResponse.getInterviewStartTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME)),
+                () -> assertThat(updatedInterviewResponse.getInterviewEndTime())
+                        .isEqualTo(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME).plusMinutes(INTERVIEW_TIME)),
                 () -> assertThat(updatedInterviewResponse.getInterviewQuestions().stream()
                         .map(FormItemResponse::getQuestion)
                         .collect(Collectors.toList()))
