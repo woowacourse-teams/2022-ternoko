@@ -78,8 +78,8 @@ public class InterviewService {
 
     private void validateDuplicateStartTimeByCrew(final Long crewId,
                                                   final InterviewRequest interviewRequest) {
-        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewRequest.getInterviewDatetime()) &&
-                !getAvailableTime(interviewRequest).isUsed()) {
+        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewRequest.getInterviewDatetime())
+                && !getAvailableTime(interviewRequest).isUsed()) {
             AvailableDateTime availableTime = getAvailableTime(interviewRequest);
             throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
