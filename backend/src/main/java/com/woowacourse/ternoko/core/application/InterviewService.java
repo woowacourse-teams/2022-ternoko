@@ -65,14 +65,15 @@ public class InterviewService {
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
 
-        final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
+        final AvailableDateTime availableDateTime = getOpenAvailableTime(interviewRequest.getCoachId(),
+                interviewRequest.getInterviewDatetime());
         validateOpenTime(availableDateTime);
         validateAfterToday(availableDateTime);
         availableDateTime.changeStatus(USED);
 
         final Interview interview = convertInterview(crewId, interviewRequest);
 
-        sendCreateMessage(interview);
+        setCreateMessage(interview);
 
         return interviewRepository.save(interview).getId();
     }
@@ -87,10 +88,9 @@ public class InterviewService {
         if (availableDateTime.isUsed()) {
             throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
         }
-
     }
 
-    private void sendCreateMessage(final Interview interview) {
+    private void setCreateMessage(final Interview interview) {
         cache.setOrigin(AlarmResponse.from(interview));
         cache.setMessageType(SlackMessageType.CREW_CREATE);
     }
@@ -120,15 +120,13 @@ public class InterviewService {
                 .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
     }
 
-    private AvailableDateTime getAvailableTime(final InterviewRequest interviewRequest) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interviewRequest.getCoachId(),
-                        interviewRequest.getInterviewDatetime())
+    private AvailableDateTime getUsedAvailableTime(final Long coachId, final LocalDateTime interviewStartTime) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTimeAndUsed(coachId, interviewStartTime)
                 .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
-    private AvailableDateTime getAvailableTime(final Interview interview) {
-        return availableDateTimeRepository.findByCoachIdAndInterviewDateTime(interview.getCoach().getId(),
-                        interview.getInterviewStartTime())
+    private AvailableDateTime getOpenAvailableTime(final Long coachId, final LocalDateTime interviewStartTime) {
+        return availableDateTimeRepository.findByCoachIdAndInterviewDateTimeAndOpen(coachId, interviewStartTime)
                 .orElseThrow(() -> new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME));
     }
 
@@ -176,12 +174,10 @@ public class InterviewService {
         final Interview interview = getInterviewById(interviewId);
         final Interview origin = interview.copyOf();
 
-        final AvailableDateTime availableDateTime = getAvailableTime(interviewRequest);
-        validateAfterToday(availableDateTime);
         changeAvailableDateTimeStatus(interview, interviewRequest);
 
         interview.update(convertInterview(crewId, interviewRequest));
-        sendUpdateMessage(interview, origin);
+        setUpdateMessage(interview, origin);
     }
 
     private void validateAfterToday(final AvailableDateTime availableDateTime) {
@@ -195,7 +191,9 @@ public class InterviewService {
         changeAvailableTimeStatusIfPresent(originalInterview.getCoach().getId(),
                 originalInterview.getInterviewStartTime(),
                 OPEN);
-        final AvailableDateTime afterTime = getAvailableTime(interviewRequest);
+        final AvailableDateTime afterTime = getOpenAvailableTime(interviewRequest.getCoachId(),
+                interviewRequest.getInterviewDatetime());
+        validateAfterToday(afterTime);
         afterTime.changeStatus(USED);
     }
 
@@ -204,7 +202,7 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
-    private void sendUpdateMessage(final Interview interview, final Interview origin) {
+    private void setUpdateMessage(final Interview interview, final Interview origin) {
         cache.setOrigin(AlarmResponse.from(origin));
         cache.setUpdate(AlarmResponse.from(interview));
         cache.setMessageType(SlackMessageType.CREW_UPDATE);
@@ -214,22 +212,25 @@ public class InterviewService {
                                              final boolean onlyInterview) {
         final Interview canceledInterview = cancel(coachId, interviewId);
 
-        final AvailableDateTime unavailableTime = getAvailableTime(canceledInterview);
+        final AvailableDateTime usedAvailableTime = getUsedAvailableTime(
+                canceledInterview.getCoach().getId(),
+                canceledInterview.getInterviewStartTime());
+
         if (!onlyInterview) {
-            availableDateTimeRepository.delete(unavailableTime);
+            availableDateTimeRepository.delete(usedAvailableTime);
             return;
         }
-        unavailableTime.changeStatus(OPEN);
+        usedAvailableTime.changeStatus(OPEN);
     }
 
     private Interview cancel(final Long coachId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         interview.cancel(coachId);
-        sendCancelMessage(interview);
+        setCancelMessage(interview);
         return interview;
     }
 
-    private void sendCancelMessage(final Interview interview) {
+    private void setCancelMessage(final Interview interview) {
         cache.setOrigin(AlarmResponse.from(interview));
         cache.setMessageType(SlackMessageType.COACH_CANCEL);
     }
@@ -239,10 +240,10 @@ public class InterviewService {
         deleteInterview(crewId, interview);
 
         changeAvailableTimeStatusIfPresent(interview.getCoach().getId(), interview.getInterviewStartTime(), OPEN);
-        sendDeleteMessage(interview);
+        setDeleteMessage(interview);
     }
 
-    private void sendDeleteMessage(final Interview interview) {
+    private void setDeleteMessage(final Interview interview) {
         cache.setOrigin(AlarmResponse.from(interview));
     }
 

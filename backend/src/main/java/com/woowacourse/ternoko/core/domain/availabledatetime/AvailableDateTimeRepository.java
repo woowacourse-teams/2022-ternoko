@@ -34,6 +34,20 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
 
     @Query("select a from AvailableDateTime a "
             + "where a.coachId = :coachId "
+            + "and a.localDateTime = :interviewDateTime "
+            + "and a.availableDateTimeStatus = 'OPEN'")
+    Optional<AvailableDateTime> findByCoachIdAndInterviewDateTimeAndOpen(@Param("coachId") final Long coachId,
+                                                                         @Param("interviewDateTime") final LocalDateTime interviewDateTime);
+
+    @Query("select a from AvailableDateTime a "
+            + "where a.coachId = :coachId "
+            + "and a.localDateTime = :interviewDateTime "
+            + "and a.availableDateTimeStatus = 'USED'")
+    Optional<AvailableDateTime> findByCoachIdAndInterviewDateTimeAndUsed(@Param("coachId") final Long coachId,
+                                                                         @Param("interviewDateTime") final LocalDateTime interviewDateTime);
+
+    @Query("select a from AvailableDateTime a "
+            + "where a.coachId = :coachId "
             + "and a.localDateTime = :interviewDateTime")
     Optional<AvailableDateTime> findByCoachIdAndInterviewDateTime(@Param("coachId") final Long coachId,
                                                                   @Param("interviewDateTime") final LocalDateTime interviewDateTime);
@@ -57,4 +71,5 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
     Long countByCoachId(@Param("coachId") final Long coachId,
             @Param("startDateTime") final LocalDateTime startDateTime,
             @Param("endDateTime")  final LocalDateTime endDateTime);
+
 }
