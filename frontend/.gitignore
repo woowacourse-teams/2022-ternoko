@@ -1,0 +1,20 @@
+# dependencies
+node_modules
+
+# production
+dist
+
+# misc
+.DS_Store
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.test.local
+
+# debug
+npm-debug.log*
+
+
+

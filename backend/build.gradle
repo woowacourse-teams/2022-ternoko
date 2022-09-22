@@ -1,0 +1,141 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'checkstyle'
+    id 'org.sonarqube' version '3.3'
+    id 'jacoco'
+}
+
+
+group = 'com.woowacourse'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    asciidoctorExtensions
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // spring-boot
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // mail-sender
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Slack API
+    implementation 'com.slack.api:slack-api-client:1.24.0'
+
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // logging
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.projectlombok:lombok:1.18.22'
+
+    // DB
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    // lombok
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    // test
+    testImplementation  'com.google.guava:guava:31.1-jre'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    //sonarqube t
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+checkstyle {
+    maxWarnings = 0
+    configFile = file("${rootDir}/config/ternoko-checkstyle.xml")
+    toolVersion = "10.3.2"
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.sources", "src" // 소스 경로
+        property "sonar.language", "java" // 언어
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.profile", "Sonar way" // SonarQube 에서 분석할 때 적용할 프로필(분석할 수준 설정)
+        property "sonar.java.binaries", "${buildDir}/classes" // 자바 클래스 파일위치
+        property "sonar.test.inclusions", "**/*Test.java" // 코드 분석에 사용할 테스트 소스
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml" // jacoco 플러그인의 결과 파일
+    //testasdf
+    }
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+
+asciidoctor {
+    configurations 'asciidoctorExtensions'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+task buildDocument(type: Copy) {
+    dependsOn copyDocument
+    from file("src/main/resources/static/docs")
+    into file("build/resources/main/static/docs")
+}
+
+bootJar {
+    dependsOn buildDocument
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" monitorInterval="5">
+    <!--공통 속성 설정 -->
+    <Properties>
+        <Property name="logFileName">local</Property>
+        <Property name="consoleLayout">[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] [%c{1}:%L] - %m%n</Property>
+        <Property name="layoutPattern">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} %highlight{[%-5p]}{FATAL=bg_red,
+            ERROR=red, INFO=green, DEBUG=blue} [%C] %style{[%t]}{yellow}- %m%n
+        </Property>
+        <Property name="fileLayout">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
+    </Properties>
+
+    <!-- Log Appender 설정 -->
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layoutPattern}" disableAnsi="false"/>
+        </Console>
+    </Appenders>
+    <!--TRACE > DEBUG > INFO > WARN > ERROR > FATAL -->
+    <!--Log가 찍힐 대상 설정.-->
+    <Loggers>
+        <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
+        <logger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <logger name="com.woowacourse.ternoko" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <!-- debug 레벨부터 sql log 찍힘-->
+        <logger name="org.hibernate.SQL" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <!-- binding parameter 찍힘-->
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <!-- jdbc exception 설정-->
+        <logger name="org.hibernate" level="info" additivity="false">
+            <AppenderRef ref="console"/>
+        </logger>
+
+        <!-- ROOT logger-->
+        <Root level="debug"></Root>
+
+    </Loggers>
+</Configuration>
