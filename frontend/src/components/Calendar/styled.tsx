@@ -26,9 +26,9 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
   width: 6rem;
   height: 6rem;
 
-  @media ${({ theme }) => theme.devices.tabletM} {
-    width: 5.5rem;
-    height: 5.5rem;
+  @media ${({ theme }) => theme.devices.tabletM()} {
+    width: 5.3rem;
+    height: 5.3rem;
   }
 
   ${({ today }) =>
@@ -49,7 +49,6 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
     css`
       background-color: ${({ theme }) => theme.colors.gray_100};
       color: ${({ theme }) => theme.colors.gray_150};
-      pointer-events: none;
       cursor: default;
     `}
 

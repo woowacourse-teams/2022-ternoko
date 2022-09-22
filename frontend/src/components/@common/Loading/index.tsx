@@ -4,37 +4,45 @@ export type TernokoMemberNickname = '앤지' | '애쉬' | '열음' | '바니' | 
 
 type TernokoMember = {
   nickname: TernokoMemberNickname;
-  imageUrl: string;
+  pngImageUrl: string;
+  avifImageUrl: string;
 };
 
 const ternokoMembers = [
   {
     nickname: '앤지',
-    imageUrl: '/assets/image/angel.png',
+    pngImageUrl: '/assets/image/angel.png',
+    avifImageUrl: '/assets/image/angel.avif',
   },
   {
     nickname: '애쉬',
-    imageUrl: '/assets/image/ash.png',
+    pngImageUrl: '/assets/image/angel.png',
+    avifImageUrl: '/assets/image/ash.avif',
   },
   {
     nickname: '열음',
-    imageUrl: '/assets/image/yeoleum.png',
+    pngImageUrl: '/assets/image/angel.png',
+    avifImageUrl: '/assets/image/yeoleum.avif',
   },
   {
     nickname: '바니',
-    imageUrl: '/assets/image/bunny.png',
+    pngImageUrl: '/assets/image/angel.png',
+    avifImageUrl: '/assets/image/bunny.avif',
   },
   {
     nickname: '수달',
-    imageUrl: '/assets/image/sudal.png',
+    pngImageUrl: '/assets/image/angel.png',
+    avifImageUrl: '/assets/image/sudal.avif',
   },
   {
     nickname: '아놀드',
-    imageUrl: '/assets/image/arnold.png',
+    pngImageUrl: '/assets/image/arnold.png',
+    avifImageUrl: '/assets/image/angel.avif',
   },
   {
     nickname: '록바',
-    imageUrl: '/assets/image/lokba.png',
+    pngImageUrl: '/assets/image/angel.png',
+    avifImageUrl: '/assets/image/lokba.avif',
   },
 ] as TernokoMember[];
 
@@ -47,14 +55,17 @@ type LoadingProps = {
 const Loading = ({ additionalBoxStyle, profileSizeRem, animationDuration }: LoadingProps) => {
   return (
     <S.Box additionalBoxStyle={additionalBoxStyle}>
-      {ternokoMembers.map(({ nickname, imageUrl }) => (
+      {ternokoMembers.map(({ nickname, pngImageUrl, avifImageUrl }) => (
         <S.TernokoProfile
           key={nickname}
           profileSizeRem={profileSizeRem}
           animationDuration={animationDuration}
           nickname={nickname}
         >
-          <img src={imageUrl} alt="터놓고 프로필" />
+          <picture>
+            <source srcSet={avifImageUrl} type="image/avif" />
+            <img src={pngImageUrl} alt="터놓고 프로필" />
+          </picture>
         </S.TernokoProfile>
       ))}
     </S.Box>

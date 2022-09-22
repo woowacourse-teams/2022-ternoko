@@ -9,6 +9,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
+import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
@@ -21,10 +22,6 @@ import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeSt
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
-import com.woowacourse.ternoko.core.domain.interview.event.InterviewCanceledEvent;
-import com.woowacourse.ternoko.core.domain.interview.event.InterviewCreatedEvent;
-import com.woowacourse.ternoko.core.domain.interview.event.InterviewDeletedEvent;
-import com.woowacourse.ternoko.core.domain.interview.event.InterviewUpdatedEvent;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
@@ -34,6 +31,9 @@ import com.woowacourse.ternoko.core.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
+import com.woowacourse.ternoko.support.alarm.AlarmResponse;
+import com.woowacourse.ternoko.support.alarm.AlarmResponseCache;
+import com.woowacourse.ternoko.support.alarm.SlackMessageType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,8 +59,9 @@ public class InterviewService {
     private final CrewRepository crewRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final AlarmResponseCache cache;
 
+    @Transactional(isolation = SERIALIZABLE)
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
         validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
 
@@ -72,7 +72,8 @@ public class InterviewService {
 
         final Interview interview = convertInterview(crewId, interviewRequest);
 
-        applicationEventPublisher.publishEvent(new InterviewCreatedEvent(this, interview));
+        sendCreateMessage(interview);
+
         return interviewRepository.save(interview).getId();
     }
 
@@ -87,6 +88,11 @@ public class InterviewService {
             throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
         }
 
+    }
+
+    private void sendCreateMessage(final Interview interview) {
+        cache.setOrigin(AlarmResponse.from(interview));
+        cache.setMessageType(SlackMessageType.CREW_CREATE);
     }
 
     private Interview convertInterview(final Long crewId, final InterviewRequest interviewRequest) {
@@ -175,7 +181,7 @@ public class InterviewService {
         changeAvailableDateTimeStatus(interview, interviewRequest);
 
         interview.update(convertInterview(crewId, interviewRequest));
-        applicationEventPublisher.publishEvent(new InterviewUpdatedEvent(this, origin, interview));
+        sendUpdateMessage(interview, origin);
     }
 
     private void validateAfterToday(final AvailableDateTime availableDateTime) {
@@ -198,6 +204,12 @@ public class InterviewService {
                 .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
     }
 
+    private void sendUpdateMessage(final Interview interview, final Interview origin) {
+        cache.setOrigin(AlarmResponse.from(origin));
+        cache.setUpdate(AlarmResponse.from(interview));
+        cache.setMessageType(SlackMessageType.CREW_UPDATE);
+    }
+
     public void cancelAndDeleteAvailableTime(final Long coachId, final Long interviewId,
                                              final boolean onlyInterview) {
         final Interview canceledInterview = cancel(coachId, interviewId);
@@ -213,8 +225,13 @@ public class InterviewService {
     private Interview cancel(final Long coachId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         interview.cancel(coachId);
-        applicationEventPublisher.publishEvent(new InterviewCanceledEvent(this, interview));
+        sendCancelMessage(interview);
         return interview;
+    }
+
+    private void sendCancelMessage(final Interview interview) {
+        cache.setOrigin(AlarmResponse.from(interview));
+        cache.setMessageType(SlackMessageType.COACH_CANCEL);
     }
 
     public void delete(final Long crewId, final Long interviewId) {
@@ -222,7 +239,11 @@ public class InterviewService {
         deleteInterview(crewId, interview);
 
         changeAvailableTimeStatusIfPresent(interview.getCoach().getId(), interview.getInterviewStartTime(), OPEN);
-        applicationEventPublisher.publishEvent(new InterviewDeletedEvent(this, interview));
+        sendDeleteMessage(interview);
+    }
+
+    private void sendDeleteMessage(final Interview interview) {
+        cache.setOrigin(AlarmResponse.from(interview));
     }
 
     private void changeAvailableTimeStatusIfPresent(final Long coachId,

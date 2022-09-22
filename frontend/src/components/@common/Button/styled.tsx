@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 export type ButtonProps = {
   width?: string;
   height?: string;
+  padding?: string;
   inActive?: boolean;
   white?: boolean;
   orange?: boolean;
@@ -16,7 +17,7 @@ const Button = styled.button<ButtonProps>`
   gap: 1rem;
   width: ${({ width }) => width ?? ''};
   height: ${({ height }) => height ?? 'auto'};
-  padding: 7px 12px;
+  padding: ${({ padding }) => padding ?? '0.7rem 1.2rem'};
   border: none;
   border-radius: 12px;
 

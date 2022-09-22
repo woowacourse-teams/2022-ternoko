@@ -6,12 +6,14 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
 @NoArgsConstructor
+@EqualsAndHashCode
 public class FormItems {
 
     @OneToMany(mappedBy = "interview", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

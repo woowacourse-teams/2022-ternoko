@@ -31,9 +31,15 @@ const Toast = () => {
             <S.Toast title={toast.title} toastStatus={toast.status}>
               <S.Content>
                 {toast.title === 'SUCCESS' ? (
-                  <S.TitleIcon src="/assets/icon/success.png" alt="성공 아이콘" />
+                  <picture>
+                    <source srcSet="/assets/icon/success.avif" type="image/avif" />
+                    <S.TitleIcon src="/assets/icon/success.png" alt="성공 아이콘" />
+                  </picture>
                 ) : (
-                  <S.TitleIcon src="/assets/icon/error.png" alt="에러 아이콘" />
+                  <picture>
+                    <source srcSet="/assets/icon/error.avif" type="image/avif" />
+                    <S.TitleIcon src="/assets/icon/error.png" alt="에러 아이콘" />
+                  </picture>
                 )}
                 <div>
                   <S.Title>{toast.title === 'SUCCESS' ? '성공 😁' : '실패 😂'}</S.Title>

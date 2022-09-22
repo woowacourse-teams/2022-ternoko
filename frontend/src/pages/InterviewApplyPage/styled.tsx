@@ -8,11 +8,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 2rem;
 `;
-
-type BoxProps = {
-  stepStatus: StepStatus;
-};
 
 export const Body = styled.div`
   height: calc(100% - 60px);
@@ -44,6 +41,11 @@ export const Body = styled.div`
   }
 `;
 
+type BoxProps = {
+  stepStatus: StepStatus;
+  hideFoldBoxOverflow?: boolean;
+};
+
 export const Box = styled.div<BoxProps>`
   position: relative;
   overflow: hidden;
@@ -53,7 +55,7 @@ export const Box = styled.div<BoxProps>`
     align-items: center;
     width: fit-content;
     gap: 1rem;
-    margin-bottom: 1.8rem;
+    margin-bottom: 3.8rem;
 
     font-weight: bold;
     cursor: pointer;
@@ -63,10 +65,13 @@ export const Box = styled.div<BoxProps>`
     }
   }
 
-  .fold-box {
-    overflow: hidden;
-    margin-top: 2rem;
-  }
+  ${({ hideFoldBoxOverflow }) =>
+    hideFoldBoxOverflow &&
+    css`
+      .fold-box {
+        overflow: hidden;
+      }
+    `}
 
   ${({ stepStatus }) =>
     stepStatus === 'show' &&
@@ -115,6 +120,25 @@ export const Box = styled.div<BoxProps>`
     `}
 `;
 
+export const StatusBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 1.4rem;
+
+  border: 1px solid ${({ theme }) => theme.colors.gray_150};
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+`;
+
 export const TitleBox = styled.div`
   display: flex;
   justify-content: space-between;
@@ -155,6 +179,17 @@ export const Circle = styled.div`
 
   background-color: ${({ theme }) => theme.colors.pink_200};
   color: ${({ theme }) => theme.colors.white_50};
+`;
+
+type SmallCircleProps = {
+  green?: boolean;
+};
+
+export const SmallCircle = styled(Circle)<SmallCircleProps>`
+  width: 1.2rem;
+  height: 1.2rem;
+
+  background-color: ${({ theme, green }) => green && theme.colors.green_100};
 `;
 
 export const Bar = styled.div`
@@ -199,4 +234,11 @@ export const TimeContainer = styled(ScrollContainer)<TimeContainerProps>`
   animation: ${toLeft} 1s;
 
   height: ${({ heightUnit }) => Math.min(47, heightUnit * 8)}rem;
+`;
+
+export const EmphasizedText = styled.span`
+  font-size: 1.6rem;
+  margin-left: 1rem;
+
+  color: ${({ theme }) => theme.colors.pink_200};
 `;

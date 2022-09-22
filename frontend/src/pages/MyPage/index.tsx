@@ -31,7 +31,6 @@ const MyPage = () => {
   const [nickname, setNickname] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const defaultNicknameRef = useRef('');
   const defaultIntroduceRef = useRef('');
@@ -55,8 +54,6 @@ const MyPage = () => {
   };
 
   const handleClickConfirmButton = async () => {
-    isSubmitted || setIsSubmitted(true);
-
     if (
       !isValidNicknameLength(nickname) ||
       (memberRole === 'COACH' && !isValidIntroduceLength(introduce))
@@ -99,7 +96,7 @@ const MyPage = () => {
 
   return (
     <>
-      <TitleBox title="마이 페이지" />
+      <TitleBox>마이 페이지</TitleBox>
 
       <S.Box>
         <S.ProfileBox>
@@ -111,7 +108,7 @@ const MyPage = () => {
                 <S.EditModeBox>
                   <S.Input id="nickname" value={nickname} onChange={handleChangeNickname} />
 
-                  {isSubmitted && !isValidNicknameLength(nickname) && (
+                  {!isValidNicknameLength(nickname) && (
                     <ErrorMessage>{ERROR_MESSAGE.ENTER_IN_RANGE_NICKNAME}</ErrorMessage>
                   )}
                 </S.EditModeBox>
@@ -132,7 +129,7 @@ const MyPage = () => {
                     />
                     <S.DescriptionBox>
                       <p>
-                        {isSubmitted && !isValidIntroduceLength(introduce) && (
+                        {!isValidIntroduceLength(introduce) && (
                           <ErrorMessage>
                             {ERROR_MESSAGE.ENTER_IN_RANGE_INTRODUCE_LENGTH}
                           </ErrorMessage>

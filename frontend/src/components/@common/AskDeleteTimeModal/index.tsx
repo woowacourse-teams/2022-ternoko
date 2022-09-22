@@ -58,7 +58,14 @@ const AskDeleteTimeModal = ({
     >
       <S.Header>
         <h2>열어둔 시간은 남겨둘까용?😎</h2>
-        <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
+        <picture>
+          <source srcSet="/assets/icon/close.avif" type="image/avif" />
+          <S.Icon
+            src="/assets/icon/close.png"
+            alt="모달 창 닫기 아이콘"
+            onClick={handleCloseModal}
+          />
+        </picture>
       </S.Header>
       <S.ButtonBox>
         <Button white height="4.5rem" onClick={handleClickYesButton}>

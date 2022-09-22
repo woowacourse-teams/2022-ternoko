@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile({"local", "dev"})
+@Profile({"local"})
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer {
@@ -95,7 +95,6 @@ public class DatabaseInitializer {
                     "U12345678911",
                     "https://user-images.githubusercontent.com/54317630/177786158-226652b7-7b4a-462c-af3b-775811756c87.png",
                     "안녕하세요."));
-
             coaches.add(new Coach(13L, "터놓고", "터노코", "ternoko.official@gmail.com",
                     "U03U8ETQ48Y",
                     "https://user-images.githubusercontent.com/54317630/184493934-9a2ba1bb-6051-4428-bb6a-5527c4f480d9.JPG",
@@ -108,6 +107,8 @@ public class DatabaseInitializer {
             availableDateTimeRepository.save(new AvailableDateTime(2L, 13L,
                     LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
             availableDateTimeRepository.save(new AvailableDateTime(3L, 1L,
+                    LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
+            availableDateTimeRepository.save(new AvailableDateTime(4L, 2L,
                     LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
         }
     }

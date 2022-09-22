@@ -56,6 +56,8 @@ const CoachInterviewCreatePage = () => {
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'MULTIPLE',
   });
+  const isAllSelectedTimes = selectedTimes.length === defaultTimes.length;
+
   const { showToast } = useToastActions();
 
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
@@ -124,6 +126,8 @@ const CoachInterviewCreatePage = () => {
   };
 
   const handleClickApplyButton = async () => {
+    if (!selectedDates.length) return;
+
     calendarTimes
       .filter((calendarTime: CalendarTime) =>
         selectedDates.some(
@@ -176,6 +180,10 @@ const CoachInterviewCreatePage = () => {
     }
   };
 
+  const handleClickAllTimeButton = () => {
+    setSelectedTimes(isAllSelectedTimes ? [] : [...defaultTimes]);
+  };
+
   useEffect(() => {
     if (id === INITIAL_COACH_ID) return;
 
@@ -204,42 +212,54 @@ const CoachInterviewCreatePage = () => {
   }, [year, month, isApplied, id]);
 
   return (
-    <>
-      <TitleBox to={PAGE.COACH_HOME} title="면담 스케쥴 만들기" />
+    <S.Box>
+      <S.HeaderBox>
+        <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
+        <Button onClick={() => alert('해당 기능은 준비중입니다.')}>
+          {month + 1}월 한눈에 보기
+        </Button>
+      </S.HeaderBox>
 
-      <S.Box>
-        <S.DateBox>
-          <Calendar
-            getHandleClickDay={getHandleClickDay}
-            getDayType={getDayType}
-            haveTimeDays={haveTimeDays}
-          />
+      <S.DateBox>
+        <Calendar
+          getHandleClickDay={getHandleClickDay}
+          getDayType={getDayType}
+          haveTimeDays={haveTimeDays}
+        />
 
-          <ScrollContainer>
-            {defaultTimes.map((defaultTime, index) => (
-              <Time
-                key={index}
-                active={selectedTimes.includes(defaultTime)}
-                onClick={getHandleClickTime(defaultTime)}
-              >
-                {defaultTime}
-              </Time>
-            ))}
-          </ScrollContainer>
-        </S.DateBox>
-        <S.ButtonContainer>
-          <Link to={PAGE.COACH_HOME}>
-            <Button width="100%" height="35px" white={true}>
-              홈으로
-            </Button>
-          </Link>
+        <ScrollContainer>
+          <S.AllTimeButton active={isAllSelectedTimes} onClick={handleClickAllTimeButton}>
+            {isAllSelectedTimes ? '전체 해제' : '전체 선택'}
+          </S.AllTimeButton>
 
-          <Button width="100%" height="35px" onClick={handleClickApplyButton}>
-            승인하기
+          {defaultTimes.map((defaultTime, index) => (
+            <Time
+              key={index}
+              active={selectedTimes.includes(defaultTime)}
+              onClick={getHandleClickTime(defaultTime)}
+            >
+              {defaultTime}
+            </Time>
+          ))}
+        </ScrollContainer>
+      </S.DateBox>
+      <S.ButtonContainer>
+        <Link to={PAGE.COACH_HOME}>
+          <Button width="100%" height="35px" white={true}>
+            홈으로
           </Button>
-        </S.ButtonContainer>
-      </S.Box>
-    </>
+        </Link>
+
+        <Button
+          width="100%"
+          height="35px"
+          onClick={handleClickApplyButton}
+          inActive={selectedDates.length === 0}
+        >
+          스케쥴 저장
+        </Button>
+      </S.ButtonContainer>
+    </S.Box>
   );
 };
 

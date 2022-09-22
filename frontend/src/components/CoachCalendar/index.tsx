@@ -36,8 +36,14 @@ const CoachCalendar = ({
   getHandleClickCommentButton,
 }: CoachCalendarProps) => {
   const { year, month, showMonthPicker } = useCalendarState();
-  const { handleClickPrevYear, handleClickNextYear, handleClickMonthPicker, getHandleClickMonth } =
-    useCalendarActions();
+  const {
+    handleClickPrevYear,
+    handleClickNextYear,
+    handleClickPrevMonth,
+    handleClickNextMonth,
+    handleClickMonthPicker,
+    getHandleClickMonth,
+  } = useCalendarActions();
   const { daysLength, isToday, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
 
   const [schedules, setSchedules] = useState<SchedulesType>({});
@@ -71,23 +77,27 @@ const CoachCalendar = ({
   return (
     <S.Box>
       <C.Header>
-        <C.MonthPicker onClick={handleClickMonthPicker}>{monthNames[month]}</C.MonthPicker>
         <C.YearPicker>
-          <C.YearChange onClick={handleClickPrevYear}>{'<'}</C.YearChange>
+          <C.DateChange onClick={handleClickPrevYear}>{'<'}</C.DateChange>
           <p>{year}</p>
-          <C.YearChange onClick={handleClickNextYear}>{'>'}</C.YearChange>
+          <C.DateChange onClick={handleClickNextYear}>{'>'}</C.DateChange>
         </C.YearPicker>
+        <C.MonthPicker>
+          <C.DateChange onClick={handleClickPrevMonth}>{'<'}</C.DateChange>
+          <p onClick={handleClickMonthPicker}>{monthNames[month]}</p>
+          <C.DateChange onClick={handleClickNextMonth}>{'>'}</C.DateChange>
+        </C.MonthPicker>
       </C.Header>
 
       <C.Body>
         <C.WeekDay>
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
+          <div>일</div>
+          <div>월</div>
+          <div>화</div>
+          <div>수</div>
+          <div>목</div>
+          <div>금</div>
+          <div>토</div>
         </C.WeekDay>
         <C.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
@@ -96,11 +106,15 @@ const CoachCalendar = ({
               const interviews = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times: [startTime, endTime], status }) =>
                     isOverToday(`${year}-${month + 1}-${day} ${endTime}`) ? (
-                      <S.Schedule key={id} status="COMMENT">
+                      <S.Schedule key={id} status="COMMENT" padding={0}>
                         <S.CrewNickname onClick={getHandleClickSchedule(id)}>
                           {crewNickname}
                         </S.CrewNickname>
-                        <Button height="4rem" onClick={getHandleClickCommentButton(id, status)}>
+                        <Button
+                          width="48%"
+                          padding="0.5rem"
+                          onClick={getHandleClickCommentButton(id, status)}
+                        >
                           코멘트
                         </Button>
                       </S.Schedule>
@@ -115,7 +129,7 @@ const CoachCalendar = ({
               if (isToday(day)) {
                 return (
                   <S.CalendarDay key={index} today>
-                    {day}
+                    <S.Today>{day}</S.Today>
                     {interviews}
                   </S.CalendarDay>
                 );
@@ -134,10 +148,6 @@ const CoachCalendar = ({
                 <S.CalendarDay key={index}>
                   {day}
                   {interviews}
-                  <span />
-                  <span />
-                  <span />
-                  <span />
                 </S.CalendarDay>
               );
             }

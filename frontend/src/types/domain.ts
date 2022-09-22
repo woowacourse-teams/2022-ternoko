@@ -4,6 +4,7 @@ export interface CoachType {
   nickname: string;
   imageUrl: string;
   introduce: string;
+  hasOpenTime: boolean;
 }
 
 export type CrewType = Omit<CoachType, 'introduce'>;
@@ -29,7 +30,7 @@ export type InterviewStatus =
   | 'EDITABLE'
   | 'FIXED'
   | 'COMMENT'
-  | 'COMPLETE'
+  | 'COMPLETED'
   | 'CREW_COMPLETED'
   | 'COACH_COMPLETED'
   | 'CANCELED';

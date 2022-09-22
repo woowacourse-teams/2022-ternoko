@@ -60,7 +60,6 @@ const InterviewApplyPage = () => {
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [availableSchedules, setAvailableSchedules] = useState<StringDictionary>({});
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
@@ -70,10 +69,17 @@ const InterviewApplyPage = () => {
   const [answer3, setAnswer3] = useState('');
 
   const changeCoachIdRef = useRef(false);
+  const originCoachIdRef = useRef(INITIAL_COACH_ID);
   const initRef = useRef(true);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
+
+  const isNotValidForm =
+    !isValidApplyFormLength(answer1) ||
+    !isValidApplyFormLength(answer2) ||
+    !isValidApplyFormLength(answer3);
 
   const initializeDateStatuses = () => {
     setAvailableTimes([]);
@@ -87,6 +93,11 @@ const InterviewApplyPage = () => {
       : availableSchedules[day]
       ? 'default'
       : 'disable';
+
+  const coachScheduleAPI = () =>
+    interviewId && coachId === originCoachIdRef.current
+      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
+      : getCoachScheduleAPI(coachId, year, month + 1);
 
   const updateStatusWhenCalendarShow = (
     schedules: StringDictionary,
@@ -151,14 +162,12 @@ const InterviewApplyPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    isSubmitted || setIsSubmitted(true);
 
-    if (
-      !isValidApplyFormLength(answer1) ||
-      !isValidApplyFormLength(answer2) ||
-      !isValidApplyFormLength(answer3)
-    )
-      return;
+    if (timerRef.current) return;
+
+    timerRef.current = setTimeout(() => (timerRef.current = null), 700);
+
+    if (isNotValidForm) return;
 
     const body = {
       coachId,
@@ -216,6 +225,7 @@ const InterviewApplyPage = () => {
         ({ nickname }: CoachType) => nickname === coachNickname,
       );
       setCoachId(coach.id);
+      originCoachIdRef.current = coach.id;
 
       setAnswer1(interviewQuestions[0].answer);
       setAnswer2(interviewQuestions[1].answer);
@@ -231,9 +241,7 @@ const InterviewApplyPage = () => {
   useEffect(() => {
     if (stepStatus[1] === 'show') {
       (async () => {
-        const response = await (interviewId
-          ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-          : getCoachScheduleAPI(coachId, year, month + 1));
+        const response = await coachScheduleAPI();
 
         const schedules = response.data.calendarTimes.reduce(
           (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
@@ -257,12 +265,27 @@ const InterviewApplyPage = () => {
     <>
       <Header />
       <S.Body>
-        <TitleBox to={PAGE.CREW_HOME} title={interviewId ? '면담 수정하기' : '면담 신청하기'} />
+        <TitleBox to={PAGE.CREW_HOME}>{interviewId ? '면담 수정하기' : '면담 신청하기'}</TitleBox>
         <S.Container>
           <S.Box stepStatus={stepStatus[0]}>
             <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
               <S.Circle>1</S.Circle>
-              <h3>코치를 선택해주세요.</h3>
+              <h3>
+                코치를 선택해주세요.
+                <S.EmphasizedText>
+                  {coaches.find((coach) => coach.id === coachId)?.nickname ?? ''}
+                </S.EmphasizedText>
+              </h3>
+              <S.StatusBox>
+                <div>
+                  <S.SmallCircle />
+                  면담 불가
+                </div>
+                <div>
+                  <S.SmallCircle green />
+                  면담 가능
+                </div>
+              </S.StatusBox>
             </div>
 
             <div className="fold-box">
@@ -288,10 +311,16 @@ const InterviewApplyPage = () => {
             </div>
           </S.Box>
 
-          <S.Box stepStatus={stepStatus[1]}>
+          <S.Box stepStatus={stepStatus[1]} hideFoldBoxOverflow>
             <div className="sub-title" onClick={() => handleClickStepTitle(1)}>
               <S.Circle>2</S.Circle>
-              <h3>날짜 및 시간을 선택해주세요.</h3>
+              <h3>
+                날짜 및 시간을 선택해주세요.
+                <S.EmphasizedText>
+                  {selectedTimes.length > 0 &&
+                    `${selectedDates[0].year}년 ${selectedDates[0].month}월 ${selectedDates[0].day}일 ${selectedTimes[0]}`}
+                </S.EmphasizedText>
+              </h3>
             </div>
 
             <div className="fold-box">
@@ -343,7 +372,6 @@ const InterviewApplyPage = () => {
                   message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                   handleChange={getHandleChangeAnswer(setAnswer1)}
                   checkValidation={isValidApplyFormLength}
-                  isSubmitted={isSubmitted}
                 />
                 <TextAreaField
                   id="example2"
@@ -353,7 +381,6 @@ const InterviewApplyPage = () => {
                   message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                   handleChange={getHandleChangeAnswer(setAnswer2)}
                   checkValidation={isValidApplyFormLength}
-                  isSubmitted={isSubmitted}
                 />
                 <TextAreaField
                   id="example3"
@@ -363,18 +390,9 @@ const InterviewApplyPage = () => {
                   message={ERROR_MESSAGE.ENTER_IN_RANGE_APPLY_FORM_LENGTH}
                   handleChange={getHandleChangeAnswer(setAnswer3)}
                   checkValidation={isValidApplyFormLength}
-                  isSubmitted={isSubmitted}
                 />
-                <Button
-                  type="submit"
-                  width="100%"
-                  height="4rem"
-                  inActive={
-                    !isValidApplyFormLength(answer1) ||
-                    !isValidApplyFormLength(answer2) ||
-                    !isValidApplyFormLength(answer3)
-                  }
-                >
+                <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
+                <Button type="submit" width="100%" s height="4rem" inActive={isNotValidForm}>
                   {interviewId ? '수정 완료' : '신청 완료'}
                 </Button>
               </S.Form>

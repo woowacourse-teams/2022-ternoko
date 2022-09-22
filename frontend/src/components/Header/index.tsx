@@ -9,12 +9,13 @@ import { PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 
 const Header = () => {
-  const { nickname, imageUrl } = useUserState();
-  const memberRole = LocalStorage.getMemberRole();
-  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const navigate = useNavigate();
+  const { nickname, imageUrl } = useUserState();
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-  const toggleDropdown = () => setIsOpenDropdown((prev: boolean) => !prev);
+  const memberRole = LocalStorage.getMemberRole();
+
+  const toggleDropdown = () => setIsOpenDropdown((prev) => !prev);
 
   const handleLogout = () => {
     LocalStorage.removeAccessToken();
@@ -25,12 +26,18 @@ const Header = () => {
     <S.Box>
       {memberRole === 'COACH' ? (
         <Link to={PAGE.COACH_HOME}>
-          <img src="/assets/logo/mainLogo.png" alt="로고" />
+          <picture>
+            <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
+            <img src="/assets/logo/mainLogo.png" alt="로고" />
+          </picture>
           <h1>코치도 터놓고</h1>
         </Link>
       ) : (
         <Link to={PAGE.CREW_HOME}>
-          <img src="/assets/logo/mainLogo.png" alt="로고" />
+          <picture>
+            <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
+            <img src="/assets/logo/mainLogo.png" alt="로고" />
+          </picture>
           <h1>크루도 터놓고</h1>
         </Link>
       )}
@@ -38,6 +45,7 @@ const Header = () => {
         <S.MenuBox>
           <S.Nickname>{nickname}님, 환영합니다 😎</S.Nickname>
           <S.ProfileImage src={imageUrl} alt="프로필" onClick={toggleDropdown} />
+
           <S.DropdownContainer open={isOpenDropdown}>
             <Link to={PAGE.MY_PAGE}>
               <S.DropdownItem onClick={toggleDropdown}>마이 페이지</S.DropdownItem>
@@ -46,6 +54,7 @@ const Header = () => {
           </S.DropdownContainer>
         </S.MenuBox>
       )}
+      {isOpenDropdown && <S.Dimmer onClick={toggleDropdown} />}
     </S.Box>
   );
 };

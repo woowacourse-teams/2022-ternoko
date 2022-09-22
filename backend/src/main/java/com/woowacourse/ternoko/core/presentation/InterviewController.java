@@ -3,6 +3,7 @@ package com.woowacourse.ternoko.core.presentation;
 import com.woowacourse.ternoko.auth.presentation.annotation.AuthenticationPrincipal;
 import com.woowacourse.ternoko.auth.presentation.annotation.CoachOnly;
 import com.woowacourse.ternoko.auth.presentation.annotation.CrewOnly;
+import com.woowacourse.ternoko.auth.presentation.annotation.SlackAlarm;
 import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
@@ -38,6 +39,7 @@ public class InterviewController {
     }
 
     @CrewOnly
+    @SlackAlarm
     @PostMapping("/interviews")
     public ResponseEntity<Void> createInterview(@AuthenticationPrincipal final Long crewId,
                                                 @RequestBody final InterviewRequest interviewRequest) throws Exception {
@@ -60,6 +62,7 @@ public class InterviewController {
     }
 
     @CrewOnly
+    @SlackAlarm
     @PutMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> updateInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId,
@@ -69,6 +72,7 @@ public class InterviewController {
     }
 
     @CrewOnly
+    @SlackAlarm
     @DeleteMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> deleteInterview(@AuthenticationPrincipal final Long crewId,
                                                 @PathVariable final Long interviewId) throws Exception {
@@ -77,6 +81,7 @@ public class InterviewController {
     }
 
     @CoachOnly
+    @SlackAlarm
     @PatchMapping("/interviews/{interviewId}")
     public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
                                                 @PathVariable final Long interviewId,

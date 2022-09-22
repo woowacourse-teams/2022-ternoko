@@ -13,7 +13,7 @@ public enum InterviewStatusType {
     COMMENT,
     COACH_COMPLETED,
     CREW_COMPLETED,
-    COMPLETE,
+    COMPLETED,
     CANCELED;
 
     public static boolean isCanceled(final InterviewStatusType type) {
@@ -41,6 +41,6 @@ public enum InterviewStatusType {
     }
 
     public boolean canFindCommentBy() {
-        return this == COMPLETE || this == COACH_COMPLETED || this == CREW_COMPLETED;
+        return this == COMPLETED || this == COACH_COMPLETED || this == CREW_COMPLETED;
     }
 }

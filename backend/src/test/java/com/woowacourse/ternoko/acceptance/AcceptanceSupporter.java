@@ -4,16 +4,13 @@ import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.AU
 import static com.woowacourse.ternoko.auth.application.AuthorizationExtractor.BEARER_TYPE;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEM_REQUESTS;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 import com.woowacourse.ternoko.auth.application.JwtProvider;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
-import com.woowacourse.ternoko.support.SlackAlarm;
+import com.woowacourse.ternoko.support.alarm.SlackAlarm;
 import com.woowacourse.ternoko.support.utils.AcceptanceTest;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import io.restassured.RestAssured;
@@ -22,14 +19,10 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 @AcceptanceTest
 public class AcceptanceSupporter extends DatabaseSupporter {
@@ -40,37 +33,12 @@ public class AcceptanceSupporter extends DatabaseSupporter {
     @MockBean
     private SlackAlarm slackAlarm;
 
-    @MockBean
-    private WebClient webClient;
-
-    @Mock
-    WebClient.RequestBodyUriSpec requestBodyUriSpec;
-
-    @Mock
-    WebClient.RequestHeadersSpec requestHeadersSpec;
-
-    @Mock
-    WebClient.RequestBodySpec requestBodySpec;
-
-    @Mock
-    WebClient.ResponseSpec responseSpec;
-
     @LocalServerPort
     private int port;
 
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
-        given(webClient.post()).willReturn(requestBodyUriSpec);
-        when(requestBodyUriSpec.uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.header(any(), any())).thenReturn(requestBodySpec);
-        when(requestBodySpec.accept(any())).thenReturn(requestBodySpec);
-        when(responseSpec.bodyToMono(ArgumentMatchers.<Class<String>>notNull()))
-                .thenReturn(Mono.just("resp"));
-        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(requestBodyUriSpec.retrieve()).thenReturn(responseSpec);
-
-        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
 
         doNothing().when(slackAlarm).sendCreateMessage(any());
         doNothing().when(slackAlarm).sendUpdateMessage(any(), any());

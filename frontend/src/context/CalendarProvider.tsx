@@ -23,6 +23,8 @@ type CalendarStateType = {
 type CalendarActionsType = {
   handleClickPrevYear: () => void;
   handleClickNextYear: () => void;
+  handleClickPrevMonth: () => void;
+  handleClickNextMonth: () => void;
   handleClickMonthPicker: () => void;
   setDay: (day: number) => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
@@ -42,18 +44,18 @@ type CalendarUtilsType = {
 };
 
 export const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  '1월',
+  '2월',
+  '3월',
+  '4월',
+  '5월',
+  '6월',
+  '7월',
+  '8월',
+  '9월',
+  '10월',
+  '11월',
+  '12월',
 ];
 
 const isLeapYear = (year: number) =>
@@ -76,7 +78,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
 
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
-  const firstDay = new Date(`${year}/${month + 1}/1`).getDay();
+  const firstDay = new Date(year, month, 1).getDay();
   const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysLength = daysOfMonth[month] + firstDay;
 
@@ -91,7 +93,7 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
 
   const isBelowToday = (day: number) => {
     const today = new Date().getTime();
-    const date = new Date(`${year}-${month + 1}-${day}`).getTime();
+    const date = new Date(year, month, day).getTime();
 
     return date <= today;
   };
@@ -117,6 +119,28 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     },
     handleClickNextYear() {
       setYear((prev) => prev + 1);
+    },
+    handleClickPrevMonth() {
+      setMonth((prev) => {
+        if (prev === 0) {
+          actions.handleClickPrevYear();
+
+          return 11;
+        }
+
+        return prev - 1;
+      });
+    },
+    handleClickNextMonth() {
+      setMonth((prev) => {
+        if (prev === 11) {
+          actions.handleClickNextYear();
+
+          return 0;
+        }
+
+        return prev + 1;
+      });
     },
     handleClickMonthPicker: () => {
       setShowMonthPicker(true);

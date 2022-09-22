@@ -13,11 +13,17 @@ const LoginPage = () => {
           <h2>면담 예약 서비스</h2>
           <S.LogoBox>
             <h1>터놓고</h1>
-            <img src="/assets/logo/mainLogo.png" alt="프로필 로고" />
+            <picture>
+              <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
+              <img src="/assets/logo/mainLogo.png" alt="로고" />
+            </picture>
           </S.LogoBox>
           <a href={PAGE.SLACK_LOGIN_SERVER}>
             <S.LoginButton>
-              <img src="/assets/icon/slack.png" alt="슬랙 로고" />
+              <picture>
+                <source srcSet="/assets/icon/slack.avif" type="image/avif" />
+                <img src="/assets/icon/slack.png" alt="슬랙 로고" />
+              </picture>
               슬랙 로그인
             </S.LoginButton>
           </a>

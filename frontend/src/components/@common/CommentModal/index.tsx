@@ -36,7 +36,6 @@ const CommentModal = ({
   afterPostAndPutComment,
   handleCloseModal,
 }: CommentModalProps) => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [commentId, setCommentId] = useState(-1);
   const [coachComment, setCoachComment] = useState('');
   const [crewComment, setCrewComment] = useState('');
@@ -58,8 +57,6 @@ const CommentModal = ({
   };
 
   const handleClickButton = async () => {
-    isSubmitted || setIsSubmitted(true);
-
     try {
       const comment = memberRole === 'CREW' ? crewComment : coachComment;
 
@@ -84,7 +81,10 @@ const CommentModal = ({
   };
 
   useEffect(() => {
-    if (!show) return;
+    if (!show) {
+      memberRole === 'CREW' ? setCrewComment('') : setCoachComment('');
+      return;
+    }
 
     (async () => {
       const response = await getCommentAPI(Number(interviewId));
@@ -108,9 +108,18 @@ const CommentModal = ({
   }, [show]);
 
   return (
-    <Modal show={show} display={display} handleCloseModal={handleCloseModal}>
+    <Modal
+      show={show}
+      display={display}
+      handleCloseModal={handleCloseModal}
+      additionalFrameStyle={S.additionalFrameStyle}
+    >
       <h2>자유롭게 한마디를 작성해줘잉~~😎</h2>
-      <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
+      <picture>
+        <source srcSet="/assets/icon/close.avif" type="image/avif" />
+        <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
+      </picture>
+
       <S.ExampleBox>
         <p>예시 1) 고민이 싹~ 해결되었네요!! 감사합니다.</p>
         <p>예시 2) 항상 덕분에 즐겁습니다. 오늘 하루도 행복하세요.</p>
@@ -124,7 +133,6 @@ const CommentModal = ({
               value={coachComment}
               maxLength={COMMENT_MAX_LENGTH}
               message={isCrewCompleted ? '' : ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
-              isSubmitted={isSubmitted}
               disabled={isCrewCompleted}
               handleChange={handleChangeCoachTextarea}
               checkValidation={isCrewCompleted ? () => true : isValidCommentLength}
@@ -136,7 +144,7 @@ const CommentModal = ({
                   inActive={!isValidCommentLength(coachComment)}
                   onClick={handleClickButton}
                 >
-                  면담 {commentId === -1 ? '완료' : '수정'}하기
+                  코멘트 {commentId === -1 ? '완료' : '수정'}하기
                 </Button>
               </S.ButtonBox>
             )}
@@ -150,7 +158,6 @@ const CommentModal = ({
               value={crewComment}
               maxLength={COMMENT_MAX_LENGTH}
               message={isCoachCompleted ? '' : ERROR_MESSAGE.ENTER_IN_RANGE_COMMENT}
-              isSubmitted={isSubmitted}
               disabled={isCoachCompleted}
               handleChange={handleChangeCrewTextarea}
               checkValidation={isCoachCompleted ? () => true : isValidCommentLength}
@@ -162,7 +169,7 @@ const CommentModal = ({
                   inActive={!isValidCommentLength(crewComment)}
                   onClick={handleClickButton}
                 >
-                  면담 {commentId === -1 ? '완료' : '수정'}하기
+                  코멘트 {commentId === -1 ? '완료' : '수정'}하기
                 </Button>
               </S.ButtonBox>
             )}

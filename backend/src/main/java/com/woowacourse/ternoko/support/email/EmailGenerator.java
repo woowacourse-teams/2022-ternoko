@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.support;
+package com.woowacourse.ternoko.support.email;
 
 import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
 import com.woowacourse.ternoko.support.application.response.EmailResponse;
