@@ -13,6 +13,7 @@ import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItems;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
@@ -46,6 +47,10 @@ public class Interview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "interview_id")
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "available_date_time_id")
+    private AvailableDateTime availableDateTime;
 
     @Column(nullable = false)
     private LocalDateTime interviewStartTime;
@@ -201,6 +206,7 @@ public class Interview {
 
     public Interview copyOf() {
         return new Interview(this.id,
+                this.availableDateTime,
                 this.interviewStartTime,
                 this.interviewEndTime,
                 this.coach,

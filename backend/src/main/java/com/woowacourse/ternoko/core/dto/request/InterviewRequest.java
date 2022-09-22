@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class InterviewRequest {
 
     private Long coachId;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime interviewDatetime;
     private List<FormItemRequest> interviewQuestions;
