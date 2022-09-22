@@ -27,7 +27,7 @@ const Header = () => {
       {memberRole === 'COACH' ? (
         <Link to={PAGE.COACH_HOME}>
           <picture>
-            <source srcSet="/assets/logo/mainLogo.avif" />
+            <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
             <img src="/assets/logo/mainLogo.png" alt="로고" />
           </picture>
           <h1>코치도 터놓고</h1>
@@ -35,7 +35,7 @@ const Header = () => {
       ) : (
         <Link to={PAGE.CREW_HOME}>
           <picture>
-            <source srcSet="/assets/logo/mainLogo.avif" />
+            <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
             <img src="/assets/logo/mainLogo.png" alt="로고" />
           </picture>
           <h1>크루도 터놓고</h1>

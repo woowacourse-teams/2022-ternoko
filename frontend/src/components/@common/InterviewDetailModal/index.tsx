@@ -80,7 +80,7 @@ const InterviewDetailModal = ({
     >
       <S.IconContainer>
         <picture>
-          <source srcSet="/assets/icon/delete.avif" />
+          <source srcSet="/assets/icon/delete.avif" type="image/avif" />
           <S.Icon
             src="/assets/icon/delete.png"
             alt="삭제 아이콘"
@@ -89,7 +89,7 @@ const InterviewDetailModal = ({
           />
         </picture>
         <picture>
-          <source srcSet="/assets/icon/close.avif" />
+          <source srcSet="/assets/icon/close.avif" type="image/avif" />
           <S.Icon
             src="/assets/icon/close.png"
             alt="모달 창 닫기 아이콘"
@@ -108,7 +108,7 @@ const InterviewDetailModal = ({
           <S.Info>
             <S.IconBox>
               <picture>
-                <source srcSet="/assets/icon/human.avif" />
+                <source srcSet="/assets/icon/human.avif" type="image/avif" />
                 <S.Icon src="/assets/icon/human.png" alt="코치 아이콘" />
               </picture>
             </S.IconBox>
@@ -119,7 +119,7 @@ const InterviewDetailModal = ({
         <S.Info>
           <S.IconBox>
             <picture>
-              <source srcSet="/assets/icon/calendar.avif" />
+              <source srcSet="/assets/icon/calendar.avif" type="image/avif" />
               <S.Icon src="/assets/icon/calendar.png" alt="달력 아이콘" />
             </picture>
           </S.IconBox>
@@ -128,7 +128,7 @@ const InterviewDetailModal = ({
         <S.Info>
           <S.IconBox>
             <picture>
-              <source srcSet="/assets/icon/clock.avif" />
+              <source srcSet="/assets/icon/clock.avif" type="image/avif" />
               <S.Icon src="/assets/icon/clock.png" alt="시간 아이콘" />
             </picture>
           </S.IconBox>

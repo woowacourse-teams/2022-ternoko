@@ -116,7 +116,7 @@ const CommentModal = ({
     >
       <h2>자유롭게 한마디를 작성해줘잉~~😎</h2>
       <picture>
-        <source srcSet="/assets/icon/close.avif" />
+        <source srcSet="/assets/icon/close.avif" type="image/avif" />
         <S.Icon src="/assets/icon/close.png" alt="모달 창 닫기 아이콘" onClick={handleCloseModal} />
       </picture>
 

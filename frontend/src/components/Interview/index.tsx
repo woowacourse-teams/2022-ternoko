@@ -45,14 +45,14 @@ const Interview = ({
       </S.ImageTextBox>
       <S.ImageTextBox>
         <picture>
-          <source srcSet="/assets/icon/calendar.avif" />
+          <source srcSet="/assets/icon/calendar.avif" type="image/avif" />
           <S.IconImage src="/assets/icon/calendar.png" alt="달력 아이콘" />
         </picture>
         <S.DateText>{getDateString(interviewStartTime)}</S.DateText>
       </S.ImageTextBox>
       <S.ImageTextBox>
         <picture>
-          <source srcSet="/assets/icon/clock.avif" />
+          <source srcSet="/assets/icon/clock.avif" type="image/avif" />
           <S.IconImage src="/assets/icon/clock.png" alt="시계 아이콘" />
         </picture>
         <S.DateText>
@@ -63,7 +63,7 @@ const Interview = ({
       <S.ButtonBox>
         <Button orange={true} onClick={handleClickDetailButton}>
           <picture>
-            <source srcSet="/assets/icon/magnifier.avif" />
+            <source srcSet="/assets/icon/magnifier.avif" type="image/avif" />
             <S.ButtonImage src="/assets/icon/magnifier.png" alt="돋보기 아이콘" />
           </picture>
           상세보기
@@ -72,7 +72,7 @@ const Interview = ({
           <Link to={`${PAGE.INTERVIEW_APPLY}?interviewId=${id}`}>
             <Button orange={true}>
               <picture>
-                <source srcSet="/assets/icon/edit.avif" />
+                <source srcSet="/assets/icon/edit.avif" type="image/avif" />
                 <S.ButtonImage src="/assets/icon/edit.png" alt="편집 아이콘" />
               </picture>
               편집
@@ -82,7 +82,7 @@ const Interview = ({
         {isOverToday(interviewEndTime) && (
           <Button orange={true} onClick={handleClickCommentButton}>
             <picture>
-              <source srcSet="/assets/icon/success.avif" />
+              <source srcSet="/assets/icon/success.avif" type="image/avif" />
               <S.ButtonImage src="/assets/icon/success.png" alt="성공 아이콘" />
             </picture>
             코멘트

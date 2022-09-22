@@ -63,7 +63,7 @@ const Loading = ({ additionalBoxStyle, profileSizeRem, animationDuration }: Load
           nickname={nickname}
         >
           <picture>
-            <source srcSet={avifImageUrl} />
+            <source srcSet={avifImageUrl} type="image/avif" />
             <img src={pngImageUrl} alt="터놓고 프로필" />
           </picture>
         </S.TernokoProfile>
