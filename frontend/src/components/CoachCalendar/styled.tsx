@@ -19,9 +19,6 @@ type CalendarDayProps = {
 };
 
 export const CalendarDay = styled(Day)<CalendarDayProps>`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
   text-align: center;
   height: 10rem;
   overflow-y: scroll;
@@ -54,14 +51,19 @@ export const Today = styled.p`
 
 type ScheduleProps = {
   status: InterviewStatus;
+  padding?: number;
 };
 
 export const Schedule = styled.div<ScheduleProps>`
-  padding: 0.5rem;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: ${({ padding }) => padding ?? 0.5}rem;
+  margin-top: 0.5rem;
   border-radius: 10px;
   font-weight: 600;
   font-size: 1.3rem;
-  line-break: anywhere;
 
   background-color: ${({ theme }) => theme.colors.pink_50};
 
@@ -82,11 +84,12 @@ export const Schedule = styled.div<ScheduleProps>`
 `;
 
 export const CrewNickname = styled.p`
+  width: 48%;
   display: flex;
-  align-items: center;
-  height: 4rem;
-  padding: 0 1rem;
+  justify-content: center;
+  padding: 0.5rem;
   border-radius: 10px;
+  font-size: 1.3rem;
   cursor: pointer;
 
   background-color: ${({ theme }) => theme.colors.pink_50};
