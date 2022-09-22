@@ -32,12 +32,12 @@ const Toast = () => {
               <S.Content>
                 {toast.title === 'SUCCESS' ? (
                   <picture>
-                    <source srcSet="/assets/icon/success.avif" />
+                    <source srcSet="/assets/icon/success.avif" type="image/avif" />
                     <S.TitleIcon src="/assets/icon/success.png" alt="성공 아이콘" />
                   </picture>
                 ) : (
                   <picture>
-                    <source srcSet="/assets/icon/error.avif" />
+                    <source srcSet="/assets/icon/error.avif" type="image/avif" />
                     <S.TitleIcon src="/assets/icon/error.png" alt="에러 아이콘" />
                   </picture>
                 )}

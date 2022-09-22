@@ -59,7 +59,7 @@ const AskDeleteTimeModal = ({
       <S.Header>
         <h2>열어둔 시간은 남겨둘까용?😎</h2>
         <picture>
-          <source srcSet="/assets/icon/close.avif" />
+          <source srcSet="/assets/icon/close.avif" type="image/avif" />
           <S.Icon
             src="/assets/icon/close.png"
             alt="모달 창 닫기 아이콘"
