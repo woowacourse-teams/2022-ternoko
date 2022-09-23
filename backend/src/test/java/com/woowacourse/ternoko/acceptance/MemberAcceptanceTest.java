@@ -85,9 +85,9 @@ class MemberAcceptanceTest extends AcceptanceSupporter {
         // then
         final List<AvailableDateTimeResponse> actual = response.getCalendarTimes();
         assertThat(actual).hasSize(3)
-                .containsExactly(new AvailableDateTimeResponse(LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), USED),
-                        new AvailableDateTimeResponse(LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME), OPEN),
-                        new AvailableDateTimeResponse(LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME), OPEN));
+                .containsExactly(new AvailableDateTimeResponse(1L, LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME), USED),
+                        new AvailableDateTimeResponse(3L, LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME), OPEN),
+                        new AvailableDateTimeResponse(4L, LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME), OPEN));
     }
 
     private void putAvailableTimes() {
