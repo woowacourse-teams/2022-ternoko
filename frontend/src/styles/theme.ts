@@ -20,6 +20,7 @@ const theme = {
   },
   shadows: {
     basic: '#64646f33 0px 7px 29px 0px',
+    allRound: 'rgb(173 181 189) 0px 0px 5px',
   },
   devices: {
     mobileS: (adjustment: number = 0) => `(max-width: ${320 + adjustment}px)`,

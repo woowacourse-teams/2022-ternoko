@@ -7,7 +7,6 @@ import { DayType, InterviewStatus } from '@/types/domain';
 export const Box = styled.div`
   width: 100%;
   height: max-content;
-  position: relative;
 
   box-shadow: ${({ theme }) => theme.shadows.basic};
   border-radius: 20px;
@@ -20,8 +19,8 @@ type CalendarDayProps = {
 
 export const CalendarDay = styled(Day)<CalendarDayProps>`
   text-align: center;
-  height: 10rem;
-  overflow-y: scroll;
+  height: 12rem;
+  overflow-y: auto;
 
   ${({ type }) =>
     type === 'active' &&
@@ -35,6 +34,14 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
       background-color: ${({ theme }) => theme.colors.gray_100};
       cursor: default;
     `}
+`;
+
+export const CalendarDayHeader = styled.div`
+  width: 100%;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  font-size: 1.5rem;
 `;
 
 export const Today = styled.p`
@@ -60,10 +67,11 @@ export const Schedule = styled.div<ScheduleProps>`
   text-overflow: ellipsis;
   white-space: nowrap;
   padding: ${({ padding }) => padding ?? 0.5}rem;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   border-radius: 10px;
   font-weight: 600;
   font-size: 1.3rem;
+  cursor: pointer;
 
   background-color: ${({ theme }) => theme.colors.pink_50};
 
@@ -75,12 +83,33 @@ export const Schedule = styled.div<ScheduleProps>`
       justify-content: space-between;
 
       background-color: ${theme.colors.white_50};
-
-      @media ${theme.devices.tabletM(50)} {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
     `};
+
+  @media ${({ theme }) => theme.devices.tabletM(50)} {
+    font-size: 1rem;
+
+    button,
+    p {
+      font-size: 1rem;
+    }
+  }
+`;
+
+export const ShowMore = styled.div`
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.5rem;
+  font-size: 1.3rem;
+  text-align: left;
+
+  color: ${({ theme }) => theme.colors.gray_150};
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.gray_150};
+    color: ${({ theme }) => theme.colors.white_50};
+  }
 `;
 
 export const CrewNickname = styled.p`

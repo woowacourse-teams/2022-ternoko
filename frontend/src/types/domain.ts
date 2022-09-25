@@ -106,3 +106,12 @@ export type StringDictionary = {
 export type SelectMode = 'SINGLE' | 'MULTIPLE';
 
 export type DayType = 'default' | 'disable' | 'active';
+
+export type DayOfWeekType = '일' | '월' | '화' | '수' | '목' | '금' | '토';
+
+export type ModalPositionType = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+};

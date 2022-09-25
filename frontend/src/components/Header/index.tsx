@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import * as S from './styled';
 
+import Dimmer from '@/components/@common/Dimmer/styled';
+
 import { useUserState } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
@@ -54,7 +56,7 @@ const Header = () => {
           </S.DropdownContainer>
         </S.MenuBox>
       )}
-      {isOpenDropdown && <S.Dimmer onClick={toggleDropdown} />}
+      {isOpenDropdown && <Dimmer onClick={toggleDropdown} />}
     </S.Box>
   );
 };
