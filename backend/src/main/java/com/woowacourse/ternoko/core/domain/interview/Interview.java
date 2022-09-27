@@ -72,6 +72,7 @@ public class Interview {
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
 
+    // TODO: 삭제 (아래껄로 교체)
     public Interview(final Long id,
                      final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
@@ -88,6 +89,25 @@ public class Interview {
         this.interviewStatusType = interviewStatusType;
     }
 
+    public Interview(final Long id,
+                     final AvailableDateTime availableDateTime,
+                     final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
+                     final List<FormItem> formItems,
+                     final InterviewStatusType interviewStatusType) {
+        this.id = id;
+        this.availableDateTime = availableDateTime;
+        this.interviewStartTime = interviewStartTime;
+        this.interviewEndTime = interviewEndTime;
+        this.coach = coach;
+        this.crew = crew;
+        this.formItems = new FormItems(formItems, this);
+        this.interviewStatusType = interviewStatusType;
+    }
+
+    // TODO: 삭제 (아래껄로 교체)
     public Interview(final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
                      final Coach coach,
@@ -96,13 +116,24 @@ public class Interview {
         this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
     }
 
-    public static Interview of(final LocalDateTime interviewDatetime,
+    public Interview(final AvailableDateTime availableDateTime,
+                     final LocalDateTime interviewStartTime,
+                     final LocalDateTime interviewEndTime,
+                     final Coach coach,
+                     final Crew crew,
+                     final List<FormItem> formItems) {
+        this(null, availableDateTime, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
+    }
+
+    public static Interview of(final AvailableDateTime availableDateTime,
+                               final LocalDateTime interviewStartTime,
                                final Coach coach,
                                final Crew crew,
                                final List<FormItem> formItems) {
         return new Interview(
-                interviewDatetime,
-                interviewDatetime.plusMinutes(30),
+                availableDateTime,
+                interviewStartTime,
+                interviewStartTime.plusMinutes(30),
                 coach,
                 crew,
                 formItems);
@@ -147,6 +178,7 @@ public class Interview {
 
     public void cancel(final Long coachId) {
         validateCoach(coachId);
+        this.availableDateTime = null;
         this.interviewStatusType = CANCELED;
     }
 

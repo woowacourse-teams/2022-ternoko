@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.core.domain.availabledatetime;
 
+import com.woowacourse.ternoko.support.time.TimeMachine;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -34,7 +35,8 @@ public class AvailableDateTime {
     @Enumerated(EnumType.STRING)
     private AvailableDateTimeStatus availableDateTimeStatus;
 
-    public AvailableDateTime(final Long coachId, final LocalDateTime localDateTime,
+    public AvailableDateTime(final Long coachId,
+                             final LocalDateTime localDateTime,
                              final AvailableDateTimeStatus availableDateTimeStatus) {
         this.coachId = coachId;
         this.localDateTime = localDateTime;
@@ -46,13 +48,15 @@ public class AvailableDateTime {
     }
 
     public boolean isPast() {
-        final LocalDate nowDay = LocalDate.now();
+//        final LocalDate nowDay = LocalDate.now();
+        final LocalDate nowDay = TimeMachine.dateOfNow();
         final LocalDate targetDay = localDateTime.toLocalDate();
         return targetDay.isBefore(nowDay);
     }
 
     public boolean isToday() {
-        final LocalDate nowDay = LocalDate.now();
+//        final LocalDate nowDay = LocalDate.now();
+        final LocalDate nowDay = TimeMachine.dateOfNow();
         final LocalDate targetDay = localDateTime.toLocalDate();
         return targetDay.isEqual(nowDay);
     }

@@ -30,13 +30,16 @@ public enum ExceptionType {
     CANNOT_EDIT_INTERVIEW(4005, "이미 사전메일을 보낸 면담은 수정할 수 없습니다."),
     INVALID_INTERVIEW_BY_MEMBER(4006, "다른 사용자의 인터뷰에 접근할 수 없습니다."),
 
+    // AvailableDateTime 관련 Exception
+    AVAILABLE_DATE_TIME_NOT_FOUND(5001, "해당 면담 가능 시간을 찾을 수 없습니다."),
+
     // Comment 관련 Exception
-    INVALID_STATUS_CREATE_COMMENT(5001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),
-    INVALID_STATUS_FIND_COMMENT(5002, "해당 면담은 자유로운 한마디를 조회할 수 없습니다."),
-    COMMENT_NOT_FOUND(5003, "번째 코멘트를 찾을 수 없습니다."),
-    INVALID_INTERVIEW_MEMBER_ID(5004, "해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."),
-    INVALID_COMMENT_MEMBER_ID(5005, "해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."),
-    INVALID_COMMENT_INTERVIEW_ID(5006, "코멘트에 해당하지 않는 면담입니다."),
+    INVALID_STATUS_CREATE_COMMENT(6001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),
+    INVALID_STATUS_FIND_COMMENT(6002, "해당 면담은 자유로운 한마디를 조회할 수 없습니다."),
+    COMMENT_NOT_FOUND(6003, "번째 코멘트를 찾을 수 없습니다."),
+    INVALID_INTERVIEW_MEMBER_ID(6004, "해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."),
+    INVALID_COMMENT_MEMBER_ID(6005, "해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."),
+    INVALID_COMMENT_INTERVIEW_ID(6006, "코멘트에 해당하지 않는 면담입니다."),
 
     // HTTP 관련 Exception
     REQUEST_EXCEPTION(8001, "http 요청 에러입니다."),
