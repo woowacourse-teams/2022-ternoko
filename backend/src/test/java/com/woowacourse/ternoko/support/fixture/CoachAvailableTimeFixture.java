@@ -35,6 +35,15 @@ public class CoachAvailableTimeFixture {
             LocalDateTime.now(),
             AvailableDateTimeStatus.OPEN);
 
+    public static final AvailableDateTime AVAILABLE_DATE_TIME_COACH1_1 = createAvailableDateTime(1L, 10);
+    public static final AvailableDateTime AVAILABLE_DATE_TIME_COACH1_2 = createAvailableDateTime(2L, 11);
+    public static final AvailableDateTime AVAILABLE_DATE_TIME_COACH1_3 = createAvailableDateTime(3L, 12);
+    public static final AvailableDateTime AVAILABLE_DATE_TIME_COACH1_4 = createAvailableDateTime(4L, 13);
+
+    private static AvailableDateTime createAvailableDateTime(final Long id, final int hour) {
+        return new AvailableDateTime(id, COACH1.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, LocalTime.of(hour, 0)), OPEN);
+    }
+
     public static final AvailableDateTimeRequest PAST_TIME_REQUEST = new AvailableDateTimeRequest(
             LocalDate.now().getYear(),
             LocalDate.now().getMonthValue(),

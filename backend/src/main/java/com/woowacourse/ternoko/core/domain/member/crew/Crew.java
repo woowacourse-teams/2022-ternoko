@@ -4,9 +4,11 @@ import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
+@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("CREW")
 public class Crew extends Member {

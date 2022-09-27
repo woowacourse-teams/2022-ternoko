@@ -71,5 +71,4 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
     Long countByCoachId(@Param("coachId") final Long coachId,
             @Param("startDateTime") final LocalDateTime startDateTime,
             @Param("endDateTime")  final LocalDateTime endDateTime);
-
 }

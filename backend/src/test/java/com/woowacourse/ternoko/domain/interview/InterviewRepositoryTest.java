@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.domain.interview;
 
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS1;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
@@ -8,6 +9,8 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
@@ -28,6 +31,9 @@ class InterviewRepositoryTest {
 
     @Autowired
     private InterviewRepository interviewRepository;
+
+    @Autowired
+    private AvailableDateTimeRepository availableDateTimeRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -57,9 +63,18 @@ class InterviewRepositoryTest {
     @DisplayName("해당 일시에 시작하는 interivew를 들고와야 한다.")
     void findAllByInterviewStartDay() {
         // given
-        final Long savedInterviewId1 = saveInterview(LocalDateTime.of(2022, 7, 29, 17, 30),
+        final LocalDateTime _2022_07_29_17_30 = LocalDateTime.of(2022, 7, 29, 17, 30);
+        final LocalDateTime _2022_07_29_16_30 = LocalDateTime.of(2022, 7, 29, 16, 30);
+        final AvailableDateTime availableDateTime1 = availableDateTimeRepository.save(
+                new AvailableDateTime(COACH1.getId(), _2022_07_29_17_30, OPEN));
+        final AvailableDateTime availableDateTime2 = availableDateTimeRepository.save(
+                new AvailableDateTime(COACH1.getId(), _2022_07_29_16_30, OPEN));
+
+        final Long savedInterviewId1 = saveInterview(_2022_07_29_17_30,
+                availableDateTime1,
                 coach1, crew1, FORM_ITEMS1);
-        final Long savedInterviewId2 = saveInterview(LocalDateTime.of(2022, 7, 29, 16, 30),
+        final Long savedInterviewId2 = saveInterview(_2022_07_29_16_30,
+                availableDateTime2,
                 coach2, crew2, FORM_ITEMS2);
         // when
         final List<Interview> interviews = interviewRepository.findAllByInterviewStartDay(2022, 7, 29);
@@ -71,10 +86,11 @@ class InterviewRepositoryTest {
     }
 
     private Long saveInterview(final LocalDateTime localDateTime,
+                               final AvailableDateTime availableDateTime,
                                final Coach coach,
                                final Crew crew, List<FormItem> formItems) {
-
         final Interview interview = interviewRepository.save(new Interview(
+                availableDateTime,
                 localDateTime,
                 localDateTime.plusMinutes(30),
                 coach,

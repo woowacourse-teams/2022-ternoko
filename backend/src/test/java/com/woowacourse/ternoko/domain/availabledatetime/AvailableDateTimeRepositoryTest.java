@@ -136,7 +136,7 @@ class AvailableDateTimeRepositoryTest {
         saveAvailableTime(reservedTime, USED);
 
         // when
-        final Long interviewId = saveInterview(startTime);
+        final Long interviewId = saveInterview(startDateTime);
         final List<AvailableDateTime> times = availableDateTimeRepository
                 .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId,
                         coach.getId(),
@@ -155,10 +155,11 @@ class AvailableDateTimeRepositoryTest {
                 new AvailableDateTime(coach.getId(), startTime, availableDateTimeStatus));
     }
 
-    private Long saveInterview(final LocalDateTime startTime) {
+    private Long saveInterview(final AvailableDateTime availableDateTime) {
         final Interview interview = interviewRepository.save(new Interview(
-                startTime,
-                startTime.plusMinutes(30),
+                availableDateTime,
+                availableDateTime.getLocalDateTime(),
+                availableDateTime.getLocalDateTime().plusMinutes(30),
                 coach,
                 crew,
                 createFormItems()

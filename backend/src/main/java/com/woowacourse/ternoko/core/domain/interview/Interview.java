@@ -1,8 +1,9 @@
 package com.woowacourse.ternoko.core.domain.interview;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_COACH_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_UPDATE_CREW;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.EDITABLE;
@@ -10,10 +11,10 @@ import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
+import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItems;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
@@ -28,6 +29,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,7 +50,7 @@ public class Interview {
     @JoinColumn(name = "interview_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "available_date_time_id")
     private AvailableDateTime availableDateTime;
 
@@ -62,7 +64,7 @@ public class Interview {
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
@@ -71,23 +73,6 @@ public class Interview {
 
     @Enumerated(EnumType.STRING)
     private InterviewStatusType interviewStatusType;
-
-    // TODO: 삭제 (아래껄로 교체)
-    public Interview(final Long id,
-                     final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach,
-                     final Crew crew,
-                     final List<FormItem> formItems,
-                     final InterviewStatusType interviewStatusType) {
-        this.id = id;
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = new FormItems(formItems, this);
-        this.interviewStatusType = interviewStatusType;
-    }
 
     public Interview(final Long id,
                      final AvailableDateTime availableDateTime,
@@ -107,15 +92,6 @@ public class Interview {
         this.interviewStatusType = interviewStatusType;
     }
 
-    // TODO: 삭제 (아래껄로 교체)
-    public Interview(final LocalDateTime interviewStartTime,
-                     final LocalDateTime interviewEndTime,
-                     final Coach coach,
-                     final Crew crew,
-                     final List<FormItem> formItems) {
-        this(null, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
-    }
-
     public Interview(final AvailableDateTime availableDateTime,
                      final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,
@@ -125,23 +101,38 @@ public class Interview {
         this(null, availableDateTime, interviewStartTime, interviewEndTime, coach, crew, formItems, EDITABLE);
     }
 
-    public static Interview of(final AvailableDateTime availableDateTime,
-                               final LocalDateTime interviewStartTime,
-                               final Coach coach,
-                               final Crew crew,
-                               final List<FormItem> formItems) {
+    public static Interview create(final AvailableDateTime availableDateTime,
+                                   final Coach coach,
+                                   final Crew crew,
+                                   final List<FormItem> formItems) {
+        validateOpenTime(availableDateTime);
+        validateNextDay(availableDateTime);
+
         return new Interview(
                 availableDateTime,
-                interviewStartTime,
-                interviewStartTime.plusMinutes(30),
+                availableDateTime.getLocalDateTime(),
+                availableDateTime.getLocalDateTime().plusMinutes(30),
                 coach,
                 crew,
                 formItems);
     }
 
-    public void update(Interview interview) {
-        validateCrew(interview.crew.getId());
+    private static void validateNextDay(final AvailableDateTime availableDateTime) {
+        if (availableDateTime.isPast() || availableDateTime.isToday()) {
+            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DATE);
+        }
+    }
+
+    private static void validateOpenTime(final AvailableDateTime availableDateTime) {
+        if (availableDateTime.isUsed()) {
+            throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
+        }
+    }
+
+    public void update(final Interview interview) {
         validateUpdateInterviewStatus();
+        validateCrewUpdate(interview);
+        this.availableDateTime = interview.getAvailableDateTime();
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
         this.coach = interview.getCoach();
@@ -149,16 +140,16 @@ public class Interview {
         formItems.update(interview.getFormItems());
     }
 
-    private void validateCrew(final Long crewId) {
-        if (!crew.isSameId(crewId)) {
-            throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
-        }
-    }
-
     private void validateUpdateInterviewStatus() {
         final List<InterviewStatusType> invalidUpdateStatus = findInvalidUpdateStatus();
         for (InterviewStatusType invalidStatus : invalidUpdateStatus) {
             validateInterviewStatus(invalidStatus);
+        }
+    }
+
+    private void validateCrewUpdate(final Interview interview) {
+        if (crew != interview.getCrew()) {
+            throw new InvalidInterviewMemberException(CANNOT_UPDATE_CREW);
         }
     }
 
@@ -176,16 +167,9 @@ public class Interview {
         }
     }
 
-    public void cancel(final Long coachId) {
-        validateCoach(coachId);
+    public void cancel() {
         this.availableDateTime = null;
         this.interviewStatusType = CANCELED;
-    }
-
-    private void validateCoach(final Long coachId) {
-        if (!coach.isSameId(coachId)) {
-            throw new InvalidInterviewCoachIdException(INVALID_INTERVIEW_COACH_ID);
-        }
     }
 
     public void complete(final MemberType memberType) {
@@ -245,6 +229,12 @@ public class Interview {
                 this.crew,
                 this.formItems,
                 this.interviewStatusType);
+    }
+
+    public void changeAvailableTimeStatusIfPresent(final AvailableDateTimeStatus status) {
+        if (availableDateTime != null) {
+            availableDateTime.changeStatus(status);
+        }
     }
 }
 

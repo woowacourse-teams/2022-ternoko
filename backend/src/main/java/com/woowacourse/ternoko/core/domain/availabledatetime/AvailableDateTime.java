@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.core.domain.availabledatetime;
 
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
+
 import com.woowacourse.ternoko.support.time.TimeMachine;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,7 +45,7 @@ public class AvailableDateTime {
         this.availableDateTimeStatus = availableDateTimeStatus;
     }
 
-    public void changeStatus(AvailableDateTimeStatus status) {
+    public void changeStatus(final AvailableDateTimeStatus status) {
         this.availableDateTimeStatus = status;
     }
 
@@ -62,6 +64,6 @@ public class AvailableDateTime {
     }
 
     public boolean isUsed() {
-        return availableDateTimeStatus.matchType(AvailableDateTimeStatus.USED);
+        return availableDateTimeStatus.matchType(USED);
     }
 }

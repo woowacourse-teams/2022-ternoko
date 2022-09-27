@@ -80,7 +80,7 @@ public class CoachService {
         availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, availableDateTime.getTimes()));
     }
 
-    public List<AvailableDateTime> toAvailableDateTimes(final Coach coach,
+    private List<AvailableDateTime> toAvailableDateTimes(final Coach coach,
                                                         final List<AvailableDateTimeSummaryRequest> times) {
         return times.stream()
                 .map(time -> new AvailableDateTime(coach.getId(), time.getTime(), time.getAvailableDateTimeStatus()))

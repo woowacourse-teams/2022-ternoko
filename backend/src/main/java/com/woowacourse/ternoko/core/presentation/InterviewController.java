@@ -5,7 +5,9 @@ import com.woowacourse.ternoko.auth.presentation.annotation.CoachOnly;
 import com.woowacourse.ternoko.auth.presentation.annotation.CrewOnly;
 import com.woowacourse.ternoko.auth.presentation.annotation.SlackAlarm;
 import com.woowacourse.ternoko.core.application.InterviewService;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
+import com.woowacourse.ternoko.core.dto.response.AvailableDateTimesResponse;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import java.net.URI;
@@ -86,7 +88,20 @@ public class InterviewController {
     public ResponseEntity<Void> cancelInterview(@AuthenticationPrincipal final Long coachId,
                                                 @PathVariable final Long interviewId,
                                                 @RequestParam final boolean onlyInterview) throws Exception {
-        interviewService.cancelAndDeleteAvailableTime(coachId, interviewId, onlyInterview);
+        interviewService.cancelAndDeleteAvailableTime(interviewId, onlyInterview);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/interviews/{interviewId}/calendar/times")
+    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimesByInterviewId(
+            @PathVariable final Long interviewId,
+            @RequestParam final Long coachId,
+            @RequestParam final int year,
+            @RequestParam final int month) {
+        final List<AvailableDateTime> availableDateTimes = interviewService
+                .findAvailableDateTimesByCoachIdOrInterviewId(interviewId, coachId, year, month);
+        final AvailableDateTimesResponse response = AvailableDateTimesResponse.from(availableDateTimes);
+        return ResponseEntity.ok(response);
     }
 }

@@ -29,9 +29,10 @@ public enum ExceptionType {
     OVER_LENGTH(4004, "자를 넘을 수 없습니다."),
     CANNOT_EDIT_INTERVIEW(4005, "이미 사전메일을 보낸 면담은 수정할 수 없습니다."),
     INVALID_INTERVIEW_BY_MEMBER(4006, "다른 사용자의 인터뷰에 접근할 수 없습니다."),
+    CANNOT_UPDATE_CREW(4007, "크루는 면담에서 변경할 수 없습니다."),
 
     // AvailableDateTime 관련 Exception
-    AVAILABLE_DATE_TIME_NOT_FOUND(5001, "해당 면담 가능 시간을 찾을 수 없습니다."),
+    AVAILABLE_DATE_TIME_NOT_FOUND(5001, "해당 면담 가능 시간을 찾을 수 없습니다. id = "),
 
     // Comment 관련 Exception
     INVALID_STATUS_CREATE_COMMENT(6001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),

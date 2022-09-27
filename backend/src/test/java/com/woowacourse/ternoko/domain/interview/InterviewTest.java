@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.domain.interview;
 
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.COACH_COMPLETED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.COMPLETED;
@@ -17,18 +18,21 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCoachIdException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.domain.interview.InvalidInterviewMemberException;
+import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import java.time.LocalDateTime;
-import org.junit.jupiter.api.Assertions;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,143 +40,67 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 class InterviewTest {
 
-    @DisplayName("인터뷰 업데이트시 면담 시간 변경")
     @Test
-    void updateInterviewTime() {
-        // given
-        final LocalDateTime localDateTime = LocalDateTime.now().plusDays(1);
-        final Interview interview = new Interview(
-                localDateTime,
-                localDateTime.plusMinutes(30),
-                COACH1,
-                CREW1,
-                FORM_ITEMS1
-        );
-
-        final LocalDateTime updateTime = localDateTime.plusDays(2);
-        final Interview updateInterview = new Interview(
-                localDateTime,
-                updateTime.plusMinutes(30),
-                COACH1,
-                CREW1,
-                FORM_ITEMS1
-        );
-
-        // when
-        interview.update(updateInterview);
-
-        // then
-        assertEqualsAll(interview, updateInterview);
-    }
-
-    @DisplayName("인터뷰 업데이트시 코치 변경")
-    @Test
-    void updateCoach() {
+    @DisplayName("인터뷰를 수정한다.")
+    void update() {
         // given
         final Interview interview = getInterview(EDITABLE);
 
+        // when
+        final LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
+        final AvailableDateTime availableDateTime = new AvailableDateTime(COACH2.getId(), nextDay.plusDays(1), USED);
         final Interview updateInterview = new Interview(
-                interview.getInterviewStartTime(),
-                interview.getInterviewStartTime().plusMinutes(30),
+                1L,
+                availableDateTime,
+                nextDay,
+                nextDay.plusMinutes(30),
                 COACH2,
                 CREW1,
-                FORM_ITEMS1
-        );
-
-        // when
+                FORM_ITEMS2,
+                FIXED);
         interview.update(updateInterview);
 
         // then
-        assertEqualsAll(interview, updateInterview);
+        assertAll(
+                () -> assertThat(interview.getAvailableDateTime()).isEqualTo(availableDateTime),
+                () -> assertThat(interview.getInterviewStartTime()).isEqualTo(nextDay),
+                () -> assertThat(interview.getCoach().getId()).isEqualTo(COACH2.getId()),
+                () -> assertThat(interview.getCrew().getId()).isEqualTo(CREW1.getId()),
+                () -> assertThat(interview.getFormItems().stream()
+                            .map(FormItem::getAnswer)
+                            .collect(Collectors.toList()))
+                        .isEqualTo(FORM_ITEMS2.stream()
+                                .map(FormItem::getAnswer)
+                                .collect(Collectors.toList())),
+                () -> assertThat(interview.getInterviewStatusType()).isEqualTo(FIXED)
+        );
     }
 
-    @DisplayName("크루 업데이트 시 예외가 발생한다.")
     @Test
-    void updateCrewFalse() {
+    @DisplayName("인터뷰에서 크루를 수정할 수 없다.")
+    void updateCrew() {
         // given
         final Interview interview = getInterview(EDITABLE);
 
-        final Interview updateInterview = new Interview(
-                interview.getInterviewStartTime(),
-                interview.getInterviewStartTime().plusMinutes(30),
-                COACH1,
-                CREW2,
-                FORM_ITEMS1
-        );
+        // when
+        final Interview updateInterview = getInterview(CREW2);
 
-        // when & then
+        // then
         assertThatThrownBy(() -> interview.update(updateInterview))
-                .isInstanceOf(InvalidInterviewCrewIdException.class);
-    }
-
-    @DisplayName("인터뷰 업데이트시 질답 변경")
-    @Test
-    void updateFormItems() {
-        // given
-        final Interview interview = getInterview(EDITABLE);
-
-        final Interview updateInterview = new Interview(
-                interview.getInterviewStartTime(),
-                interview.getInterviewEndTime(),
-                COACH1,
-                CREW1,
-                FORM_ITEMS2
-        );
-
-        // when
-        interview.update(updateInterview);
-
-        // then
-        Assertions.assertAll(
-                () -> assertThat(interview.getCoach()).isEqualTo(updateInterview.getCoach()),
-                () -> assertThat(interview.getFormItems().containsAll(updateInterview.getFormItems())),
-                () -> assertThat(interview.getInterviewStatusType()).isEqualTo(
-                        updateInterview.getInterviewStatusType()),
-                () -> assertThat(interview.getInterviewStartTime()).isEqualTo(updateInterview.getInterviewStartTime()),
-                () -> assertThat(interview.getInterviewEndTime()).isEqualTo(updateInterview.getInterviewEndTime())
-        );
-    }
-
-    @Test
-    @DisplayName("인터뷰의 상태를 바꾼다.")
-    void updateStatus() {
-        // given
-        final Interview interview = getInterview(EDITABLE);
-
-        // when
-        interview.updateStatus(FIXED);
-
-        // then
-        assertThat(interview.getInterviewStatusType()).isEqualTo(FIXED);
-    }
-
-    private void assertEqualsAll(final Interview interview, final Interview updateInterview) {
-        Assertions.assertAll(
-                () -> assertThat(interview.getCoach()).isEqualTo(updateInterview.getCoach()),
-                () -> assertThat(interview.getCrew()).isEqualTo(updateInterview.getCrew()),
-                () -> assertThat(interview.getInterviewStatusType()).isEqualTo(
-                        updateInterview.getInterviewStatusType()),
-                () -> assertThat(interview.getInterviewStartTime()).isEqualTo(updateInterview.getInterviewStartTime()),
-                () -> assertThat(interview.getInterviewEndTime()).isEqualTo(updateInterview.getInterviewEndTime())
-        );
+                .isInstanceOf(InvalidInterviewMemberException.class);
     }
 
     @ParameterizedTest
-    @EnumSource(value = InterviewStatusType.class, names = {"COMMENT", "FIXED", "COACH_COMPLETED", "CREW_COMPLETED",
-            "COMPLETED"})
-    @DisplayName("COMMENT,FIX,COACH_COMPLETED,CREW_COMPLETED,COMPLETED 상태인 인터뷰의 상태를 수정할 수 없다.")
+    @EnumSource(value = InterviewStatusType.class, names = {"COMMENT", "FIXED", "COACH_COMPLETED", "CREW_COMPLETED", "COMPLETED"})
+    @DisplayName("COMMENT, FIX, COACH_COMPLETED, CREW_COMPLETED, COMPLETED 상태인 인터뷰의 상태를 수정할 수 없다.")
     void invalidUpdateInterview(InterviewStatusType type) {
         // given
         final Interview interview = getInterview(type);
 
-        final Interview updateInterview = new Interview(
-                interview.getInterviewStartTime(),
-                interview.getInterviewStartTime().plusMinutes(30),
-                COACH1,
-                CREW1,
-                FORM_ITEMS1);
+        // when
+        final Interview updateInterview = getInterview(FIXED);
 
-        // when & then
+        // then
         assertThatThrownBy(() -> interview.update(updateInterview))
                 .isInstanceOf(InterviewStatusException.class);
     }
@@ -184,43 +112,28 @@ class InterviewTest {
         // given
         final Interview interview = getInterview(type);
 
-        final Interview updateInterview = new Interview(
-                interview.getInterviewStartTime(),
-                interview.getInterviewStartTime().plusMinutes(30),
-                COACH1,
-                CREW1,
-                FORM_ITEMS1);
+        // when
+        final Interview updateInterview = getInterview(FIXED);
 
-        //when & then
+        // then
         assertThatNoException().isThrownBy(() -> interview.update(updateInterview));
     }
 
-    @DisplayName("코치 본인이 인터뷰를 취소한다.")
     @Test
+    @DisplayName("인터뷰를 취소한다.")
     void cancel() {
         // given
         final Interview interview = getInterview(EDITABLE);
 
         // when
-        interview.cancel(COACH1.getId());
+        interview.cancel();
         // then
 
-        assertThat(interview.getInterviewStatusType().name().equals(CANCELED.name()));
+        assertThat(interview.getInterviewStatusType()).isEqualTo(CANCELED);
     }
 
-    @DisplayName("다른 코치가 인터뷰를 취소시 예외가 발생한다.")
     @Test
-    void cancel_false() {
-        // given
-        final Interview interview = getInterview(EDITABLE);
-
-        // when & then
-        assertThatThrownBy(() -> interview.cancel(COACH2.getId()))
-                .isInstanceOf(InvalidInterviewCoachIdException.class);
-    }
-
-    @DisplayName("완료된 면담에 크루가 코멘트를 달았을 때, 상태변경을 해준다.")
-    @Test
+    @DisplayName("완료된 면담에 크루가 코멘트를 달았을 때, CREW_COMPLETED 상태가 된다.")
     void change_interview_status_complete_add_crew_comment() {
         // given
         final Interview interview = getInterview(FIXED);
@@ -228,47 +141,53 @@ class InterviewTest {
         // when
         interview.complete(CREW);
         // then
-        assertThat(interview.getInterviewStatusType().name().equals(CREW_COMPLETED.name()));
+        assertThat(interview.getInterviewStatusType()).isEqualTo(CREW_COMPLETED);
     }
 
-    @DisplayName("완료된 면담에 코치가 코멘트를 달았을 때, 상태변경을 해준다.")
     @Test
+    @DisplayName("완료된 면담에 코치가 코멘트를 달았을 때, COACH_COMPLETED 상태가 된다.")
     void change_interview_status_complete_add_coach_comment() {
         // given
         final Interview interview = getInterview(FIXED);
 
         // when
         interview.complete(COACH);
+
         // then
-        assertThat(interview.getInterviewStatusType().name().equals(COACH_COMPLETED.name()));
+        assertThat(interview.getInterviewStatusType()).isEqualTo(COACH_COMPLETED);
     }
 
-    private Interview getInterview(final InterviewStatusType statusType) {
-        final LocalDateTime localDateTime = LocalDateTime.now().plusDays(1);
-        return new Interview(
-                1L,
-                localDateTime,
-                localDateTime.plusMinutes(30),
-                COACH1,
-                CREW1,
-                FORM_ITEMS1,
-                statusType);
-    }
-
-    @DisplayName("완료된 면담에 크루와 코치 모두 코멘트를 달았을 때, 상태변경을 해준다.")
     @Test
-    void change_interview_status_complete_add_all_comment() {
+    @DisplayName("완료된 면담에 크루가 먼저 코멘트를 달고 코치가 코멘트를 달았을 때, COMPLETED 상태가 된다.")
+    void change_interview_status_complete_add_all_comment_crew_first() {
         // given
-        final Interview interview = getInterview(COACH_COMPLETED);
+        final Interview interview = getInterview(EDITABLE);
 
         // when
         interview.complete(CREW);
+        interview.complete(COACH);
+
         // then
-        assertThat(interview.getInterviewStatusType().name().equals(COMPLETED.name()));
+        assertThat(interview.getInterviewStatusType()).isEqualTo(COMPLETED);
     }
 
-    @DisplayName("면담의 코치 아이디와 일치할 경우, Coach memberType 을 반환한다.")
     @Test
+    @DisplayName("완료된 면담에 코치가 먼저 코멘트를 달고 크루가 코멘트를 달았을 때, COMPLETED 상태가 된다.")
+    void change_interview_status_complete_add_all_comment_coach_first() {
+        // given
+        final Interview interview = getInterview(EDITABLE);
+
+        // when
+        interview.complete(COACH);
+        interview.complete(CREW);
+
+        // then
+        assertThat(interview.getInterviewStatusType()).isEqualTo(COMPLETED);
+    }
+
+    // TODO: 인터뷰의 책임이 아님
+    @Test
+    @DisplayName("면담의 코치 아이디와 일치할 경우, Coach memberType 을 반환한다.")
     void findMemberType_Coach() {
         // given
         final Interview interview = getInterview(EDITABLE);
@@ -277,11 +196,12 @@ class InterviewTest {
         final MemberType memberType = interview.findMemberType(COACH1.getId());
 
         // then
-        assertThat(memberType.name().equals(COACH.name()));
+        assertThat(memberType).isEqualTo(COACH);
     }
 
-    @DisplayName("면담의 크루 아이디와 일치할 경우, Crew memberType 을 반환한다.")
+    // TODO: 인터뷰의 책임이 아님
     @Test
+    @DisplayName("면담의 크루 아이디와 일치할 경우, Crew memberType 을 반환한다.")
     void findMemberType_Crew() {
         // given
         final Interview interview = getInterview(EDITABLE);
@@ -290,7 +210,7 @@ class InterviewTest {
         final MemberType memberType = interview.findMemberType(CREW1.getId());
 
         // then
-        assertThat(memberType.name().equals(CREW.name()));
+        assertThat(memberType).isEqualTo(CREW);
     }
 
     @DisplayName("member Id 가 면담에 있는 크루, 코치와 일치 하지 않는다면 예외가 발생한다.")
@@ -307,63 +227,52 @@ class InterviewTest {
     @EnumSource(value = InterviewStatusType.class, names = {"EDITABLE", "CANCELED", "FIXED", "COMMENT"})
     @DisplayName("코멘트를 찾을 수 없는 면담인지 확인한다.")
     void canCreateCommentBy(InterviewStatusType type) {
-        // given
         final Interview interview = getInterview(type);
-
-        //when & then
         assertFalse(interview.canFindCommentBy());
     }
 
     @ParameterizedTest
-    @EnumSource(value = InterviewStatusType.class, names = {"COACH_COMPLETED", "CREW_COMPLETED",
-            "COMPLETED"})
-    @DisplayName("코멘트를 찾을 수 있는  면담인지 확인한다.")
+    @EnumSource(value = InterviewStatusType.class, names = {"COACH_COMPLETED", "CREW_COMPLETED", "COMPLETED"})
+    @DisplayName("코멘트를 찾을 수 있는 면담인지 확인한다.")
     void canCreateCommentBy_false(InterviewStatusType type) {
-        // given
         final Interview interview = getInterview(type);
-
-        //when & then
         assertTrue(interview.canFindCommentBy());
-    }
-
-    @DisplayName("같은 면담인지 확인한다.")
-    @Test
-    void isSame() {
-        // given
-        final Interview interview = getInterview(EDITABLE);
-
-        //when & then
-        assertTrue(interview.isSame(interview.getId()));
-    }
-
-    @DisplayName("같은 면담이 아닌지 확인한다.")
-    @Test
-    void isSame_false() {
-        // given
-        final Interview interview = getInterview(EDITABLE);
-
-        //when & then
-        assertFalse(interview.isSame(interview.getId() + 1));
     }
 
     @DisplayName("면담 작성자가 맞는지 확인한다.")
     @Test
     void isCreatedBy() {
         // given
-        final Interview interview = getInterview(EDITABLE);
+        final Interview interview = getInterview(CREW1);
 
         //when & then
-        assertTrue(interview.isCreatedBy(interview.getCrew().getId()));
+        assertTrue(interview.isCreatedBy(5L));
     }
 
-    @DisplayName("같은 면담이 아닌지 확인한다.")
-    @Test
-    void isCreatedBy_false() {
-        // given
-        final Interview interview = getInterview(EDITABLE);
+    private Interview getInterview(final Crew crew) {
+        final LocalDateTime now = LocalDateTime.now();
+        return new Interview(
+                1L,
+                new AvailableDateTime(COACH1.getId(), now.plusDays(1), USED),
+                now,
+                now.plusMinutes(30),
+                COACH1,
+                crew,
+                FORM_ITEMS1,
+                EDITABLE);
+    }
 
-        //when & then
-        assertFalse(interview.isCreatedBy(interview.getCrew().getId() + 1));
+    private Interview getInterview(final InterviewStatusType statusType) {
+        final LocalDateTime now = LocalDateTime.now();
+        return new Interview(
+                1L,
+                new AvailableDateTime(COACH1.getId(), now.plusDays(1), USED),
+                now,
+                now.plusMinutes(30),
+                COACH1,
+                CREW1,
+                FORM_ITEMS1,
+                statusType);
     }
 }
 

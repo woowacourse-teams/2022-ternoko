@@ -1,0 +1,386 @@
+url: PUT /api/calendar/times
+time: 161
+count : 15
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: POST /api/interviews/
+time: 43
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: POST /api/interviews/
+time: 21
+count : 2
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+
+url: PUT /api/calendar/times
+time: 16
+count : 15
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: POST /api/interviews/
+time: 14
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: POST /api/interviews/
+time: 37
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: POST /api/interviews/
+time: 7
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: POST /api/interviews/
+time: 8
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: GET /api/schedules
+time: 17
+count : 6
+select interview0_.id as id1_5_, interview0_.coach_id as coach_id5_5_, interview0_.crew_id as crew_id6_5_, interview0_.interview_end_time as intervie2_5_, interview0_.interview_start_time as intervie3_5_, interview0_.interview_status_type as intervie4_5_ from interview interview0_ where interview0_.coach_id=? and (interview0_.interview_start_time between ? and ?)
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+N+1이 의심됩니다.
+
+url: PUT /api/calendar/times
+time: 8
+count : 11
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: PUT /api/calendar/times
+time: 22
+count : 15
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: POST /api/interviews/
+time: 17
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: GET /api/schedules
+time: 5
+count : 3
+select interview0_.id as id1_5_, interview0_.coach_id as coach_id5_5_, interview0_.crew_id as crew_id6_5_, interview0_.interview_end_time as intervie2_5_, interview0_.interview_start_time as intervie3_5_, interview0_.interview_status_type as intervie4_5_ from interview interview0_ where interview0_.coach_id=? and (interview0_.interview_start_time between ? and ?)
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+
+url: PUT /api/calendar/times
+time: 9
+count : 15
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: GET /api/interviews/2
+time: 10
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: POST /api/interviews/2/comments
+time: 26
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: POST /api/interviews/2/comments
+time: 7
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: GET /api/interviews/2
+time: 2
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: GET /api/interviews/1
+time: 3
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: POST /api/interviews/1/comments
+time: 4
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: GET /api/interviews/1/comments
+time: 11
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select comment0_.id as id1_2_, comment0_.comment as comment2_2_, comment0_.interview_id as intervie4_2_, comment0_.member_id as member_i3_2_ from comment comment0_ left outer join interview interview1_ on comment0_.interview_id=interview1_.id where interview1_.id=?
+
+url: GET /api/interviews/1
+time: 4
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: POST /api/interviews/1/comments
+time: 4
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: GET /api/interviews/1
+time: 2
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: GET /api/interviews/1
+time: 3
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: POST /api/interviews/1/comments
+time: 4
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: GET /api/interviews/1
+time: 2
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select formitems0_.interview_id as intervie4_4_0_, formitems0_.id as id1_4_0_, formitems0_.id as id1_4_1_, formitems0_.answer as answer2_4_1_, formitems0_.interview_id as intervie4_4_1_, formitems0_.question as question3_4_1_ from form_item formitems0_ where formitems0_.interview_id=?
+
+url: POST /api/interviews/1/comments
+time: 11
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: PUT /api/interviews/1/comments/1
+time: 5
+count : 2
+select comment0_.id as id1_2_0_, comment0_.comment as comment2_2_0_, comment0_.interview_id as intervie4_2_0_, comment0_.member_id as member_i3_2_0_, interview1_.id as id1_5_1_, interview1_.coach_id as coach_id5_5_1_, interview1_.crew_id as crew_id6_5_1_, interview1_.interview_end_time as intervie2_5_1_, interview1_.interview_start_time as intervie3_5_1_, interview1_.interview_status_type as intervie4_5_1_, coach2_.id as id1_6_2_, coach2_1_.email as email2_6_2_, coach2_1_.image_url as image_ur3_6_2_, coach2_1_.role as role4_6_2_, coach2_1_.name as name5_6_2_, coach2_1_.nickname as nickname6_6_2_, coach2_1_.user_id as user_id7_6_2_, coach2_.introduce as introduc1_1_2_, crew3_.id as id1_6_3_, crew3_1_.email as email2_6_3_, crew3_1_.image_url as image_ur3_6_3_, crew3_1_.role as role4_6_3_, crew3_1_.name as name5_6_3_, crew3_1_.nickname as nickname6_6_3_, crew3_1_.user_id as user_id7_6_3_ from comment comment0_ left outer join interview interview1_ on comment0_.interview_id=interview1_.id left outer join coach coach2_ on interview1_.coach_id=coach2_.id left outer join member coach2_1_ on coach2_.id=coach2_1_.id left outer join crew crew3_ on interview1_.crew_id=crew3_.id left outer join member crew3_1_ on crew3_.id=crew3_1_.id where comment0_.id=?
+update comment set comment=?, interview_id=?, member_id=? where id=?
+
+url: GET /api/interviews/1/comments
+time: 7
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select comment0_.id as id1_2_, comment0_.comment as comment2_2_, comment0_.interview_id as intervie4_2_, comment0_.member_id as member_i3_2_ from comment comment0_ left outer join interview interview1_ on comment0_.interview_id=interview1_.id where interview1_.id=?
+
+url: POST /api/interviews/1/comments
+time: 4
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: POST /api/interviews/1/comments
+time: 4
+count : 3
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+insert into comment (id, comment, interview_id, member_id) values (default, ?, ?, ?)
+update interview set coach_id=?, crew_id=?, interview_end_time=?, interview_start_time=?, interview_status_type=? where id=?
+
+url: GET /api/interviews/1/comments
+time: 3
+count : 2
+select interview0_.id as id1_5_0_, interview0_.coach_id as coach_id5_5_0_, interview0_.crew_id as crew_id6_5_0_, interview0_.interview_end_time as intervie2_5_0_, interview0_.interview_start_time as intervie3_5_0_, interview0_.interview_status_type as intervie4_5_0_, coach1_.id as id1_6_1_, coach1_1_.email as email2_6_1_, coach1_1_.image_url as image_ur3_6_1_, coach1_1_.role as role4_6_1_, coach1_1_.name as name5_6_1_, coach1_1_.nickname as nickname6_6_1_, coach1_1_.user_id as user_id7_6_1_, coach1_.introduce as introduc1_1_1_, crew2_.id as id1_6_2_, crew2_1_.email as email2_6_2_, crew2_1_.image_url as image_ur3_6_2_, crew2_1_.role as role4_6_2_, crew2_1_.name as name5_6_2_, crew2_1_.nickname as nickname6_6_2_, crew2_1_.user_id as user_id7_6_2_ from interview interview0_ left outer join coach coach1_ on interview0_.coach_id=coach1_.id left outer join member coach1_1_ on coach1_.id=coach1_1_.id left outer join crew crew2_ on interview0_.crew_id=crew2_.id left outer join member crew2_1_ on crew2_.id=crew2_1_.id where interview0_.id=?
+select comment0_.id as id1_2_, comment0_.comment as comment2_2_, comment0_.interview_id as intervie4_2_, comment0_.member_id as member_i3_2_ from comment comment0_ left outer join interview interview1_ on comment0_.interview_id=interview1_.id where interview1_.id=?
+
+url: PUT /api/calendar/times
+time: 5
+count : 6
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: POST /api/interviews/
+time: 9
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: POST /api/interviews/
+time: 7
+count : 9
+select interview0_.id as col_0_0_ from interview interview0_ left outer join crew crew1_ on interview0_.crew_id=crew1_.id where crew1_.id=? and interview0_.interview_start_time=? limit ?
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and availabled0_.local_date_time=?
+select crew0_.id as id1_6_0_, crew0_1_.email as email2_6_0_, crew0_1_.image_url as image_ur3_6_0_, crew0_1_.role as role4_6_0_, crew0_1_.name as name5_6_0_, crew0_1_.nickname as nickname6_6_0_, crew0_1_.user_id as user_id7_6_0_ from crew crew0_ inner join member crew0_1_ on crew0_.id=crew0_1_.id where crew0_.id=?
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+insert into interview (id, coach_id, crew_id, interview_end_time, interview_start_time, interview_status_type) values (default, ?, ?, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+insert into form_item (id, answer, interview_id, question) values (default, ?, ?, ?)
+update available_date_time set available_date_time_status=?, coach_id=?, local_date_time=? where id=?
+
+url: GET /api/interviews/1/calendar/times
+time: 10
+count : 1
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and extract(year from availabled0_.local_date_time)=? and extract(month from availabled0_.local_date_time)=? and availabled0_.available_date_time_status='OPEN' or availabled0_.local_date_time=(select interview1_.interview_start_time from interview interview1_ where interview1_.id=?) order by availabled0_.local_date_time
+
+url: GET /api/coaches
+time: 3
+count : 1
+select coach0_.id as id1_6_, coach0_1_.email as email2_6_, coach0_1_.image_url as image_ur3_6_, coach0_1_.role as role4_6_, coach0_1_.name as name5_6_, coach0_1_.nickname as nickname6_6_, coach0_1_.user_id as user_id7_6_, coach0_.introduce as introduc1_1_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id
+
+url: PUT /api/calendar/times
+time: 6
+count : 11
+select coach0_.id as id1_6_0_, coach0_1_.email as email2_6_0_, coach0_1_.image_url as image_ur3_6_0_, coach0_1_.role as role4_6_0_, coach0_1_.name as name5_6_0_, coach0_1_.nickname as nickname6_6_0_, coach0_1_.user_id as user_id7_6_0_, coach0_.introduce as introduc1_1_0_ from coach coach0_ inner join member coach0_1_ on coach0_.id=coach0_1_.id where coach0_.id=?
+delete from available_date_time where coach_id=? and extract(year from local_date_time)=? and extract(month from local_date_time)=?
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+insert into available_date_time (id, available_date_time_status, coach_id, local_date_time) values (default, ?, ?, ?)
+
+url: GET /api/calendar/times
+time: 3
+count : 1
+select availabled0_.id as id1_0_, availabled0_.available_date_time_status as availabl2_0_, availabled0_.coach_id as coach_id3_0_, availabled0_.local_date_time as local_da4_0_ from available_date_time availabled0_ where availabled0_.coach_id=? and extract(year from availabled0_.local_date_time)=? and extract(month from availabled0_.local_date_time)=? and availabled0_.available_date_time_status='OPEN' order by availabled0_.local_date_time
+
+url: GET /api/login
+time: 1376
+count : 1
+select member0_.id as id1_6_, member0_.email as email2_6_, member0_.image_url as image_ur3_6_, member0_.role as role4_6_, member0_.name as name5_6_, member0_.nickname as nickname6_6_, member0_.user_id as user_id7_6_, member0_1_.introduce as introduc1_1_, case when member0_1_.id is not null then 1 when member0_2_.id is not null then 2 when member0_.id is not null then 0 end as clazz_ from member member0_ left outer join coach member0_1_ on member0_.id=member0_1_.id left outer join crew member0_2_ on member0_.id=member0_2_.id where member0_.email is null
+
