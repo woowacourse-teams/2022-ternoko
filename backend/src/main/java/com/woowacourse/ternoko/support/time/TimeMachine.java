@@ -23,7 +23,7 @@ public class TimeMachine {
         return LocalDate.now(clock);
     }
 
-    public static void timeTravelAt(LocalDateTime dateTime){
+    public static void timeTravelAt(LocalDateTime dateTime) {
         clock = Clock.fixed(dateTime.atOffset(zoneOffset).toInstant(), zoneOffset);
     }
 

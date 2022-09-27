@@ -92,7 +92,6 @@ public class InterviewController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/interviews/{interviewId}/calendar/times")
     public ResponseEntity<AvailableDateTimesResponse> findCalendarTimesByInterviewId(
             @PathVariable final Long interviewId,

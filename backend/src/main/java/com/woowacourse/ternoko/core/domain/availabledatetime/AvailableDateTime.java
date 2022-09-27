@@ -50,14 +50,12 @@ public class AvailableDateTime {
     }
 
     public boolean isPast() {
-//        final LocalDate nowDay = LocalDate.now();
         final LocalDate nowDay = TimeMachine.dateOfNow();
         final LocalDate targetDay = localDateTime.toLocalDate();
         return targetDay.isBefore(nowDay);
     }
 
     public boolean isToday() {
-//        final LocalDate nowDay = LocalDate.now();
         final LocalDate nowDay = TimeMachine.dateOfNow();
         final LocalDate targetDay = localDateTime.toLocalDate();
         return targetDay.isEqual(nowDay);
