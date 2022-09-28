@@ -39,7 +39,7 @@ export const Box = styled.div<ModalPositionType>`
   border-radius: 8px;
   z-index: 1;
 
-  box-shadow: ${({ theme }) => theme.colors.allRound};
+  box-shadow: ${({ theme }) => theme.shadows.allRound};
   background: ${({ theme }) => theme.colors.white_50};
 `;
 
