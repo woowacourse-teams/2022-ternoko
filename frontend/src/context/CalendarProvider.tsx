@@ -29,6 +29,8 @@ type CalendarActionsType = {
   setDay: (day: number) => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
   resetSelectedDates: () => void;
+  addSelectedDates: (dates: Date[]) => void;
+  removeSelectedDates: (dates: Date[]) => void;
   initializeYearMonth: (year: number, month: number) => void;
 };
 
@@ -57,6 +59,8 @@ export const monthNames = [
   '11월',
   '12월',
 ];
+
+export const dayOfWeekNames = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
 const isLeapYear = (year: number) =>
   (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
@@ -162,6 +166,21 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     },
     resetSelectedDates() {
       setSelectedDates([]);
+    },
+    addSelectedDates(dates: Date[]) {
+      setSelectedDates((prev) => [...prev, ...dates]);
+    },
+    removeSelectedDates(dates: Date[]) {
+      setSelectedDates((prev) =>
+        prev.filter((selectedDate) =>
+          dates.every(
+            (date) =>
+              selectedDate.year !== date.year ||
+              selectedDate.month !== date.month ||
+              selectedDate.day !== date.day,
+          ),
+        ),
+      );
     },
     initializeYearMonth(year: number, month: number) {
       setYear(year);

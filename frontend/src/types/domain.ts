@@ -109,6 +109,13 @@ export type DayType = 'default' | 'disable' | 'active';
 
 export type DayOfWeekType = '일' | '월' | '화' | '수' | '목' | '금' | '토';
 
+export type OneWeekDayType = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+export type DayOfWeekWithStartDayType = {
+  name: DayOfWeekType;
+  startDay: OneWeekDayType;
+};
+
 export type ModalPositionType = {
   top?: number;
   right?: number;

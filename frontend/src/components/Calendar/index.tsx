@@ -11,10 +11,13 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { DayType } from '@/types/domain';
+import { DayType, OneWeekDayType } from '@/types/domain';
+
+import { generateDayOfWeeks } from '@/utils';
 
 export type CalendarProps = {
   rerenderCondition?: number;
+  getHandleClickDayOfWeek?: (startDay: OneWeekDayType) => () => void;
   getHandleClickDay: (day: number) => () => void;
   getDayType: (day: number) => DayType;
   haveTimeDays: Set<number>;
@@ -22,6 +25,7 @@ export type CalendarProps = {
 
 const Calendar = ({
   rerenderCondition,
+  getHandleClickDayOfWeek,
   getHandleClickDay,
   getDayType,
   haveTimeDays,
@@ -37,6 +41,8 @@ const Calendar = ({
   } = useCalendarActions();
   const { daysLength, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
+
+  const dayOfWeeks = generateDayOfWeeks(year, month);
 
   return (
     <S.Box>
@@ -56,13 +62,16 @@ const Calendar = ({
 
       <C.Body>
         <C.WeekDay>
-          <div>일</div>
-          <div>월</div>
-          <div>화</div>
-          <div>수</div>
-          <div>목</div>
-          <div>금</div>
-          <div>토</div>
+          {dayOfWeeks.map(({ name, startDay }) => (
+            <S.DayOfWeek
+              key={startDay}
+              onClick={
+                getHandleClickDayOfWeek === undefined ? () => {} : getHandleClickDayOfWeek(startDay)
+              }
+            >
+              {name}
+            </S.DayOfWeek>
+          ))}
         </C.WeekDay>
         <C.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {

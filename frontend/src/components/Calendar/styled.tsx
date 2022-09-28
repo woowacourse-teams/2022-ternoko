@@ -13,6 +13,15 @@ export const Box = styled.div`
   border-radius: 20px;
 `;
 
+export const DayOfWeek = styled.div`
+  cursor: pointer;
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.pink_50};
+    color: white;
+  }
+`;
+
 type CalendarDayProps = {
   type?: DayType;
   today?: boolean;

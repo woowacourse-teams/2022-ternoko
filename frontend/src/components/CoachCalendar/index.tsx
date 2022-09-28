@@ -8,6 +8,7 @@ import * as C from '@/components/@common/CalendarStyle/styled';
 import Dimmer from '@/components/@common/Dimmer/styled';
 
 import {
+  dayOfWeekNames,
   monthNames,
   useCalendarActions,
   useCalendarState,
@@ -154,13 +155,9 @@ const CoachCalendar = ({
 
       <C.Body>
         <C.WeekDay>
-          <div>일</div>
-          <div>월</div>
-          <div>화</div>
-          <div>수</div>
-          <div>목</div>
-          <div>금</div>
-          <div>토</div>
+          {dayOfWeekNames.map((dayOfWeekName: string) => (
+            <div key={dayOfWeekName}>{dayOfWeekName}</div>
+          ))}
         </C.WeekDay>
         <C.Days key={rerenderKey} ref={daysRef}>
           {Array.from({ length: daysLength }, (_, index) => {

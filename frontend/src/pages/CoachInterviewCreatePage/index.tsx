@@ -21,6 +21,7 @@ import {
   CalendarTime,
   CoachScheduleRequestCalendarTime,
   CrewSelectTime,
+  OneWeekDayType,
   StringDictionary,
 } from '@/types/domain';
 
@@ -50,9 +51,10 @@ const defaultTimes = [
 const CoachInterviewCreatePage = () => {
   const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
-  const { resetSelectedDates, setDay } = useCalendarActions();
+  const { resetSelectedDates, setDay, addSelectedDates, removeSelectedDates } =
+    useCalendarActions();
   const { onLoading, offLoading } = useLoadingActions();
-  const { isSelectedDate } = useCalendarUtils();
+  const { isSelectedDate, isBelowToday } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'MULTIPLE',
   });
@@ -96,6 +98,49 @@ const CoachInterviewCreatePage = () => {
     });
   };
 
+  const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    let isAdd = false;
+
+    for (let day = startDay; day <= lastDay; day += 7) {
+      if (!isBelowToday(day) && !isSelectedDate(day)) {
+        isAdd = true;
+
+        break;
+      }
+    }
+
+    const dates = [];
+
+    if (isAdd) {
+      for (let day = startDay; day <= lastDay; day += 7) {
+        if (
+          !isBelowToday(day) &&
+          selectedDates.every(
+            (selectedDate) =>
+              selectedDate.year !== year ||
+              selectedDate.month !== month ||
+              selectedDate.day !== day,
+          )
+        ) {
+          dates.push({ year, month: month + 1, day });
+        }
+      }
+
+      addSelectedDates(dates);
+    } else {
+      for (let day = startDay; day <= lastDay; day += 7) {
+        if (!isBelowToday(day)) {
+          dates.push({ year, month: month + 1, day });
+        }
+      }
+
+      removeSelectedDates(dates);
+    }
+
+    resetTimes();
+  };
+
   const getHandleClickDay = (day: number) => () => {
     const currentCalendarTime = calendarTimes.find(
       (calendarTime: CalendarTime) =>
@@ -112,7 +157,7 @@ const CoachInterviewCreatePage = () => {
 
         setSelectedTimes(times);
       } else if (selectedDates.length >= 1) {
-        setSelectedTimes([]);
+        resetTimes();
       } else {
         const times = currentCalendarTime.times
           .filter((time: string) => Number(separateFullDate(time).day) === day)
@@ -222,6 +267,7 @@ const CoachInterviewCreatePage = () => {
 
       <S.DateBox>
         <Calendar
+          getHandleClickDayOfWeek={getHandleClickDayOfWeek}
           getHandleClickDay={getHandleClickDay}
           getDayType={getDayType}
           haveTimeDays={haveTimeDays}
