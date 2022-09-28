@@ -1,6 +1,4 @@
-import styled, { css } from 'styled-components';
-
-import { Day } from '@/components/@common/CalendarStyle/styled';
+import styled, { css, keyframes } from 'styled-components';
 
 import { DayType, InterviewStatus } from '@/types/domain';
 
@@ -17,16 +15,23 @@ type CalendarDayProps = {
   today?: boolean;
 };
 
-export const CalendarDay = styled(Day)<CalendarDayProps>`
-  text-align: center;
-  height: 12rem;
-  overflow-y: auto;
+const toTop = keyframes`
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
 
-  ${({ type }) =>
-    type === 'active' &&
-    css`
-      border: 1px solid ${({ theme }) => theme.colors.pink_200};
-    `}
+export const CalendarDay = styled.div<CalendarDayProps>`
+  height: 12rem;
+  padding: 0.5rem;
+  overflow-y: auto;
+  text-align: center;
+  animation: ${toTop} 1s;
 
   ${({ type }) =>
     type === 'disable' &&
@@ -103,6 +108,7 @@ export const ShowMore = styled.div`
   padding: 0.5rem;
   font-size: 1.3rem;
   text-align: left;
+  cursor: pointer;
 
   color: ${({ theme }) => theme.colors.gray_150};
 
