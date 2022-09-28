@@ -3,27 +3,32 @@ import styled, { css } from 'styled-components';
 import { ModalPositionType } from '@/types/domain';
 
 export const Box = styled.div<ModalPositionType>`
-  position: absolute;
+  position: fixed;
+
   ${({ top }) =>
     top &&
     css`
       top: ${top}px;
     `};
+
   ${({ right }) =>
     right &&
     css`
       right: ${right}px;
     `};
+
   ${({ bottom }) =>
     bottom &&
     css`
       bottom: ${bottom}px;
     `};
+
   ${({ left }) =>
     left &&
     css`
       left: ${left}px;
     `};
+
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

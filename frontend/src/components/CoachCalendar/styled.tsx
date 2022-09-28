@@ -5,6 +5,7 @@ import { DayType, InterviewStatus } from '@/types/domain';
 export const Box = styled.div`
   width: 100%;
   height: max-content;
+  position: relative;
 
   box-shadow: ${({ theme }) => theme.shadows.basic};
   border-radius: 20px;
