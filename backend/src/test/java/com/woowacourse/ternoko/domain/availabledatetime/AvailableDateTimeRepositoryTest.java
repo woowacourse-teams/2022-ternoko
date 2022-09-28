@@ -62,8 +62,8 @@ class AvailableDateTimeRepositoryTest {
     }
 
     @Test
-    @DisplayName("코치가 OPEN인 면담 가능한 시간을 조회한다.")
-    void findOpenAvailableDateTimesByCoachId() {
+    @DisplayName("당일을 제외하고, 코치가 OPEN인 면담 가능한 시간을 조회한다.")
+    void findOpenAvailableDateTimesByCoachId_expect_today() {
         // given
         final LocalDateTime startTime = LocalDateTime.of(NOW_PLUS_1_MONTH, FIRST_TIME);
         final LocalDateTime reservedTime = LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME);
@@ -89,16 +89,18 @@ class AvailableDateTimeRepositoryTest {
     }
 
     @Test
-    @DisplayName("코치의 되는 시간 여부를 한달 단위로 반환한다.")
-    void countByCoachId_1day() {
+    @DisplayName("코치의 되는 시간 여부를 당일을 제외하고, 한달 단위로 반환한다.")
+    void countByCoachId_1day_expect_today() {
         final LocalDateTime start = LocalDateTime.now();
         final LocalDateTime end = start.plusMonths(1);
         final LocalDateTime startTime = LocalDateTime.of(LocalDate.from(start.plusDays(1)), FIRST_TIME);
         final LocalDateTime reservedTime = LocalDateTime.of(LocalDate.from(start.plusDays(32)), SECOND_TIME);
         availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), reservedTime, OPEN));
         availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
+        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), start, OPEN));
 
-        final Long size = availableDateTimeRepository.countByCoachId(COACH2.getId(), start, end);
+
+        final Long size = availableDateTimeRepository.countByCoachId(COACH2.getId(), start.plusDays(1), end);
 
         assertThat(size).isEqualTo(1);
     }

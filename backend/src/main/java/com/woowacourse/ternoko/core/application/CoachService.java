@@ -35,7 +35,7 @@ public class CoachService {
 
         final List<CoachResponse> coachResponses = coaches.stream()
                 .map(coach -> CoachResponse.of(coach, availableDateTimeRepository.countByCoachId(coach.getId(),
-                        now, now.plusMonths(1))))
+                        now.plusDays(1), now.plusMonths(1))))
                 .collect(Collectors.toList());
 
         return new CoachesResponse(coachResponses);
@@ -46,7 +46,8 @@ public class CoachService {
         final LocalDateTime now = LocalDateTime.now();
 
         final Coach coach = getCoachById(coachId);
-        return CoachResponse.of(coach, availableDateTimeRepository.countByCoachId(coachId, now, now.plusMonths(1)));
+        return CoachResponse.of(coach,
+                availableDateTimeRepository.countByCoachId(coachId, now.plusDays(1), now.plusMonths(1)));
     }
 
     private Coach getCoachById(final Long coachId) {
