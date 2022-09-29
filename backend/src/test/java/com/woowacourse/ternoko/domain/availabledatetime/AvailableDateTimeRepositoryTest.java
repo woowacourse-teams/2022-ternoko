@@ -15,11 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
-import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
-import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
-import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
-import com.woowacourse.ternoko.core.domain.interview.formitem.Question;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
@@ -123,54 +119,9 @@ class AvailableDateTimeRepositoryTest {
         assertThat(size).isEqualTo(1);
     }
 
-    @Test
-    @DisplayName("해당 코치의 면담가능한 시간과 interview startTime이 포함된 정렬된 AvailableTime List를 반환해야 한다.")
-    void findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime() {
-        // given
-        final LocalDateTime startTime = LocalDateTime.of(NOW_PLUS_1_MONTH, FIRST_TIME);
-        final LocalDateTime reservedTime = LocalDateTime.of(NOW_PLUS_1_MONTH, SECOND_TIME);
-        final LocalDateTime availableTime = LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME);
-
-        availableDateTimeRepository.save(new AvailableDateTime(COACH2.getId(), startTime, OPEN));
-        final AvailableDateTime availableDateTime = saveAvailableTime(availableTime, OPEN);
-        final AvailableDateTime startDateTime = saveAvailableTime(startTime, USED);
-        saveAvailableTime(reservedTime, USED);
-
-        // when
-        final Long interviewId = saveInterview(startDateTime);
-        final List<AvailableDateTime> times = availableDateTimeRepository
-                .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId,
-                        coach.getId(),
-                        NOW_PLUS_1_MONTH.getYear(),
-                        NOW_PLUS_1_MONTH.getMonthValue());
-
-        // then
-        assertThat(times).hasSize(2)
-                .containsExactly(new AvailableDateTime(startDateTime.getId(), coach.getId(), startTime, USED),
-                        new AvailableDateTime(availableDateTime.getId(), coach.getId(), availableTime, OPEN));
-    }
-
     private AvailableDateTime saveAvailableTime(final LocalDateTime startTime,
                                                 final AvailableDateTimeStatus availableDateTimeStatus) {
         return availableDateTimeRepository.save(
                 new AvailableDateTime(coach.getId(), startTime, availableDateTimeStatus));
-    }
-
-    private Long saveInterview(final AvailableDateTime availableDateTime) {
-        final Interview interview = interviewRepository.save(new Interview(
-                availableDateTime,
-                availableDateTime.getLocalDateTime(),
-                availableDateTime.getLocalDateTime().plusMinutes(30),
-                coach,
-                crew,
-                createFormItems()
-        ));
-        return interview.getId();
-    }
-
-    private List<FormItem> createFormItems() {
-        return List.of(new FormItem(null, Question.from("고정질문1"), Answer.from("고정답변1")),
-                new FormItem(null, Question.from("고정질문1"), Answer.from("고정답변1")),
-                new FormItem(null, Question.from("고정질문1"), Answer.from("고정답변1")));
     }
 }
