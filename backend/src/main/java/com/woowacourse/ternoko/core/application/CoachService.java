@@ -49,8 +49,7 @@ public class CoachService {
     }
 
     private Long countAvailableDateTimeByCoachId(Long coachId) {
-        final LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.of(00, 00));
-        final LocalDateTime startCountRangeTime = today.plusDays(1);
+        final LocalDateTime startCountRangeTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(00, 00));
         final LocalDateTime endCountRangeTime = startCountRangeTime.plusMonths(1);
 
         return availableDateTimeRepository.countByCoachId(coachId,
