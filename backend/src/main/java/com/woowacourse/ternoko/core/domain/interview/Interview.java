@@ -130,8 +130,8 @@ public class Interview {
     }
 
     public void update(final Interview interview) {
-        validateUpdateInterviewStatus();
-        validateCrewUpdate(interview);
+        validateModifiableInterviewStatus();
+        validateUpdateCrew(interview);
         this.availableDateTime = interview.getAvailableDateTime();
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
@@ -140,14 +140,14 @@ public class Interview {
         formItems.update(interview.getFormItems());
     }
 
-    private void validateUpdateInterviewStatus() {
+    private void validateModifiableInterviewStatus() {
         final List<InterviewStatusType> invalidUpdateStatus = findInvalidUpdateStatus();
         for (InterviewStatusType invalidStatus : invalidUpdateStatus) {
             validateInterviewStatus(invalidStatus);
         }
     }
 
-    private void validateCrewUpdate(final Interview interview) {
+    private void validateUpdateCrew(final Interview interview) {
         if (!isCreatedBy(interview.getCrew().getId())) {
             throw new InvalidInterviewMemberException(CANNOT_UPDATE_CREW);
         }
