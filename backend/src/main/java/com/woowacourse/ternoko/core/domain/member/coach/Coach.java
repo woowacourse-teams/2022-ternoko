@@ -5,13 +5,11 @@ import com.woowacourse.ternoko.core.domain.member.MemberType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("COACH")
 public class Coach extends Member {

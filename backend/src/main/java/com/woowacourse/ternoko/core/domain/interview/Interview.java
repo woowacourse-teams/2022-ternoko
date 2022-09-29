@@ -148,7 +148,7 @@ public class Interview {
     }
 
     private void validateCrewUpdate(final Interview interview) {
-        if (crew != interview.getCrew()) {
+        if (!crew.getId().equals(interview.getCrew().getId())) {
             throw new InvalidInterviewMemberException(CANNOT_UPDATE_CREW);
         }
     }
