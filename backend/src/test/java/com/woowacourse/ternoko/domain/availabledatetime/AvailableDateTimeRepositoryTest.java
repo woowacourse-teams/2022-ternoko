@@ -71,9 +71,10 @@ class AvailableDateTimeRepositoryTest {
         saveAvailableTime(LocalDateTime.of(NOW_PLUS_1_MONTH, THIRD_TIME), USED);
 
         // when
-        availableDateTimeRepository.deleteAllByCoachAndYearAndMonthAndOpen(coach.getId(),
+        availableDateTimeRepository.deleteAllByCoachAndYearAndMonthAndStatus(coach.getId(),
                 NOW.getYear(),
-                NOW_PLUS_1_MONTH.getMonthValue());
+                NOW_PLUS_1_MONTH.getMonthValue(),
+                OPEN);
         final List<AvailableDateTime> availableDateTimes = availableDateTimeRepository.findAllByCoachId(coach.getId());
 
         // then

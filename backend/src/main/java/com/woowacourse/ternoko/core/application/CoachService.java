@@ -1,6 +1,7 @@
 package com.woowacourse.ternoko.core.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
@@ -73,10 +74,11 @@ public class CoachService {
     }
 
     private void putAvailableTime(final Coach coach, final AvailableDateTimeRequest availableDateTime) {
-        availableDateTimeRepository.deleteAllByCoachAndYearAndMonthAndOpen(
+        availableDateTimeRepository.deleteAllByCoachAndYearAndMonthAndStatus(
                 coach.getId(),
                 availableDateTime.getYear(),
-                availableDateTime.getMonth());
+                availableDateTime.getMonth(),
+                OPEN);
         availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, availableDateTime.getTimes()));
     }
 
