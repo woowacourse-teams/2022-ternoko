@@ -127,7 +127,7 @@ const CoachInterviewCreatePage = () => {
         }
       }
 
-      addSelectedDates(dates);
+      dates.length && addSelectedDates(dates);
     } else {
       for (let day = startDay; day <= lastDay; day += 7) {
         if (!isBelowToday(day)) {
@@ -135,10 +135,10 @@ const CoachInterviewCreatePage = () => {
         }
       }
 
-      removeSelectedDates(dates);
+      dates.length && removeSelectedDates(dates);
     }
 
-    resetTimes();
+    dates.length && resetTimes();
   };
 
   const getHandleClickDay = (day: number) => () => {
