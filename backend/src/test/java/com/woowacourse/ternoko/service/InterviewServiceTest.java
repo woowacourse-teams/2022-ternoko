@@ -87,7 +87,7 @@ class InterviewServiceTest extends DatabaseSupporter {
         doNothing().when(slackAlarm).sendUpdateMessage(any(),any());
         doNothing().when(slackAlarm).sendDeleteMessage(any());
 
-        현재시간_이동(2022, 6, 20, 10, 0);
+        현재시간_설정(2022, 6, 20, 10, 0);
     }
 
     @AfterEach
@@ -128,7 +128,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     void createPreviousDay() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        현재시간_이동(2022, 6, 20, 10, 0);
+        현재시간_설정(2022, 6, 20, 10, 0);
 
         // when
         final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
@@ -180,26 +180,6 @@ class InterviewServiceTest extends DatabaseSupporter {
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(-1L))
                 .isInstanceOf(InterviewNotFoundException.class);
     }
-
-    // 되는시간 id로 하면 필요 없을듯
-    @Test
-    @DisplayName("되는시간에서 면담이 예약된 시간과 동일한 시간을 생성하고 삭제해도 원래의 되는시간은 남아있어야 한다.")
-    void test1() {
-//        // given
-//        coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-//        interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
-//
-//        // when
-//
-    }
-
-    // 되는시간 id로 하면 필요 없을듯
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 같은 시간으로 면담 수정이 되어야 한다.")
-//    void test2() {
-//
-//    }
-
 
     @Test
     @DisplayName("크루 - 정렬된 면담 예약 목록을 조회한다.")
@@ -297,7 +277,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     void createInterviewTodayException() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        현재시간_이동(2022, 7, 1, 9, 0);
+        현재시간_설정(2022, 7, 1, 9, 0);
 
         // when & then
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00))
@@ -310,7 +290,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     void createInterviewException() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        현재시간_이동(2022, 7, 2, 9, 0);
+        현재시간_설정(2022, 7, 2, 9, 0);
 
         // when & then
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00))
@@ -389,7 +369,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // when
         final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
-        현재시간_이동(2022, 7, 2, 9, 0);
+        현재시간_설정(2022, 7, 2, 9, 0);
 
         // then
         assertThatThrownBy(() -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보(토미, 면담가능시간_토미_2022_07_01_10_00)))
@@ -404,7 +384,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // when
         final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
-        현재시간_이동(2022, 7, 2, 9, 0);
+        현재시간_설정(2022, 7, 2, 9, 0);
 
         // then
         assertThatThrownBy(() -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보(준, 면담가능시간_준_2022_07_01_12_00)))
@@ -547,7 +527,7 @@ class InterviewServiceTest extends DatabaseSupporter {
         }
     }
 
-    private void 현재시간_이동(final int year, final int month, final int day, final int hour, final int minute) {
+    private void 현재시간_설정(final int year, final int month, final int day, final int hour, final int minute) {
         TimeMachine.timeTravelAt(LocalDateTime.of(year, month, day, hour, minute));
     }
 
