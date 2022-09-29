@@ -18,7 +18,7 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
     void deleteAllByCoachAndYearAndMonthAndStatus(@Param("coachId") final Long coachId,
                                                 @Param("year") final int year,
                                                 @Param("month") final int month,
-                                                @Param("month") final AvailableDateTimeStatus status);
+                                                @Param("status") final AvailableDateTimeStatus status);
 
     List<AvailableDateTime> findAllByCoachId(final Long coachId);
 
