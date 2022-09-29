@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
@@ -21,8 +23,12 @@ import com.woowacourse.ternoko.core.dto.response.CoachResponse;
 import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +41,9 @@ public class CoachServiceTest extends DatabaseSupporter {
 
     @Autowired
     private CoachRepository coachRepository;
+
+    @Autowired
+    private AvailableDateTimeRepository availableDateTimeRepository;
 
     @Test
     @DisplayName("코치 정보를 조회한다.")
@@ -51,8 +60,61 @@ public class CoachServiceTest extends DatabaseSupporter {
                 () -> assertThat(foundCoach.getImageUrl()).isEqualTo(savedCoach.getImageUrl()),
                 () -> assertThat(foundCoach.getIntroduce()).isEqualTo(savedCoach.getIntroduce())
         );
+        coachRepository.delete(savedCoach);
+    }
 
+    @Test
+    @DisplayName("코치가 되는 시간 카운트가 오늘 23:59까지 제외 되는지 확인한다. 내일 00:00 ~ 한달 뒤 00:00 시 범위에서 이뤄진다.")
+    void countAvailableDateTimeByCoachId() {
+        Coach coach = new Coach("박재성", "포비", "pobi@woowahan.com", "U1234567898", ".png", "반란군을 키우는 포비");
+        Coach savedCoach = coachRepository.save(coach);
+        final LocalDateTime 당일_정각_직전 = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
+
+        final AvailableDateTime saveTime = availableDateTimeRepository.save(
+                new AvailableDateTime(savedCoach.getId(), 당일_정각_직전, AvailableDateTimeStatus.OPEN));
+
+        final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
+
+        availableDateTimeRepository.delete(saveTime);
+        coachRepository.delete(savedCoach);
+
+        Assertions.assertFalse(foundCoach.isHasOpenTime());
+    }
+
+    @Test
+    @DisplayName("코치가 되는 시간 카운트가 내일 00:00 부터 시작한다.")
+    void countAvailableDateTimeByCoachId_tomorrow_true() {
+        Coach coach = new Coach("박재성", "포비", "pobi2@woowahan.com", "U1234567898", ".png", "반란군을 키우는 포비");
+        Coach savedCoach = coachRepository.save(coach);
+        final LocalDateTime 내일_정각 = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(00, 00));
+
+        final AvailableDateTime countTime = availableDateTimeRepository.save(
+                new AvailableDateTime(savedCoach.getId(), 내일_정각, AvailableDateTimeStatus.OPEN));
+
+        final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
+
+        availableDateTimeRepository.delete(countTime);
+        coachRepository.delete(savedCoach);
+
+        Assertions.assertTrue(foundCoach.isHasOpenTime());
+    }
+
+    @Test
+    @DisplayName("코치가 되는 시간 카운트가 내일 00:00 ~ 한달 뒤 00:00 시 범위에서 이뤄진다.")
+    void countAvailableDateTimeByCoachId_plus_one_month_true() {
+        Coach coach = new Coach("박재성3", "포비3", "pobi3@woowahan.com", "U1234567898", ".png", "반란군을 키우는 포비");
+        Coach savedCoach = coachRepository.save(coach);
+        final LocalDateTime 한달뒤_정각 = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(00, 00));
+
+        final AvailableDateTime countTime = availableDateTimeRepository.save(
+                new AvailableDateTime(savedCoach.getId(), 한달뒤_정각, AvailableDateTimeStatus.OPEN));
+
+        final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
+
+        availableDateTimeRepository.delete(countTime);
         coachRepository.delete(coach);
+
+        Assertions.assertTrue(foundCoach.isHasOpenTime());
     }
 
     @Test

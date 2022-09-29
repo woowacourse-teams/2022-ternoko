@@ -13,7 +13,9 @@ import com.woowacourse.ternoko.core.dto.request.CalendarRequest;
 import com.woowacourse.ternoko.core.dto.request.CoachUpdateRequest;
 import com.woowacourse.ternoko.core.dto.response.CoachResponse;
 import com.woowacourse.ternoko.core.dto.response.CoachesResponse;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +33,9 @@ public class CoachService {
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
         final List<Coach> coaches = coachRepository.findAll();
-        final LocalDateTime now = LocalDateTime.now();
 
         final List<CoachResponse> coachResponses = coaches.stream()
-                .map(coach -> CoachResponse.of(coach, availableDateTimeRepository.countByCoachId(coach.getId(),
-                        now, now.plusMonths(1))))
+                .map(coach -> CoachResponse.of(coach, countAvailableDateTimeByCoachId(coach.getId())))
                 .collect(Collectors.toList());
 
         return new CoachesResponse(coachResponses);
@@ -43,10 +43,18 @@ public class CoachService {
 
     @Transactional(readOnly = true)
     public CoachResponse findCoach(final Long coachId) {
-        final LocalDateTime now = LocalDateTime.now();
 
         final Coach coach = getCoachById(coachId);
-        return CoachResponse.of(coach, availableDateTimeRepository.countByCoachId(coachId, now, now.plusMonths(1)));
+        return CoachResponse.of(coach, countAvailableDateTimeByCoachId(coachId));
+    }
+
+    private Long countAvailableDateTimeByCoachId(Long coachId) {
+        final LocalDateTime startCountRangeTime = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(00, 00));
+        final LocalDateTime endCountRangeTime = startCountRangeTime.plusMonths(1);
+
+        return availableDateTimeRepository.countByCoachId(coachId,
+                startCountRangeTime, endCountRangeTime);
+
     }
 
     private Coach getCoachById(final Long coachId) {
@@ -99,6 +107,7 @@ public class CoachService {
                 .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId, coachId, year, month);
     }
 
+    //:todo partUpdateCoach 같은데 현재 PR 에서 변경해도 될지?
     public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId,
                 coachUpdateRequest.getNickname(),
