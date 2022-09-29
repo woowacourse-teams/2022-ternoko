@@ -31,6 +31,10 @@ export const Form = styled.div`
   gap: 1.5rem;
 `;
 
+export const additionalDimmerStyle = `
+  z-index: 2;
+`;
+
 export const additionalFrameStyle = `
   @media ${theme.devices.laptop(200)} {
     width: 60%;

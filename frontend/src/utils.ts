@@ -1,3 +1,5 @@
+import { DayOfWeekType } from '@/types/domain';
+
 export const separateFullDate = (fullDate: string) => {
   const [date, time] = fullDate.split(' ');
   const [year, month, day] = date.split('-');
@@ -30,4 +32,10 @@ export const isOverToday = (fullDate: string) => {
   const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute));
 
   return date.getTime() <= new Date().getTime();
+};
+
+const dayOfWeeks = ['일', '월', '화', '수', '목', '금', '토'];
+
+export const getDayOfWeek = (year: number, month: number, day: number): DayOfWeekType => {
+  return dayOfWeeks[new Date(year, month, day).getDay()] as any;
 };

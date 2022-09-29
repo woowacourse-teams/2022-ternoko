@@ -101,6 +101,10 @@ export const AccordionContainer = styled.div`
   opacity: 0;
 `;
 
+export const additionalDimmerStyle = `
+  z-index: 2;
+`;
+
 export const additionalFrameStyle = `
   ${IconContainer} {
     transition: opacity 0.3s ease-in-out 0.2s;

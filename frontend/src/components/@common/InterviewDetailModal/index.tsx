@@ -75,6 +75,7 @@ const InterviewDetailModal = ({
     <Modal
       show={show}
       display={display}
+      additionalDimmerStyle={S.additionalDimmerStyle}
       additionalFrameStyle={S.additionalFrameStyle}
       handleCloseModal={handleCloseModal}
     >
