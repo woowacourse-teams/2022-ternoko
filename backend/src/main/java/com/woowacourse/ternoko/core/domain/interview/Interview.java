@@ -64,7 +64,7 @@ public class Interview {
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
