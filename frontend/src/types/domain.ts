@@ -56,6 +56,7 @@ export interface CalendarTime {
 export type TimeStatus = 'OPEN' | 'USED';
 
 export interface CrewSelectTime {
+  id: number;
   calendarTime: string;
   status: TimeStatus;
 }
@@ -99,8 +100,8 @@ export interface DuplicatedNicknameStatusType {
   exists: boolean;
 }
 
-export type StringDictionary = {
-  [key: string]: string[];
+export type StringDictionary<T> = {
+  [key: string]: T[];
 };
 
 export type SelectMode = 'SINGLE' | 'MULTIPLE';

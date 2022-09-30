@@ -30,7 +30,7 @@ export const COMMENT_MIN_LENGTH = 5;
 
 export const COMMENT_MAX_LENGTH = 25;
 
-export const INITIAL_COACH_ID = -1;
+export const INITIAL_NUMBER_STATE = -1;
 
 export const ERROR_MESSAGE = {
   ENTER_IN_RANGE_APPLY_FORM_LENGTH: `면담 입력폼은 ${CREW_APPLY_FORM_MIN_LENGTH}글자 이상 ${CREW_APPLY_FORM_MAX_LENGTH}글자 이하를 입력해주세요.`,
