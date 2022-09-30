@@ -60,7 +60,7 @@ export const monthNames = [
   '12월',
 ];
 
-export const dayOfWeekNames = ['일', '월', '화', '수', '목', '금', '토'] as const;
+export const dayNamesOfWeek = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
 const isLeapYear = (year: number) =>
   (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||

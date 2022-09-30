@@ -8,7 +8,7 @@ import * as C from '@/components/@common/CalendarStyle/styled';
 import Dimmer from '@/components/@common/Dimmer/styled';
 
 import {
-  dayOfWeekNames,
+  dayNamesOfWeek,
   monthNames,
   useCalendarActions,
   useCalendarState,
@@ -155,8 +155,8 @@ const CoachCalendar = ({
 
       <C.Body>
         <C.WeekDay>
-          {dayOfWeekNames.map((dayOfWeekName: DayOfWeekType) => (
-            <div key={dayOfWeekName}>{dayOfWeekName}</div>
+          {dayNamesOfWeek.map((dayNameOfWeek: DayOfWeekType) => (
+            <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
           ))}
         </C.WeekDay>
         <C.Days key={rerenderKey} ref={daysRef}>

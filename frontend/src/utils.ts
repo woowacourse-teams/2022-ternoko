@@ -1,4 +1,4 @@
-import { dayOfWeekNames } from '@/context/CalendarProvider';
+import { dayNamesOfWeek } from '@/context/CalendarProvider';
 
 import { DayOfWeekType, DayOfWeekWithStartDayType, OneWeekDayType } from '@/types/domain';
 
@@ -37,14 +37,14 @@ export const isOverToday = (fullDate: string) => {
 };
 
 export const getDayOfWeek = (year: number, month: number, day: number): DayOfWeekType => {
-  return dayOfWeekNames[new Date(year, month, day).getDay()] as any;
+  return dayNamesOfWeek[new Date(year, month, day).getDay()] as any;
 };
 
 export const generateDayOfWeeks = (year: number, month: number): DayOfWeekWithStartDayType[] => {
-  const result = dayOfWeekNames.map(
-    (dayOfWeekName: DayOfWeekType) =>
+  const result = dayNamesOfWeek.map(
+    (dayNameOfWeek: DayOfWeekType) =>
       ({
-        name: dayOfWeekName,
+        name: dayNameOfWeek,
         startDay: 1,
       } as DayOfWeekWithStartDayType),
   );
