@@ -48,14 +48,16 @@ export const Box = styled.div<BoxProps>`
   }
 
   :hover ${CoachName} {
-    background-color: ${({ theme }) => theme.colors.pink_50};
+    background-color: ${({ theme }) => theme.colors.pink_150};
+    color: white;
   }
 
   ${({ active }) =>
     active &&
     css`
       ${CoachName} {
-        background-color: ${({ theme }) => theme.colors.pink_50};
+        background-color: ${({ theme }) => theme.colors.pink_150};
+        color: white;
       }
     `}
 
