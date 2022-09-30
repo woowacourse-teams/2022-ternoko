@@ -1,18 +1,23 @@
 import * as S from './styled';
 
-import { DayOfWeekType, ModalPositionType } from '@/types/domain';
+import { DayNameOfWeekType, ModalPositionType } from '@/types/domain';
 
 type BabyShowMoreModalProps = {
   modalPosition: ModalPositionType;
-  dayOfWeek: DayOfWeekType;
+  dayNameOfWeek: DayNameOfWeekType;
   day: number;
   children: React.ReactNode;
 };
 
-const BabyShowMoreModal = ({ modalPosition, dayOfWeek, day, children }: BabyShowMoreModalProps) => {
+const BabyShowMoreModal = ({
+  modalPosition,
+  dayNameOfWeek,
+  day,
+  children,
+}: BabyShowMoreModalProps) => {
   return (
     <S.Box {...modalPosition}>
-      <S.DayOfWeek>{dayOfWeek}</S.DayOfWeek>
+      <S.DayOfWeek>{dayNameOfWeek}</S.DayOfWeek>
       <S.Day>{day}</S.Day>
       {children}
     </S.Box>

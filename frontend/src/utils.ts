@@ -1,4 +1,6 @@
-import { DayOfWeekType } from '@/types/domain';
+import { dayNamesOfWeek } from '@/context/CalendarProvider';
+
+import { DayNameOfWeekType, DayOfWeekWithStartDayType, OneWeekDayType } from '@/types/domain';
 
 export const separateFullDate = (fullDate: string) => {
   const [date, time] = fullDate.split(' ');
@@ -34,8 +36,26 @@ export const isOverToday = (fullDate: string) => {
   return date.getTime() <= new Date().getTime();
 };
 
-const dayOfWeeks = ['일', '월', '화', '수', '목', '금', '토'];
+export const getDayNameOfWeek = (year: number, month: number, day: number): DayNameOfWeekType => {
+  return dayNamesOfWeek[new Date(year, month, day).getDay()] as any;
+};
 
-export const getDayOfWeek = (year: number, month: number, day: number): DayOfWeekType => {
-  return dayOfWeeks[new Date(year, month, day).getDay()] as any;
+export const generateDayOfWeekWithStartDay = (
+  year: number,
+  month: number,
+): DayOfWeekWithStartDayType[] => {
+  const dayNamesOfWeekWithStartDay = dayNamesOfWeek.map(
+    (dayNameOfWeek: DayNameOfWeekType) =>
+      ({
+        name: dayNameOfWeek,
+        startDay: 1,
+      } as DayOfWeekWithStartDayType),
+  );
+
+  for (let day = 1; day <= 7; day++) {
+    dayNamesOfWeekWithStartDay[new Date(year, month, day).getDay()].startDay =
+      day as OneWeekDayType;
+  }
+
+  return dayNamesOfWeekWithStartDay;
 };

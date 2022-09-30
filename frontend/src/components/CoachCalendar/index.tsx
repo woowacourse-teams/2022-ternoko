@@ -8,16 +8,22 @@ import * as C from '@/components/@common/CalendarStyle/styled';
 import Dimmer from '@/components/@common/Dimmer/styled';
 
 import {
+  dayNamesOfWeek,
   monthNames,
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { InterviewStatus, InterviewType, ModalPositionType } from '@/types/domain';
+import {
+  DayNameOfWeekType,
+  InterviewStatus,
+  InterviewType,
+  ModalPositionType,
+} from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
-import { getDayOfWeek, isOverToday, separateFullDate } from '@/utils';
+import { getDayNameOfWeek, isOverToday, separateFullDate } from '@/utils';
 
 type ScheduleType = {
   id: number;
@@ -154,13 +160,9 @@ const CoachCalendar = ({
 
       <C.Body>
         <C.WeekDay>
-          <div>일</div>
-          <div>월</div>
-          <div>화</div>
-          <div>수</div>
-          <div>목</div>
-          <div>금</div>
-          <div>토</div>
+          {dayNamesOfWeek.map((dayNameOfWeek: DayNameOfWeekType) => (
+            <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
+          ))}
         </C.WeekDay>
         <C.Days key={rerenderKey} ref={daysRef}>
           {Array.from({ length: daysLength }, (_, index) => {
@@ -235,7 +237,7 @@ const CoachCalendar = ({
               <Dimmer onClick={handleClickDimmer} />
               <BabyShowMoreModal
                 modalPosition={babyModalPosition}
-                dayOfWeek={getDayOfWeek(year, month, babyModalDay)}
+                dayNameOfWeek={getDayNameOfWeek(year, month, babyModalDay)}
                 day={babyModalDay}
               >
                 {babyModalSchedules}
