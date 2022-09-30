@@ -15,7 +15,7 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { InterviewStatus, InterviewType, ModalPositionType } from '@/types/domain';
+import { DayOfWeekType, InterviewStatus, InterviewType, ModalPositionType } from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
 import { getDayOfWeek, isOverToday, separateFullDate } from '@/utils';
@@ -155,7 +155,7 @@ const CoachCalendar = ({
 
       <C.Body>
         <C.WeekDay>
-          {dayOfWeekNames.map((dayOfWeekName: string) => (
+          {dayOfWeekNames.map((dayOfWeekName: DayOfWeekType) => (
             <div key={dayOfWeekName}>{dayOfWeekName}</div>
           ))}
         </C.WeekDay>
