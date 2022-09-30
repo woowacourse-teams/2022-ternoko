@@ -15,10 +15,15 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { DayOfWeekType, InterviewStatus, InterviewType, ModalPositionType } from '@/types/domain';
+import {
+  DayNameOfWeekType,
+  InterviewStatus,
+  InterviewType,
+  ModalPositionType,
+} from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
-import { getDayOfWeek, isOverToday, separateFullDate } from '@/utils';
+import { getDayNameOfWeek, isOverToday, separateFullDate } from '@/utils';
 
 type ScheduleType = {
   id: number;
@@ -155,7 +160,7 @@ const CoachCalendar = ({
 
       <C.Body>
         <C.WeekDay>
-          {dayNamesOfWeek.map((dayNameOfWeek: DayOfWeekType) => (
+          {dayNamesOfWeek.map((dayNameOfWeek: DayNameOfWeekType) => (
             <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
           ))}
         </C.WeekDay>
@@ -232,7 +237,7 @@ const CoachCalendar = ({
               <Dimmer onClick={handleClickDimmer} />
               <BabyShowMoreModal
                 modalPosition={babyModalPosition}
-                dayOfWeek={getDayOfWeek(year, month, babyModalDay)}
+                dayNameOfWeek={getDayNameOfWeek(year, month, babyModalDay)}
                 day={babyModalDay}
               >
                 {babyModalSchedules}
