@@ -59,7 +59,7 @@ export const SUCCESS_MESSAGE = {
 
 export const EMPTY_SCREEN_MESSAGE = {
   EMPTY_DOING_INTERVIEW: '진행중 면담이 없습니다.',
-  EMPTY_DOME_INTERVIEW: '완료된 면담이 없습니다.',
+  EMPTY_DOME_INTERVIEW: '완료한 면담이 없습니다.',
 } as const;
 
 export const CONFIRM_DELETE_MESSAGE = '정말로 삭제하시겠습니까?';

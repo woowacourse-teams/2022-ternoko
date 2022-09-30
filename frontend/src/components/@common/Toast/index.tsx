@@ -5,19 +5,21 @@ import * as S from './styled';
 
 import { useToastActions, useToastState } from '@/context/ToastProvider';
 
+const delay = 1500;
+
 const Toast = () => {
   const { toasts } = useToastState();
   const { hideToast } = useToastActions();
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const intervalId = setInterval(() => {
       if (toasts.length) {
         hideToast(toasts[0].id);
       }
-    }, 2000);
+    }, delay);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(intervalId);
     };
   }, [toasts]);
 

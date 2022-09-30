@@ -9,35 +9,36 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
+  padding-bottom: 3rem;
 `;
 
 export const Body = styled.div`
   height: calc(100% - 60px);
 
-  padding: 3rem 30rem 2rem;
+  padding: 3rem 30rem 0;
 
   @media ${({ theme }) => theme.devices.laptopL()} {
-    padding: 3rem 25rem 2rem;
+    padding: 3rem 25rem 0;
   }
 
   @media ${({ theme }) => theme.devices.laptop(200)} {
-    padding: 3rem 19rem 2rem;
+    padding: 3rem 19rem 0;
   }
 
   @media ${({ theme }) => theme.devices.laptop()} {
-    padding: 3rem 5rem 2rem;
+    padding: 3rem 5rem 0;
   }
 
   @media ${({ theme }) => theme.devices.tabletM(60)} {
-    padding: 2rem 3rem 1rem;
+    padding: 2rem 3rem 0;
   }
 
   @media ${({ theme }) => theme.devices.mobileL()} {
-    padding: 2rem 2rem 1rem;
+    padding: 2rem 2rem 0;
   }
 
   @media ${({ theme }) => theme.devices.mobileM()} {
-    padding: 2rem 1rem 1rem;
+    padding: 2rem 1rem 0;
   }
 `;
 
@@ -77,6 +78,7 @@ export const Box = styled.div<BoxProps>`
     stepStatus === 'show' &&
     css`
       display: block;
+
       opacity: 1;
       z-index: 1;
 
@@ -190,13 +192,6 @@ export const SmallCircle = styled(Circle)<SmallCircleProps>`
   height: 1.2rem;
 
   background-color: ${({ theme, green }) => green && theme.colors.green_100};
-`;
-
-export const Bar = styled.div`
-  width: 1px;
-  height: 40px;
-  margin-left: 10px;
-  background: ${({ theme }) => theme.colors.pink_200};
 `;
 
 export const Form = styled.form`

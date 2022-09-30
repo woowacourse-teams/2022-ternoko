@@ -276,11 +276,11 @@ const InterviewApplyPage = () => {
               <S.StatusBox>
                 <div>
                   <S.SmallCircle />
-                  면담 불가
+                  <p>한달 내 면담 불가</p>
                 </div>
                 <div>
                   <S.SmallCircle green />
-                  면담 가능
+                  <p>한달 내 면담 가능</p>
                 </div>
               </S.StatusBox>
             </div>

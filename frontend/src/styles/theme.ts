@@ -10,6 +10,7 @@ const theme = {
     gray_200: '#808080',
     pink_50: '#ffe3e3',
     pink_100: '#ffb7d2',
+    pink_150: '#fa86c4',
     pink_200: '#ff385c',
     pink_300: '#f03e3e',
     orange: '#ffd24d4d',
