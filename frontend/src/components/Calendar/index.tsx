@@ -42,7 +42,10 @@ const Calendar = ({
   const { daysLength, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
-  const dayOfWeekWithStartDay = generateDayOfWeekWithStartDay(year, month);
+  const dayOfWeekWithStartDay = useMemo(
+    () => generateDayOfWeekWithStartDay(year, month),
+    [year, month],
+  );
 
   const checkIsAllSelectedColumn = (startDay: OneWeekDayType) => {
     const lastDay = new Date(year, month + 1, 0).getDate();
