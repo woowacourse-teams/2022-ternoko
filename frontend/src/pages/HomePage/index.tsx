@@ -43,15 +43,15 @@ const HomePage = () => {
 
   const doingInterviews = useMemo(
     () =>
-      interviews.filter(({ status }: InterviewType) =>
-        ['CREW_COMPLETED', 'COMPLETED'].includes(status),
+      interviews.filter(
+        ({ status }: InterviewType) => !['CREW_COMPLETED', 'COMPLETED'].includes(status),
       ),
     [interviews],
   );
   const doneInterviews = useMemo(
     () =>
-      interviews.filter(
-        ({ status }: InterviewType) => !['CREW_COMPLETED', 'COMPLETED'].includes(status),
+      interviews.filter(({ status }: InterviewType) =>
+        ['CREW_COMPLETED', 'COMPLETED'].includes(status),
       ),
     [interviews],
   );
@@ -100,7 +100,6 @@ const HomePage = () => {
           <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>
-
       <S.TabMenuBox>
         <S.TabMenu active={tabMenuStatus === 'doing'} onClick={getHandleClickTabMenu('doing')}>
           진행중 면담
@@ -109,40 +108,43 @@ const HomePage = () => {
           완료한 면담
         </S.TabMenu>
       </S.TabMenuBox>
+      {tabMenuStatus === 'doing' &&
+        (doingInterviews.length > 0 ? (
+          <GridContainer minSize="25rem" pt="4rem">
+            {doingInterviews.map((interview) => (
+              <Interview
+                key={interview.id}
+                handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+                handleClickCommentButton={getHandleClickCommentButton(
+                  interview.id,
+                  interview.status,
+                )}
+                {...interview}
+              />
+            ))}
+          </GridContainer>
+        ) : (
+          <EmptyScreen message={EMPTY_SCREEN_MESSAGE.EMPTY_DOING_INTERVIEW} />
+        ))}
 
-      {tabMenuStatus === 'doing' && doingInterviews.length > 0 && (
-        <GridContainer minSize="25rem" pt="4rem">
-          {doingInterviews.map((interview) => (
-            <Interview
-              key={interview.id}
-              handleClickDetailButton={getHandleClickDetailButton(interview.id)}
-              handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
-              {...interview}
-            />
-          ))}
-        </GridContainer>
-      )}
-
-      {tabMenuStatus === 'done' && doneInterviews.length > 0 && (
-        <GridContainer minSize="25rem" pt="4rem">
-          {doneInterviews.map((interview) => (
-            <Interview
-              key={interview.id}
-              handleClickDetailButton={getHandleClickDetailButton(interview.id)}
-              handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
-              {...interview}
-            />
-          ))}
-        </GridContainer>
-      )}
-
-      {tabMenuStatus === 'doing' && doingInterviews.length === 0 && (
-        <EmptyScreen message={EMPTY_SCREEN_MESSAGE.EMPTY_DOING_INTERVIEW} />
-      )}
-
-      {tabMenuStatus === 'done' && doneInterviews.length === 0 && (
-        <EmptyScreen message={EMPTY_SCREEN_MESSAGE.EMPTY_DOME_INTERVIEW} />
-      )}
+      {tabMenuStatus === 'done' &&
+        (doneInterviews.length > 0 ? (
+          <GridContainer minSize="25rem" pt="4rem">
+            {doneInterviews.map((interview) => (
+              <Interview
+                key={interview.id}
+                handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+                handleClickCommentButton={getHandleClickCommentButton(
+                  interview.id,
+                  interview.status,
+                )}
+                {...interview}
+              />
+            ))}
+          </GridContainer>
+        ) : (
+          <EmptyScreen message={EMPTY_SCREEN_MESSAGE.EMPTY_DOME_INTERVIEW} />
+        ))}
 
       <InterviewDetailModal
         show={showDetail}
