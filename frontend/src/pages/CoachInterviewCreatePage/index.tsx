@@ -119,7 +119,7 @@ const CoachInterviewCreatePage = () => {
           selectedDates.every(
             (selectedDate) =>
               selectedDate.year !== year ||
-              selectedDate.month !== month ||
+              selectedDate.month !== month + 1 ||
               selectedDate.day !== day,
           )
         ) {
