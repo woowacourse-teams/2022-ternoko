@@ -55,7 +55,6 @@ export const SUCCESS_MESSAGE = {
   COACH_DELETE_INTERVIEW_AND_TIME: '면담과 시간이 삭제됐어용... ㅠㅠ',
   CREATE_COMMENT: '코멘트가 정상적으로 입력됐어용~',
   UPDATE_COMMENT: '코멘트가 정삭적으로 수정됐어용~',
-  SELECT_COACH: (coachName: string) => `${coachName ?? '코치'} 골랐어용~`,
 };
 
 export const CONFIRM_DELETE_MESSAGE = '정말로 삭제하시겠습니까?';
