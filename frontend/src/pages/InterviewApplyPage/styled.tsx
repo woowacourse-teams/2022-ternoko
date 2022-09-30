@@ -14,30 +14,30 @@ export const Container = styled.div`
 export const Body = styled.div`
   height: calc(100% - 60px);
 
-  padding: 3rem 30rem 0;
+  padding: 3rem 30rem 2rem;
 
   @media ${({ theme }) => theme.devices.laptopL()} {
-    padding: 3rem 25rem 0;
+    padding: 3rem 25rem 2rem;
   }
 
   @media ${({ theme }) => theme.devices.laptop(200)} {
-    padding: 3rem 19rem 0;
+    padding: 3rem 19rem 2rem;
   }
 
   @media ${({ theme }) => theme.devices.laptop()} {
-    padding: 3rem 5rem 0;
+    padding: 3rem 5rem 2rem;
   }
 
   @media ${({ theme }) => theme.devices.tabletM(60)} {
-    padding: 2rem 3rem 0;
+    padding: 2rem 3rem 1rem;
   }
 
   @media ${({ theme }) => theme.devices.mobileL()} {
-    padding: 2rem 2rem 0;
+    padding: 2rem 2rem 1rem;
   }
 
   @media ${({ theme }) => theme.devices.mobileM()} {
-    padding: 2rem 1rem 0;
+    padding: 2rem 1rem 1rem;
   }
 `;
 
@@ -76,7 +76,7 @@ export const Box = styled.div<BoxProps>`
   ${({ stepStatus }) =>
     stepStatus === 'show' &&
     css`
-      visibility: visible;
+      display: block;
       opacity: 1;
       z-index: 1;
 
@@ -89,13 +89,13 @@ export const Box = styled.div<BoxProps>`
   ${({ stepStatus }) =>
     stepStatus === 'hidden' &&
     css`
-      visibility: hidden;
+      display: none;
     `}
 
   ${({ stepStatus }) =>
     stepStatus === 'onlyShowTitle' &&
     css`
-      visibility: visible;
+      display: block;
 
       .sub-title {
         opacity: 0.4;
