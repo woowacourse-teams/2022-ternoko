@@ -1,18 +1,11 @@
 import styled from 'styled-components';
 
 export const Box = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 6rem;
-`;
-
-export const InnerBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 3rem;
+  padding-top: 6rem;
+  gap: 4rem;
 `;
 
 export const EmptyImageWrapper = styled.div`
@@ -28,11 +21,10 @@ export const EmptyImageWrapper = styled.div`
 
 export const EmptyImage = styled.img`
   width: 22rem;
-  height: 22rem;
+  height: 20rem;
 `;
 
 export const EmptyMessage = styled.p`
-  margin-top: 4rem;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: bold;
 `;

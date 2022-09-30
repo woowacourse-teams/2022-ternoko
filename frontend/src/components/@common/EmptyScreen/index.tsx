@@ -11,16 +11,13 @@ type EmptyScreenProps = {
 const EmptyScreen = ({ message }: EmptyScreenProps) => {
   return (
     <S.Box>
-      <S.InnerBox>
-        <picture>
-          <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
-          <S.EmptyImageWrapper>
-            <S.EmptyImage src="/assets/logo/mainLogo.png" alt="로고" />
-          </S.EmptyImageWrapper>
-        </picture>
-
-        <S.EmptyMessage>{message}</S.EmptyMessage>
-      </S.InnerBox>
+      <picture>
+        <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
+        <S.EmptyImageWrapper>
+          <S.EmptyImage src="/assets/logo/mainLogo.png" alt="로고" />
+        </S.EmptyImageWrapper>
+      </picture>
+      <S.EmptyMessage>{message}</S.EmptyMessage>
     </S.Box>
   );
 };
