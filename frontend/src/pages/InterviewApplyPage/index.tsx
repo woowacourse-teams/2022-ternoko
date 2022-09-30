@@ -258,8 +258,6 @@ const InterviewApplyPage = () => {
     }
   }, [stepStatus, year, month]);
 
-  // useEffect(initializeDateStatuses, [year, month]);
-
   return (
     <>
       <Header />
