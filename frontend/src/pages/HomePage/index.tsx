@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
 import Button from '@/components/@common/Button/styled';
 import CommentModal from '@/components/@common/CommentModal';
+import EmptyScreen from '@/components/@common/EmptyScreen';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
@@ -14,7 +15,7 @@ import Interview from '@/components/Interview';
 import { InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getInterviewsAPI } from '@/api';
-import { PAGE } from '@/constants';
+import { EMPTY_SCREEN_MESSAGE, PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 
 export type TabMenuStatus = 'doing' | 'done';
@@ -40,10 +41,20 @@ const HomePage = () => {
   const [clickedInterviewId, setClickedInterviewId] = useState(-1);
   const [clickedInterviewStatus, setClickedInterviewStatus] = useState<InterviewStatus>('EDITABLE');
 
-  const InterviewPridicate = ({ status }: InterviewType) =>
-    tabMenuStatus === 'done'
-      ? ['CREW_COMPLETED', 'COMPLETED'].includes(status)
-      : !['CREW_COMPLETED', 'COMPLETED'].includes(status);
+  const doingInterviews = useMemo(
+    () =>
+      interviews.filter(({ status }: InterviewType) =>
+        ['CREW_COMPLETED', 'COMPLETED'].includes(status),
+      ),
+    [interviews],
+  );
+  const doneInterviews = useMemo(
+    () =>
+      interviews.filter(
+        ({ status }: InterviewType) => !['CREW_COMPLETED', 'COMPLETED'].includes(status),
+      ),
+    [interviews],
+  );
 
   const getHandleClickTabMenu = (status: TabMenuStatus) => () => {
     setTabMenuStatus(status);
@@ -99,16 +110,40 @@ const HomePage = () => {
         </S.TabMenu>
       </S.TabMenuBox>
 
-      <GridContainer minSize="25rem" pt="4rem">
-        {interviews.filter(InterviewPridicate).map((interview) => (
-          <Interview
-            key={interview.id}
-            handleClickDetailButton={getHandleClickDetailButton(interview.id)}
-            handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
-            {...interview}
-          />
-        ))}
-      </GridContainer>
+      {tabMenuStatus === 'doing' && doingInterviews.length > 0 && (
+        <GridContainer minSize="25rem" pt="4rem">
+          {doingInterviews.map((interview) => (
+            <Interview
+              key={interview.id}
+              handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+              handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
+              {...interview}
+            />
+          ))}
+        </GridContainer>
+      )}
+
+      {tabMenuStatus === 'done' && doneInterviews.length > 0 && (
+        <GridContainer minSize="25rem" pt="4rem">
+          {doneInterviews.map((interview) => (
+            <Interview
+              key={interview.id}
+              handleClickDetailButton={getHandleClickDetailButton(interview.id)}
+              handleClickCommentButton={getHandleClickCommentButton(interview.id, interview.status)}
+              {...interview}
+            />
+          ))}
+        </GridContainer>
+      )}
+
+      {tabMenuStatus === 'doing' && doingInterviews.length === 0 && (
+        <EmptyScreen message={EMPTY_SCREEN_MESSAGE.EMPTY_DOING_INTERVIEW} />
+      )}
+
+      {tabMenuStatus === 'done' && doneInterviews.length === 0 && (
+        <EmptyScreen message={EMPTY_SCREEN_MESSAGE.EMPTY_DOME_INTERVIEW} />
+      )}
+
       <InterviewDetailModal
         show={showDetail}
         display={displayDetail}
