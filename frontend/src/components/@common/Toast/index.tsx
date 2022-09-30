@@ -14,7 +14,7 @@ const Toast = () => {
       if (toasts.length) {
         hideToast(toasts[0].id);
       }
-    }, 3000);
+    }, 2000);
 
     return () => {
       clearInterval(interval);
