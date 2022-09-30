@@ -34,4 +34,5 @@ export const EmptyImage = styled.img`
 export const EmptyMessage = styled.p`
   margin-top: 4rem;
   font-size: 4rem;
+  font-weight: bold;
 `;
