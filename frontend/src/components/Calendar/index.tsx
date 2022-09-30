@@ -30,7 +30,7 @@ const Calendar = ({
   getDayType,
   haveTimeDays,
 }: CalendarProps) => {
-  const { year, month, showMonthPicker } = useCalendarState();
+  const { year, month, selectedDates, showMonthPicker } = useCalendarState();
   const {
     handleClickPrevYear,
     handleClickNextYear,
@@ -43,6 +43,29 @@ const Calendar = ({
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
   const dayOfWeekWithStartDay = generateDayOfWeekWithStartDay(year, month);
+
+  const checkIsAllSelectedColumn = (startDay: OneWeekDayType) => {
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    let isAllSelectedColumn = true;
+
+    for (let day = startDay; day <= lastDay; day += 7) {
+      if (
+        !isBelowToday(day) &&
+        selectedDates.every(
+          (selectedDate) =>
+            selectedDate.year !== year ||
+            selectedDate.month !== month + 1 ||
+            selectedDate.day !== day,
+        )
+      ) {
+        isAllSelectedColumn = false;
+
+        break;
+      }
+    }
+
+    return isAllSelectedColumn;
+  };
 
   return (
     <S.Box>
@@ -63,14 +86,18 @@ const Calendar = ({
       <C.Body>
         <C.WeekDay>
           {dayOfWeekWithStartDay.map(({ name, startDay }) => (
-            <S.DayOfWeek
-              key={startDay}
-              onClick={
-                getHandleClickDayOfWeek === undefined ? () => {} : getHandleClickDayOfWeek(startDay)
-              }
-            >
-              {name}
-            </S.DayOfWeek>
+            <div>
+              {getHandleClickDayOfWeek && (
+                <S.AllTimeButton
+                  key={startDay}
+                  onClick={getHandleClickDayOfWeek(startDay)}
+                  active={checkIsAllSelectedColumn(startDay)}
+                >
+                  ✅
+                </S.AllTimeButton>
+              )}
+              <p>{name}</p>
+            </div>
           ))}
         </C.WeekDay>
         <C.Days key={rerenderKey}>

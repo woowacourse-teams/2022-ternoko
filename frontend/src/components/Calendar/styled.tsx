@@ -13,15 +13,6 @@ export const Box = styled.div`
   border-radius: 20px;
 `;
 
-export const DayOfWeek = styled.div`
-  cursor: pointer;
-
-  :hover {
-    background-color: ${({ theme }) => theme.colors.pink_50};
-    color: white;
-  }
-`;
-
 type CalendarDayProps = {
   type?: DayType;
   today?: boolean;
@@ -74,4 +65,23 @@ export const CalendarDay = styled(Day)<CalendarDayProps>`
         background-color: ${({ theme }) => theme.colors.pink_100};
       }
     `}
+`;
+
+type AllTimeButtonTypes = {
+  active: boolean;
+};
+
+export const AllTimeButton = styled.button<AllTimeButtonTypes>`
+  margin-bottom: 1rem;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  background-color: ${({ theme, active }) =>
+    active ? theme.colors.gray_150 : theme.colors.white_50};
+
+  transition: background-color 0.2s linear;
 `;
