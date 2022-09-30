@@ -51,7 +51,7 @@ public class Interview {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "available_date_time_id")
+    @JoinColumn(name = "available_date_time_id", unique = true)
     private AvailableDateTime availableDateTime;
 
     @Column(nullable = false)
