@@ -13,7 +13,7 @@ import {
 
 import { DayType, OneWeekDayType } from '@/types/domain';
 
-import { generateDayOfWeeks } from '@/utils';
+import { generateDayOfWeekWithStartDay } from '@/utils';
 
 export type CalendarProps = {
   rerenderCondition?: number;
@@ -42,7 +42,7 @@ const Calendar = ({
   const { daysLength, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
 
-  const dayOfWeeks = generateDayOfWeeks(year, month);
+  const dayOfWeekWithStartDay = generateDayOfWeekWithStartDay(year, month);
 
   return (
     <S.Box>
@@ -62,7 +62,7 @@ const Calendar = ({
 
       <C.Body>
         <C.WeekDay>
-          {dayOfWeeks.map(({ name, startDay }) => (
+          {dayOfWeekWithStartDay.map(({ name, startDay }) => (
             <S.DayOfWeek
               key={startDay}
               onClick={

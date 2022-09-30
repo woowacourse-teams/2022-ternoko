@@ -40,8 +40,11 @@ export const getDayOfWeek = (year: number, month: number, day: number): DayOfWee
   return dayNamesOfWeek[new Date(year, month, day).getDay()] as any;
 };
 
-export const generateDayOfWeeks = (year: number, month: number): DayOfWeekWithStartDayType[] => {
-  const result = dayNamesOfWeek.map(
+export const generateDayOfWeekWithStartDay = (
+  year: number,
+  month: number,
+): DayOfWeekWithStartDayType[] => {
+  const dayNamesOfWeekWithStartDay = dayNamesOfWeek.map(
     (dayNameOfWeek: DayOfWeekType) =>
       ({
         name: dayNameOfWeek,
@@ -50,8 +53,9 @@ export const generateDayOfWeeks = (year: number, month: number): DayOfWeekWithSt
   );
 
   for (let day = 1; day <= 7; day++) {
-    result[new Date(year, month, day).getDay()].startDay = day as OneWeekDayType;
+    dayNamesOfWeekWithStartDay[new Date(year, month, day).getDay()].startDay =
+      day as OneWeekDayType;
   }
 
-  return result;
+  return dayNamesOfWeekWithStartDay;
 };

@@ -100,11 +100,11 @@ const CoachInterviewCreatePage = () => {
 
   const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
     const lastDay = new Date(year, month + 1, 0).getDate();
-    let isAdd = false;
+    let isAllSelect = false;
 
     for (let day = startDay; day <= lastDay; day += 7) {
       if (!isBelowToday(day) && !isSelectedDate(day)) {
-        isAdd = true;
+        isAllSelect = true;
 
         break;
       }
@@ -112,7 +112,7 @@ const CoachInterviewCreatePage = () => {
 
     const dates = [];
 
-    if (isAdd) {
+    if (isAllSelect) {
       for (let day = startDay; day <= lastDay; day += 7) {
         if (
           !isBelowToday(day) &&
