@@ -139,10 +139,7 @@ const InterviewApplyPage = () => {
   const getHandleClickProfile = (id: number) => () => {
     if (id === coachId) return;
 
-    const coach = coaches.find((coach) => coach.id === id);
-
     changeCoachIdRef.current = true;
-    showToast('SUCCESS', SUCCESS_MESSAGE.SELECT_COACH((coach as CoachType).nickname));
     setCoachId(id);
   };
 
@@ -279,11 +276,11 @@ const InterviewApplyPage = () => {
               <S.StatusBox>
                 <div>
                   <S.SmallCircle />
-                  면담 불가
+                  <p>한달 내 면담 불가</p>
                 </div>
                 <div>
                   <S.SmallCircle green />
-                  면담 가능
+                  <p>한달 내 면담 가능</p>
                 </div>
               </S.StatusBox>
             </div>
@@ -392,7 +389,7 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                 />
                 <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
-                <Button type="submit" width="100%" s height="4rem" inActive={isNotValidForm}>
+                <Button type="submit" width="100%" height="4rem" inActive={isNotValidForm}>
                   {interviewId ? '수정 완료' : '신청 완료'}
                 </Button>
               </S.Form>
