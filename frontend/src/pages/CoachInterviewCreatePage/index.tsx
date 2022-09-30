@@ -26,7 +26,7 @@ import {
 } from '@/types/domain';
 
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
-import { ERROR_MESSAGE, INITIAL_COACH_ID, PAGE, SUCCESS_MESSAGE } from '@/constants';
+import { ERROR_MESSAGE, INITIAL_NUMBER_STATE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { getFullDateString, separateFullDate } from '@/utils';
 
 const defaultTimes = [
@@ -85,7 +85,7 @@ const CoachInterviewCreatePage = () => {
         : times;
 
       return acc;
-    }, {} as StringDictionary);
+    }, {} as StringDictionary<string>);
 
     return Object.entries(result).map(([yearMonth, times]) => {
       const [year, month] = yearMonth.split('-');
@@ -230,7 +230,7 @@ const CoachInterviewCreatePage = () => {
   };
 
   useEffect(() => {
-    if (id === INITIAL_COACH_ID) return;
+    if (id === INITIAL_NUMBER_STATE) return;
 
     (async () => {
       // 추후 response 타입 필요
