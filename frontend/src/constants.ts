@@ -12,7 +12,7 @@ export const PAGE = {
   OAUTH_REDIRECT: '/api/login',
   ACCESS_DENY: '/access/deny',
   NOT_FOUND: '*',
-};
+} as const;
 
 export const CREW_APPLY_FORM_MIN_LENGTH = 10;
 
@@ -40,7 +40,7 @@ export const ERROR_MESSAGE = {
   CREATE_SCHEDULE: '면담 스케쥴 생성이 실패했어요.',
   CHECK_DAY_AND_TIME: '날짜 및 시간을 다시 확인해주세요.',
   DUPLICATED_NICKNAME: '닉네임이 중복됐어요.',
-};
+} as const;
 
 export const SUCCESS_MESSAGE = {
   CREATE_SCHEDULE: '면담 스케줄 생성이 성공했어요.',
@@ -50,12 +50,12 @@ export const SUCCESS_MESSAGE = {
   UPDATE_CREW_INFO: '크루 정보가 정상적으로 정보가 수정됐어요.',
   CREATE_INTERVIEW: '면담 신청이 성공적으로 완료됐어요.',
   UPDATE_INTERVIEW: '면담 신청이 성공적으로 수정됐어요.',
-  CREW_DELETE_INTERVIEW: '면담이 삭제됐어요... ㅠㅠ',
+  CREW_DELETE_INTERVIEW: '면담이 삭제됐어요...ㅠㅠ',
   COACH_DELETE_INTERVIEW: '면담이 삭제됐어요... ㅠㅠ',
   COACH_DELETE_INTERVIEW_AND_TIME: '면담과 시간이 삭제됐어요... ㅠㅠ',
   CREATE_COMMENT: '코멘트가 정상적으로 입력됐어요.',
   UPDATE_COMMENT: '코멘트가 정삭적으로 수정됐어요.',
-};
+} as const;
 
 export const EMPTY_SCREEN_MESSAGE = {
   EMPTY_DOING_INTERVIEW: '진행중 면담이 없습니다.',
