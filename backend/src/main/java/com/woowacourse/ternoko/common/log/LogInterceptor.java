@@ -24,11 +24,16 @@ public class LogInterceptor implements HandlerInterceptor {
     public void afterCompletion(@NotNull final HttpServletRequest request, final HttpServletResponse response,
                                 @NotNull final Object handler, final Exception ex) throws IOException {
         if (isSuccess(response.getStatus())) {
-
-            ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
+            ContentCachingRequestWrapper cachingRequest;
+            try{
+                cachingRequest = (ContentCachingRequestWrapper) request;
+            } catch (ClassCastException e){
+                log.info("로깅 필터가 정상적으로 동작하지 않았습니다.");
+                return;
+            }
             log.info(LogForm.SUCCESS_LOGGING_FORM, request.getMethod(), request.getRequestURI(),
                     StringUtils.hasText(request.getHeader("Authorization")),
-                    objectMapper.readTree(wrappingRequest.getContentAsByteArray()));
+                    objectMapper.readTree(cachingRequest.getContentAsByteArray()));
         }
     }
 
