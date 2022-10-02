@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
+import AllScheduleByMonthModal from '@/components/@common/AllScheduleByMonthModal';
 import Button from '@/components/@common/Button/styled';
+import useModal from '@/components/@common/Modal/useModal';
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
@@ -59,6 +61,8 @@ const CoachInterviewCreatePage = () => {
     selectMode: 'MULTIPLE',
   });
   const isAllSelectedTimes = selectedTimes.length === defaultTimes.length;
+
+  const { show, display, handleOpenModal, handleCloseModal } = useModal();
 
   const { showToast } = useToastActions();
 
@@ -260,9 +264,7 @@ const CoachInterviewCreatePage = () => {
     <S.Box>
       <S.HeaderBox>
         <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
-        <Button onClick={() => alert('해당 기능은 준비중입니다.')}>
-          {month + 1}월 한눈에 보기
-        </Button>
+        <Button onClick={handleOpenModal}>{month + 1}월 한눈에 보기</Button>
       </S.HeaderBox>
 
       <S.DateBox>
@@ -305,6 +307,16 @@ const CoachInterviewCreatePage = () => {
           스케쥴 저장
         </Button>
       </S.ButtonContainer>
+      <AllScheduleByMonthModal
+        show={show}
+        display={display}
+        calendarTime={
+          calendarTimes.filter(
+            (calendarTime) => year === calendarTime.year && month + 1 === calendarTime.month,
+          )[0]
+        }
+        handleCloseModal={handleCloseModal}
+      />
     </S.Box>
   );
 };
