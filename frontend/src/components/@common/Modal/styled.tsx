@@ -39,7 +39,7 @@ export const Frame = styled.div<ModalProps>`
   position: relative;
   top: -200%;
   width: 40%;
-  max-height: 92%;
+  max-height: 80%;
   padding: 3rem 3rem;
   overflow-y: auto;
   transform: scale(0.5);
