@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.service;
 
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
@@ -9,6 +10,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
+import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.Answer;
@@ -30,6 +33,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 @ServiceTest
 class EmailServiceTest extends DatabaseSupporter {
+
+    @Autowired
+    private AvailableDateTimeRepository availableDateTimeRepository;
 
     @Autowired
     private InterviewRepository interviewRepository;
@@ -62,8 +68,11 @@ class EmailServiceTest extends DatabaseSupporter {
                                final Coach coach,
                                final Crew crew,
                                final List<FormItem> formItems) {
-
+        final LocalDateTime _2022_07_29_17_30 = LocalDateTime.of(2022, 7, 29, 17, 30);
+        final AvailableDateTime availableDateTime = availableDateTimeRepository.save(
+                new AvailableDateTime(COACH1.getId(), _2022_07_29_17_30, OPEN));
         final Interview interview = interviewRepository.save(new Interview(
+                availableDateTime,
                 localDateTime,
                 localDateTime.plusMinutes(30),
                 coach,

@@ -8,7 +8,6 @@ import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.INTERVIEW;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1_UPDATE_REQUEST;
-import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -68,24 +67,6 @@ public class CoachControllerTest extends RestDocsTestSupporter {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/calendar/times")
                         .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1))
-                        .queryParam("coachId", String.valueOf(COACH1.getId()))
-                        .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
-                        .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))
-                .andExpect(status().isOk())
-                .andDo(restDocs.document());
-    }
-
-    @Test
-    @DisplayName("크루 - 면담 수정시 면담 가능 시간 목록을 조회한다.")
-    void findCalendarTimesByInterviewId() throws Exception {
-        // given
-        given(coachService.findAvailableDateTimesByCoachIdAndInterviewId(any(), any(), anyInt(), anyInt()))
-                .willReturn(List.of(AVAILABLE_DATE_TIME));
-
-        // when, then
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/interviews/{interviewId}/calendar/times", INTERVIEW.getId())
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(CREW1))
                         .queryParam("coachId", String.valueOf(COACH1.getId()))
                         .queryParam("year", String.valueOf(NOW_MONTH_REQUEST.getYear()))
                         .queryParam("month", String.valueOf(NOW_MONTH_REQUEST.getMonth())))

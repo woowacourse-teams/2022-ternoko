@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,17 +56,5 @@ public class CoachController {
                                             @RequestBody final CoachUpdateRequest coachUpdateRequest) {
         coachService.partUpdateCrew(coachId, coachUpdateRequest);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/interviews/{interviewId}/calendar/times")
-    public ResponseEntity<AvailableDateTimesResponse> findCalendarTimesByInterviewId(
-            @PathVariable final Long interviewId,
-            @RequestParam final Long coachId,
-            @RequestParam final int year,
-            @RequestParam final int month) {
-        final List<AvailableDateTime> availableDateTimes = coachService
-                .findAvailableDateTimesByCoachIdAndInterviewId(interviewId, coachId, year, month);
-        final AvailableDateTimesResponse response = AvailableDateTimesResponse.from(availableDateTimes);
-        return ResponseEntity.ok(response);
     }
 }
