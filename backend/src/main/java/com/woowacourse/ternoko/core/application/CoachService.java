@@ -83,7 +83,7 @@ public class CoachService {
     }
 
     private List<AvailableDateTime> toAvailableDateTimes(final Coach coach,
-                                                        final List<AvailableDateTimeSummaryRequest> times) {
+                                                         final List<AvailableDateTimeSummaryRequest> times) {
         return times.stream()
                 .map(time -> new AvailableDateTime(coach.getId(), time.getTime(), time.getAvailableDateTimeStatus()))
                 .collect(Collectors.toList());
@@ -96,17 +96,6 @@ public class CoachService {
             final int month) {
 
         return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
-    }
-
-    @Transactional(readOnly = true)
-    public List<AvailableDateTime> findAvailableDateTimesByCoachIdAndInterviewId(
-            final Long interviewId,
-            final Long coachId,
-            final int year,
-            final int month) {
-
-        return availableDateTimeRepository
-                .findByCoachIdAndYearAndMonthAndOpenOrInterviewStartTime(interviewId, coachId, year, month);
     }
 
     //:todo partUpdateCoach 같은데 현재 PR 에서 변경해도 될지?
