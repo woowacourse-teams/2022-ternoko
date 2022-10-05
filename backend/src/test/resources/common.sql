@@ -6,10 +6,10 @@ VALUES ('USED', '2022-07-31 11:00:00', 1),
        ('USED', '2022-07-31 13:00:00', 1),
        ('OPEN', '2022-07-31 14:00:00', 1);
 
-INSERT INTO interview (interview_start_time, interview_end_time, interview_status_type, coach_id, crew_id)
-VALUES ('2022-07-31 11:00:00', '2022-07-31 11:30:00', 'FIXED', 1, 5),
-       ('2022-07-31 12:00:00', '2022-07-31 12:30:00', 'FIXED', 1, 6),
-       ('2022-07-31 13:00:00', '2022-07-31 13:30:00', 'EDITABLE', 1, 5);
+INSERT INTO interview (available_date_time_id, interview_start_time, interview_end_time, interview_status_type, coach_id, crew_id)
+VALUES (1, '2022-07-31 11:00:00', '2022-07-31 11:30:00', 'FIXED', 1, 5),
+       (2, '2022-07-31 12:00:00', '2022-07-31 12:30:00', 'FIXED', 1, 6),
+       (3, '2022-07-31 13:00:00', '2022-07-31 13:30:00', 'EDITABLE', 1, 5);
 
 
 INSERT INTO form_item (answer, question, interview_id)

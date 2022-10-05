@@ -1,21 +1,29 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import * as S from './styled';
 
+import BabyShowMoreModal from '@/components/@common/BabyShowMoreModal';
 import Button from '@/components/@common/Button/styled';
 import * as C from '@/components/@common/CalendarStyle/styled';
+import Dimmer from '@/components/@common/Dimmer/styled';
 
 import {
+  dayNamesOfWeek,
   monthNames,
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { InterviewStatus, InterviewType } from '@/types/domain';
+import {
+  DayNameOfWeekType,
+  InterviewStatus,
+  InterviewType,
+  ModalPositionType,
+} from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
-import { isOverToday, separateFullDate } from '@/utils';
+import { getDayNameOfWeek, isOverToday, separateFullDate } from '@/utils';
 
 type ScheduleType = {
   id: number;
@@ -29,6 +37,24 @@ type SchedulesType = { [key: number]: ScheduleType[] };
 type CoachCalendarProps = {
   getHandleClickSchedule: (interviewId: number) => () => void;
   getHandleClickCommentButton: (interviewId: number, status: InterviewStatus) => () => void;
+};
+
+const scheduleItemMargin = 4;
+
+const calculateModalPosition = (clickX: number, clickY: number) => {
+  const position = { top: clickY, right: 0, bottom: 0, left: clickX };
+
+  if (clickX > innerWidth / 2) {
+    position.right = innerWidth - clickX;
+    position.left = 0;
+  }
+
+  if (clickY > innerHeight / 2) {
+    position.bottom = innerHeight - clickY;
+    position.top = 0;
+  }
+
+  return position;
 };
 
 const CoachCalendar = ({
@@ -47,8 +73,28 @@ const CoachCalendar = ({
   const { daysLength, isToday, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
 
   const [schedules, setSchedules] = useState<SchedulesType>({});
+  const [scheduleViewCount, setScheduleViewCount] = useState(1);
+  const [isOpenBabyModal, setIsOpenModal] = useState(false);
+  const [babyModalPosition, setBabyModalPosition] = useState<ModalPositionType>({
+    top: 0,
+    left: 0,
+  });
+  const [babyModalDay, setBabyModalDay] = useState(-1);
+  const [babyModalSchedules, setBabyModalSchedules] = useState<React.ReactNode[]>([]);
+
+  const daysRef = useRef<HTMLDivElement>(null);
 
   const rerenderKey = useMemo(() => Date.now(), [year, month]);
+
+  const getHandleClickShowMore =
+    (day: number, schedules: React.ReactNode[]) => (e: React.MouseEvent) => {
+      setBabyModalPosition(calculateModalPosition(e.clientX, e.clientY));
+      setBabyModalDay(day);
+      setBabyModalSchedules(schedules);
+      setIsOpenModal(true);
+    };
+
+  const handleClickDimmer = () => setIsOpenModal(false);
 
   useEffect(() => {
     (async () => {
@@ -74,6 +120,29 @@ const CoachCalendar = ({
     })();
   }, [year, month]);
 
+  useEffect(() => {
+    if (!daysRef.current) return;
+
+    const havedSchedulesDay = [...daysRef.current.childNodes].find(
+      (dayElement: ChildNode) => dayElement.childNodes.length > 1,
+    ) as HTMLDivElement;
+
+    if (!havedSchedulesDay) return;
+
+    const header = havedSchedulesDay.childNodes[0] as HTMLDivElement;
+    const schedule = havedSchedulesDay.childNodes[1] as HTMLDivElement;
+
+    setScheduleViewCount(
+      Math.max(
+        0,
+        Math.floor(
+          (havedSchedulesDay.clientHeight - header.clientHeight) /
+            (schedule.clientHeight + scheduleItemMargin),
+        ) - 1,
+      ),
+    );
+  }, [schedules]);
+
   return (
     <S.Box>
       <C.Header>
@@ -91,15 +160,11 @@ const CoachCalendar = ({
 
       <C.Body>
         <C.WeekDay>
-          <div>일</div>
-          <div>월</div>
-          <div>화</div>
-          <div>수</div>
-          <div>목</div>
-          <div>금</div>
-          <div>토</div>
+          {dayNamesOfWeek.map((dayNameOfWeek: DayNameOfWeekType) => (
+            <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
+          ))}
         </C.WeekDay>
-        <C.Days key={rerenderKey}>
+        <C.Days key={rerenderKey} ref={daysRef}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
@@ -125,12 +190,25 @@ const CoachCalendar = ({
                     ),
                   )
                 : [];
+              const dayContent = !schedules[day]
+                ? []
+                : schedules[day].length > scheduleViewCount
+                ? [
+                    ...interviews.slice(0, scheduleViewCount),
+                    <S.ShowMore
+                      key={`show-more-${day}`}
+                      onClick={getHandleClickShowMore(day, interviews)}
+                    >
+                      {schedules[day].length - scheduleViewCount}개 더보기
+                    </S.ShowMore>,
+                  ]
+                : interviews;
 
               if (isToday(day)) {
                 return (
                   <S.CalendarDay key={index} today>
                     <S.Today>{day}</S.Today>
-                    {interviews}
+                    {dayContent}
                   </S.CalendarDay>
                 );
               }
@@ -138,22 +216,34 @@ const CoachCalendar = ({
               if (isBelowToday(day)) {
                 return (
                   <S.CalendarDay key={index} type="disable">
-                    {day}
-                    {interviews}
+                    <S.CalendarDayHeader>{day}</S.CalendarDayHeader>
+                    {dayContent}
                   </S.CalendarDay>
                 );
               }
 
               return (
                 <S.CalendarDay key={index}>
-                  {day}
-                  {interviews}
+                  <S.CalendarDayHeader>{day}</S.CalendarDayHeader>
+                  {dayContent}
                 </S.CalendarDay>
               );
             }
 
             return <S.CalendarDay key={index} />;
           })}
+          {isOpenBabyModal && (
+            <>
+              <Dimmer onClick={handleClickDimmer} />
+              <BabyShowMoreModal
+                modalPosition={babyModalPosition}
+                dayNameOfWeek={getDayNameOfWeek(year, month, babyModalDay)}
+                day={babyModalDay}
+              >
+                {babyModalSchedules}
+              </BabyShowMoreModal>
+            </>
+          )}
         </C.Days>
       </C.Body>
 

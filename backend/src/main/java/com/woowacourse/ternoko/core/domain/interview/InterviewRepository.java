@@ -15,8 +15,12 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
 
     List<Interview> findAllByCrewIdOrderByInterviewStartTime(@Param("crewId") final Long crewId);
 
-    boolean existsByCrewIdAndInterviewStartTime(@Param("crewId") final Long crewId,
-                                                @Param("start") final LocalDateTime start);
+    @Query("SELECT count (i.id) > 0 "
+            + "FROM Interview i "
+            + "WHERE i.crew.id = :crewId AND i.interviewStartTime = :start AND i.id <> :id ")
+    boolean existsByNotIdAndCrewIdAndInterviewStartTime(@Param("id") final Long id,
+                                                        @Param("crewId") final Long crewId,
+                                                        @Param("start") final LocalDateTime start);
 
     @Query("SELECT i "
             + "FROM Interview i "
@@ -26,4 +30,7 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     List<Interview> findAllByInterviewStartDay(@Param("year") final int year,
                                                @Param("month") final int month,
                                                @Param("day") final int day);
+
+    List<Interview> findAllByCrewIdAndInterviewStartTime(@Param("crewId") Long crewId,
+                                                         @Param("start") LocalDateTime start);
 }

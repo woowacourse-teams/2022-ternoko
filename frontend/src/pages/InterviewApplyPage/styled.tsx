@@ -9,6 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
+  padding-bottom: 3rem;
 `;
 
 export const Body = styled.div`
@@ -76,7 +77,8 @@ export const Box = styled.div<BoxProps>`
   ${({ stepStatus }) =>
     stepStatus === 'show' &&
     css`
-      visibility: visible;
+      display: block;
+
       opacity: 1;
       z-index: 1;
 
@@ -89,13 +91,13 @@ export const Box = styled.div<BoxProps>`
   ${({ stepStatus }) =>
     stepStatus === 'hidden' &&
     css`
-      visibility: hidden;
+      display: none;
     `}
 
   ${({ stepStatus }) =>
     stepStatus === 'onlyShowTitle' &&
     css`
-      visibility: visible;
+      display: block;
 
       .sub-title {
         opacity: 0.4;
@@ -190,13 +192,6 @@ export const SmallCircle = styled(Circle)<SmallCircleProps>`
   height: 1.2rem;
 
   background-color: ${({ theme, green }) => green && theme.colors.green_100};
-`;
-
-export const Bar = styled.div`
-  width: 1px;
-  height: 40px;
-  margin-left: 10px;
-  background: ${({ theme }) => theme.colors.pink_200};
 `;
 
 export const Form = styled.form`

@@ -11,10 +11,13 @@ import {
   useCalendarUtils,
 } from '@/context/CalendarProvider';
 
-import { DayType } from '@/types/domain';
+import { DayType, OneWeekDayType } from '@/types/domain';
+
+import { generateDayOfWeekWithStartDay } from '@/utils';
 
 export type CalendarProps = {
   rerenderCondition?: number;
+  getHandleClickDayOfWeek?: (startDay: OneWeekDayType) => () => void;
   getHandleClickDay: (day: number) => () => void;
   getDayType: (day: number) => DayType;
   haveTimeDays: Set<number>;
@@ -22,11 +25,12 @@ export type CalendarProps = {
 
 const Calendar = ({
   rerenderCondition,
+  getHandleClickDayOfWeek,
   getHandleClickDay,
   getDayType,
   haveTimeDays,
 }: CalendarProps) => {
-  const { year, month, showMonthPicker } = useCalendarState();
+  const { year, month, selectedDates, showMonthPicker } = useCalendarState();
   const {
     handleClickPrevYear,
     handleClickNextYear,
@@ -37,6 +41,34 @@ const Calendar = ({
   } = useCalendarActions();
   const { daysLength, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month, rerenderCondition]);
+
+  const dayOfWeekWithStartDay = useMemo(
+    () => generateDayOfWeekWithStartDay(year, month),
+    [year, month],
+  );
+
+  const checkIsAllSelectedColumn = (startDay: OneWeekDayType) => {
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    let isAllSelectedColumn = true;
+
+    for (let day = startDay; day <= lastDay; day += 7) {
+      if (
+        !isBelowToday(day) &&
+        selectedDates.every(
+          (selectedDate) =>
+            selectedDate.year !== year ||
+            selectedDate.month !== month + 1 ||
+            selectedDate.day !== day,
+        )
+      ) {
+        isAllSelectedColumn = false;
+
+        break;
+      }
+    }
+
+    return isAllSelectedColumn;
+  };
 
   return (
     <S.Box>
@@ -56,13 +88,20 @@ const Calendar = ({
 
       <C.Body>
         <C.WeekDay>
-          <div>일</div>
-          <div>월</div>
-          <div>화</div>
-          <div>수</div>
-          <div>목</div>
-          <div>금</div>
-          <div>토</div>
+          {dayOfWeekWithStartDay.map(({ name, startDay }) => (
+            <div>
+              {getHandleClickDayOfWeek && (
+                <S.AllTimeButton
+                  key={startDay}
+                  onClick={getHandleClickDayOfWeek(startDay)}
+                  active={checkIsAllSelectedColumn(startDay)}
+                >
+                  ✅
+                </S.AllTimeButton>
+              )}
+              <p>{name}</p>
+            </div>
+          ))}
         </C.WeekDay>
         <C.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {

@@ -93,6 +93,7 @@ public class RestDocsTestSupporter {
     ) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
+                .addFilter(new CustomLoggingFilter())
                 .alwaysDo(MockMvcResultHandlers.print())
                 .alwaysDo(restDocs)
                 .build();

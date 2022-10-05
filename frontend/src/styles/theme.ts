@@ -10,6 +10,7 @@ const theme = {
     gray_200: '#808080',
     pink_50: '#ffe3e3',
     pink_100: '#ffb7d2',
+    pink_150: '#fa86c4',
     pink_200: '#ff385c',
     pink_300: '#f03e3e',
     orange: '#ffd24d4d',
@@ -20,6 +21,7 @@ const theme = {
   },
   shadows: {
     basic: '#64646f33 0px 7px 29px 0px',
+    allRound: 'rgb(173 181 189) 0px 0px 5px',
   },
   devices: {
     mobileS: (adjustment: number = 0) => `(max-width: ${320 + adjustment}px)`,

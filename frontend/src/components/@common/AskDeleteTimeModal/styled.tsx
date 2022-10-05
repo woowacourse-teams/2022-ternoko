@@ -27,7 +27,7 @@ export const ButtonBox = styled.div`
 `;
 
 export const additionalDimmerStyle = `
-  z-index: 1; 
+  z-index: 3; 
   background-color: unset;
 `;
 

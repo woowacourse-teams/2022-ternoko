@@ -1,16 +1,14 @@
 package com.woowacourse.ternoko.acceptance;
 
-import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.FIRST_TIME;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.AVAILABLE_DATE_TIME_COACH1_1;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.AVAILABLE_DATE_TIME_COACH1_2;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.AVAILABLE_DATE_TIME_COACH1_3;
+import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.AVAILABLE_DATE_TIME_COACH1_4;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTHS_REQUEST;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
-import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_2_DAYS;
-import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_3_DAYS;
-import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.SECOND_TIME;
-import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.THIRD_TIME;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
-import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH4;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW3;
@@ -21,7 +19,6 @@ import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -33,17 +30,17 @@ public class CoachAcceptanceTest extends AcceptanceSupporter {
     @DisplayName("코치 - 면담 예약 내역 목록을 조회한다.")
     void findAllByCoaches() {
         // given
-        put("/api/calendar/times", generateHeader(COACH4), MONTHS_REQUEST);
-        createInterview(CREW1, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, FIRST_TIME));
-        createInterview(CREW2, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
-        createInterview(CREW3, COACH4.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, THIRD_TIME));
-        createInterview(CREW4, COACH4.getId(), LocalDateTime.of(NOW_PLUS_3_DAYS, FIRST_TIME));
+        put("/api/calendar/times", generateHeader(COACH1), MONTHS_REQUEST);
+        createInterviewByCoach1(CREW1, AVAILABLE_DATE_TIME_COACH1_4);
+        createInterviewByCoach1(CREW2, AVAILABLE_DATE_TIME_COACH1_3);
+        createInterviewByCoach1(CREW3, AVAILABLE_DATE_TIME_COACH1_2);
+        createInterviewByCoach1(CREW4, AVAILABLE_DATE_TIME_COACH1_1);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .queryParam("year", NOW.getYear())
                 .queryParam("month", NOW.getMonthValue())
-                .header(generateHeader(COACH4))
+                .header(generateHeader(COACH1))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/schedules")
                 .then().log().all()
@@ -71,7 +68,7 @@ public class CoachAcceptanceTest extends AcceptanceSupporter {
     void saveCalendarsTimes() {
         // given & when
         final ExtractableResponse<Response> calendarResponse = put("/api/calendar/times",
-                generateHeader(COACH3),
+                generateHeader(COACH1),
                 MONTHS_REQUEST);
 
         // then
@@ -83,13 +80,13 @@ public class CoachAcceptanceTest extends AcceptanceSupporter {
     void findAllByCoach() {
         // given
         put("/api/calendar/times", generateHeader(COACH3), MONTHS_REQUEST);
-        createInterview(CREW1, COACH3.getId(), LocalDateTime.of(NOW_PLUS_2_DAYS, SECOND_TIME));
+        createInterviewByCoach1(CREW1, AVAILABLE_DATE_TIME_COACH1_1);
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .queryParam("year", NOW.getYear())
                 .queryParam("month", NOW.getMonthValue())
-                .header(generateHeader(COACH3))
+                .header(generateHeader(COACH1))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/schedules")
                 .then().log().all()

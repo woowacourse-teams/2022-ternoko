@@ -33,7 +33,7 @@ import {
 import {
   CREW_APPLY_FORM_MAX_LENGTH,
   ERROR_MESSAGE,
-  INITIAL_COACH_ID,
+  INITIAL_NUMBER_STATE,
   PAGE,
   SUCCESS_MESSAGE,
 } from '@/constants';
@@ -41,6 +41,9 @@ import { separateFullDate } from '@/utils';
 import { isValidApplyFormLength } from '@/validations';
 
 export type StepStatus = 'show' | 'hidden' | 'onlyShowTitle';
+
+type AvailableTimeType = { id: number; time: string };
+type AvailableScheduleType = StringDictionary<{ id: number; time: string }>;
 
 const InterviewApplyPage = () => {
   const navigate = useNavigate();
@@ -52,24 +55,23 @@ const InterviewApplyPage = () => {
   const interviewId = new URLSearchParams(search).get('interviewId');
 
   const { year, month, selectedDates } = useCalendarState();
-  const { initializeYearMonth, setDay, resetSelectedDates } = useCalendarActions();
+  const { initializeYearMonth, setDay, resetSelectedDates, addSelectedDates } =
+    useCalendarActions();
   const { getDateStrings, isSameDate } = useCalendarUtils();
-  const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
-    selectMode: 'SINGLE',
-  });
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
-  const [availableSchedules, setAvailableSchedules] = useState<StringDictionary>({});
-  const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+  const [availableSchedules, setAvailableSchedules] = useState<AvailableScheduleType>({});
+  const [availableTimes, setAvailableTimes] = useState<AvailableTimeType[]>([]);
 
-  const [coachId, setCoachId] = useState(INITIAL_COACH_ID);
+  const [coachId, setCoachId] = useState(INITIAL_NUMBER_STATE);
+  const [availableDateTimeId, setAvailableDateTimeId] = useState(INITIAL_NUMBER_STATE);
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
 
   const changeCoachIdRef = useRef(false);
-  const originCoachIdRef = useRef(INITIAL_COACH_ID);
+  const originCoachIdRef = useRef(INITIAL_NUMBER_STATE);
   const initRef = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -81,10 +83,12 @@ const InterviewApplyPage = () => {
     !isValidApplyFormLength(answer2) ||
     !isValidApplyFormLength(answer3);
 
+  const selectedTime = availableTimes.find(({ id }) => id === availableDateTimeId)?.time;
+
   const initializeDateStatuses = () => {
     setAvailableTimes([]);
     resetSelectedDates();
-    resetTimes();
+    setAvailableDateTimeId(INITIAL_NUMBER_STATE);
   };
 
   const getDayType = (day: number) =>
@@ -99,22 +103,28 @@ const InterviewApplyPage = () => {
       ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
       : getCoachScheduleAPI(coachId, year, month + 1);
 
-  const updateStatusWhenCalendarShow = (
-    schedules: StringDictionary,
-    calendarTimes: CrewSelectTime[],
-  ) => {
+  const updateStatusWhenCalendarShow = (calendarTimes: CrewSelectTime[]) => {
+    const schedules = calendarTimes.reduce(
+      (acc: AvailableScheduleType, { id, calendarTime }: CrewSelectTime) => {
+        const { day, time } = separateFullDate(calendarTime);
+
+        acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], { id, time }] : [{ id, time }];
+
+        return acc;
+      },
+      {} as AvailableScheduleType,
+    );
+
     setAvailableSchedules(schedules);
 
     if (changeCoachIdRef.current) {
       initializeDateStatuses();
     } else if (interviewId && initRef.current) {
+      setAvailableDateTimeId(
+        (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
+          .id,
+      );
       setAvailableTimes(schedules[selectedDates[0].day] ?? []);
-      setSelectedTimes([
-        separateFullDate(
-          (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
-            .calendarTime,
-        ).time,
-      ]);
     }
 
     initRef.current = false;
@@ -139,12 +149,11 @@ const InterviewApplyPage = () => {
   const getHandleClickProfile = (id: number) => () => {
     if (id === coachId) return;
 
-    const coach = coaches.find((coach) => coach.id === id);
-
     changeCoachIdRef.current = true;
-    showToast('SUCCESS', SUCCESS_MESSAGE.SELECT_COACH((coach as CoachType).nickname));
     setCoachId(id);
   };
+
+  const getHandleClickTime = (id: number) => () => setAvailableDateTimeId(id);
 
   const getHandleChangeAnswer =
     (setAnswer: (answer: string) => void) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -156,7 +165,7 @@ const InterviewApplyPage = () => {
     const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
     setAvailableTimes(times);
     setDay(day);
-    resetTimes();
+    setAvailableDateTimeId(INITIAL_NUMBER_STATE);
     changeCoachIdRef.current = false;
   };
 
@@ -171,7 +180,8 @@ const InterviewApplyPage = () => {
 
     const body = {
       coachId,
-      interviewDatetime: `${getDateStrings()[0]} ${selectedTimes[0]}`,
+      availableDateTimeId,
+      interviewDatetime: `${getDateStrings()[0]} ${selectedTime}`,
       interviewQuestions: [
         {
           question: '이번 면담을 통해 논의하고 싶은 내용',
@@ -234,7 +244,7 @@ const InterviewApplyPage = () => {
       const { year, month, day } = separateFullDate(interviewStartTime);
 
       initializeYearMonth(Number(year), Number(month) - 1);
-      setDay(Number(day));
+      addSelectedDates([{ year: Number(year), month: Number(month), day: Number(day) }]);
     })();
   }, []);
 
@@ -243,23 +253,10 @@ const InterviewApplyPage = () => {
       (async () => {
         const response = await coachScheduleAPI();
 
-        const schedules = response.data.calendarTimes.reduce(
-          (acc: StringDictionary, { calendarTime }: CrewSelectTime) => {
-            const { day, time } = separateFullDate(calendarTime);
-
-            acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], time] : [time];
-
-            return acc;
-          },
-          {} as StringDictionary,
-        );
-
-        updateStatusWhenCalendarShow(schedules, response.data.calendarTimes);
+        updateStatusWhenCalendarShow(response.data.calendarTimes);
       })();
     }
   }, [stepStatus, year, month]);
-
-  useEffect(initializeDateStatuses, [year, month]);
 
   return (
     <>
@@ -279,11 +276,11 @@ const InterviewApplyPage = () => {
               <S.StatusBox>
                 <div>
                   <S.SmallCircle />
-                  면담 불가
+                  <p>한달 내 면담 불가</p>
                 </div>
                 <div>
                   <S.SmallCircle green />
-                  면담 가능
+                  <p>한달 내 면담 가능</p>
                 </div>
               </S.StatusBox>
             </div>
@@ -303,7 +300,7 @@ const InterviewApplyPage = () => {
               <Button
                 width="100%"
                 height="4rem"
-                inActive={coachId === INITIAL_COACH_ID}
+                inActive={coachId === INITIAL_NUMBER_STATE}
                 onClick={() => handleClickStepNextButton(0)}
               >
                 다음
@@ -317,8 +314,8 @@ const InterviewApplyPage = () => {
               <h3>
                 날짜 및 시간을 선택해주세요.
                 <S.EmphasizedText>
-                  {selectedTimes.length > 0 &&
-                    `${selectedDates[0].year}년 ${selectedDates[0].month}월 ${selectedDates[0].day}일 ${selectedTimes[0]}`}
+                  {availableDateTimeId !== INITIAL_NUMBER_STATE &&
+                    `${selectedDates[0].year}년 ${selectedDates[0].month}월 ${selectedDates[0].day}일 ${selectedTime}`}
                 </S.EmphasizedText>
               </h3>
             </div>
@@ -333,13 +330,13 @@ const InterviewApplyPage = () => {
                 />
 
                 <S.TimeContainer key={timeRerenderKey} heightUnit={availableTimes.length}>
-                  {availableTimes.map((availableTime, index) => (
+                  {availableTimes.map(({ id, time }) => (
                     <Time
-                      key={index}
-                      active={selectedTimes[0] === availableTime}
-                      onClick={getHandleClickTime(availableTime)}
+                      key={id}
+                      active={id === availableDateTimeId}
+                      onClick={getHandleClickTime(id)}
                     >
-                      {availableTime}
+                      {time}
                     </Time>
                   ))}
                 </S.TimeContainer>
@@ -348,7 +345,7 @@ const InterviewApplyPage = () => {
               <Button
                 width="100%"
                 height="4rem"
-                inActive={!selectedTimes.length}
+                inActive={availableDateTimeId === INITIAL_NUMBER_STATE}
                 onClick={() => handleClickStepNextButton(1)}
               >
                 다음
@@ -392,7 +389,7 @@ const InterviewApplyPage = () => {
                   checkValidation={isValidApplyFormLength}
                 />
                 <S.EmphasizedText>*사전 메일은 면담 전날 23시 59분에 발송됩니다.</S.EmphasizedText>
-                <Button type="submit" width="100%" s height="4rem" inActive={isNotValidForm}>
+                <Button type="submit" width="100%" height="4rem" inActive={isNotValidForm}>
                   {interviewId ? '수정 완료' : '신청 완료'}
                 </Button>
               </S.Form>

@@ -103,13 +103,13 @@ public class DatabaseInitializer {
             coachRepository.saveAll(coaches);
 
             availableDateTimeRepository.save(new AvailableDateTime(1L, 13L,
-                    LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
+                    LocalDateTime.of(LocalDate.of(2022, 10, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));
             availableDateTimeRepository.save(new AvailableDateTime(2L, 13L,
-                    LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
+                    LocalDateTime.of(LocalDate.of(2022, 10, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
             availableDateTimeRepository.save(new AvailableDateTime(3L, 1L,
-                    LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
+                    LocalDateTime.of(LocalDate.of(2022, 10, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
             availableDateTimeRepository.save(new AvailableDateTime(4L, 2L,
-                    LocalDateTime.of(LocalDate.of(2022, 9, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
+                    LocalDateTime.of(LocalDate.of(2022, 10, 25), LocalTime.of(13, 0)), AvailableDateTimeStatus.OPEN));
         }
     }
 }

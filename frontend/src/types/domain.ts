@@ -56,6 +56,7 @@ export interface CalendarTime {
 export type TimeStatus = 'OPEN' | 'USED';
 
 export interface CrewSelectTime {
+  id: number;
   calendarTime: string;
   status: TimeStatus;
 }
@@ -99,10 +100,26 @@ export interface DuplicatedNicknameStatusType {
   exists: boolean;
 }
 
-export type StringDictionary = {
-  [key: string]: string[];
+export type StringDictionary<T> = {
+  [key: string]: T[];
 };
 
 export type SelectMode = 'SINGLE' | 'MULTIPLE';
 
 export type DayType = 'default' | 'disable' | 'active';
+
+export type DayNameOfWeekType = '일' | '월' | '화' | '수' | '목' | '금' | '토';
+
+export type OneWeekDayType = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+export type DayOfWeekWithStartDayType = {
+  name: DayNameOfWeekType;
+  startDay: OneWeekDayType;
+};
+
+export type ModalPositionType = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+};

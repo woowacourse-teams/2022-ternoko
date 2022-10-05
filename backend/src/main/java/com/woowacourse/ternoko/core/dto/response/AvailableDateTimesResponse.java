@@ -16,7 +16,8 @@ public class AvailableDateTimesResponse {
 
     public static AvailableDateTimesResponse from(final List<AvailableDateTime> availableDateTimes) {
         return new AvailableDateTimesResponse(availableDateTimes.stream()
-                .map(data -> new AvailableDateTimeResponse(data.getLocalDateTime(),
+                .map(data -> new AvailableDateTimeResponse(data.getId(),
+                        data.getLocalDateTime(),
                         data.getAvailableDateTimeStatus()))
                 .collect(Collectors.toList()));
     }

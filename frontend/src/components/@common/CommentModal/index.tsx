@@ -112,6 +112,7 @@ const CommentModal = ({
       show={show}
       display={display}
       handleCloseModal={handleCloseModal}
+      additionalDimmerStyle={S.additionalDimmerStyle}
       additionalFrameStyle={S.additionalFrameStyle}
     >
       <h2>자유롭게 한마디를 작성해줘잉~~😎</h2>
