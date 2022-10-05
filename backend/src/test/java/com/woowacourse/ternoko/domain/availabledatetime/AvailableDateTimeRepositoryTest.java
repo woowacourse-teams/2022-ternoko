@@ -22,6 +22,7 @@ import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -100,8 +101,10 @@ class AvailableDateTimeRepositoryTest {
                 reservedTime, OPEN);
         final AvailableDateTime expect2 = new AvailableDateTime(availableDateTime.getId(), coach.getId(),
                 availableTime, OPEN);
-        assertThat(times).hasSize(2)
-                .containsExactly(expect1, expect2);
+        assertThat(times.stream()
+                .map(AvailableDateTime::getId)
+                .collect(Collectors.toList())).hasSize(2)
+                .containsExactly(expect1.getId(), expect2.getId());
     }
 
     @Test

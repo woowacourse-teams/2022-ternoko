@@ -4,6 +4,8 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_UPDATE_CREW;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.EDITABLE;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
@@ -123,15 +125,20 @@ public class Interview {
     public void update(final Interview interview) {
         validateModifiableInterviewStatus();
         validateUpdateCrew(interview);
-        if (interviewStatusType != CANCELED) {
-            this.availableDateTime.changeStatus(AvailableDateTimeStatus.OPEN);
-        }
+        openOriginTime(interview);
         this.availableDateTime = interview.getAvailableDateTime();
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
         this.coach = interview.getCoach();
         this.interviewStatusType = interview.getInterviewStatusType();
         formItems.update(interview.getFormItems());
+    }
+
+    private void openOriginTime(final Interview interview) {
+        final AvailableDateTime availableDateTime = interview.getAvailableDateTime();
+        if (!this.availableDateTime.isSame(availableDateTime.getId())) {
+            this.availableDateTime.changeStatus(OPEN);
+        }
     }
 
     private void validateModifiableInterviewStatus() {
@@ -162,7 +169,7 @@ public class Interview {
     }
 
     public void cancel() {
-        this.availableDateTime.changeStatus(AvailableDateTimeStatus.DELETED);
+        this.availableDateTime.changeStatus(DELETED);
         this.interviewStatusType = CANCELED;
     }
 

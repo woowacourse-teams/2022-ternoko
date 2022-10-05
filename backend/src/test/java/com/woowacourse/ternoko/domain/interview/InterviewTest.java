@@ -1,5 +1,7 @@
 package com.woowacourse.ternoko.domain.interview;
 
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.COACH_COMPLETED;
@@ -62,7 +64,7 @@ class InterviewTest {
 
         // then
         assertAll(
-                () -> assertThat(interview.getAvailableDateTime()).isEqualTo(availableDateTime),
+                () -> assertThat(interview.getAvailableDateTime().getId()).isEqualTo(availableDateTime.getId()),
                 () -> assertThat(interview.getInterviewStartTime()).isEqualTo(nextDay),
                 () -> assertThat(interview.getCoach().getId()).isEqualTo(COACH2.getId()),
                 () -> assertThat(interview.getCrew().getId()).isEqualTo(CREW1.getId()),
@@ -77,13 +79,73 @@ class InterviewTest {
     }
 
     @Test
+    @DisplayName("인터뷰를 수정하면 사용하던 시간은 OPEN으로 바꾼다.")
+    void updateWithCanceledInterview() {
+        // given
+        final Interview interview = getInterview(EDITABLE);
+
+        // when
+        final AvailableDateTime originAvailableDatetime = interview.getAvailableDateTime();
+        final LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
+        final AvailableDateTime availableDateTime = new AvailableDateTime(COACH2.getId(), nextDay.plusDays(1), USED);
+        final Interview updateInterview = new Interview(
+                1L,
+                availableDateTime,
+                nextDay,
+                nextDay.plusMinutes(30),
+                COACH2,
+                CREW1,
+                FORM_ITEMS2,
+                FIXED);
+        interview.update(updateInterview);
+
+        // then
+        assertAll(
+                () -> assertThat(originAvailableDatetime.getAvailableDateTimeStatus()).isEqualTo(OPEN),
+                () -> assertThat(availableDateTime.getAvailableDateTimeStatus()).isEqualTo(USED)
+        );
+    }
+
+    @Test
+    @DisplayName("같은 면담가능 시간으로 인터뷰를 수정한다.")
+    void updateWithSameAvailableDateTime() {
+        // given
+        final Interview interview = getInterview(EDITABLE);
+
+        // when
+        final AvailableDateTime originAvailableDatetime = interview.getAvailableDateTime();
+        final LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
+        final AvailableDateTime availableDateTime = new AvailableDateTime(COACH2.getId(), nextDay.plusDays(1), USED);
+        final Interview updateInterview = new Interview(
+                1L,
+                availableDateTime,
+                nextDay,
+                nextDay.plusMinutes(30),
+                COACH2,
+                CREW1,
+                FORM_ITEMS2,
+                FIXED);
+        interview.update(updateInterview);
+
+        // then
+        assertAll(
+                () -> assertThat(originAvailableDatetime.getAvailableDateTimeStatus()).isEqualTo(OPEN),
+                () -> assertThat(availableDateTime.getAvailableDateTimeStatus()).isEqualTo(USED)
+        );
+    }
+
+    @Test
     @DisplayName("인터뷰에서 크루를 수정할 수 없다.")
     void updateCrew() {
         // given
         final Interview interview = getInterview(EDITABLE);
 
         // when
-        final Interview updateInterview = getInterview(CREW2);
+        final Interview updateInterview = getInterview(CREW2,
+                new AvailableDateTime(2L,
+                        COACH1.getId(),
+                        LocalDateTime.now().plusDays(1),
+                        USED));
 
         // then
         assertThatThrownBy(() -> interview.update(updateInterview))
@@ -127,9 +189,12 @@ class InterviewTest {
 
         // when
         interview.cancel();
-        // then
 
-        assertThat(interview.getInterviewStatusType()).isEqualTo(CANCELED);
+        // then
+        assertAll(
+                () -> assertThat(interview.getInterviewStatusType()).isEqualTo(CANCELED),
+                () -> assertThat(interview.getAvailableDateTime().getAvailableDateTimeStatus()).isEqualTo(DELETED)
+        );
     }
 
     @Test
@@ -262,11 +327,24 @@ class InterviewTest {
                 EDITABLE);
     }
 
+    private Interview getInterview(final Crew crew, final AvailableDateTime availableDateTime) {
+        final LocalDateTime now = LocalDateTime.now();
+        return new Interview(
+                1L,
+                availableDateTime,
+                now,
+                now.plusMinutes(30),
+                COACH1,
+                crew,
+                FORM_ITEMS1,
+                EDITABLE);
+    }
+
     private Interview getInterview(final InterviewStatusType statusType) {
         final LocalDateTime now = LocalDateTime.now();
         return new Interview(
                 1L,
-                new AvailableDateTime(COACH1.getId(), now.plusDays(1), USED),
+                new AvailableDateTime(1L, COACH1.getId(), now.plusDays(1), USED),
                 now,
                 now.plusMinutes(30),
                 COACH1,
