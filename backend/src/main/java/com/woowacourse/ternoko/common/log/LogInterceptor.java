@@ -25,9 +25,9 @@ public class LogInterceptor implements HandlerInterceptor {
                                 @NotNull final Object handler, final Exception ex) throws IOException {
         if (isSuccess(response.getStatus())) {
             ContentCachingRequestWrapper cachingRequest;
-            try{
+            try {
                 cachingRequest = (ContentCachingRequestWrapper) request;
-            } catch (ClassCastException e){
+            } catch (ClassCastException e) {
                 log.info("로깅 필터가 정상적으로 동작하지 않았습니다.");
                 return;
             }
