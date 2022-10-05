@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain.comment;
+package com.woowacourse.ternoko.core.domain.comment;
 
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.FIXED;
@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.woowacourse.ternoko.common.exception.exception.InvalidCommentMemberIdException;
 import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
-import com.woowacourse.ternoko.core.domain.comment.Comment;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
 import com.woowacourse.ternoko.core.domain.member.MemberType;

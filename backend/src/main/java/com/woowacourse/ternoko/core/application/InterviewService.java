@@ -152,14 +152,6 @@ public class InterviewService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 1. 취소된 면담을 편집할 때 (원래시간 건드릴 필요 없음)
-     *  - 새로운 시간으로 갈아끼기만 함
-     * 2. 그냥 면담을 편집할 때
-     *  - 다른 면담가능시간으로 편집 -> 원래시간 OPEN, 새로운시간 갈아끼기
-     *  - 같은 면담가능시간으로 편집 -> 새로운 시간 갈아끼기
-     *
-     */
     public void update(final Long crewId,
                        final Long interviewId,
                        final InterviewRequest interviewRequest) {
@@ -219,9 +211,15 @@ public class InterviewService {
 
     public void delete(final Long crewId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
+        openAvailableDateTimeIfNotCanceled(interview);
         deleteInterview(crewId, interview);
-        interview.changeAvailableTimeStatus(OPEN);
         setDeleteMessage(interview);
+    }
+
+    private void openAvailableDateTimeIfNotCanceled(final Interview interview) {
+        if (!interview.isCanceled()) {
+            interview.changeAvailableTimeStatus(OPEN);
+        }
     }
 
     private void deleteInterview(final Long crewId, final Interview interview) {

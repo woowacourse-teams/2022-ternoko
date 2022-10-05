@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain.interview;
+package com.woowacourse.ternoko.core.domain.interview;
 
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.support.fixture.InterviewFixture.FORM_ITEMS1;
@@ -11,8 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.core.domain.interview.Interview;
-import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;

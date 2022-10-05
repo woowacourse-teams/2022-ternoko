@@ -1,7 +1,10 @@
 package com.woowacourse.ternoko.core.domain.availabledatetime;
 
+import static com.woowacourse.ternoko.common.exception.ExceptionType.CANT_UPDATE_DELETED;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 
+import com.woowacourse.ternoko.common.exception.InvalidAvailableDateTimeException;
 import com.woowacourse.ternoko.support.time.TimeMachine;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +47,9 @@ public class AvailableDateTime {
     }
 
     public void changeStatus(final AvailableDateTimeStatus status) {
+        if (this.availableDateTimeStatus.equals(DELETED)) {
+            throw new InvalidAvailableDateTimeException(CANT_UPDATE_DELETED);
+        }
         this.availableDateTimeStatus = status;
     }
 

@@ -1,4 +1,4 @@
-package com.woowacourse.ternoko.domain.interview;
+package com.woowacourse.ternoko.core.domain.interview;
 
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
@@ -27,9 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
-import com.woowacourse.ternoko.core.domain.interview.Interview;
-import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
-import com.woowacourse.ternoko.core.domain.interview.InvalidInterviewMemberException;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
@@ -47,6 +44,7 @@ class InterviewTest {
     void update() {
         // given
         final Interview interview = getInterview(EDITABLE);
+        final AvailableDateTime originAvailableDatetime = interview.getAvailableDateTime();
 
         // when
         final LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
@@ -74,18 +72,20 @@ class InterviewTest {
                         .isEqualTo(FORM_ITEMS2.stream()
                                 .map(FormItem::getAnswer)
                                 .collect(Collectors.toList())),
-                () -> assertThat(interview.getInterviewStatusType()).isEqualTo(FIXED)
+                () -> assertThat(interview.getInterviewStatusType()).isEqualTo(FIXED),
+                () -> assertThat(originAvailableDatetime.getAvailableDateTimeStatus()).isEqualTo(OPEN),
+                () -> assertThat(availableDateTime.getAvailableDateTimeStatus()).isEqualTo(USED)
         );
     }
 
     @Test
-    @DisplayName("인터뷰를 수정하면 사용하던 시간은 OPEN으로 바꾼다.")
+    @DisplayName("취소된 인터뷰를 수정하면 사용하던 시간은 DELETED로 두고 새로운 시간은 USED로 갖는다.")
     void updateWithCanceledInterview() {
         // given
-        final Interview interview = getInterview(EDITABLE);
+        final AvailableDateTime originAvailableDatetime = new AvailableDateTime(1L, COACH1.getId(), LocalDateTime.now().plusDays(1), DELETED);
+        final Interview interview = getInterview(originAvailableDatetime, CANCELED);
 
         // when
-        final AvailableDateTime originAvailableDatetime = interview.getAvailableDateTime();
         final LocalDateTime nextDay = LocalDateTime.now().plusDays(1);
         final AvailableDateTime availableDateTime = new AvailableDateTime(COACH2.getId(), nextDay.plusDays(1), USED);
         final Interview updateInterview = new Interview(
@@ -101,7 +101,7 @@ class InterviewTest {
 
         // then
         assertAll(
-                () -> assertThat(originAvailableDatetime.getAvailableDateTimeStatus()).isEqualTo(OPEN),
+                () -> assertThat(originAvailableDatetime.getAvailableDateTimeStatus()).isEqualTo(DELETED),
                 () -> assertThat(availableDateTime.getAvailableDateTimeStatus()).isEqualTo(USED)
         );
     }
@@ -345,6 +345,20 @@ class InterviewTest {
         return new Interview(
                 1L,
                 new AvailableDateTime(1L, COACH1.getId(), now.plusDays(1), USED),
+                now,
+                now.plusMinutes(30),
+                COACH1,
+                CREW1,
+                FORM_ITEMS1,
+                statusType);
+    }
+
+    private Interview getInterview(final AvailableDateTime availableDateTime,
+                                   final InterviewStatusType statusType) {
+        final LocalDateTime now = LocalDateTime.now();
+        return new Interview(
+                1L,
+                availableDateTime,
                 now,
                 now.plusMinutes(30),
                 COACH1,

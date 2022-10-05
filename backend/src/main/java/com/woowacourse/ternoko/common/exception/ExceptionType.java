@@ -33,6 +33,7 @@ public enum ExceptionType {
     // AvailableDateTime 관련 Exception
     AVAILABLE_DATE_TIME_NOT_FOUND(5001, "해당 면담 가능 시간을 찾을 수 없습니다. id = "),
     USED_BY_OTHER(5002, "다른 곳에서 사용중인 면담가능시간 입니다."),
+    CANT_UPDATE_DELETED(5003, "삭제된 면담 가능 시간은 수정할 수 없습니다."),
 
     // Comment 관련 Exception
     INVALID_STATUS_CREATE_COMMENT(6001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),

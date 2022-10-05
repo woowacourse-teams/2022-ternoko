@@ -429,8 +429,8 @@ class InterviewServiceTest extends DatabaseSupporter {
         // when
         final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
         interviewService.cancelAndDeleteAvailableTime(interviewId, true);
-        // then
 
+        // then
         assertDoesNotThrow(() -> interviewService.delete(허수달.getId(), interviewId));
     }
 
