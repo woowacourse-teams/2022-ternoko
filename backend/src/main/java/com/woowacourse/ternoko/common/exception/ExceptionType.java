@@ -16,7 +16,6 @@ public enum ExceptionType {
     // Coach 관련 Exception
     COACH_NOT_FOUND(2001, "번째 코치를 찾을 수 없습니다."),
     INVALID_INTERVIEW_COACH_ID(2002, "다른 코치의 예약에 접근할 수 없습니다."),
-    INVALID_AVAILABLE_DATE_TIME(2003, "해당 코치의 가능한 시간이 아닙니다."),
 
     // Crew 관련 Exception,
     CREW_NOT_FOUND(3001, "번째 크루를 찾을 수 없습니다."),
@@ -33,6 +32,7 @@ public enum ExceptionType {
 
     // AvailableDateTime 관련 Exception
     AVAILABLE_DATE_TIME_NOT_FOUND(5001, "해당 면담 가능 시간을 찾을 수 없습니다. id = "),
+    USED_BY_OTHER(5002, "다른 곳에서 사용중인 면담가능시간 입니다."),
 
     // Comment 관련 Exception
     INVALID_STATUS_CREATE_COMMENT(6001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),

@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.core.domain.interview;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_UPDATE_CREW;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_AVAILABLE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.CANCELED;
@@ -104,7 +103,6 @@ public class Interview {
                                    final Coach coach,
                                    final Crew crew,
                                    final List<FormItem> formItems) {
-        validateOpenTime(availableDateTime);
         validateNextDay(availableDateTime);
 
         return new Interview(
@@ -122,15 +120,12 @@ public class Interview {
         }
     }
 
-    private static void validateOpenTime(final AvailableDateTime availableDateTime) {
-        if (availableDateTime.isUsed()) {
-            throw new InvalidInterviewDateException(INVALID_AVAILABLE_DATE_TIME);
-        }
-    }
-
     public void update(final Interview interview) {
         validateModifiableInterviewStatus();
         validateUpdateCrew(interview);
+        if (interviewStatusType != CANCELED) {
+            this.availableDateTime.changeStatus(AvailableDateTimeStatus.OPEN);
+        }
         this.availableDateTime = interview.getAvailableDateTime();
         this.interviewStartTime = interview.getInterviewStartTime();
         this.interviewEndTime = interview.getInterviewEndTime();
@@ -167,7 +162,7 @@ public class Interview {
     }
 
     public void cancel() {
-        this.availableDateTime = null;
+        this.availableDateTime.changeStatus(AvailableDateTimeStatus.DELETED);
         this.interviewStatusType = CANCELED;
     }
 
@@ -230,10 +225,12 @@ public class Interview {
                 this.interviewStatusType);
     }
 
-    public void changeAvailableTimeStatusIfPresent(final AvailableDateTimeStatus status) {
-        if (availableDateTime != null) {
-            availableDateTime.changeStatus(status);
-        }
+    public void changeAvailableTimeStatus(final AvailableDateTimeStatus status) {
+        availableDateTime.changeStatus(status);
+    }
+
+    public boolean isCanceled() {
+        return interviewStatusType.equals(CANCELED);
     }
 }
 

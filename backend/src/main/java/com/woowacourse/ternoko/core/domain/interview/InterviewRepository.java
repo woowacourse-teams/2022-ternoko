@@ -18,6 +18,13 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     boolean existsByCrewIdAndInterviewStartTime(@Param("crewId") final Long crewId,
                                                 @Param("start") final LocalDateTime start);
 
+    @Query("SELECT count (i.id) > 0 "
+            + "FROM Interview i "
+            + "WHERE i.crew.id = :crewId AND i.interviewStartTime = :start AND i.id <> :id ")
+    boolean existsByNotIdAndCrewIdAndInterviewStartTime(@Param("id") final Long id,
+                                                        @Param("crewId") final Long crewId,
+                                                        @Param("start") final LocalDateTime start);
+
     @Query("SELECT i "
             + "FROM Interview i "
             + "WHERE YEAR(i.interviewStartTime) = :year "

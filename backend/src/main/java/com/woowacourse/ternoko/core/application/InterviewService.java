@@ -6,6 +6,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FO
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.USED_BY_OTHER;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
@@ -61,14 +62,16 @@ public class InterviewService {
 
     @Transactional(isolation = SERIALIZABLE)
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
-        validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
         final Interview interview = convertInterview(crewId, interviewRequest);
-        interview.changeAvailableTimeStatusIfPresent(USED);
+        validateDuplicateStartTimeByCrew(interviewRequest.getInterviewDatetime(), crewId);
+        validateUsedTime(interview);
+        interview.changeAvailableTimeStatus(USED);
         setCreateMessage(interview);
         return interviewRepository.save(interview).getId();
     }
 
-    private void validateDuplicateStartTimeByCrew(final Long crewId, final LocalDateTime interviewDateTime) {
+    private void validateDuplicateStartTimeByCrew(final LocalDateTime interviewDateTime,
+                                                  final Long crewId) {
         if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewDateTime)) {
             throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
@@ -82,6 +85,12 @@ public class InterviewService {
         final AvailableDateTime availableDateTime = getAvailableDateTimeById(availableDateTimeId);
 
         return Interview.create(availableDateTime, coach, crew, formItems);
+    }
+
+    private void validateUsedTime(final Interview interview) {
+        if (interview.getAvailableDateTime().isUsed()) {
+            throw new InvalidInterviewDateException(USED_BY_OTHER);
+        }
     }
 
     private AvailableDateTime getAvailableDateTimeById(final Long availableDateTimeId) {
@@ -146,12 +155,31 @@ public class InterviewService {
     public void update(final Long crewId,
                        final Long interviewId,
                        final InterviewRequest interviewRequest) {
-        validateDuplicateStartTimeByCrew(crewId, interviewRequest.getInterviewDatetime());
         final Interview interview = getInterviewById(interviewId);
-        final Interview origin = interview.copyOf();
+        validateDuplicate(interviewId, crewId, interviewRequest.getInterviewDatetime());
+        validateUsedAvailableDateTime(interview.getAvailableDateTime(), interviewRequest.getAvailableDateTimeId());
 
-        interview.update(convertInterview(crewId, interviewRequest));
+        final Interview origin = interview.copyOf();
+        final Interview updateInterview = convertInterview(crewId, interviewRequest);
+
+        updateInterview.changeAvailableTimeStatus(USED);
+        interview.update(updateInterview);
         setUpdateMessage(interview, origin);
+    }
+
+    private void validateDuplicate(final Long interviewId,
+                                   final Long crewId,
+                                   final LocalDateTime interviewDateTime) {
+        if (interviewRepository.existsByNotIdAndCrewIdAndInterviewStartTime(interviewId, crewId, interviewDateTime)) {
+            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+        }
+    }
+
+    private void validateUsedAvailableDateTime(final AvailableDateTime origin, final Long updateAvailableDateTimeId) {
+        final AvailableDateTime update = getAvailableDateTimeById(updateAvailableDateTimeId);
+        if (update.isUsed() && !origin.isSame(update.getId())) {
+            throw new InvalidInterviewDateException(USED_BY_OTHER);
+        }
     }
 
     private Interview getInterviewById(Long interviewId) {
@@ -164,21 +192,27 @@ public class InterviewService {
 
         final Interview interview = getInterviewById(interviewId);
         if (onlyInterview) {
-            interview.changeAvailableTimeStatusIfPresent(OPEN);
+            saveDuplicatedAvailableDateTimeOfInterview(interview);
             interview.cancel();
             setCancelMessage(interview);
             return;
         }
 
-        availableDateTimeRepository.delete(interview.getAvailableDateTime());
         interview.cancel();
         setCancelMessage(interview);
+    }
+
+    private void saveDuplicatedAvailableDateTimeOfInterview(final Interview interview) {
+        final AvailableDateTime availableDateTimeOfCurrentInterview = interview.getAvailableDateTime();
+        final AvailableDateTime newAvailableDateTime = new AvailableDateTime(availableDateTimeOfCurrentInterview.getCoachId(),
+                availableDateTimeOfCurrentInterview.getLocalDateTime(), OPEN);
+        availableDateTimeRepository.save(newAvailableDateTime);
     }
 
     public void delete(final Long crewId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         deleteInterview(crewId, interview);
-        interview.changeAvailableTimeStatusIfPresent(OPEN);
+        interview.changeAvailableTimeStatus(OPEN);
         setDeleteMessage(interview);
     }
 
@@ -200,9 +234,14 @@ public class InterviewService {
             final int year,
             final int month) {
 
-        final List<AvailableDateTime> availableDateTimes = availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
+        final List<AvailableDateTime> availableDateTimes = availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(
+                coachId, year, month);
         final Interview interview = getInterviewById(interviewId);
-        availableDateTimes.add(interview.getAvailableDateTime());
+
+        if (!interview.isCanceled()) {
+            availableDateTimes.add(interview.getAvailableDateTime());
+        }
+
         return availableDateTimes.stream()
                 .sorted(Comparator.comparing(AvailableDateTime::getLocalDateTime))
                 .collect(Collectors.toList());

@@ -62,6 +62,10 @@ public class AvailableDateTime {
     }
 
     public boolean isUsed() {
-        return availableDateTimeStatus.matchType(USED);
+        return availableDateTimeStatus.equals(USED);
+    }
+
+    public boolean isSame(final Long id) {
+        return this.id.equals(id);
     }
 }

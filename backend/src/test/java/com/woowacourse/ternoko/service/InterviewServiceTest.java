@@ -1,8 +1,7 @@
 package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
-import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_브리_2022_07_01_10_00;
 import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_준_2022_07_01_10_00;
@@ -139,7 +138,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("크루 - 면담 예약시 해당 시간이 USED이면 예외가 발생해야 한다.")
+    @DisplayName("크루 - 면담 예약시 해당 시간이 다른곳에서 사용중인 시간이면 예외가 발생해야 한다.")
     void createUsedDateTimeInterview() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
@@ -346,21 +345,6 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("면담 예약 수정 시 되는 시간이 USED 라면 예외를 반환한다.")
-    void update_WhenInvalidAvailableDateTime() {
-        // given
-        coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
-
-        // when
-        면담가능시간_준_2022_07_01_10_00.changeStatus(USED);
-
-        // then
-        assertThatThrownBy(() -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보_준_2022_07_01_10_00))
-                .isInstanceOf(InvalidInterviewDateException.class);
-    }
-
-    @Test
     @DisplayName("면담 수정 시, 당일 수정을 시도하면 에러가 발생한다.")
     void updateInterviewTodayException() {
         // given
@@ -392,7 +376,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @DisplayName("면담 예약 수정 시 같은 시간에 다른 면담이 있으면 수정이 불가능하다.")
+    @DisplayName("면담 예약 수정 시 예약할 시간에 자신의 다른 면담이 있으면 수정이 불가능하다.")
     void update_WhenDuplicateReservation() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
@@ -404,8 +388,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // then
         assertThatThrownBy(() -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보(준, 면담가능시간_준_2022_07_01_12_00)))
-                .isInstanceOf(InvalidInterviewDateException.class)
-                .hasMessage(INVALID_INTERVIEW_DUPLICATE_DATE_TIME.getMessage());
+                .isInstanceOf(InvalidInterviewDateException.class);
     }
 
     @Test
@@ -490,8 +473,9 @@ class InterviewServiceTest extends DatabaseSupporter {
         interviewService.cancelAndDeleteAvailableTime(interviewId, false);
 
         // then
-        assertThat(availableDateTimeRepository.findById(면담가능시간_준_2022_07_01_10_00.getId()).isPresent())
-                .isFalse();
+        assertThat(availableDateTimeRepository.findById(면담가능시간_준_2022_07_01_10_00.getId()).get()
+                .getAvailableDateTimeStatus())
+                .isEqualTo(DELETED);
     }
 
     @Test
