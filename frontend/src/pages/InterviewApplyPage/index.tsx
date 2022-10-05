@@ -14,8 +14,6 @@ import TextAreaField from '@/components/TextAreaField';
 import resizeTextArea from '@/components/TextAreaField/resizeTextArea';
 import Time from '@/components/Time/styled';
 
-import useTimes from '@/hooks/useTimes';
-
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
