@@ -9,6 +9,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.USED_BY_OTHER;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
+import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.isCanceled;
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
@@ -21,7 +22,6 @@ import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
-import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
@@ -70,9 +70,12 @@ public class InterviewService {
         return interviewRepository.save(interview).getId();
     }
 
-    private void validateDuplicateStartTimeByCrew(final LocalDateTime interviewDateTime,
+    private void validateDuplicateStartTimeByCrew(final LocalDateTime startTime,
                                                   final Long crewId) {
-        if (interviewRepository.existsByCrewIdAndInterviewStartTime(crewId, interviewDateTime)) {
+        final List<Interview> interviews = interviewRepository.findAllByCrewIdAndInterviewStartTime(crewId, startTime);
+        final boolean existNotCanceled = interviews.stream()
+                .anyMatch(interview -> !interview.isCanceled());
+        if (existNotCanceled) {
             throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
     }
@@ -147,7 +150,7 @@ public class InterviewService {
 
     private List<Interview> filterAndSortCanceledInterview(final List<Interview> interviews) {
         return interviews.stream()
-                .filter(interview -> !InterviewStatusType.isCanceled(interview.getInterviewStatusType()))
+                .filter(interview -> !isCanceled(interview.getInterviewStatusType()))
                 .sorted(Comparator.comparing(Interview::getInterviewStartTime))
                 .collect(Collectors.toList());
     }

@@ -69,6 +69,10 @@ public class AvailableDateTime {
         return availableDateTimeStatus.equals(USED);
     }
 
+    public boolean isDeleted() {
+        return availableDateTimeStatus.equals(DELETED);
+    }
+
     public boolean isSame(final Long id) {
         return this.id.equals(id);
     }

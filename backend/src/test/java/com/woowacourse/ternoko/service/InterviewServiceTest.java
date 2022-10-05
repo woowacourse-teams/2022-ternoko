@@ -2,7 +2,9 @@ package com.woowacourse.ternoko.service;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
+import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture._2022_07_01_10_00;
 import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_브리_2022_07_01_10_00;
 import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_준_2022_07_01_10_00;
 import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_준_2022_07_01_11_00;
@@ -135,6 +137,21 @@ class InterviewServiceTest extends DatabaseSupporter {
         // then
         final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interviewId);
         assertThat(interviewResponse.getId()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("크루 - 같은 시간에 취소된 면담이 있어도 면담을 신청할 수 있다.")
+    void createInterviewExistCanceledInterview() {
+        // given
+        coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
+
+        // when
+        final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
+        interviewService.cancelAndDeleteAvailableTime(interviewId, true);
+
+        // then
+        final AvailableDateTime availableDateTime = new AvailableDateTime(4L, 준.getId(), _2022_07_01_10_00, OPEN);
+        assertDoesNotThrow(() -> interviewService.create(허수달.getId(), 면담생성요청정보(준, availableDateTime)));
     }
 
     @Test
