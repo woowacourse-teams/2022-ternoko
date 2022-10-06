@@ -2,6 +2,7 @@ package com.woowacourse.ternoko.core.domain.interview;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_UPDATE_CREW;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_BY_MEMBER;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
@@ -135,12 +136,8 @@ public class Interview {
     }
 
     /**
-     * 1. 취소된 면담을 편집할 때 (원래시간 건드릴 필요 없음) -> 근데 다른시간으로 편집하는거긴 함
-     *  - 새로운 시간으로 갈아끼기만 함
-     * 2. 그냥 면담을 편집할 때
-     *  - 다른 면담가능시간으로 편집 -> 원래시간 OPEN, 새로운시간 갈아끼기
-     *  - 같은 면담가능시간으로 편집 -> 새로운 시간 갈아끼기
-     *
+     * 1. 취소된 면담을 편집할 때 (원래시간 건드릴 필요 없음) -> 근데 다른시간으로 편집하는거긴 함 - 새로운 시간으로 갈아끼기만 함 2. 그냥 면담을 편집할 때 - 다른 면담가능시간으로 편집 ->
+     * 원래시간 OPEN, 새로운시간 갈아끼기 - 같은 면담가능시간으로 편집 -> 새로운 시간 갈아끼기
      */
     private void openOriginTime(final Interview interview) {
         final AvailableDateTime availableDateTime = interview.getAvailableDateTime();
@@ -157,6 +154,12 @@ public class Interview {
         final List<InterviewStatusType> invalidUpdateStatus = findInvalidUpdateStatus();
         for (InterviewStatusType invalidStatus : invalidUpdateStatus) {
             validateInterviewStatus(invalidStatus);
+        }
+    }
+
+    public void validateOwnMember(final Long memberId) {
+        if (!this.coach.isSameId(memberId) && !this.crew.isSameId(memberId)) {
+            throw new InvalidInterviewMemberException(INVALID_INTERVIEW_BY_MEMBER);
         }
     }
 

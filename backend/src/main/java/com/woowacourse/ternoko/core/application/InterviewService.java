@@ -119,8 +119,9 @@ public class InterviewService {
     }
 
     @Transactional(readOnly = true)
-    public InterviewResponse findInterviewResponseById(final Long interviewId) {
+    public InterviewResponse findInterviewResponseById(final Long memberId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
+        interview.validateOwnMember(memberId);
         return InterviewResponse.from(interview);
     }
 
@@ -207,7 +208,8 @@ public class InterviewService {
 
     private void saveDuplicatedAvailableDateTimeOfInterview(final Interview interview) {
         final AvailableDateTime availableDateTimeOfCurrentInterview = interview.getAvailableDateTime();
-        final AvailableDateTime newAvailableDateTime = new AvailableDateTime(availableDateTimeOfCurrentInterview.getCoachId(),
+        final AvailableDateTime newAvailableDateTime = new AvailableDateTime(
+                availableDateTimeOfCurrentInterview.getCoachId(),
                 availableDateTimeOfCurrentInterview.getLocalDateTime(), OPEN);
         availableDateTimeRepository.save(newAvailableDateTime);
     }
