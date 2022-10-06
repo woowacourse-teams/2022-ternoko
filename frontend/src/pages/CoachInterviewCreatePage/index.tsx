@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
-import AllScheduleByMonthModal from '@/components/@common/AllScheduleByMonthModal';
 import Button from '@/components/@common/Button/styled';
 import useModal from '@/components/@common/Modal/useModal';
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
@@ -30,6 +29,7 @@ import {
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/api';
 import { ERROR_MESSAGE, INITIAL_NUMBER_STATE, PAGE, SUCCESS_MESSAGE } from '@/constants';
 import { getFullDateString, separateFullDate } from '@/utils';
+import AllScheduleOfMonthModal from '@/components/@common/AllScheduleOfMonthModal';
 
 const defaultTimes = [
   '10:00',
@@ -307,7 +307,7 @@ const CoachInterviewCreatePage = () => {
           스케쥴 저장
         </Button>
       </S.ButtonContainer>
-      <AllScheduleByMonthModal
+      <AllScheduleOfMonthModal
         show={show}
         display={display}
         calendarTime={

@@ -6,7 +6,7 @@ import { CalendarTime, StringDictionary } from '@/types/domain';
 
 import { separateFullDate } from '@/utils';
 
-type AllScheduleByMonthModalProps = {
+type AllScheduleOfMonthModalProps = {
   show: boolean;
   display: boolean;
   calendarTime: CalendarTime;
@@ -44,12 +44,12 @@ const trimCalendarTime = (calendarTime: CalendarTime) => {
   }, [] as TrimCalendarTimeType[]);
 };
 
-const AllScheduleByMonthModal = ({
+const AllScheduleOfMonthModal = ({
   show,
   display,
   calendarTime,
   handleCloseModal,
-}: AllScheduleByMonthModalProps) => {
+}: AllScheduleOfMonthModalProps) => {
   const trimmedCalendarTime = calendarTime ? trimCalendarTime(calendarTime) : [];
 
   return (
@@ -81,4 +81,4 @@ const AllScheduleByMonthModal = ({
   );
 };
 
-export default AllScheduleByMonthModal;
+export default AllScheduleOfMonthModal;
