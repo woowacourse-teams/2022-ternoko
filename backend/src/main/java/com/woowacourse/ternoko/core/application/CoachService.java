@@ -1,11 +1,14 @@
 package com.woowacourse.ternoko.core.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.DUPLICATED_MEMBER_NICKNAME;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
@@ -29,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CoachService {
 
     private final CoachRepository coachRepository;
+    private final MemberRepository memberRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
 
     @Transactional(readOnly = true)
@@ -98,8 +102,14 @@ public class CoachService {
         return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
     }
 
-    //:todo partUpdateCoach 같은데 현재 PR 에서 변경해도 될지?
-    public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
+    public void partUpdateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
+        final Coach coach = getCoachById(coachId);
+        final String requestNickname = coachUpdateRequest.getNickname();
+
+        if (!coach.isSameNickname(requestNickname) 
+                && memberRepository.existsByNickname(requestNickname)) {
+            throw new InvalidMemberNicknameException(DUPLICATED_MEMBER_NICKNAME);
+        }
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId,
                 coachUpdateRequest.getNickname(),
                 coachUpdateRequest.getImageUrl(),

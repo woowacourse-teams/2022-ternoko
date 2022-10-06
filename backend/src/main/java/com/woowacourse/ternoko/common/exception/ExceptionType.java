@@ -16,6 +16,7 @@ public enum ExceptionType {
     // Coach 관련 Exception
     COACH_NOT_FOUND(2001, "번째 코치를 찾을 수 없습니다."),
     INVALID_INTERVIEW_COACH_ID(2002, "다른 코치의 예약에 접근할 수 없습니다."),
+    DUPLICATED_MEMBER_NICKNAME(2003, "이미 존재하는 회원 닉네임입니다."),
 
     // Crew 관련 Exception,
     CREW_NOT_FOUND(3001, "번째 크루를 찾을 수 없습니다."),
