@@ -9,7 +9,7 @@ import useModal from '@/components/@common/Modal/useModal';
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
-import Calendar from '@/components/Calendar';
+import CoachCreateTimeCalendar from '@/components/CoachCreateTimeCalendar';
 import Time from '@/components/Time/styled';
 
 import useTimes from '@/hooks/useTimes';
@@ -23,7 +23,6 @@ import {
   CalendarTime,
   CoachScheduleRequestCalendarTime,
   CrewSelectTime,
-  OneWeekDayType,
   StringDictionary,
 } from '@/types/domain';
 
@@ -50,13 +49,32 @@ const defaultTimes = [
   '17:30',
 ];
 
+const compactCalendarTimes = (times: CalendarTime[]) => {
+  const result = times.reduce((acc, { year, month, times }) => {
+    acc[`${year}-${month}`] = acc[`${year}-${month}`]
+      ? [...acc[`${year}-${month}`], ...times]
+      : times;
+
+    return acc;
+  }, {} as StringDictionary<string>);
+
+  return Object.entries(result).map(([yearMonth, times]) => {
+    const [year, month] = yearMonth.split('-');
+
+    return {
+      year: Number(year),
+      month: Number(month),
+      times,
+    };
+  });
+};
+
 const CoachInterviewCreatePage = () => {
   const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
-  const { resetSelectedDates, setDay, addSelectedDates, removeSelectedDates } =
-    useCalendarActions();
+  const { resetSelectedDates, setDay } = useCalendarActions();
   const { onLoading, offLoading } = useLoadingActions();
-  const { isSelectedDate, isBelowToday } = useCalendarUtils();
+  const { isSelectedDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
     selectMode: 'MULTIPLE',
   });
@@ -74,85 +92,23 @@ const CoachInterviewCreatePage = () => {
     () =>
       new Set(
         calendarTimes
-          .find((calendarTime) => calendarTime.year === year && calendarTime.month === month + 1)
+          .find((calendarTime) => calendarTime.year === year && calendarTime.month === month)
           ?.times.map((time) => Number(separateFullDate(time).day)) ?? [],
       ),
     [calendarTimes],
   );
 
-  const timesOfCurrentMonth = calendarTimes.filter(
-    (calendarTime) => year === calendarTime.year && month + 1 === calendarTime.month,
+  const timesOfCurrentMonth = useMemo(
+    () =>
+      calendarTimes.filter(
+        (calendarTime) => year === calendarTime.year && month === calendarTime.month,
+      ),
+    [calendarTimes],
   );
-
-  const getDayType = (day: number) => (isSelectedDate(day) ? 'active' : 'default');
-
-  const compactCalendarTimes = (times: CalendarTime[]) => {
-    const result = times.reduce((acc, { year, month, times }) => {
-      acc[`${year}-${month}`] = acc[`${year}-${month}`]
-        ? [...acc[`${year}-${month}`], ...times]
-        : times;
-
-      return acc;
-    }, {} as StringDictionary<string>);
-
-    return Object.entries(result).map(([yearMonth, times]) => {
-      const [year, month] = yearMonth.split('-');
-
-      return {
-        year: Number(year),
-        month: Number(month),
-        times,
-      };
-    });
-  };
-
-  const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
-    const lastDay = new Date(year, month + 1, 0).getDate();
-    let isAllSelect = false;
-
-    for (let day = startDay; day <= lastDay; day += 7) {
-      if (!isBelowToday(day) && !isSelectedDate(day)) {
-        isAllSelect = true;
-
-        break;
-      }
-    }
-
-    const dates = [];
-
-    if (isAllSelect) {
-      for (let day = startDay; day <= lastDay; day += 7) {
-        if (
-          !isBelowToday(day) &&
-          selectedDates.every(
-            (selectedDate) =>
-              selectedDate.year !== year ||
-              selectedDate.month !== month + 1 ||
-              selectedDate.day !== day,
-          )
-        ) {
-          dates.push({ year, month: month + 1, day });
-        }
-      }
-
-      dates.length && addSelectedDates(dates);
-    } else {
-      for (let day = startDay; day <= lastDay; day += 7) {
-        if (!isBelowToday(day)) {
-          dates.push({ year, month: month + 1, day });
-        }
-      }
-
-      dates.length && removeSelectedDates(dates);
-    }
-
-    dates.length && resetTimes();
-  };
 
   const getHandleClickDay = (day: number) => () => {
     const currentCalendarTime = calendarTimes.find(
-      (calendarTime: CalendarTime) =>
-        calendarTime.year === year && calendarTime.month === month + 1,
+      (calendarTime: CalendarTime) => calendarTime.year === year && calendarTime.month === month,
     );
 
     if (currentCalendarTime) {
@@ -241,8 +197,7 @@ const CoachInterviewCreatePage = () => {
     if (id === INITIAL_NUMBER_STATE) return;
 
     (async () => {
-      // 추후 response 타입 필요
-      const response = await getCoachScheduleAPI(id, year, month + 1);
+      const response = await getCoachScheduleAPI(id, year, month);
 
       const recentCalendarTimes = compactCalendarTimes(
         response.data.calendarTimes.map(({ calendarTime }: CrewSelectTime) => {
@@ -252,12 +207,11 @@ const CoachInterviewCreatePage = () => {
         }),
       );
 
-      const oldCalendarTimes = calendarTimes.filter(
-        ({ year, month }) =>
-          !recentCalendarTimes.some(
-            (calendarTime: CalendarTime) =>
-              calendarTime.year === year && calendarTime.month === month,
-          ),
+      const oldCalendarTimes = calendarTimes.filter(({ year, month }) =>
+        recentCalendarTimes.every(
+          (calendarTime: CalendarTime) =>
+            calendarTime.year !== year || calendarTime.month !== month,
+        ),
       );
 
       setCalendarTimes([...recentCalendarTimes, ...oldCalendarTimes]);
@@ -268,14 +222,13 @@ const CoachInterviewCreatePage = () => {
     <S.Box>
       <S.HeaderBox>
         <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
-        <Button onClick={handleOpenModal}>{month + 1}월 한눈에 보기</Button>
+        <Button onClick={handleOpenModal}>{month}월 한눈에 보기</Button>
       </S.HeaderBox>
 
       <S.DateBox>
-        <Calendar
-          getHandleClickDayOfWeek={getHandleClickDayOfWeek}
+        <CoachCreateTimeCalendar
+          onChangeSelectedDatesByClickDayOfWeek={resetTimes}
           getHandleClickDay={getHandleClickDay}
-          getDayType={getDayType}
           haveTimeDays={haveTimeDays}
         />
 
