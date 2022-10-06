@@ -316,29 +316,6 @@ class InterviewTest {
         assertTrue(interview.isCreatedBy(5L));
     }
 
-
-    @DisplayName("[크루] 면담에 해당하는 코치나 크루가 아닐 경우 예외를 반환한다.")
-    @Test
-    void validateOwnMemberWhenCrew() {
-        // given
-        final Interview interview = getInterview(CREW1);
-
-        // when & then
-        assertThatThrownBy(() -> interview.validateOwnMember(CREW2.getId()))
-                .isInstanceOf(InvalidInterviewMemberException.class);
-    }
-
-    @DisplayName("[코치] 면담에 해당하는 코치나 크루가 아닐 경우 예외를 반환한다.")
-    @Test
-    void validateOwnMemberWhenCoach() {
-        // given
-        final Interview interview = getInterview(CREW1);
-
-        // when & then
-        assertThatThrownBy(() -> interview.validateOwnMember(COACH2.getId()))
-                .isInstanceOf(InvalidInterviewMemberException.class);
-    }
-
     private Interview getInterview(final Crew crew) {
         final LocalDateTime now = LocalDateTime.now();
         return new Interview(

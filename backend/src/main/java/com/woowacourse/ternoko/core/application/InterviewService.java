@@ -4,6 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.AVAILABLE_D
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_BY_MEMBER;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.USED_BY_OTHER;
@@ -22,6 +23,7 @@ import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
+import com.woowacourse.ternoko.core.domain.interview.InvalidInterviewMemberException;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
@@ -121,8 +123,14 @@ public class InterviewService {
     @Transactional(readOnly = true)
     public InterviewResponse findInterviewResponseById(final Long memberId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
-        interview.validateOwnMember(memberId);
+        validateOwnMember(memberId, interview);
         return InterviewResponse.from(interview);
+    }
+
+    private void validateOwnMember(final Long memberId, final Interview interview) {
+        if (!interview.getCoach().isSameId(memberId) && !interview.getCrew().isSameId(memberId)) {
+            throw new InvalidInterviewMemberException(INVALID_INTERVIEW_BY_MEMBER);
+        }
     }
 
     @Transactional(readOnly = true)

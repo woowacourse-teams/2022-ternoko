@@ -2,7 +2,6 @@ package com.woowacourse.ternoko.core.domain.interview;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_EDIT_INTERVIEW;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.CANNOT_UPDATE_CREW;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_BY_MEMBER;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_MEMBER_ID;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
@@ -154,12 +153,6 @@ public class Interview {
         final List<InterviewStatusType> invalidUpdateStatus = findInvalidUpdateStatus();
         for (InterviewStatusType invalidStatus : invalidUpdateStatus) {
             validateInterviewStatus(invalidStatus);
-        }
-    }
-
-    public void validateOwnMember(final Long memberId) {
-        if (!this.coach.isSameId(memberId) && !this.crew.isSameId(memberId)) {
-            throw new InvalidInterviewMemberException(INVALID_INTERVIEW_BY_MEMBER);
         }
     }
 
