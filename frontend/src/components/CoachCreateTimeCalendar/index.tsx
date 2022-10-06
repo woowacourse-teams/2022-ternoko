@@ -2,14 +2,10 @@ import { memo, useMemo } from 'react';
 
 import * as S from './styled';
 
-import * as C from '@/components/@common/CalendarStyle/styled';
+import Calendar from '@/components/@common/Calendar';
+import * as C from '@/components/@common/CommonCrewAndCoachCalendarStyle/styled';
 
-import {
-  monthNames,
-  useCalendarActions,
-  useCalendarState,
-  useCalendarUtils,
-} from '@/context/CalendarProvider';
+import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
 import { OneWeekDayType } from '@/types/domain';
 
@@ -26,17 +22,8 @@ const CoachCreateTimeCalendar = ({
   getHandleClickDay,
   haveTimeDays,
 }: CoachCreateTimeCalendarProps) => {
-  const { year, month, selectedDates, showMonthPicker } = useCalendarState();
-  const {
-    handleClickPrevYear,
-    handleClickNextYear,
-    handleClickPrevMonth,
-    handleClickNextMonth,
-    handleClickMonthPicker,
-    getHandleClickMonth,
-    addSelectedDates,
-    removeSelectedDates,
-  } = useCalendarActions();
+  const { year, month, selectedDates } = useCalendarState();
+  const { addSelectedDates, removeSelectedDates } = useCalendarActions();
   const { daysLength, isBelowToday, isOverFirstDay, getDay, isSelectedDate } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month]);
 
@@ -103,22 +90,8 @@ const CoachCreateTimeCalendar = ({
   };
 
   return (
-    <S.Box>
-      <C.Header>
-        <C.YearPicker>
-          <C.DateChange onClick={handleClickPrevYear}>{'<'}</C.DateChange>
-          <p>{year}</p>
-          <C.DateChange onClick={handleClickNextYear}>{'>'}</C.DateChange>
-        </C.YearPicker>
-
-        <C.MonthPicker>
-          <C.DateChange onClick={handleClickPrevMonth}>{'<'}</C.DateChange>
-          <p onClick={handleClickMonthPicker}>{monthNames[month]}</p>
-          <C.DateChange onClick={handleClickNextMonth}>{'>'}</C.DateChange>
-        </C.MonthPicker>
-      </C.Header>
-
-      <C.Body>
+    <C.Box>
+      <Calendar>
         <C.WeekDay>
           {dayOfWeekWithStartDay.map(({ name, startDay }) => (
             <div key={name}>
@@ -142,14 +115,14 @@ const CoachCreateTimeCalendar = ({
 
               if (isBelowToday(day)) {
                 return (
-                  <S.CalendarDay key={index} type="disable">
+                  <C.CalendarDay key={index} type="disable">
                     {day}
-                  </S.CalendarDay>
+                  </C.CalendarDay>
                 );
               }
 
               return (
-                <S.CalendarDay
+                <C.CalendarDay
                   key={index}
                   type={isSelectedDate(day) ? 'active' : 'default'}
                   onClick={getHandleClickDay(day)}
@@ -160,23 +133,15 @@ const CoachCreateTimeCalendar = ({
                   <span />
                   <span />
                   <span />
-                </S.CalendarDay>
+                </C.CalendarDay>
               );
             }
 
-            return <S.CalendarDay key={index} />;
+            return <C.CalendarDay key={index} />;
           })}
         </C.Days>
-      </C.Body>
-
-      <C.MonthContainer show={showMonthPicker}>
-        {monthNames.map((monthName, index) => (
-          <div key={index} onClick={getHandleClickMonth(index)}>
-            {monthName}
-          </div>
-        ))}
-      </C.MonthContainer>
-    </S.Box>
+      </Calendar>
+    </C.Box>
   );
 };
 
