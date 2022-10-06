@@ -7,8 +7,8 @@ import Button from '@/components/@common/Button/styled';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
-import Calendar from '@/components/Calendar';
 import CoachProfile from '@/components/CoachProfile';
+import CrewApplyInterviewCalendar from '@/components/CrewApplyInterviewCalendar';
 import Header from '@/components/Header';
 import TextAreaField from '@/components/TextAreaField';
 import resizeTextArea from '@/components/TextAreaField/resizeTextArea';
@@ -320,11 +320,10 @@ const InterviewApplyPage = () => {
 
             <div className="fold-box">
               <S.DateBox>
-                <Calendar
+                <CrewApplyInterviewCalendar
                   rerenderCondition={rerenderCondition}
                   getHandleClickDay={getHandleClickDay}
                   getDayType={getDayType}
-                  haveTimeDays={new Set()}
                 />
 
                 <S.TimeContainer key={timeRerenderKey} heightUnit={availableTimes.length}>

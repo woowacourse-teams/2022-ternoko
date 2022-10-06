@@ -121,7 +121,7 @@ const CoachCreateTimeCalendar = ({
       <C.Body>
         <C.WeekDay>
           {dayOfWeekWithStartDay.map(({ name, startDay }) => (
-            <div>
+            <div key={name}>
               {getHandleClickDayOfWeek && (
                 <S.AllTimeButton
                   key={startDay}
