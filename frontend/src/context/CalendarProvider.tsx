@@ -28,7 +28,8 @@ type CalendarActionsType = {
   handleClickPrevMonth: () => void;
   handleClickNextMonth: () => void;
   handleClickMonthPicker: () => void;
-  setDay: (day: number) => void;
+  removeDate: (day: number) => void;
+  addOrSetDateBySelectMode: (day: number) => void;
   getHandleClickMonth: (monthIndex: number) => () => void;
   resetSelectedDates: () => void;
   addSelectedDates: (dates: Date[]) => void;
@@ -152,16 +153,13 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
         return prev + 1;
       });
     },
-    handleClickMonthPicker: () => {
+    handleClickMonthPicker() {
       setShowMonthPicker(true);
     },
-    setDay: (day: number) => {
-      if (isSelectedDate(day)) {
-        setSelectedDates((prev) => prev.filter((date) => !isSameDate(date, day)));
-
-        return;
-      }
-
+    removeDate(day: number) {
+      setSelectedDates((prev) => prev.filter((date) => !isSameDate(date, day)));
+    },
+    addOrSetDateBySelectMode(day: number) {
       selectMode === 'SINGLE'
         ? setSelectedDates([{ year, month, day }])
         : setSelectedDates((prev) => [...prev, { year, month, day }]);

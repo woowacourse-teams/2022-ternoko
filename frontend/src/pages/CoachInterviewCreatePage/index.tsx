@@ -72,7 +72,7 @@ const compactCalendarTimes = (times: CalendarTime[]) => {
 const CoachInterviewCreatePage = () => {
   const { id } = useUserState();
   const { year, month, selectedDates } = useCalendarState();
-  const { resetSelectedDates, setDay } = useCalendarActions();
+  const { resetSelectedDates, removeDate, addOrSetDateBySelectMode } = useCalendarActions();
   const { onLoading, offLoading } = useLoadingActions();
   const { isSelectedDate } = useCalendarUtils();
   const { selectedTimes, getHandleClickTime, resetTimes, setSelectedTimes } = useTimes({
@@ -131,7 +131,11 @@ const CoachInterviewCreatePage = () => {
       }
     }
 
-    setDay(day);
+    if (isSelectedDate(day)) {
+      removeDate(day);
+    } else {
+      addOrSetDateBySelectMode(day);
+    }
   };
 
   const handleClickApplyButton = async () => {

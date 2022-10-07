@@ -53,9 +53,14 @@ const InterviewApplyPage = () => {
   const interviewId = new URLSearchParams(search).get('interviewId');
 
   const { year, month, selectedDates } = useCalendarState();
-  const { initializeYearMonth, setDay, resetSelectedDates, addSelectedDates } =
-    useCalendarActions();
-  const { getDateStrings, isSameDate } = useCalendarUtils();
+  const {
+    initializeYearMonth,
+    removeDate,
+    addOrSetDateBySelectMode,
+    resetSelectedDates,
+    addSelectedDates,
+  } = useCalendarActions();
+  const { getDateStrings, isSameDate, isSelectedDate } = useCalendarUtils();
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
@@ -161,10 +166,17 @@ const InterviewApplyPage = () => {
 
   const getHandleClickDay = (day: number) => () => {
     const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
+
     setAvailableTimes(times);
-    setDay(day);
     setAvailableDateTimeId(INITIAL_NUMBER_STATE);
+
     changeCoachIdRef.current = false;
+
+    if (isSelectedDate(day)) {
+      removeDate(day);
+    } else {
+      addOrSetDateBySelectMode(day);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
