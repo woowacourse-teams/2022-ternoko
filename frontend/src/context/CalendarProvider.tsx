@@ -133,10 +133,10 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     },
     handleClickPrevMonth() {
       setMonth((prev) => {
-        if (prev === 0) {
+        if (prev === 1) {
           actions.handleClickPrevYear();
 
-          return 11;
+          return 12;
         }
 
         return prev - 1;
@@ -144,10 +144,10 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
     },
     handleClickNextMonth() {
       setMonth((prev) => {
-        if (prev === 11) {
+        if (prev === 12) {
           actions.handleClickNextYear();
 
-          return 0;
+          return 1;
         }
 
         return prev + 1;
