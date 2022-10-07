@@ -80,7 +80,7 @@ const CoachInterviewCreatePage = () => {
     [calendarTimes],
   );
 
-  const calendarTimesOfCurrentMonth = calendarTimes.filter(
+  const timesOfCurrentMonth = calendarTimes.filter(
     (calendarTime) => year === calendarTime.year && month + 1 === calendarTime.month,
   );
 
@@ -316,9 +316,7 @@ const CoachInterviewCreatePage = () => {
         display={display}
         year={year}
         month={month}
-        calendarTime={
-          calendarTimesOfCurrentMonth.length > 0 ? calendarTimesOfCurrentMonth[0].times : []
-        }
+        calendarTime={timesOfCurrentMonth.length > 0 ? timesOfCurrentMonth[0].times : []}
         handleCloseModal={handleCloseModal}
       />
     </S.Box>
