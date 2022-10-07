@@ -213,19 +213,6 @@ class InterviewServiceTest extends DatabaseSupporter {
                 .isInstanceOf(InterviewNotFoundException.class);
     }
 
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 면담의 시간과 동일한 면담가능시간은 남아있어야 한다.")
-//    void test1() {
-//
-//    }
-//
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 같은 시간으로 면담 수정이 되어야 한다.")
-//    void test2() {
-//
-//    }
-
-
     @Test
     @DisplayName("크루 - 정렬된 면담 예약 목록을 조회한다.")
     void findAllInterviews() {
