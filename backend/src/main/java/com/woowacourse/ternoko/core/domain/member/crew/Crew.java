@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("CREW")
 public class Crew extends Member {
