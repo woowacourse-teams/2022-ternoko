@@ -24,7 +24,8 @@ const CoachCreateTimeCalendar = ({
 }: CoachCreateTimeCalendarProps) => {
   const { year, month, selectedDates } = useCalendarState();
   const { addSelectedDates, removeSelectedDates } = useCalendarActions();
-  const { daysLength, isBelowToday, isOverFirstDay, getDay, isSelectedDate } = useCalendarUtils();
+  const { daysLength, isBelowToday, isOverFirstDay, getDay, isSelectedDate, isSameDate } =
+    useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month]);
 
   const dayOfWeekWithStartDay = useMemo(
@@ -33,11 +34,7 @@ const CoachCreateTimeCalendar = ({
   );
 
   const isDateNotInOfSelectedDatesAfterToday = (day: number) =>
-    !isBelowToday(day) &&
-    selectedDates.every(
-      (selectedDate) =>
-        selectedDate.year !== year || selectedDate.month !== month || selectedDate.day !== day,
-    );
+    !isBelowToday(day) && selectedDates.every((selectedDate) => !isSameDate(selectedDate, day));
 
   const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
     const lastDay = new Date(year, month, 0).getDate();
