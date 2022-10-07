@@ -1,5 +1,7 @@
 import { memo, useMemo } from 'react';
 
+import * as S from './styled';
+
 import Calendar from '@/components/@common/Calendar';
 import * as C from '@/components/@common/CommonCrewAndCoachCalendarStyle/styled';
 
@@ -25,14 +27,14 @@ const CrewApplyInterviewCalendar = ({
   return (
     <C.Box>
       <Calendar>
-        <C.WeekDay>
+        <S.WeekDay>
           {dayNamesOfWeek.map((dayNameOfWeek) => (
             <div key={dayNameOfWeek}>
               <p>{dayNameOfWeek}</p>
             </div>
           ))}
-        </C.WeekDay>
-        <C.Days key={rerenderKey}>
+        </S.WeekDay>
+        <S.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
@@ -64,7 +66,7 @@ const CrewApplyInterviewCalendar = ({
 
             return <C.CalendarDay key={index} />;
           })}
-        </C.Days>
+        </S.Days>
       </Calendar>
     </C.Box>
   );

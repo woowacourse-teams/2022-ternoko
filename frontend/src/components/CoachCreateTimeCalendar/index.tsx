@@ -92,7 +92,7 @@ const CoachCreateTimeCalendar = ({
   return (
     <C.Box>
       <Calendar>
-        <C.WeekDay>
+        <S.WeekDay>
           {dayOfWeekWithStartDay.map(({ name, startDay }) => (
             <div key={name}>
               {getHandleClickDayOfWeek && (
@@ -107,8 +107,8 @@ const CoachCreateTimeCalendar = ({
               <p>{name}</p>
             </div>
           ))}
-        </C.WeekDay>
-        <C.Days key={rerenderKey}>
+        </S.WeekDay>
+        <S.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
@@ -139,7 +139,7 @@ const CoachCreateTimeCalendar = ({
 
             return <C.CalendarDay key={index} />;
           })}
-        </C.Days>
+        </S.Days>
       </Calendar>
     </C.Box>
   );
