@@ -148,7 +148,6 @@ class InterviewServiceTest extends DatabaseSupporter {
     void findInterview_WhenFindNotOwnInterview() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        현재시간_설정(2022, 6, 20, 10, 0);
         final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
 
         // when
@@ -213,19 +212,6 @@ class InterviewServiceTest extends DatabaseSupporter {
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(김록바.getId(), -1L))
                 .isInstanceOf(InterviewNotFoundException.class);
     }
-
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 면담의 시간과 동일한 면담가능시간은 남아있어야 한다.")
-//    void test1() {
-//
-//    }
-//
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 같은 시간으로 면담 수정이 되어야 한다.")
-//    void test2() {
-//
-//    }
-
 
     @Test
     @DisplayName("크루 - 정렬된 면담 예약 목록을 조회한다.")
