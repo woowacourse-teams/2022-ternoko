@@ -243,5 +243,9 @@ public class Interview {
     public boolean isCanceled() {
         return interviewStatusType.equals(CANCELED);
     }
+
+    public boolean containsMember(final long memberId) {
+        return coach.isSameId(memberId) || crew.isSameId(memberId);
+    }
 }
 
