@@ -80,6 +80,10 @@ const CoachInterviewCreatePage = () => {
     [calendarTimes],
   );
 
+  const calendarTimesOfCurrentMonth = calendarTimes.filter(
+    (calendarTime) => year === calendarTime.year && month + 1 === calendarTime.month,
+  );
+
   const getDayType = (day: number) => (isSelectedDate(day) ? 'active' : 'default');
 
   const compactCalendarTimes = (times: CalendarTime[]) => {
@@ -313,11 +317,7 @@ const CoachInterviewCreatePage = () => {
         year={year}
         month={month}
         calendarTime={
-          (
-            calendarTimes.filter(
-              (calendarTime) => year === calendarTime.year && month + 1 === calendarTime.month,
-            )[0] ?? []
-          ).times ?? []
+          calendarTimesOfCurrentMonth.length > 0 ? calendarTimesOfCurrentMonth[0].times : []
         }
         handleCloseModal={handleCloseModal}
       />
