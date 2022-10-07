@@ -5,7 +5,6 @@ type AllTimeButtonTypes = {
 };
 
 export const AllTimeButton = styled.button<AllTimeButtonTypes>`
-  margin-bottom: 1rem;
   padding: 7px 12px;
   border: none;
   border-radius: 12px;
@@ -21,7 +20,7 @@ export const AllTimeButton = styled.button<AllTimeButtonTypes>`
 
 export const WeekDay = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   margin-bottom: 1rem;
   font-weight: bold;
 
@@ -34,6 +33,6 @@ export const WeekDay = styled.div`
 
 export const Days = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 0.2rem;
 `;

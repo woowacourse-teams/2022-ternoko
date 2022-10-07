@@ -9,7 +9,7 @@ import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/contex
 
 import { OneWeekDayType } from '@/types/domain';
 
-import { generateDayOfWeekWithStartDay } from '@/utils';
+import { convertMonthToMonthIndex, generateDayOfWeekWithStartDay, isSunDay } from '@/utils';
 
 export type CoachCreateTimeCalendarProps = {
   onChangeSelectedDatesByClickDayOfWeek: () => void;
@@ -36,6 +36,9 @@ const CoachCreateTimeCalendar = ({
   const isDateNotInSelectedDatesAfterToday = (day: number) =>
     !isBelowToday(day) && selectedDates.every((selectedDate) => !isSameDate(selectedDate, day));
 
+  const isDateInOfSelectedDatesAfterToday = (day: number) =>
+    !isBelowToday(day) && selectedDates.some((selectedDate) => isSameDate(selectedDate, day));
+
   const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
     const lastDay = new Date(year, month, 0).getDate();
     let isAllSelect = false;
@@ -60,7 +63,7 @@ const CoachCreateTimeCalendar = ({
       dates.length && addSelectedDates(dates);
     } else {
       for (let day = startDay; day <= lastDay; day += 7) {
-        if (!isBelowToday(day)) {
+        if (isDateInOfSelectedDatesAfterToday(day)) {
           dates.push({ year, month, day });
         }
       }
@@ -86,13 +89,66 @@ const CoachCreateTimeCalendar = ({
     return isAllSelectedColumn;
   };
 
+  const getHandleClickSelectRowButton = (startDay: number) => () => {
+    const restDayUntilSunDay =
+      7 - new Date(year, convertMonthToMonthIndex(month), startDay).getDay();
+    let isAllSelect = false;
+
+    for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
+      if (!isBelowToday(day) && !isSelectedDate(day)) {
+        isAllSelect = true;
+
+        break;
+      }
+    }
+
+    const dates = [];
+
+    if (isAllSelect) {
+      for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
+        if (isDateNotInOfSelectedDatesAfterToday(day)) {
+          dates.push({ year, month, day });
+        }
+      }
+
+      dates.length && addSelectedDates(dates);
+    } else {
+      for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
+        if (isDateInOfSelectedDatesAfterToday(day)) {
+          dates.push({ year, month, day });
+        }
+      }
+
+      dates.length && removeSelectedDates(dates);
+    }
+
+    dates.length && onChangeSelectedDatesByClickDayOfWeek();
+  };
+
+  const checkIsAllSelectedRow = (startDay: number) => {
+    const restDayUntilSunDay =
+      7 - new Date(year, convertMonthToMonthIndex(month), startDay).getDay();
+    let isAllSelectedRow = true;
+
+    for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
+      if (isDateNotInOfSelectedDatesAfterToday(day)) {
+        isAllSelectedRow = false;
+
+        break;
+      }
+    }
+
+    return isAllSelectedRow;
+  };
+
   return (
     <C.Box>
       <Calendar>
         <S.WeekDay>
+          <div />
           {dayOfWeekWithStartDay.map(({ name, startDay }) => (
             <div key={name}>
-              {getHandleClickDayOfWeek && (
+              {
                 <S.AllTimeButton
                   key={startDay}
                   onClick={getHandleClickDayOfWeek(startDay)}
@@ -100,41 +156,63 @@ const CoachCreateTimeCalendar = ({
                 >
                   ✅
                 </S.AllTimeButton>
-              )}
+              }
               <p>{name}</p>
             </div>
           ))}
         </S.WeekDay>
         <S.Days key={rerenderKey}>
           {Array.from({ length: daysLength }, (_, index) => {
-            if (isOverFirstDay(index)) {
-              const day = getDay(index);
+            const day = getDay(index);
+            const selectRowButton = isSunDay(year, month, day) ? (
+              <S.AllTimeButton
+                key={day}
+                onClick={getHandleClickSelectRowButton(day)}
+                active={checkIsAllSelectedRow(day)}
+              >
+                ✅
+              </S.AllTimeButton>
+            ) : (
+              <></>
+            );
 
+            if (isOverFirstDay(index)) {
               if (isBelowToday(day)) {
                 return (
-                  <C.CalendarDay key={index} type="disable">
-                    {day}
-                  </C.CalendarDay>
+                  <>
+                    {selectRowButton}
+                    <C.CalendarDay key={index} type="disable">
+                      {day}
+                    </C.CalendarDay>
+                  </>
                 );
               }
 
               return (
-                <C.CalendarDay
-                  key={index}
-                  type={isSelectedDate(day) ? 'active' : 'default'}
-                  onClick={getHandleClickDay(day)}
-                  mark={haveTimeDays.has(day)}
-                >
-                  {day}
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </C.CalendarDay>
+                <>
+                  {selectRowButton}
+                  <C.CalendarDay
+                    key={index}
+                    type={isSelectedDate(day) ? 'active' : 'default'}
+                    onClick={getHandleClickDay(day)}
+                    mark={haveTimeDays.has(day)}
+                  >
+                    {day}
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                  </C.CalendarDay>
+                </>
               );
             }
 
-            return <C.CalendarDay key={index} />;
+            return (
+              <>
+                {selectRowButton}
+                <C.CalendarDay key={index} />
+              </>
+            );
           })}
         </S.Days>
       </Calendar>
