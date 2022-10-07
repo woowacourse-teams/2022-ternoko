@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from 'react';
 
 import { SelectMode } from '@/types/domain';
 
+import { convertMonthIndexToMonth, convertMonthToMonthIndex } from '@/utils';
+
 type CalendarProviderProps = {
   selectMode: SelectMode;
   children: React.ReactNode;
@@ -76,28 +78,32 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
   const date = new Date();
 
   const [year, setYear] = useState(date.getFullYear());
-  const [month, setMonth] = useState(date.getMonth());
+  const [month, setMonth] = useState(date.getMonth() + 1);
 
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
-  const firstDay = new Date(year, month, 1).getDay();
+  const firstDay = new Date(year, convertMonthToMonthIndex(month), 1).getDay();
   const daysOfMonth = [31, getFebruaryDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const daysLength = daysOfMonth[month] + firstDay;
+  const daysLength = daysOfMonth[convertMonthToMonthIndex(month)] + firstDay;
 
   const isSameDate = (date: Date, day: number) =>
-    date.year === year && date.month === month + 1 && date.day === day;
+    date.year === year && date.month === month && date.day === day;
 
   const isToday = (day: number) => {
     const date = new Date();
 
-    return day === date.getDate() && year === date.getFullYear() && month === date.getMonth();
+    return (
+      day === date.getDate() &&
+      year === date.getFullYear() &&
+      convertMonthToMonthIndex(month) === date.getMonth()
+    );
   };
 
   const isBelowToday = (day: number) => {
     const today = new Date().getTime();
-    const date = new Date(year, month, day).getTime();
+    const date = new Date(year, convertMonthToMonthIndex(month), day).getTime();
 
     return date <= today;
   };
@@ -157,11 +163,11 @@ const CalendarProvider = ({ selectMode, children }: CalendarProviderProps) => {
       }
 
       selectMode === 'SINGLE'
-        ? setSelectedDates([{ year, month: month + 1, day }])
-        : setSelectedDates((prev) => [...prev, { year, month: month + 1, day }]);
+        ? setSelectedDates([{ year, month, day }])
+        : setSelectedDates((prev) => [...prev, { year, month, day }]);
     },
     getHandleClickMonth: (monthIndex: number) => () => {
-      setMonth(monthIndex);
+      setMonth(convertMonthIndexToMonth(monthIndex));
       setShowMonthPicker(false);
     },
     resetSelectedDates() {

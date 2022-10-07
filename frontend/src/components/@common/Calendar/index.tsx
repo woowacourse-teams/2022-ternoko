@@ -4,6 +4,8 @@ import * as S from './styled';
 
 import { monthNames, useCalendarActions, useCalendarState } from '@/context/CalendarProvider';
 
+import { convertMonthToMonthIndex } from '@/utils';
+
 export type CalendarProps = {
   children: React.ReactNode;
 };
@@ -30,7 +32,7 @@ const Calendar = ({ children }: CalendarProps) => {
 
         <S.MonthPicker>
           <S.DateChange onClick={handleClickPrevMonth}>{'<'}</S.DateChange>
-          <p onClick={handleClickMonthPicker}>{monthNames[month]}</p>
+          <p onClick={handleClickMonthPicker}>{monthNames[convertMonthToMonthIndex(month)]}</p>
           <S.DateChange onClick={handleClickNextMonth}>{'>'}</S.DateChange>
         </S.MonthPicker>
       </S.Header>

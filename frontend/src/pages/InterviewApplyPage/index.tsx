@@ -92,8 +92,8 @@ const InterviewApplyPage = () => {
 
   const coachScheduleAPI = () =>
     interviewId && coachId === originCoachIdRef.current
-      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-      : getCoachScheduleAPI(coachId, year, month + 1);
+      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month)
+      : getCoachScheduleAPI(coachId, year, month);
 
   const updateStatusWhenCalendarShow = (calendarTimes: CrewSelectTime[]) => {
     const schedules = calendarTimes.reduce(
@@ -241,7 +241,7 @@ const InterviewApplyPage = () => {
 
       const { year, month, day } = separateFullDate(interviewStartTime);
 
-      initializeYearMonth(Number(year), Number(month) - 1);
+      initializeYearMonth(Number(year), Number(month));
       addSelectedDates([{ year: Number(year), month: Number(month), day: Number(day) }]);
     })();
   }, []);

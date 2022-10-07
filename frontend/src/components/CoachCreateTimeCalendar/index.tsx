@@ -36,11 +36,11 @@ const CoachCreateTimeCalendar = ({
     !isBelowToday(day) &&
     selectedDates.every(
       (selectedDate) =>
-        selectedDate.year !== year || selectedDate.month !== month + 1 || selectedDate.day !== day,
+        selectedDate.year !== year || selectedDate.month !== month || selectedDate.day !== day,
     );
 
   const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
-    const lastDay = new Date(year, month + 1, 0).getDate();
+    const lastDay = new Date(year, month, 0).getDate();
     let isAllSelect = false;
 
     for (let day = startDay; day <= lastDay; day += 7) {
@@ -56,7 +56,7 @@ const CoachCreateTimeCalendar = ({
     if (isAllSelect) {
       for (let day = startDay; day <= lastDay; day += 7) {
         if (isDateNotInOfSelectedDatesAfterToday(day)) {
-          dates.push({ year, month: month + 1, day });
+          dates.push({ year, month, day });
         }
       }
 
@@ -64,7 +64,7 @@ const CoachCreateTimeCalendar = ({
     } else {
       for (let day = startDay; day <= lastDay; day += 7) {
         if (!isBelowToday(day)) {
-          dates.push({ year, month: month + 1, day });
+          dates.push({ year, month, day });
         }
       }
 
@@ -75,7 +75,7 @@ const CoachCreateTimeCalendar = ({
   };
 
   const checkIsAllSelectedColumn = (startDay: OneWeekDayType) => {
-    const lastDay = new Date(year, month + 1, 0).getDate();
+    const lastDay = new Date(year, month, 0).getDate();
     let isAllSelectedColumn = true;
 
     for (let day = startDay; day <= lastDay; day += 7) {

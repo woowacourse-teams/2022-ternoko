@@ -81,7 +81,7 @@ const CoachScheduleCalendar = ({
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachInterviewAPI(year, month + 1);
+      const response = await getCoachInterviewAPI(year, month);
 
       const schedules = response.data.calendar.reduce(
         (
@@ -140,7 +140,7 @@ const CoachScheduleCalendar = ({
               const day = getDay(index);
               const interviews = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times: [startTime, endTime], status }) =>
-                    isOverToday(`${year}-${month + 1}-${day} ${endTime}`) ? (
+                    isOverToday(`${year}-${month}-${day} ${endTime}`) ? (
                       <S.Schedule key={id} status="COMMENT" padding={0}>
                         <S.CrewNickname onClick={getHandleClickSchedule(id)}>
                           {crewNickname}
