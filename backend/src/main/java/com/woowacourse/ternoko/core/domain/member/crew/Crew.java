@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("CREW")
 public class Crew extends Member {

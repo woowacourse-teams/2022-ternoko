@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("COACH")
 public class Coach extends Member {
@@ -45,5 +44,4 @@ public class Coach extends Member {
                  final String imageUrl) {
         this(null, name, null, email, userId, imageUrl, null);
     }
-
 }
