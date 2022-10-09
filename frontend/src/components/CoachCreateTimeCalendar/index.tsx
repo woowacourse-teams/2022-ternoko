@@ -12,13 +12,13 @@ import { OneWeekDayType } from '@/types/domain';
 import { convertMonthToMonthIndex, generateDayOfWeekWithStartDay, isSunDay } from '@/utils';
 
 export type CoachCreateTimeCalendarProps = {
-  onChangeSelectedDatesByClickDayOfWeek: () => void;
+  onChangeDateLine: () => void;
   getHandleClickDay: (day: number) => () => void;
   haveTimeDays: Set<number>;
 };
 
 const CoachCreateTimeCalendar = ({
-  onChangeSelectedDatesByClickDayOfWeek,
+  onChangeDateLine,
   getHandleClickDay,
   haveTimeDays,
 }: CoachCreateTimeCalendarProps) => {
@@ -70,7 +70,7 @@ const CoachCreateTimeCalendar = ({
       dates.length && removeSelectedDates(dates);
     }
 
-    dates.length && onChangeSelectedDatesByClickDayOfWeek();
+    dates.length && onChangeDateLine();
   };
 
   const checkIsAllSelectedColumn = (startDay: OneWeekDayType) => {
@@ -121,7 +121,7 @@ const CoachCreateTimeCalendar = ({
       dates.length && removeSelectedDates(dates);
     }
 
-    dates.length && onChangeSelectedDatesByClickDayOfWeek();
+    dates.length && onChangeDateLine();
   };
 
   const checkIsAllSelectedRow = (startDay: number) => {
