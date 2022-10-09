@@ -7,9 +7,11 @@ import * as C from '@/components/@common/CrewAndCoachCalendarStyle/styled';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
-import { OneWeekDayType } from '@/types/domain';
+import { DateType, OneWeekDayType } from '@/types/domain';
 
 import { convertMonthToMonthIndex, generateDayOfWeekWithStartDay, isSunDay } from '@/utils';
+
+type ForEachCellOfLineType = (predicate: (day: number) => boolean) => void;
 
 export type CoachCreateTimeCalendarProps = {
   onChangeDateLine: () => void;
@@ -38,34 +40,39 @@ const CoachCreateTimeCalendar = ({
   const isDateInOfSelectedDatesAfterToday = (day: number) =>
     !isBelowToday(day) && isSelectedDate(day);
 
-  const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
-    const lastDay = new Date(year, month, 0).getDate();
+  const selectDateLine = (forEachCellOfLine: ForEachCellOfLineType) => {
     let isAllSelect = false;
 
-    for (let day = startDay; day <= lastDay; day += 7) {
+    forEachCellOfLine((day) => {
       if (isDateNotInOfSelectedDatesAfterToday(day)) {
         isAllSelect = true;
 
-        break;
+        return false;
       }
-    }
 
-    const dates = [];
+      return true;
+    });
+
+    const dates: DateType[] = [];
 
     if (isAllSelect) {
-      for (let day = startDay; day <= lastDay; day += 7) {
+      forEachCellOfLine((day) => {
         if (isDateNotInOfSelectedDatesAfterToday(day)) {
           dates.push({ year, month, day });
         }
-      }
+
+        return true;
+      });
 
       dates.length && addSelectedDates(dates);
     } else {
-      for (let day = startDay; day <= lastDay; day += 7) {
+      forEachCellOfLine((day) => {
         if (isDateInOfSelectedDatesAfterToday(day)) {
           dates.push({ year, month, day });
         }
-      }
+
+        return true;
+      });
 
       dates.length && removeSelectedDates(dates);
     }
@@ -73,72 +80,53 @@ const CoachCreateTimeCalendar = ({
     dates.length && onChangeDateLine();
   };
 
-  const checkIsAllSelectedColumn = (startDay: OneWeekDayType) => {
+  const isCheckedLine = (forEachCellOfLine: ForEachCellOfLineType) => {
+    let result = true;
+
+    forEachCellOfLine((day) => {
+      if (isDateNotInOfSelectedDatesAfterToday(day)) {
+        result = false;
+
+        return false;
+      }
+
+      return true;
+    });
+
+    return result;
+  };
+
+  const getForEachCellOfColumn = (startDay: OneWeekDayType): ForEachCellOfLineType => {
     const lastDay = new Date(year, month, 0).getDate();
-    let isAllSelectedColumn = true;
 
-    for (let day = startDay; day <= lastDay; day += 7) {
-      if (isDateNotInOfSelectedDatesAfterToday(day)) {
-        isAllSelectedColumn = false;
-
-        break;
+    return (predicate) => {
+      for (let day = startDay; day <= lastDay; day += 7) {
+        if (!predicate(day)) break;
       }
-    }
-
-    return isAllSelectedColumn;
+    };
   };
 
-  const getHandleClickSelectRowButton = (startDay: number) => () => {
+  const getForEachCellOfRow = (startDay: number): ForEachCellOfLineType => {
     const restDayUntilSunDay =
       7 - new Date(year, convertMonthToMonthIndex(month), startDay).getDay();
-    let isAllSelect = false;
 
-    for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
-      if (!isBelowToday(day) && !isSelectedDate(day)) {
-        isAllSelect = true;
-
-        break;
-      }
-    }
-
-    const dates = [];
-
-    if (isAllSelect) {
+    return (predicate) => {
       for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
-        if (isDateNotInOfSelectedDatesAfterToday(day)) {
-          dates.push({ year, month, day });
-        }
+        if (!predicate(day)) break;
       }
-
-      dates.length && addSelectedDates(dates);
-    } else {
-      for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
-        if (isDateInOfSelectedDatesAfterToday(day)) {
-          dates.push({ year, month, day });
-        }
-      }
-
-      dates.length && removeSelectedDates(dates);
-    }
-
-    dates.length && onChangeDateLine();
+    };
   };
 
-  const checkIsAllSelectedRow = (startDay: number) => {
-    const restDayUntilSunDay =
-      7 - new Date(year, convertMonthToMonthIndex(month), startDay).getDay();
-    let isAllSelectedRow = true;
+  const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () =>
+    selectDateLine(getForEachCellOfColumn(startDay));
 
-    for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
-      if (isDateNotInOfSelectedDatesAfterToday(day)) {
-        isAllSelectedRow = false;
+  const checkIsAllSelectedColumn = (startDay: OneWeekDayType) =>
+    isCheckedLine(getForEachCellOfColumn(startDay));
 
-        break;
-      }
-    }
+  const getHandleClickSelectRowButton = (startDay: number) => () =>
+    selectDateLine(getForEachCellOfRow(startDay));
 
-    return isAllSelectedRow;
-  };
+  const checkIsAllSelectedRow = (startDay: number) => isCheckedLine(getForEachCellOfRow(startDay));
 
   return (
     <C.Box>
