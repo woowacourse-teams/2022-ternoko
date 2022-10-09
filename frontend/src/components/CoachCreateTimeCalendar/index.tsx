@@ -95,11 +95,13 @@ const CoachCreateTimeCalendar = ({
   };
 
   const getForEachCellOfRow = (startDay: number): ForEachCellOfLineType => {
+    const lastDay = new Date(year, month, 0).getDate();
     const restDayUntilSunDay =
-      7 - new Date(year, convertMonthToMonthIndex(month), startDay).getDay();
+      6 - new Date(year, convertMonthToMonthIndex(month), startDay).getDay();
+    const until = Math.min(lastDay, startDay + restDayUntilSunDay);
 
     return (predicate) => {
-      for (let day = startDay; day < startDay + restDayUntilSunDay; day++) {
+      for (let day = startDay; day <= until; day++) {
         if (!predicate(day)) break;
       }
     };
