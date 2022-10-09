@@ -22,10 +22,9 @@ const CoachCreateTimeCalendar = ({
   getHandleClickDay,
   haveTimeDays,
 }: CoachCreateTimeCalendarProps) => {
-  const { year, month, selectedDates } = useCalendarState();
+  const { year, month } = useCalendarState();
   const { addSelectedDates, removeSelectedDates } = useCalendarActions();
-  const { daysLength, isBelowToday, isOverFirstDay, getDay, isSelectedDate, isSameDate } =
-    useCalendarUtils();
+  const { daysLength, isBelowToday, isOverFirstDay, getDay, isSelectedDate } = useCalendarUtils();
   const rerenderKey = useMemo(() => Date.now(), [year, month]);
 
   const dayOfWeekWithStartDay = useMemo(
@@ -33,18 +32,18 @@ const CoachCreateTimeCalendar = ({
     [year, month],
   );
 
-  const isDateNotInSelectedDatesAfterToday = (day: number) =>
-    !isBelowToday(day) && selectedDates.every((selectedDate) => !isSameDate(selectedDate, day));
+  const isDateNotInOfSelectedDatesAfterToday = (day: number) =>
+    !isBelowToday(day) && !isSelectedDate(day);
 
   const isDateInOfSelectedDatesAfterToday = (day: number) =>
-    !isBelowToday(day) && selectedDates.some((selectedDate) => isSameDate(selectedDate, day));
+    !isBelowToday(day) && isSelectedDate(day);
 
   const getHandleClickDayOfWeek = (startDay: OneWeekDayType) => () => {
     const lastDay = new Date(year, month, 0).getDate();
     let isAllSelect = false;
 
     for (let day = startDay; day <= lastDay; day += 7) {
-      if (!isBelowToday(day) && !isSelectedDate(day)) {
+      if (isDateNotInOfSelectedDatesAfterToday(day)) {
         isAllSelect = true;
 
         break;
@@ -55,7 +54,7 @@ const CoachCreateTimeCalendar = ({
 
     if (isAllSelect) {
       for (let day = startDay; day <= lastDay; day += 7) {
-        if (isDateNotInSelectedDatesAfterToday(day)) {
+        if (isDateNotInOfSelectedDatesAfterToday(day)) {
           dates.push({ year, month, day });
         }
       }
@@ -79,7 +78,7 @@ const CoachCreateTimeCalendar = ({
     let isAllSelectedColumn = true;
 
     for (let day = startDay; day <= lastDay; day += 7) {
-      if (isDateNotInSelectedDatesAfterToday(day)) {
+      if (isDateNotInOfSelectedDatesAfterToday(day)) {
         isAllSelectedColumn = false;
 
         break;
