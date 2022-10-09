@@ -40,46 +40,6 @@ const CoachCreateTimeCalendar = ({
   const isDateInOfSelectedDatesAfterToday = (day: number) =>
     !isBelowToday(day) && isSelectedDate(day);
 
-  const selectDateLine = (forEachCellOfLine: ForEachCellOfLineType) => {
-    let isAllSelect = false;
-
-    forEachCellOfLine((day) => {
-      if (isDateNotInOfSelectedDatesAfterToday(day)) {
-        isAllSelect = true;
-
-        return false;
-      }
-
-      return true;
-    });
-
-    const dates: DateType[] = [];
-
-    if (isAllSelect) {
-      forEachCellOfLine((day) => {
-        if (isDateNotInOfSelectedDatesAfterToday(day)) {
-          dates.push({ year, month, day });
-        }
-
-        return true;
-      });
-
-      dates.length && addSelectedDates(dates);
-    } else {
-      forEachCellOfLine((day) => {
-        if (isDateInOfSelectedDatesAfterToday(day)) {
-          dates.push({ year, month, day });
-        }
-
-        return true;
-      });
-
-      dates.length && removeSelectedDates(dates);
-    }
-
-    dates.length && onChangeDateLine();
-  };
-
   const isCheckedLine = (forEachCellOfLine: ForEachCellOfLineType) => {
     let result = true;
 
@@ -94,6 +54,34 @@ const CoachCreateTimeCalendar = ({
     });
 
     return result;
+  };
+
+  const selectDateLine = (forEachCellOfLine: ForEachCellOfLineType) => {
+    const dates: DateType[] = [];
+
+    if (isCheckedLine(forEachCellOfLine)) {
+      forEachCellOfLine((day) => {
+        if (isDateInOfSelectedDatesAfterToday(day)) {
+          dates.push({ year, month, day });
+        }
+
+        return true;
+      });
+
+      dates.length && removeSelectedDates(dates);
+    } else {
+      forEachCellOfLine((day) => {
+        if (isDateNotInOfSelectedDatesAfterToday(day)) {
+          dates.push({ year, month, day });
+        }
+
+        return true;
+      });
+
+      dates.length && addSelectedDates(dates);
+    }
+
+    dates.length && onChangeDateLine();
   };
 
   const getForEachCellOfColumn = (startDay: OneWeekDayType): ForEachCellOfLineType => {
