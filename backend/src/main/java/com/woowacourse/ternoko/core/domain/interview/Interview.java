@@ -11,9 +11,8 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
-import com.woowacourse.ternoko.common.exception.InterviewStatusException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
@@ -118,7 +117,7 @@ public class Interview {
 
     private static void validateNextDay(final AvailableDateTime availableDateTime) {
         if (availableDateTime.isPast() || availableDateTime.isToday()) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DATE);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_DATE);
         }
     }
 
@@ -154,7 +153,7 @@ public class Interview {
 
     private void validateUpdateCrew(final Interview interview) {
         if (!isCreatedBy(interview.getCrew().getId())) {
-            throw new InvalidInterviewMemberException(CANNOT_UPDATE_CREW);
+            throw new InterviewInvalidException(CANNOT_UPDATE_CREW);
         }
     }
 
@@ -168,7 +167,7 @@ public class Interview {
 
     private void validateInterviewStatus(final InterviewStatusType invalidStatus) {
         if (this.interviewStatusType == invalidStatus) {
-            throw new InterviewStatusException(CANNOT_EDIT_INTERVIEW);
+            throw new InterviewInvalidException(CANNOT_EDIT_INTERVIEW);
         }
     }
 

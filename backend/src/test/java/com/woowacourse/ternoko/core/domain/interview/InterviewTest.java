@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.woowacourse.ternoko.common.exception.InterviewStatusException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
@@ -150,7 +150,7 @@ class InterviewTest {
 
         // then
         assertThatThrownBy(() -> interview.update(updateInterview))
-                .isInstanceOf(InvalidInterviewMemberException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @ParameterizedTest
@@ -166,7 +166,7 @@ class InterviewTest {
 
         // then
         assertThatThrownBy(() -> interview.update(updateInterview))
-                .isInstanceOf(InterviewStatusException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @ParameterizedTest

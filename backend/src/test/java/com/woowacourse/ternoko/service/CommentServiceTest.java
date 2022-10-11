@@ -12,9 +12,9 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
 import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.common.exception.exception.CommentNotFoundException;
+import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.InvalidCommentInterviewIdException;
 import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
 import com.woowacourse.ternoko.core.application.CommentService;
@@ -132,7 +132,7 @@ public class CommentServiceTest extends DatabaseSupporter {
 
         // when & then
         assertThatThrownBy(() -> commentService.create(COACH1.getId(), NOT_FOUNT_INTERVIEW_ID, commentRequest))
-                .isInstanceOf(InterviewNotFoundException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(NOT_FOUNT_INTERVIEW_ID + INTERVIEW_NOT_FOUND.getMessage());
     }
 
@@ -234,7 +234,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         final Long interviewId = -1L;
         // when & then
         assertThatThrownBy(() -> commentService.findComments(COACH1.getId(), interviewId))
-                .isInstanceOf(InterviewNotFoundException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(interviewId + INTERVIEW_NOT_FOUND.getMessage());
     }
 

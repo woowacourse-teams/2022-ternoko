@@ -11,18 +11,17 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.USED_BY_OTH
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.isCanceled;
+import static java.lang.Long.valueOf;
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.CrewInvalidException;
+import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
-import com.woowacourse.ternoko.core.domain.interview.InvalidInterviewMemberException;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
@@ -77,7 +76,7 @@ public class InterviewService {
         final boolean existNotCanceled = interviews.stream()
                 .anyMatch(interview -> !interview.isCanceled());
         if (existNotCanceled) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
     }
 
@@ -93,7 +92,7 @@ public class InterviewService {
 
     private void validateUsedTime(final Interview interview) {
         if (interview.getAvailableDateTime().isUsed()) {
-            throw new InvalidInterviewDateException(USED_BY_OTHER);
+            throw new InterviewInvalidException(USED_BY_OTHER);
         }
     }
 
@@ -128,7 +127,7 @@ public class InterviewService {
 
     private void validateOwnMember(final Long memberId, final Interview interview) {
         if (!interview.containsMember(memberId)) {
-            throw new InvalidInterviewMemberException(INVALID_INTERVIEW_BY_MEMBER);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_BY_MEMBER);
         }
     }
 
@@ -182,20 +181,20 @@ public class InterviewService {
                                    final Long crewId,
                                    final LocalDateTime interviewDateTime) {
         if (interviewRepository.existsByNotIdAndCrewIdAndInterviewStartTime(interviewId, crewId, interviewDateTime)) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
     }
 
     private void validateUsedAvailableDateTime(final AvailableDateTime origin, final Long updateAvailableDateTimeId) {
         final AvailableDateTime update = getAvailableDateTimeById(updateAvailableDateTimeId);
         if (update.isUsed() && !origin.isSame(update.getId())) {
-            throw new InvalidInterviewDateException(USED_BY_OTHER);
+            throw new InterviewInvalidException(USED_BY_OTHER);
         }
     }
 
     private Interview getInterviewById(Long interviewId) {
         return interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+                .orElseThrow(() -> new InterviewInvalidException(INTERVIEW_NOT_FOUND, valueOf(interviewId)));
     }
 
     public void cancelAndDeleteAvailableTime(final Long interviewId,
