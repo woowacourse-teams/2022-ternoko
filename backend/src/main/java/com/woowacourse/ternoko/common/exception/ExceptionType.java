@@ -35,9 +35,9 @@ public enum ExceptionType {
     CANNOT_UPDATE_CREW(BAD_REQUEST, 4007, "면담 항목중 크루는 변경할 수 없습니다."),
 
     // AvailableDateTime 관련 Exception
-    AVAILABLE_DATE_TIME_NOT_FOUND(null, 5001, "해당 면담 가능 시간을 찾을 수 없습니다. id = "),
-    USED_BY_OTHER(BAD_REQUEST, 5002, "다른 곳에서 사용중인 면담가능시간 입니다."), // todo: 되는 시간 예외처리 때 다시 변경
-    CANT_UPDATE_DELETED(null, 5003, "삭제된 면담 가능 시간은 수정할 수 없습니다."),
+    AVAILABLE_DATE_TIME_NOT_FOUND(NOT_FOUND, 5001, "해당 면담 가능 시간을 찾을 수 없습니다. id = "),
+    USED_BY_OTHER(BAD_REQUEST, 5002, "다른 곳에서 사용중인 면담가능시간 입니다."),
+    CANT_UPDATE_DELETED(BAD_REQUEST, 5003, "삭제된 면담 가능 시간은 수정할 수 없습니다."),
 
     // Comment 관련 Exception
     INVALID_STATUS_CREATE_COMMENT(BAD_REQUEST, 6001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),

@@ -14,7 +14,7 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static java.lang.Long.valueOf;
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
-import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
+import com.woowacourse.ternoko.common.exception.exception.AvailableDateTimeInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.CrewInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
@@ -98,7 +98,7 @@ public class InterviewService {
 
     private AvailableDateTime getAvailableDateTimeById(final Long availableDateTimeId) {
         return availableDateTimeRepository.findById(availableDateTimeId)
-                .orElseThrow(() -> new AvailableDateTimeNotFoundException(AVAILABLE_DATE_TIME_NOT_FOUND,
+                .orElseThrow(() -> new AvailableDateTimeInvalidException(AVAILABLE_DATE_TIME_NOT_FOUND,
                         availableDateTimeId));
     }
 
@@ -188,7 +188,7 @@ public class InterviewService {
     private void validateUsedAvailableDateTime(final AvailableDateTime origin, final Long updateAvailableDateTimeId) {
         final AvailableDateTime update = getAvailableDateTimeById(updateAvailableDateTimeId);
         if (update.isUsed() && !origin.isSame(update.getId())) {
-            throw new InterviewInvalidException(USED_BY_OTHER);
+            throw new AvailableDateTimeInvalidException(USED_BY_OTHER);
         }
     }
 

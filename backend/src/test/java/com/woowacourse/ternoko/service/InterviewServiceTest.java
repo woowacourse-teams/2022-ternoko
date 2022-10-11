@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
-import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
+import com.woowacourse.ternoko.common.exception.exception.AvailableDateTimeInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.application.InterviewService;
@@ -186,7 +186,7 @@ class InterviewServiceTest extends DatabaseSupporter {
     @DisplayName("크루 - 면담 예약 선택 일자가 코치의 가능한 시간이 아닌 경우 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00))
-                .isInstanceOf(AvailableDateTimeNotFoundException.class);
+                .isInstanceOf(AvailableDateTimeInvalidException.class);
     }
 
     @Test
