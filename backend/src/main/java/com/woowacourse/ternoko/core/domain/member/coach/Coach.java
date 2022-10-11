@@ -6,12 +6,14 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("COACH")
 public class Coach extends Member {

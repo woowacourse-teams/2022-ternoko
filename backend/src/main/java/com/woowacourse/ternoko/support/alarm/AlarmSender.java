@@ -6,7 +6,8 @@ import static com.woowacourse.ternoko.support.alarm.SlackMessageType.CREW_DELETE
 import static com.woowacourse.ternoko.support.alarm.SlackMessageType.CREW_UPDATE;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,8 @@ public class AlarmSender {
     private final AlarmResponseCache alarmResponseCache;
     private final SlackAlarm alarm;
 
-    @After("@annotation(com.woowacourse.ternoko.auth.presentation.annotation.SlackAlarm)")
-    public void sendAlarm() throws Exception {
+    @AfterReturning("@annotation(com.woowacourse.ternoko.auth.presentation.annotation.SlackAlarm)")
+    public void sendAlarm(JoinPoint joinPoint) throws Exception {
         if (alarmResponseCache.getMessageType() == (CREW_CREATE)) {
             alarm.sendCreateMessage(alarmResponseCache.getOrigin());
             return;
