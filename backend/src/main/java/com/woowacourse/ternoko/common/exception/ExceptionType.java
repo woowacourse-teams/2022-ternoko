@@ -1,7 +1,9 @@
 package com.woowacourse.ternoko.common.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +13,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ExceptionType {
     // 인증 관련 Exception
-    UNAUTHORIZED_MEMBER(null, 1001, "토큰이 존재하지 않습니다."),
-    INVALID_TOKEN(null, 1002, "유효하지 않은 토큰입니다"),
-    EXPIRED_TOKEN(null, 1003, "토큰이 만료되었습니다."),
-    CREW_NOT_ALLOWED(null, 1004, "크루가 할 수 있는 요청이 아닙니다."),
-    COACH_NOT_ALLOWED(null, 1005, "코차가 할 수 있는 요청이 아닙니다."),
+    UNAUTHORIZED_MEMBER(BAD_REQUEST, 1001, "토큰이 존재하지 않습니다."),
+    INVALID_TOKEN(UNAUTHORIZED, 1002, "유효하지 않은 토큰입니다"),
+    EXPIRED_TOKEN(FORBIDDEN, 1003, "토큰이 만료되었습니다."),
+    CREW_NOT_ALLOWED(FORBIDDEN, 1004, "크루가 할 수 있는 요청이 아닙니다."),
+    COACH_NOT_ALLOWED(FORBIDDEN, 1005, "코치가 할 수 있는 요청이 아닙니다."),
 
     // Coach 관련 Exception
     COACH_NOT_FOUND(NOT_FOUND, 2001, "번째 코치를 찾을 수 없습니다."),

@@ -6,8 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.ternoko.auth.application.JwtProvider;
-import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
-import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.exception.TokenInvalidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -45,7 +44,7 @@ class JwtProviderTest {
         void expiredToken() {
             final String accessToken = invalidJwtTokenProvider.createToken(CREW1);
             assertThatThrownBy(() -> invalidJwtTokenProvider.validateToken(accessToken))
-                    .isInstanceOf(ExpiredTokenException.class);
+                    .isInstanceOf(TokenInvalidException.class);
         }
 
         @DisplayName("토큰이 발급되지 않은 토큰이면 에러를 던진다.")
@@ -53,7 +52,7 @@ class JwtProviderTest {
         void invalidToken() {
             final String unissuedAccessToken = "유효하지 않은 토큰";
             assertThatThrownBy(() -> jwtProvider.validateToken(unissuedAccessToken))
-                    .isInstanceOf(InvalidTokenException.class);
+                    .isInstanceOf(TokenInvalidException.class);
         }
     }
 }

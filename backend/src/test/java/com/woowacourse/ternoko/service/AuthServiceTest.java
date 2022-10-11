@@ -18,7 +18,7 @@ import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoRespon
 import com.woowacourse.ternoko.auth.application.AuthService;
 import com.woowacourse.ternoko.auth.application.JwtProvider;
 import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
-import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.exception.TokenInvalidException;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;
@@ -55,7 +55,7 @@ public class AuthServiceTest extends DatabaseSupporter {
     void check_coach_Type_false() {
         // when
         assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "COACH"))
-                .isInstanceOf(InvalidTokenException.class)
+                .isInstanceOf(TokenInvalidException.class)
                 .hasMessage(INVALID_TOKEN.getMessage());
     }
 
@@ -64,7 +64,7 @@ public class AuthServiceTest extends DatabaseSupporter {
     void check_crew_type_false() {
         // when
         assertThatThrownBy(() -> authService.checkMemberType(COACH1.getId(), "CREW"))
-                .isInstanceOf(InvalidTokenException.class)
+                .isInstanceOf(TokenInvalidException.class)
                 .hasMessage(INVALID_TOKEN.getMessage());
     }
 
@@ -73,7 +73,7 @@ public class AuthServiceTest extends DatabaseSupporter {
     void check_undefined_Type_false() {
         // when
         assertThatThrownBy(() -> authService.checkMemberType(CREW1.getId(), "UNDEFINED"))
-                .isInstanceOf(InvalidTokenException.class)
+                .isInstanceOf(TokenInvalidException.class)
                 .hasMessage(INVALID_TOKEN.getMessage());
     }
 
