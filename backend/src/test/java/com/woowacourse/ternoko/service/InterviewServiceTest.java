@@ -32,8 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
-import com.woowacourse.ternoko.common.exception.exception.AvailableDateTimeInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
+import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;

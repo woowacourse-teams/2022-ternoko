@@ -2,7 +2,7 @@ package com.woowacourse.ternoko.core.domain.interview.formitem;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH;
 
-import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.EqualsAndHashCode;

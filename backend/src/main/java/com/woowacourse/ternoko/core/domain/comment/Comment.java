@@ -5,7 +5,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COM
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import java.time.LocalDateTime;

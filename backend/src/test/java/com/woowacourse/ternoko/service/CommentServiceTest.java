@@ -12,8 +12,8 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.application.CommentService;
 import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;

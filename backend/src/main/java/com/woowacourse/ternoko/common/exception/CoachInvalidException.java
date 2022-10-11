@@ -1,6 +1,5 @@
-package com.woowacourse.ternoko.common.exception.exception;
+package com.woowacourse.ternoko.common.exception;
 
-import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.advice.CommonException;
 
 public class CoachInvalidException extends CommonException {

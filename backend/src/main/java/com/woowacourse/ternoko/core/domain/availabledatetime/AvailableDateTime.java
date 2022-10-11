@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.CANT_UPDATE
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 
-import com.woowacourse.ternoko.common.exception.exception.AvailableDateTimeInvalidException;
+import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
 import com.woowacourse.ternoko.support.time.TimeMachine;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

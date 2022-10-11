@@ -18,7 +18,7 @@ import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoRespon
 import com.woowacourse.ternoko.auth.application.AuthService;
 import com.woowacourse.ternoko.auth.application.JwtProvider;
 import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
-import com.woowacourse.ternoko.common.exception.exception.TokenInvalidException;
+import com.woowacourse.ternoko.common.exception.TokenInvalidException;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import com.woowacourse.ternoko.support.utils.ServiceTest;

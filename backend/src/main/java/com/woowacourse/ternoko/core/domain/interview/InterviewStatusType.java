@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STA
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
-import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 
 public enum InterviewStatusType {

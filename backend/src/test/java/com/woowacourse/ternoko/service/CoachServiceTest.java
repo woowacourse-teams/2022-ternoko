@@ -11,9 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
-import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
+import com.woowacourse.ternoko.common.exception.CoachInvalidException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
@@ -197,7 +195,7 @@ public class CoachServiceTest extends DatabaseSupporter {
         //when, then
         assertThatThrownBy(() -> coachService.updateCoach(savedCoach.getId(),
                 new CoachUpdateRequest(nickname, imageUrl, introduce)))
-                .isInstanceOf(InvalidMemberNicknameException.class);
+                .isInstanceOf(CoachInvalidException.class);
 
         coachRepository.delete(savedCoach);
     }

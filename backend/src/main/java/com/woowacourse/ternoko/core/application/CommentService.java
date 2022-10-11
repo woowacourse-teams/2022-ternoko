@@ -4,8 +4,8 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
-import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.comment.Comment;
 import com.woowacourse.ternoko.core.domain.comment.CommentRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;

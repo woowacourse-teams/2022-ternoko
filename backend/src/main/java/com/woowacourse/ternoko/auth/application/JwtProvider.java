@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZE
 
 import com.woowacourse.ternoko.auth.exception.TokenNotValidException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.exception.TokenInvalidException;
+import com.woowacourse.ternoko.common.exception.TokenInvalidException;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import io.jsonwebtoken.ExpiredJwtException;

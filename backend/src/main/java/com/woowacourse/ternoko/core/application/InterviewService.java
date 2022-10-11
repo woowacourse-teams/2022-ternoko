@@ -14,10 +14,10 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static java.lang.Long.valueOf;
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
-import com.woowacourse.ternoko.common.exception.exception.AvailableDateTimeInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.CrewInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
+import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
+import com.woowacourse.ternoko.common.exception.CoachInvalidException;
+import com.woowacourse.ternoko.common.exception.CrewInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;

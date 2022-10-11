@@ -8,7 +8,7 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
