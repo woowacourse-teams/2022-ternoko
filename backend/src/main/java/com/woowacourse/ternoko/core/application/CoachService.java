@@ -102,7 +102,7 @@ public class CoachService {
         return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
     }
 
-    public void partUpdateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
+    public void updateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
         final String requestNickname = coachUpdateRequest.getNickname();
 
         if (memberRepository.existsByIdAndNicknameExceptMe(coachId, requestNickname)) {

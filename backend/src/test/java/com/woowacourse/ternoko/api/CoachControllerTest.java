@@ -91,7 +91,7 @@ public class CoachControllerTest extends RestDocsTestSupporter {
     @Test
     @DisplayName("코치 - 내 정보를 수정한다.")
     void updateCoach() throws Exception {
-        doNothing().when(coachService).partUpdateCoach(any(), any());
+        doNothing().when(coachService).updateCoach(any(), any());
         // given, when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/coaches/me")

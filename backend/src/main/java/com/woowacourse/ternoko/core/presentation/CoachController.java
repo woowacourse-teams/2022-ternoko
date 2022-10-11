@@ -54,7 +54,7 @@ public class CoachController {
     @PatchMapping("/coaches/me")
     public ResponseEntity<Void> updateCoach(@AuthenticationPrincipal final Long coachId,
                                             @RequestBody final CoachUpdateRequest coachUpdateRequest) {
-        coachService.partUpdateCoach(coachId, coachUpdateRequest);
+        coachService.updateCoach(coachId, coachUpdateRequest);
         return ResponseEntity.ok().build();
     }
 }

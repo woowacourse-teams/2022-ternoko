@@ -144,7 +144,7 @@ public class CoachServiceTest extends DatabaseSupporter {
                 new Coach("공지철", "공유", " share@woowahan.com", userId, imageUrl, "null"));
 
         //when
-        coachService.partUpdateCoach(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
+        coachService.updateCoach(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
         final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
 
         //then
@@ -169,7 +169,7 @@ public class CoachServiceTest extends DatabaseSupporter {
                 new Coach("공지철", "공유", " share@woowahan.com", userId, imageUrl, "null"));
 
         //when
-        coachService.partUpdateCoach(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
+        coachService.updateCoach(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
         final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
 
         //then
@@ -194,7 +194,7 @@ public class CoachServiceTest extends DatabaseSupporter {
                 new Coach("공지철", "도깨비", " share@woowahan.com", userId, imageUrl, "null"));
 
         //when, then
-        assertThatThrownBy(() -> coachService.partUpdateCoach(savedCoach.getId(),
+        assertThatThrownBy(() -> coachService.updateCoach(savedCoach.getId(),
                 new CoachUpdateRequest(nickname, imageUrl, introduce)))
                 .isInstanceOf(InvalidMemberNicknameException.class);
 
