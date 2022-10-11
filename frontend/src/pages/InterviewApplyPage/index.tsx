@@ -14,8 +14,6 @@ import TextAreaField from '@/components/TextAreaField';
 import resizeTextArea from '@/components/TextAreaField/resizeTextArea';
 import Time from '@/components/Time/styled';
 
-import useTimes from '@/hooks/useTimes';
-
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
@@ -85,12 +83,6 @@ const InterviewApplyPage = () => {
 
   const selectedTime = availableTimes.find(({ id }) => id === availableDateTimeId)?.time;
 
-  const initializeDateStatuses = () => {
-    setAvailableTimes([]);
-    resetSelectedDates();
-    setAvailableDateTimeId(INITIAL_NUMBER_STATE);
-  };
-
   const getDayType = (day: number) =>
     selectedDates.length && isSameDate(selectedDates[0], day)
       ? 'active'
@@ -118,12 +110,18 @@ const InterviewApplyPage = () => {
     setAvailableSchedules(schedules);
 
     if (changeCoachIdRef.current) {
-      initializeDateStatuses();
+      resetSelectedDates();
+      setAvailableTimes([]);
+      setAvailableDateTimeId(INITIAL_NUMBER_STATE);
     } else if (interviewId && initRef.current) {
-      setAvailableDateTimeId(
-        (calendarTimes.find(({ status }: CrewSelectTime) => status === 'USED') as CrewSelectTime)
-          .id,
-      );
+      schedules[selectedDates[0].day] || resetSelectedDates();
+
+      const usedCalendarTime = calendarTimes.find(
+        ({ status }: CrewSelectTime) => status === 'USED',
+      ) as CrewSelectTime;
+
+      usedCalendarTime && setAvailableDateTimeId(usedCalendarTime.id);
+
       setAvailableTimes(schedules[selectedDates[0].day] ?? []);
     }
 

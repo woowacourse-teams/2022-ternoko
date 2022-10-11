@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
+import AllScheduleOfMonthModal from '@/components/@common/AllScheduleOfMonthModal';
 import Button from '@/components/@common/Button/styled';
+import useModal from '@/components/@common/Modal/useModal';
 import ScrollContainer from '@/components/@common/ScrollContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
@@ -60,6 +62,8 @@ const CoachInterviewCreatePage = () => {
   });
   const isAllSelectedTimes = selectedTimes.length === defaultTimes.length;
 
+  const { show, display, handleOpenModal, handleCloseModal } = useModal();
+
   const { showToast } = useToastActions();
 
   const [calendarTimes, setCalendarTimes] = useState<CalendarTime[]>([]);
@@ -74,6 +78,10 @@ const CoachInterviewCreatePage = () => {
           ?.times.map((time) => Number(separateFullDate(time).day)) ?? [],
       ),
     [calendarTimes],
+  );
+
+  const timesOfCurrentMonth = calendarTimes.filter(
+    (calendarTime) => year === calendarTime.year && month + 1 === calendarTime.month,
   );
 
   const getDayType = (day: number) => (isSelectedDate(day) ? 'active' : 'default');
@@ -260,9 +268,7 @@ const CoachInterviewCreatePage = () => {
     <S.Box>
       <S.HeaderBox>
         <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
-        <Button onClick={() => alert('해당 기능은 준비중입니다.')}>
-          {month + 1}월 한눈에 보기
-        </Button>
+        <Button onClick={handleOpenModal}>{month + 1}월 한눈에 보기</Button>
       </S.HeaderBox>
 
       <S.DateBox>
@@ -305,6 +311,14 @@ const CoachInterviewCreatePage = () => {
           스케쥴 저장
         </Button>
       </S.ButtonContainer>
+      <AllScheduleOfMonthModal
+        show={show}
+        display={display}
+        year={year}
+        month={month}
+        calendarTime={timesOfCurrentMonth.length > 0 ? timesOfCurrentMonth[0].times : []}
+        handleCloseModal={handleCloseModal}
+      />
     </S.Box>
   );
 };

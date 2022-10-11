@@ -128,7 +128,7 @@ public class InterviewService {
     }
 
     private void validateOwnMember(final Long memberId, final Interview interview) {
-        if (!interview.getCoach().isSameId(memberId) && !interview.getCrew().isSameId(memberId)) {
+        if (!interview.containsMember(memberId)) {
             throw new InvalidInterviewMemberException(INVALID_INTERVIEW_BY_MEMBER);
         }
     }

@@ -312,8 +312,38 @@ class InterviewTest {
         // given
         final Interview interview = getInterview(CREW1);
 
-        //when & then
+        // when & then
         assertTrue(interview.isCreatedBy(5L));
+    }
+
+    @DisplayName("[크루] Interview에 속한 회원인지 확인하고 맞을 경우 true를 반환한다.")
+    @Test
+    void containsMember_WhenSuccessByCrew() {
+        // given
+        final Interview interview = getInterview(CREW1);
+
+        // when & then
+        assertTrue(interview.containsMember(5L));
+    }
+
+    @DisplayName("[코치] Interview에 속한 회원인지 확인하고 맞을 경우 true를 반환한다.")
+    @Test
+    void containsMember_WhenSuccessByCoach() {
+        // given
+        final Interview interview = getInterview(CREW1);
+
+        // when & then
+        assertTrue(interview.containsMember(1L));
+    }
+
+    @DisplayName("Interview에 속하지 않은 회원일 경우 false를 반환한다.")
+    @Test
+    void containsMember_NotFoundMemberId() {
+        // given
+        final Interview interview = getInterview(CREW1);
+
+        // when & then
+        assertFalse(interview.containsMember(CREW2.getId()));
     }
 
     private Interview getInterview(final Crew crew) {

@@ -2,10 +2,12 @@ package com.woowacourse.ternoko.core.domain.member.crew;
 
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
+import java.util.Objects;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 @Entity
 @EqualsAndHashCode
@@ -35,5 +37,22 @@ public class Crew extends Member {
                 final String userId,
                 final String imageUrl) {
         this(null, name, null, email, userId, imageUrl);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        Crew crew = (Crew) o;
+        return getId() != null && Objects.equals(getId(), crew.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -148,7 +148,6 @@ class InterviewServiceTest extends DatabaseSupporter {
     void findInterview_WhenFindNotOwnInterview() {
         // given
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        현재시간_설정(2022, 6, 20, 10, 0);
         final Long interviewId = interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00);
 
         // when
