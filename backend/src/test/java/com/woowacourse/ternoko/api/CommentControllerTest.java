@@ -92,18 +92,6 @@ public class CommentControllerTest extends WebMVCTest {
                 .andDo(restDocs.document());
     }
 
-    @Test
-    @DisplayName("코치 - 코멘트를 수정한다.")
-    void updateCommentByCoach() throws Exception {
-        doNothing().when(commentService).update(any(), any(), any(), any());
-        // when, then
-        mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/interviews/" + FIXED_INTERVIEW_ID + "/comments/" + 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(objectMapper.writeValueAsString(new CommentRequest("수정할게용.")))
-                        .header(AUTHORIZATION, BEARER_TYPE + jwtProvider.createToken(COACH1)))
-                .andExpect(status().isOk())
-                .andDo(restDocs.document());
-    }
+
+
 }

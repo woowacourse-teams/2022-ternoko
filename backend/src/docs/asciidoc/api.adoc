@@ -607,3 +607,33 @@ operation::comment-controller-test/update-comment-by-crew[snippets='http-request
 | `"코멘트에 해당하지 않는 면담입니다."`
 
 |===
+
+=== [코치] 코멘트 수정 API-test
+
+PUT /api/interviews/{interviewId}/comments/{commentId}
+
+operation::comment-controller-test/update-comment-by-coach1[snippets='http-request,http-response']
+==== Error Response
+
+|===
+| statusCode | message
+
+| 5001
+| `"해당 면담은 자유로운 한마디를 입력할 수 없습니다."`
+
+| 5002
+| `"해당 면담은 자유로운 한마디를 조회할 수 없습니다."`
+
+| 5003
+| `"번째 코멘트를 찾을 수 없습니다."`
+
+| 5004
+| `"해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5005
+| `"해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."`
+
+| 5006
+| `"코멘트에 해당하지 않는 면담입니다."`
+
+|===
