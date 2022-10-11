@@ -6,6 +6,7 @@ import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
 import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
+import com.woowacourse.ternoko.common.exception.exception.CrewInvalidException;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import com.woowacourse.ternoko.core.dto.request.CrewUpdateRequest;
@@ -45,6 +46,6 @@ public class CrewService {
 
     private Crew getCrewById(final Long crewId) {
         return crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
+                .orElseThrow(() -> new CrewInvalidException(ExceptionType.CREW_NOT_FOUND, crewId));
     }
 }

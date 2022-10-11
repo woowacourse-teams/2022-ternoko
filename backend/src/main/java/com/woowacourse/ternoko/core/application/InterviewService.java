@@ -14,11 +14,10 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
-import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
 import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
+import com.woowacourse.ternoko.common.exception.exception.CrewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
@@ -112,7 +111,7 @@ public class InterviewService {
 
     private Crew getCrewById(final Long crewId) {
         return crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
+                .orElseThrow(() -> new CrewInvalidException(CREW_NOT_FOUND, crewId));
     }
 
     private Coach getCoachById(final Long interviewRequest) {
@@ -242,7 +241,7 @@ public class InterviewService {
 
     private void validateCreator(final Long crewId, final Interview interview) {
         if (!interview.isCreatedBy(crewId)) {
-            throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
+            throw new CrewInvalidException(INVALID_INTERVIEW_CREW_ID, crewId);
         }
     }
 
