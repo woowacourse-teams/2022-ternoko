@@ -14,11 +14,11 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
 import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
 import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
+import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
@@ -117,7 +117,7 @@ public class InterviewService {
 
     private Coach getCoachById(final Long interviewRequest) {
         return coachRepository.findById(interviewRequest)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
+                .orElseThrow(() -> new CoachInvalidException(COACH_NOT_FOUND, interviewRequest));
     }
 
     @Transactional(readOnly = true)

@@ -6,6 +6,7 @@ import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDat
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
+import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
@@ -64,7 +65,7 @@ public class CoachService {
 
     private Coach getCoachById(final Long coachId) {
         return coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachInvalidException(COACH_NOT_FOUND, coachId));
     }
 
     public void putAvailableDateTimesByCoachId(final Long coachId,

@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
 import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
+import com.woowacourse.ternoko.common.exception.exception.CoachInvalidException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
@@ -234,7 +235,7 @@ public class CoachServiceTest extends DatabaseSupporter {
     void putAvailableDateTimesByInvalidCoachId() {
         assertThatThrownBy(
                 () -> coachService.putAvailableDateTimesByCoachId(-1L, new CalendarRequest(List.of())))
-                .isInstanceOf(CoachNotFoundException.class);
+                .isInstanceOf(CoachInvalidException.class);
     }
 
     @Test
