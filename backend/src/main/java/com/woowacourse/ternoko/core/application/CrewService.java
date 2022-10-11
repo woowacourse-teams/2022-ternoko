@@ -24,7 +24,7 @@ public class CrewService {
     private final CrewRepository crewRepository;
     private final MemberRepository memberRepository;
 
-    public void partUpdateCrew(final Long crewId, final CrewUpdateRequest request) {
+    public void updateCrew(final Long crewId, final CrewUpdateRequest request) {
         final String requestNickname = request.getNickname();
 
         if (memberRepository.existsByIdAndNicknameExceptMe(crewId, requestNickname)) {

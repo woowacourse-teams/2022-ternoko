@@ -34,7 +34,7 @@ public class CrewServiceTest extends DatabaseSupporter {
         final String imageUrl = "탑건2.png";
 
         // when
-        crewService.partUpdateCrew(savedCrew.getId(), new CrewUpdateRequest(nickname, imageUrl));
+        crewService.updateCrew(savedCrew.getId(), new CrewUpdateRequest(nickname, imageUrl));
         final CrewResponse updatedCrew = crewService.findCrew(savedCrew.getId());
 
         // then
@@ -55,7 +55,7 @@ public class CrewServiceTest extends DatabaseSupporter {
         final String imageUrl = "탑건2.png";
 
         // when
-        crewService.partUpdateCrew(savedCrew.getId(), new CrewUpdateRequest(nickname, imageUrl));
+        crewService.updateCrew(savedCrew.getId(), new CrewUpdateRequest(nickname, imageUrl));
         final CrewResponse updatedCrew = crewService.findCrew(savedCrew.getId());
 
         // then
@@ -76,7 +76,7 @@ public class CrewServiceTest extends DatabaseSupporter {
         final String imageUrl = "탑건2.png";
 
         // when, then
-        assertThatThrownBy(() ->  crewService.partUpdateCrew(savedCrew.getId(), new CrewUpdateRequest(existNickname, imageUrl)))
+        assertThatThrownBy(() ->  crewService.updateCrew(savedCrew.getId(), new CrewUpdateRequest(existNickname, imageUrl)))
                 .isInstanceOf(InvalidMemberNicknameException.class);
 
         crewRepository.deleteById(savedCrew.getId());
