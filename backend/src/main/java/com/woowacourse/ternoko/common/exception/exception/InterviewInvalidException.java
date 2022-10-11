@@ -1,7 +1,7 @@
 package com.woowacourse.ternoko.common.exception.exception;
 
-import com.woowacourse.ternoko.common.exception.CommonException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.common.exception.advice.CommonException;
 
 public class InterviewInvalidException extends CommonException {
     public InterviewInvalidException(final ExceptionType exceptionType) {

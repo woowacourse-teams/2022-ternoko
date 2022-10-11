@@ -1,5 +1,6 @@
 package com.woowacourse.ternoko.common.exception;
 
+import com.woowacourse.ternoko.common.exception.advice.CommonException;
 import org.springframework.http.HttpStatus;
 
 public class ExpiredTokenException extends CommonException {

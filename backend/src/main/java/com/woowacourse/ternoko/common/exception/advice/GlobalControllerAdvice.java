@@ -4,8 +4,6 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.UNHANDLED_E
 import static com.woowacourse.ternoko.common.log.LogForm.FAILED_LOGGING_FORM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.ternoko.common.exception.CommonException;
-import com.woowacourse.ternoko.common.exception.ExceptionResponse;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

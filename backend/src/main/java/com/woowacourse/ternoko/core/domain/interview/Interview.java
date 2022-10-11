@@ -11,7 +11,6 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
-import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
 import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
@@ -201,7 +200,7 @@ public class Interview {
             return crew.getMemberType();
         }
 
-        throw new MemberNotFoundException(INVALID_INTERVIEW_MEMBER_ID);
+        throw new InterviewInvalidException(INVALID_INTERVIEW_MEMBER_ID);
     }
 
     public boolean canCreateCommentBy(final MemberType memberType) {
