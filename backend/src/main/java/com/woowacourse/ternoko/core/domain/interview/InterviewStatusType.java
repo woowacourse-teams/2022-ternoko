@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STA
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
-import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 
 public enum InterviewStatusType {
@@ -27,7 +27,7 @@ public enum InterviewStatusType {
         if (memberType == CREW && (this == FIXED || this == COACH_COMPLETED)) {
             return;
         }
-        throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
+        throw new CommentInvalidException(INVALID_STATUS_CREATE_COMMENT);
     }
 
     public boolean canCreateCommentStatusBy(final MemberType memberType) {

@@ -4,9 +4,8 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
-import com.woowacourse.ternoko.common.exception.exception.CommentNotFoundException;
+import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
 import com.woowacourse.ternoko.common.exception.exception.InterviewInvalidException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidStatusFindCommentException;
 import com.woowacourse.ternoko.core.domain.comment.Comment;
 import com.woowacourse.ternoko.core.domain.comment.CommentRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
@@ -51,7 +50,7 @@ public class CommentService {
 
     private void validateFindStatus(final Interview interview) {
         if (!interview.canFindCommentBy()) {
-            throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
+            throw new CommentInvalidException(INVALID_STATUS_FIND_COMMENT);
         }
     }
 
@@ -60,7 +59,7 @@ public class CommentService {
                        final Long commentId,
                        final CommentRequest commentRequest) {
         final Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
+                .orElseThrow(() -> new CommentInvalidException(COMMENT_NOT_FOUND, commentId));
         comment.update(memberId, interviewId, commentRequest.getComment());
     }
 }

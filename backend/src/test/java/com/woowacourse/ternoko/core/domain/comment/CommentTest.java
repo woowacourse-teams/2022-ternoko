@@ -8,8 +8,7 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH2;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW1;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.ternoko.common.exception.exception.InvalidCommentMemberIdException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.common.exception.exception.CommentInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
@@ -34,7 +33,7 @@ public class CommentTest {
                 FORM_ITEMS1);
 
         assertThatThrownBy(() -> Comment.create(COACH1.getId(), interview, "테스트 코멘트", MemberType.COACH))
-                .isInstanceOf(InvalidStatusCreateCommentException.class);
+                .isInstanceOf(CommentInvalidException.class);
     }
 
     @DisplayName("면담의 상태가 코멘트를 멘트를 생성하면 예외를 반환한다.")
@@ -51,7 +50,7 @@ public class CommentTest {
                 FORM_ITEMS1,
                 type);
         assertThatThrownBy(() -> Comment.create(COACH1.getId(), 코멘트_불가_상태_면담, "테스트 코멘트", MemberType.COACH))
-                .isInstanceOf(InvalidStatusCreateCommentException.class);
+                .isInstanceOf(CommentInvalidException.class);
     }
 
     @DisplayName("코멘트 작성자가 아니면, 코멘트를 업데이트 할 수 없다.")
@@ -66,7 +65,7 @@ public class CommentTest {
         final Comment 코멘트 = Comment.create(COACH1.getId(), 진행_완료_인터뷰, "테스트 코멘트", MemberType.COACH);
 
         assertThatThrownBy(() -> 코멘트.update(COACH2.getId(), 진행_완료_인터뷰.getId(), "업데이트 코멘트"))
-                .isInstanceOf(InvalidCommentMemberIdException.class);
+                .isInstanceOf(CommentInvalidException.class);
     }
 
     @DisplayName("인터뷰 작성자가 아니면 코멘트를 업데이트 할 수 없다.")
@@ -82,6 +81,6 @@ public class CommentTest {
         final Comment 코멘트 = Comment.create(COACH1.getId(), 진행_완료_인터뷰, "테스트 코멘트", MemberType.COACH);
 
         assertThatThrownBy(() -> 코멘트.update(COACH2.getId(), 2L, "업데이트 코멘트"))
-                .isInstanceOf(InvalidCommentMemberIdException.class);
+                .isInstanceOf(CommentInvalidException.class);
     }
 }

@@ -41,10 +41,10 @@ public enum ExceptionType {
 
     // Comment 관련 Exception
     INVALID_STATUS_CREATE_COMMENT(BAD_REQUEST, 6001, "해당 면담은 자유로운 한마디를 입력할 수 없습니다."),
-    INVALID_STATUS_FIND_COMMENT(null, 6002, "해당 면담은 자유로운 한마디를 조회할 수 없습니다."),
+    INVALID_STATUS_FIND_COMMENT(BAD_REQUEST, 6002, "해당 면담은 자유로운 한마디를 조회할 수 없습니다."),
     COMMENT_NOT_FOUND(NOT_FOUND, 6003, "번째 코멘트를 찾을 수 없습니다."),
     INVALID_INTERVIEW_MEMBER_ID(null, 6004, "해당 면담에 해당하지 않는 회원은 접근할 수 없습니다."),
-    INVALID_COMMENT_MEMBER_ID(null, 6005, "해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."),
+    INVALID_COMMENT_MEMBER_ID(BAD_REQUEST, 6005, "해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."),
     INVALID_COMMENT_INTERVIEW_ID(BAD_REQUEST, 6006, "코멘트에 해당하지 않는 면담입니다."),
 
     // HTTP 관련 Exception
