@@ -25,11 +25,9 @@ public class CrewService {
     private final MemberRepository memberRepository;
 
     public void partUpdateCrew(final Long crewId, final CrewUpdateRequest request) {
-        final Crew crew = getCrewById(crewId);
         final String requestNickname = request.getNickname();
 
-        if (!crew.isSameNickname(requestNickname)
-                && memberRepository.existsByNickname(request.getNickname())) {
+        if (memberRepository.existsByIdAndNicknameExceptMe(crewId, requestNickname)) {
             throw new InvalidMemberNicknameException(DUPLICATED_MEMBER_NICKNAME);
         }
         crewRepository.updateNickNameAndImageUrl(crewId, request.getNickname(), request.getImageUrl());

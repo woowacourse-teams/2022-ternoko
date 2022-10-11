@@ -103,12 +103,11 @@ public class CoachService {
     }
 
     public void partUpdateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
-        final Coach coach = getCoachById(coachId);
         final String requestNickname = coachUpdateRequest.getNickname();
 
-        if (!coach.isSameNickname(requestNickname) 
-                && memberRepository.existsByNickname(requestNickname)) {
+        if (memberRepository.existsByIdAndNicknameExceptMe(coachId, requestNickname)) {
             throw new InvalidMemberNicknameException(DUPLICATED_MEMBER_NICKNAME);
+
         }
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId,
                 coachUpdateRequest.getNickname(),
