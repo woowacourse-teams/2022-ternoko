@@ -67,8 +67,8 @@ class InterviewTest {
                 () -> assertThat(interview.getCoach().getId()).isEqualTo(COACH2.getId()),
                 () -> assertThat(interview.getCrew().getId()).isEqualTo(CREW1.getId()),
                 () -> assertThat(interview.getFormItems().stream()
-                            .map(FormItem::getAnswer)
-                            .collect(Collectors.toList()))
+                        .map(FormItem::getAnswer)
+                        .collect(Collectors.toList()))
                         .isEqualTo(FORM_ITEMS2.stream()
                                 .map(FormItem::getAnswer)
                                 .collect(Collectors.toList())),
@@ -82,7 +82,8 @@ class InterviewTest {
     @DisplayName("취소된 인터뷰를 수정하면 사용하던 시간은 DELETED로 두고 새로운 시간은 USED로 갖는다.")
     void updateWithCanceledInterview() {
         // given
-        final AvailableDateTime originAvailableDatetime = new AvailableDateTime(1L, COACH1.getId(), LocalDateTime.now().plusDays(1), DELETED);
+        final AvailableDateTime originAvailableDatetime = new AvailableDateTime(1L, COACH1.getId(),
+                LocalDateTime.now().plusDays(1), DELETED);
         final Interview interview = getInterview(originAvailableDatetime, CANCELED);
 
         // when
@@ -153,7 +154,8 @@ class InterviewTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = InterviewStatusType.class, names = {"COMMENT", "FIXED", "COACH_COMPLETED", "CREW_COMPLETED", "COMPLETED"})
+    @EnumSource(value = InterviewStatusType.class, names = {"COMMENT", "FIXED", "COACH_COMPLETED", "CREW_COMPLETED",
+            "COMPLETED"})
     @DisplayName("COMMENT, FIX, COACH_COMPLETED, CREW_COMPLETED, COMPLETED 상태인 인터뷰의 상태를 수정할 수 없다.")
     void invalidUpdateInterview(InterviewStatusType type) {
         // given
@@ -310,8 +312,38 @@ class InterviewTest {
         // given
         final Interview interview = getInterview(CREW1);
 
-        //when & then
+        // when & then
         assertTrue(interview.isCreatedBy(5L));
+    }
+
+    @DisplayName("[크루] Interview에 속한 회원인지 확인하고 맞을 경우 true를 반환한다.")
+    @Test
+    void containsMember_WhenSuccessByCrew() {
+        // given
+        final Interview interview = getInterview(CREW1);
+
+        // when & then
+        assertTrue(interview.containsMember(5L));
+    }
+
+    @DisplayName("[코치] Interview에 속한 회원인지 확인하고 맞을 경우 true를 반환한다.")
+    @Test
+    void containsMember_WhenSuccessByCoach() {
+        // given
+        final Interview interview = getInterview(CREW1);
+
+        // when & then
+        assertTrue(interview.containsMember(1L));
+    }
+
+    @DisplayName("Interview에 속하지 않은 회원일 경우 false를 반환한다.")
+    @Test
+    void containsMember_NotFoundMemberId() {
+        // given
+        final Interview interview = getInterview(CREW1);
+
+        // when & then
+        assertFalse(interview.containsMember(CREW2.getId()));
     }
 
     private Interview getInterview(final Crew crew) {

@@ -56,7 +56,8 @@ public class CommentServiceTest extends DatabaseSupporter {
         Long commentId = commentService.create(CREW2.getId(), FIXED_INTERVIEW_ID, commentRequest);
 
         // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(FIXED_INTERVIEW_ID);
+        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(CREW2.getId(),
+                FIXED_INTERVIEW_ID);
         assertThat(commentId).isNotNull();
         assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.CREW_COMPLETED);
     }
@@ -71,7 +72,8 @@ public class CommentServiceTest extends DatabaseSupporter {
         Long commentId = commentService.create(COACH1.getId(), FIXED_INTERVIEW_ID, commentRequest);
 
         // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(FIXED_INTERVIEW_ID);
+        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(COACH1.getId(),
+                FIXED_INTERVIEW_ID);
         assertThat(commentId).isNotNull();
         assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COACH_COMPLETED);
     }
@@ -87,7 +89,8 @@ public class CommentServiceTest extends DatabaseSupporter {
         Long commentId = commentService.create(CREW2.getId(), FIXED_INTERVIEW_ID, commentRequest);
 
         // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(FIXED_INTERVIEW_ID);
+        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(CREW2.getId(),
+                FIXED_INTERVIEW_ID);
         assertThat(commentId).isNotNull();
         assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETED);
     }
@@ -103,7 +106,8 @@ public class CommentServiceTest extends DatabaseSupporter {
         Long commentId = commentService.create(COACH1.getId(), FIXED_INTERVIEW_ID, commentRequest);
 
         // then
-        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(FIXED_INTERVIEW_ID);
+        InterviewResponse interviewResponseById = interviewService.findInterviewResponseById(CREW2.getId(),
+                FIXED_INTERVIEW_ID);
         assertThat(commentId).isNotNull();
         assertThat(interviewResponseById.getStatus()).isEqualTo(InterviewStatusType.COMPLETED);
     }
