@@ -1,7 +1,7 @@
 # 터놓고, Ternoko
 ## 프로젝트 소개  
 면담은 찐하게 예약은 손쉽게 올인원 면담 예약 서비스 터놓고  
-
+<img width="300" alt="Screen Shot 2022-10-11 at 2 49 34 PM" src="https://user-images.githubusercontent.com/83059234/195292032-346867ea-256a-4db8-82c4-0efb5b569ef3.jpeg">
 ## 핵심 기능
 
 **🚀 크루 - 면담 예약을 손쉽게 할 수 있어요!**
@@ -57,4 +57,5 @@
 |[록바](https://github.com/lokba)|[아놀드](https://github.com/sanaandmomo)|[수달](https://github.com/her0807)|[애쉬](https://github.com/dongho108)|[바니](https://github.com/HyeonbinSa)|[앤지](https://github.com/soominsohn)|[열음](https://github.com/Juhyung990122)
 
 
-## 👨‍👨‍👦‍👦 터놓고의 팀 문화
+## 👨‍👨‍👦‍👦 터놓고의 팀. 
+<img width="915" alt="Screen Shot 2022-10-11 at 2 49 34 PM" src="https://user-images.githubusercontent.com/83059234/195291896-ca005fa9-dff4-44ca-96af-938971891ce9.png">
