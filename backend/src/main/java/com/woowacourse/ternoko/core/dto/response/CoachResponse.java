@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "coachResponseBuilder")
 public class CoachResponse {
 
     private Long id;
@@ -21,7 +21,7 @@ public class CoachResponse {
     private boolean hasOpenTime;
 
     public static CoachResponse from(final Coach coach) {
-        return coachResponseBuilder()
+        return builder()
                 .id(coach.getId())
                 .name(coach.getName())
                 .email(coach.getEmail())
@@ -32,7 +32,7 @@ public class CoachResponse {
     }
 
     public static CoachResponse of(final Coach coach, final Long count) {
-        return coachResponseBuilder()
+        return builder()
                 .id(coach.getId())
                 .name(coach.getName())
                 .email(coach.getEmail())
