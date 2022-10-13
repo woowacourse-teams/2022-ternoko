@@ -24,8 +24,20 @@ const LoginPage = () => {
                 <source srcSet="/assets/icon/slack.avif" type="image/avif" />
                 <img src="/assets/icon/slack.png" alt="슬랙 로고" />
               </picture>
-              슬랙 로그인
+              크루 로그인
             </S.LoginButton>
+
+          </a>
+
+          <a href={PAGE.OAUTH_REDIRECT_COACH}>
+            <S.LoginButton>
+              <picture>
+                <source srcSet="/assets/icon/slack.avif" type="image/avif" />
+                <img src="/assets/icon/slack.png" alt="슬랙 로고" />
+              </picture>
+              코치 로그인
+            </S.LoginButton>
+
           </a>
         </div>
       </S.LeftBox>

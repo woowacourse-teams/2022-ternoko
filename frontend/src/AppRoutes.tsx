@@ -14,6 +14,8 @@ import { useLoadingState } from '@/context/LoadingProvider';
 import { useUserActions } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
+// import { OAuthRedirectHandlerPage } from '@/pages/OAuthRedirectHandlerPage';
+// import { OAuthRedirectHandlerPageCoach } from '@/pages/OAuthRedirectHandlerPage copy';
 
 // 크루 도메인
 const HomePage = lazy(() => import('@/pages/HomePage'));
@@ -30,6 +32,7 @@ const LoginRegisterPage = lazy(() => import('@/pages/LoginRegisterPage'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const OAuthRedirectHandlerPage = lazy(() => import('@/pages/OAuthRedirectHandlerPage'));
+const OAuthRedirectHandlerPageCoach = lazy(() => import('@/pages/OAuthRedirectHandlerPage copy'));
 
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
@@ -45,6 +48,7 @@ const AppRoutes = () => {
         <Routes>
           <Route path={PAGE.LOGIN} element={<LoginPage />} />
           <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
+          <Route path={PAGE.OAUTH_REDIRECT_COACH} element={<OAuthRedirectHandlerPageCoach />} />
           <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
           <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
 

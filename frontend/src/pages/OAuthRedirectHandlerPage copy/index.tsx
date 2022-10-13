@@ -12,7 +12,7 @@ import { getUserStatusAPI, getUserStatusAPICoach } from '@/api';
 import { PAGE } from '@/constants';
 import LocalStorage from '@/localStorage';
 
-export const OAuthRedirectHandlerPage = () => {
+export const OAuthRedirectHandlerPageCoach = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const { initializeUser } = useUserActions();
@@ -20,8 +20,7 @@ export const OAuthRedirectHandlerPage = () => {
   const code = search.match(/(code=).+/)?.[0].replace('code=', '');
 
   (async () => {
-      const response = await getUserStatusAPI();
-    
+    const response = await getUserStatusAPICoach();
 
     const { accessToken, hasNickname, memberRole }: UserStatusType = response.data;
 
@@ -41,5 +40,5 @@ export const OAuthRedirectHandlerPage = () => {
   return <TernokoLoading />;
 };
 
-
-export default OAuthRedirectHandlerPage;
+// export {OAuthRedirectHandlerPage, OAuthRedirectHandlerPageCoach};
+export default OAuthRedirectHandlerPageCoach;
