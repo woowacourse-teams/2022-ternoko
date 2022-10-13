@@ -9,7 +9,7 @@
 코치의 면담 예약 가능 시간 `조회`, 면담 사전 질문 `작성`, `면담 예약`, `알림`까지!  
 한번에 터놓고에서 관리할 수 있어요.  
 코치와의 찐한 면담 시간이 당신을 기다리고 있습니다.  
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/83059234/195293916-9a8b4161-4d4d-4a89-8b36-2a67fe80055e.gif)
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/83059234/195489810-696cfa68-3966-4188-827c-445440296cd8.gif)
 
 
 <br>
