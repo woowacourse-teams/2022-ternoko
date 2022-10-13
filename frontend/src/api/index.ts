@@ -56,8 +56,8 @@ export const getCoachScheduleAndUsedScheduleAPI = (
 export const getCoachInterviewAPI = (year: number, month: number) =>
   axios.get(`${process.env.SERVER_URL}/api/schedules?year=${year}&month=${month}`);
 
-export const getUserStatusAPI = (code: string, redirectUrl: string) =>
-  axios.get(`${process.env.SERVER_URL}/api/login?code=${code}&redirectUrl=${redirectUrl}`);
+export const getUserStatusAPI = () =>
+  axios.get(`${process.env.SERVER_URL}/api/login/crew`);
 
 export const getCrewInfoAPI = () => axios.get(`${process.env.SERVER_URL}/api/crews/me`);
 
