@@ -4,9 +4,9 @@
 <img width="300" alt="Screen Shot 2022-10-11 at 2 49 34 PM" src="https://user-images.githubusercontent.com/83059234/195292032-346867ea-256a-4db8-82c4-0efb5b569ef3.jpeg">
 ## 핵심 기능
 
-**🚀 크루 - 면담 예약을 손쉽게 할 수 있어요!**
+### 🚀 크루 - 면담 예약을 손쉽게 할 수 있어요!
 
-코치의 면담 예약 가능 시간 조회, 면담 사전 질문 작성, 면담 예약, 알림까지!  
+코치의 면담 예약 가능 시간 `조회`, 면담 사전 질문 `작성`, `면담 예약`, `알림`까지!  
 한번에 터놓고에서 관리할 수 있어요.  
 코치와의 찐한 면담 시간이 당신을 기다리고 있습니다.  
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/83059234/195293916-9a8b4161-4d4d-4a89-8b36-2a67fe80055e.gif)
@@ -14,8 +14,8 @@
 
 <br>
 
-**🚀 코치 - 면담 관리를 손쉽게 할 수 있어요!**  
-면담 예약 시간 열기, 면담 신청 조회, 면담 내역 관리, 알림까지  
+### 🚀 코치 - 면담 관리를 손쉽게 할 수 있어요!
+면담 예약 시간 `열기`, 면담 신청 `조회`, 면담 내역 `관리`, `알림`까지  
 한번에 터놓고에서 관리할 수 있어요.  
 나의 크루와의 찐한 면담 시간이 당신을 기다리고 있습니다.  
 ![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/83059234/195294288-631fcb7c-43c7-4eed-9e8b-c95cb8dee59f.gif)
@@ -49,7 +49,7 @@
 
 | 1차 데모데이 | 2차 데모데이 | 3차 데모데이 | 4차 데모데이 | 5차 데모데이
 | --- | --- | --- | --- | --- |
-| [![1차 데모데이](https://i.ytimg.com/vi/mKV3osPRtdc/hq720.jpg)](https://youtu.be/mKV3osPRtdc) | [![2차 데모데이](https://i.ytimg.com/vi/LQRxmFMnFfo/hq720.jpg)](https://youtu.be/LQRxmFMnFfo) | [![3차 데모데이](https://i.ytimg.com/vi/y2cudTZ8seY/hq720.jpg)](https://youtu.be/y2cudTZ8seY) | [![4차 데모데이](https://i.ytimg.com/vi/-Y4DfIsRrzA/hqdefault.jpg)](https://youtu.be/-Y4DfIsRrzA) | [![5차 데모데이](https://i.ytimg.com/vi/mKV3osPRtdc/hq720.jpg)](https://youtu.be/mKV3osPRtdc) |
+| [<img width="200px" src="https://i.ytimg.com/vi/mKV3osPRtdc/hq720.jpg" />](https://youtu.be/mKV3osPRtdc) | [<img width="200px" src="https://i.ytimg.com/vi/LQRxmFMnFfo/hq720.jpg" />](https://youtu.be/LQRxmFMnFfo) | [<img width="200px" src="https://i.ytimg.com/vi/y2cudTZ8seY/hq720.jpg" />](https://youtu.be/y2cudTZ8seY) | [<img width="200px" src="https://i.ytimg.com/vi/-Y4DfIsRrzA/hqdefault.jpg" />](https://youtu.be/-Y4DfIsRrzA) | [<img width="200px" src="https://i.ytimg.com/vi/mKV3osPRtdc/hq720.jpg" />](https://youtu.be/mKV3osPRtdc) |
 
 
 ### 팀원👨‍💻👩‍💻
@@ -58,8 +58,8 @@
 
 |FRONTEND|FRONTEND|BACKEND|BACKEND|BACKEND|BACKEND|BACKEND
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|![](https://github.com/lokba.png?size=100)|![](https://github.com/sanaandmomo.png?size=100)|![](https://github.com/her0807.png?size=100)|![](https://github.com/dongho108.png?size=100)|![](https://github.com/HyeonbinSa.png?size=100)|![](https://github.com/soominsohn.png?size=100)|![](https://github.com/Juhyung990122.png?size=100)
-|[록바](https://github.com/lokba)|[아놀드](https://github.com/sanaandmomo)|[수달](https://github.com/her0807)|[애쉬](https://github.com/dongho108)|[바니](https://github.com/HyeonbinSa)|[앤지](https://github.com/soominsohn)|[열음](https://github.com/Juhyung990122)
+|[<img width="120px" src="https://avatars.githubusercontent.com/u/19251499?s=100&v=4" />](https://github.com/lokba)|[<img width="120px" src="https://avatars.githubusercontent.com/u/38878617?s=100&v=4" />](https://github.com/sanaandmomo)|[<img width="120px" src="https://avatars.githubusercontent.com/u/26570275?s=100&v=4" />](https://github.com/her0807)|[<img width="120px" src="https://avatars.githubusercontent.com/u/54317630?s=100&v=4" />](https://github.com/dongho108)| [<img width="120px" src="https://avatars.githubusercontent.com/u/36189291?s=100&v=4" />](https://github.com/HyeonbinSa)|[<img width="120px" src="https://avatars.githubusercontent.com/u/83059234?s=100&v=4" />](https://github.com/soominsohn)|[<img width="120px" src="https://avatars.githubusercontent.com/u/43205258?s=100&v=4" />](https://github.com/Juhyung990122)
+|[록바](https://github.com/lokba)|[아놀드](https://github.com/sanaandmomo)|[수달](https://github.com/her0807)|[애쉬](https://github.com/dongho108)|[바니](https://github.com/HyeonbinSa)|[앤지](https://github.com/soominsohn)|[열음](https://github.com/Juhyung990122)|
 
 
 ## 👨‍👨‍👦‍👦 터놓고의 팀. 
