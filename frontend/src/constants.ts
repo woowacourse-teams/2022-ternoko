@@ -10,6 +10,7 @@ export const PAGE = {
   COACH_HOME: '/coach/home',
   MY_PAGE: '/mypage',
   OAUTH_REDIRECT: '/login/true',
+  OAUTH_REDIRECT_COACH: '/login/coach',
   ACCESS_DENY: '/access/deny',
   NOT_FOUND: '*',
 } as const;
