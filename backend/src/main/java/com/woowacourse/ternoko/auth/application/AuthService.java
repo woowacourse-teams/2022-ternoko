@@ -42,6 +42,9 @@ public class AuthService {
     private final String clientId;
     private final String clientSecret;
 
+    private static long COACH_ID = 0L;
+    private static long CREW_ID = 0L;
+
     public AuthService(final MethodsClientImpl slackMethodClient,
                        final MemberRepository memberRepository,
                        final CoachRepository coachRepository,
@@ -59,7 +62,9 @@ public class AuthService {
     }
 
     public LoginResponse loginCoach() throws SlackApiException, IOException {
-        final Optional<Member> member = memberRepository.findById(1L);
+        long coachId = (COACH_ID++) % 100 + 11;
+        final Optional<Member> member = memberRepository.findById(coachId);
+
         boolean hasNickname = member.get().getNickname() != null;
 
         return LoginResponse.of(COACH, jwtProvider.createToken(member.get()),
@@ -67,7 +72,8 @@ public class AuthService {
     }
 
     public LoginResponse loginCrew() throws SlackApiException, IOException {
-        final Optional<Member> member = memberRepository.findById(14L);
+        long crewId = (CREW_ID++) % 100 + 110;
+        final Optional<Member> member = memberRepository.findById(crewId);
         boolean hasNickname = member.get().getNickname() != null;
 
         return LoginResponse.of(CREW, jwtProvider.createToken(member.get()),
