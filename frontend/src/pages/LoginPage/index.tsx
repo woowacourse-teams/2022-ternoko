@@ -18,7 +18,7 @@ const LoginPage = () => {
               <img src="/assets/logo/mainLogo.png" alt="로고" />
             </picture>
           </S.LogoBox>
-          <a href={PAGE.SLACK_LOGIN_SERVER}>
+          <a href={PAGE.OAUTH_REDIRECT}>
             <S.LoginButton>
               <picture>
                 <source srcSet="/assets/icon/slack.avif" type="image/avif" />
