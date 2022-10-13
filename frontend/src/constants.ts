@@ -9,7 +9,7 @@ export const PAGE = {
   COACH_INTERVIEW_CREATE: '/coach/interview/create',
   COACH_HOME: '/coach/home',
   MY_PAGE: '/mypage',
-  OAUTH_REDIRECT: '/api/login',
+  OAUTH_REDIRECT: '/api/login/crew',
   ACCESS_DENY: '/access/deny',
   NOT_FOUND: '*',
 } as const;
