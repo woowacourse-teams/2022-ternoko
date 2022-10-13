@@ -29,8 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
 import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
@@ -44,8 +42,6 @@ import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.core.dto.response.FormItemResponse;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
-import com.woowacourse.ternoko.support.alarm.AlarmResponseCache;
-import com.woowacourse.ternoko.support.alarm.SlackAlarm;
 import com.woowacourse.ternoko.support.time.TimeMachine;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
 import java.time.LocalDateTime;
@@ -61,16 +57,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class InterviewServiceTest extends DatabaseSupporter {
-
-    @MockBean
-    private SlackAlarm slackAlarm;
-
-    @MockBean
-    private AlarmResponseCache cache;
+//
+//    @MockBean
+//    private SlackAlarm slackAlarm;
+//
+//    @MockBean
+//    private AlarmResponseCache cache;
 
     @Autowired
     private AvailableDateTimeRepository availableDateTimeRepository;
@@ -83,10 +78,10 @@ class InterviewServiceTest extends DatabaseSupporter {
 
     @BeforeEach
     void setUp() {
-        doNothing().when(slackAlarm).sendCreateMessage(any());
-        doNothing().when(slackAlarm).sendCancelMessage(any());
-        doNothing().when(slackAlarm).sendUpdateMessage(any(), any());
-        doNothing().when(slackAlarm).sendDeleteMessage(any());
+//        doNothing().when(slackAlarm).sendCreateMessage(any());
+//        doNothing().when(slackAlarm).sendCancelMessage(any());
+//        doNothing().when(slackAlarm).sendUpdateMessage(any(), any());
+//        doNothing().when(slackAlarm).sendDeleteMessage(any());
 
         현재시간_설정(2022, 6, 20, 10, 0);
     }

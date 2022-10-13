@@ -5,6 +5,7 @@ import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRe
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
+import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +47,7 @@ public class DatabaseInitializer {
 
         public void dbInit() {
             ArrayList<Coach> coaches = new ArrayList<>(12);
+            ArrayList<Crew> crews = new ArrayList<>(3);
             Coach coach1 = new Coach(1L, "이름", "공원", "공원" + TEST_EMAIL,
                     "U1234567890",
                     "https://user-images.githubusercontent.com/26570275/177680173-9bb25eac-5922-407b-889b-bb49ac392c2a.png",
@@ -100,7 +102,12 @@ public class DatabaseInitializer {
                     "https://user-images.githubusercontent.com/54317630/184493934-9a2ba1bb-6051-4428-bb6a-5527c4f480d9.JPG",
                     "면담은 터놓고 하세요."));
 
+            crews.add(new Crew(20L, "앤afds지", "앤fad지", "afdadf",
+                    "adsf",
+                    "https://user-images.githubusercontent.com/54317630/184493934-9a2ba1bb-6051-4428-bb6a-5527c4f480d9.JPG"));
+
             coachRepository.saveAll(coaches);
+            crewRepository.saveAll(crews);
 
             availableDateTimeRepository.save(new AvailableDateTime(1L, 13L,
                     LocalDateTime.of(LocalDate.of(2022, 10, 25), LocalTime.of(11, 0)), AvailableDateTimeStatus.OPEN));

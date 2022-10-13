@@ -58,6 +58,22 @@ public class AuthService {
         this.clientSecret = clientSecret;
     }
 
+    public LoginResponse loginCoach() throws SlackApiException, IOException {
+        final Optional<Member> member = memberRepository.findById(1L);
+        boolean hasNickname = member.get().getNickname() != null;
+
+        return LoginResponse.of(COACH, jwtProvider.createToken(member.get()),
+                hasNickname);
+    }
+
+    public LoginResponse loginCrew() throws SlackApiException, IOException {
+        final Optional<Member> member = memberRepository.findById(14L);
+        boolean hasNickname = member.get().getNickname() != null;
+
+        return LoginResponse.of(CREW, jwtProvider.createToken(member.get()),
+                hasNickname);
+    }
+
     public LoginResponse login(final String code, String redirectUrl) throws SlackApiException, IOException {
         final OpenIDConnectUserInfoResponse userInfoResponse = getUserInfoResponseBySlack(code, redirectUrl);
         final Optional<Member> member = memberRepository.findByEmail(userInfoResponse.getEmail());

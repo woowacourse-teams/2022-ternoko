@@ -21,10 +21,17 @@ public class AuthController {
     private static final String ALL = "ALL";
     private final AuthService authService;
 
-    @GetMapping
-    public ResponseEntity<LoginResponse> login(@RequestParam final String code, @RequestParam final String redirectUrl)
+    @GetMapping("/coach")
+    public ResponseEntity<LoginResponse> loginCoach()
             throws SlackApiException, IOException {
-        final LoginResponse loginResponse = authService.login(code, redirectUrl);
+        final LoginResponse loginResponse = authService.loginCoach();
+        return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping("/crew")
+    public ResponseEntity<LoginResponse> loginCrew()
+            throws SlackApiException, IOException {
+        final LoginResponse loginResponse = authService.loginCrew();
         return ResponseEntity.ok(loginResponse);
     }
 

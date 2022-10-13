@@ -22,6 +22,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,8 @@ public class CoachService {
 
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
-        final List<Coach> coaches = coachRepository.findAll();
+        Pageable limit = PageRequest.of(0, 10);
+        final Page<Coach> coaches = coachRepository.findAll(limit);
 
         final List<CoachResponse> coachResponses = coaches.stream()
                 .map(coach -> CoachResponse.of(coach, countAvailableDateTimeByCoachId(coach.getId())))
