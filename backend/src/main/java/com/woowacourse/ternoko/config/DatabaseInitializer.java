@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile({"local, demo"})
+@Profile({"local", "demo"})
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer {
