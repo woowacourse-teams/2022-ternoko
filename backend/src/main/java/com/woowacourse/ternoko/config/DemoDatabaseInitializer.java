@@ -72,17 +72,17 @@ public class DemoDatabaseInitializer {
             coachRepository.saveAll(coaches);
             crewRepository.saveAll(crews);
 
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 99; i++) {
 
             Interview interview = new Interview(null,
                     LocalDateTime.of(LocalDate.of(2022, 10,13), LocalTime.of(14, 0)),
                     LocalDateTime.of(LocalDate.of(2022, 10,13), LocalTime.of(14, 30)),
-                    coaches.get(12 + i),
+                    coaches.get(10 + i),
                     crews.get(i),
                     List.of(FormItem.of("고정질문1", "답변1"),
                             FormItem.of("고정질문2", "답변2"),
                             FormItem.of("고정질문3", "답변3")),
-                    InterviewStatusType.COMMENT);
+                    InterviewStatusType.COMPLETED);
 
                 interviewRepository.save(interview);
             }
