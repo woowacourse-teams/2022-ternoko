@@ -20,7 +20,9 @@ import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +44,8 @@ public class AuthService {
     private final String clientId;
     private final String clientSecret;
 
-    private static long COACH_ID = 0L;
-    private static long CREW_ID = 0L;
+    private final static AtomicLong ATOMIC_COACH_ID = new AtomicLong(0L);
+    private final static AtomicLong ATOMIC_CREW_ID = new AtomicLong(0L);
 
     public AuthService(final MethodsClientImpl slackMethodClient,
                        final MemberRepository memberRepository,
@@ -61,23 +63,20 @@ public class AuthService {
         this.clientSecret = clientSecret;
     }
 
-    public LoginResponse loginCoach() throws SlackApiException, IOException {
-        long coachId = (COACH_ID++) % 100 + 11;
-        final Optional<Member> member = memberRepository.findById(coachId);
+    public LoginResponse loginCoach() {
+        long coachId = (ATOMIC_COACH_ID.getAndAdd(1)) % 100 + 11;
+        final Member member = memberRepository.findById(coachId)
+                .orElseThrow(() -> new NoSuchElementException("로그인할 coachId가 존재하지 않습니다."));
 
-        boolean hasNickname = member.get().getNickname() != null;
-
-        return LoginResponse.of(COACH, jwtProvider.createToken(member.get()),
-                hasNickname);
+        return LoginResponse.of(COACH, jwtProvider.createToken(member), true);
     }
 
     public LoginResponse loginCrew()  {
-        long crewId = (CREW_ID++) % 100 + 108;
-        final Optional<Member> member = memberRepository.findById(crewId);
-        boolean hasNickname = member.get().getNickname() != null;
+        long crewId = (ATOMIC_CREW_ID.getAndAdd(1)) % 100 + 108;
+        final Member member = memberRepository.findById(crewId)
+                .orElseThrow(() -> new NoSuchElementException("로그인할 crewId가 존재하지 않습니다."));
 
-        return LoginResponse.of(CREW, jwtProvider.createToken(member.get()),
-                hasNickname);
+        return LoginResponse.of(CREW, jwtProvider.createToken(member), true);
     }
 
     public LoginResponse login(final String code, String redirectUrl) throws SlackApiException, IOException {
