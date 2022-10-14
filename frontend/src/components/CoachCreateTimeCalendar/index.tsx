@@ -3,7 +3,7 @@ import { memo, useMemo } from 'react';
 import * as S from './styled';
 
 import Calendar from '@/components/@common/Calendar';
-import * as C from '@/components/@common/CommonCrewAndCoachCalendarStyle/styled';
+import * as C from '@/components/@common/CrewAndCoachCalendarStyle/styled';
 
 import { useCalendarActions, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
