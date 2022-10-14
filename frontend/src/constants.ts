@@ -54,7 +54,7 @@ export const SUCCESS_MESSAGE = {
   COACH_DELETE_INTERVIEW: '면담이 삭제됐어요... ㅠㅠ',
   COACH_DELETE_INTERVIEW_AND_TIME: '면담과 시간이 삭제됐어요... ㅠㅠ',
   CREATE_COMMENT: '코멘트가 정상적으로 입력됐어요.',
-  UPDATE_COMMENT: '코멘트가 정삭적으로 수정됐어요.',
+  UPDATE_COMMENT: '코멘트가 정상적으로 수정됐어요.',
 } as const;
 
 export const EMPTY_SCREEN_MESSAGE = {
