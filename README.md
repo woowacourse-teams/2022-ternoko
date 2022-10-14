@@ -26,7 +26,7 @@
 <img width="884" alt="스크린샷 2022-10-13 오전 12 10 42" src="https://user-images.githubusercontent.com/43205258/195761355-073d69f5-429d-400f-a30d-183426c6b5b0.png">
 
 ### 백엔드
-<img width="879" alt="스크린샷 2022-10-13 오전 12 10 53" src="https://user-images.githubusercontent.com/43205258/195761379-42f4de01-15f9-42e8-a6af-2f1691fa892c.png">
+<img width="879" alt="image" src="https://user-images.githubusercontent.com/43205258/195761514-4092d0b9-0471-4391-989a-aff3ce077977.png">
 
 ### 인프라
 <img width="876" alt="스크린샷 2022-10-13 오전 12 11 16" src="https://user-images.githubusercontent.com/43205258/195761393-85bbe532-e1f9-4943-a229-5ccab2becdca.png">
@@ -37,7 +37,7 @@
 <img width="882" alt="스크린샷 2022-10-13 오전 10 56 27" src="https://user-images.githubusercontent.com/43205258/195761140-331c881c-115c-4039-9881-837b5de4acfc.png">
 
 ### 백엔드
-<img width="677" alt="스크린샷 2022-10-13 오전 10 57 27" src="https://user-images.githubusercontent.com/43205258/195761122-9f8f1478-57db-47ba-9ac0-849ffe49c427.png">
+<img width="884" alt="image" src="https://user-images.githubusercontent.com/43205258/195761556-e13424d6-478c-408c-8fc2-3bc370ea7945.png">
 
 
 ## 터놓고 서비스 이용하기  
