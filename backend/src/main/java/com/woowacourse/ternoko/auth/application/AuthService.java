@@ -71,8 +71,8 @@ public class AuthService {
                 hasNickname);
     }
 
-    public LoginResponse loginCrew() throws SlackApiException, IOException {
-        long crewId = (CREW_ID++) % 100 + 110;
+    public LoginResponse loginCrew()  {
+        long crewId = (CREW_ID++) % 100 + 108;
         final Optional<Member> member = memberRepository.findById(crewId);
         boolean hasNickname = member.get().getNickname() != null;
 
