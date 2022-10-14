@@ -72,7 +72,7 @@ public class AuthService {
     }
 
     public LoginResponse loginCrew()  {
-        long crewId = (ATOMIC_CREW_ID.getAndAdd(1)) % 100 + 108;
+        long crewId = (ATOMIC_CREW_ID.getAndAdd(1)) % 100 + 111;
         final Member member = memberRepository.findById(crewId)
                 .orElseThrow(() -> new NoSuchElementException("로그인할 crewId가 존재하지 않습니다."));
 
