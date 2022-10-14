@@ -34,17 +34,17 @@ const CoachCreateTimeCalendar = ({
     [year, month],
   );
 
-  const isDateNotInOfSelectedDatesAfterToday = (day: number) =>
+  const isDateNotInSelectedDatesAfterToday = (day: number) =>
     !isBelowToday(day) && !isSelectedDate(day);
 
-  const isDateInOfSelectedDatesAfterToday = (day: number) =>
+  const isDateInSelectedDatesAfterToday = (day: number) =>
     !isBelowToday(day) && isSelectedDate(day);
 
   const isCheckedLine = (forEachCellOfLine: ForEachCellOfLineType) => {
     let result = true;
 
     forEachCellOfLine((day) => {
-      if (isDateNotInOfSelectedDatesAfterToday(day)) {
+      if (isDateNotInSelectedDatesAfterToday(day)) {
         result = false;
 
         return false;
@@ -61,7 +61,7 @@ const CoachCreateTimeCalendar = ({
 
     if (isCheckedLine(forEachCellOfLine)) {
       forEachCellOfLine((day) => {
-        if (isDateInOfSelectedDatesAfterToday(day)) {
+        if (isDateInSelectedDatesAfterToday(day)) {
           dates.push({ year, month, day });
         }
 
@@ -71,7 +71,7 @@ const CoachCreateTimeCalendar = ({
       dates.length && removeSelectedDates(dates);
     } else {
       forEachCellOfLine((day) => {
-        if (isDateNotInOfSelectedDatesAfterToday(day)) {
+        if (isDateNotInSelectedDatesAfterToday(day)) {
           dates.push({ year, month, day });
         }
 
