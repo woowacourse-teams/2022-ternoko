@@ -82,7 +82,7 @@ public class DemoDatabaseInitializer {
                     List.of(FormItem.of("고정질문1", "답변1"),
                             FormItem.of("고정질문2", "답변2"),
                             FormItem.of("고정질문3", "답변3")),
-                    InterviewStatusType.COMPLETED);
+                    InterviewStatusType.FIXED);
 
                 interviewRepository.save(interview);
             }
