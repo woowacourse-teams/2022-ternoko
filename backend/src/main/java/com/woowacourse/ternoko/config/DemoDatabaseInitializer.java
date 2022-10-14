@@ -72,7 +72,7 @@ public class DemoDatabaseInitializer {
             coachRepository.saveAll(coaches);
             crewRepository.saveAll(crews);
 
-            for (int i = 0; i < 99; i++) {
+            for (int i = 0; i < 90; i++) {
 
             Interview interview = new Interview(null,
                     LocalDateTime.of(LocalDate.of(2022, 10,13), LocalTime.of(14, 0)),
