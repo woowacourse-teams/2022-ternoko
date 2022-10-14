@@ -3,6 +3,8 @@ package com.woowacourse.ternoko.config;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
+import com.woowacourse.ternoko.core.domain.comment.Comment;
+import com.woowacourse.ternoko.core.domain.comment.CommentRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
@@ -50,6 +52,7 @@ public class DemoDatabaseInitializer {
         private final CrewRepository crewRepository;
         private final AvailableDateTimeRepository availableDateTimeRepository;
         private final InterviewRepository interviewRepository;
+        private final CommentRepository commentRepository;
 
         public void dbInit() {
             ArrayList<Coach> coaches = new ArrayList<>();
@@ -63,7 +66,7 @@ public class DemoDatabaseInitializer {
                         "안녕하세요." + i));
             }
 
-            for (long i = 111L; i < 210L; i++) {
+            for (long i = 110L; i < 210L; i++) {
                 crews.add(new Crew(i, "크루이름" + i, "크루" + i, "이메일" + i,
                         "UCREW" + i,
                         "https://user-images.githubusercontent.com/54317630/184493934-9a2ba1bb-6051-4428-bb6a-5527c4f480d9.JPG"));
@@ -85,6 +88,26 @@ public class DemoDatabaseInitializer {
                     InterviewStatusType.FIXED);
 
                 interviewRepository.save(interview);
+            }
+
+            for (int i = 0; i < 90; i++) {
+
+                Interview interview = new Interview(null,
+                        LocalDateTime.of(LocalDate.of(2022, 10,12), LocalTime.of(14, 0)),
+                        LocalDateTime.of(LocalDate.of(2022, 10,12), LocalTime.of(14, 30)),
+                        coaches.get(10 + i),
+                        crews.get(i),
+                        List.of(FormItem.of("고정질문1", "답변1"),
+                                FormItem.of("고정질문2", "답변2"),
+                                FormItem.of("고정질문3", "답변3")),
+                        InterviewStatusType.COMPLETED);
+
+                Interview savedInterview  = interviewRepository.save(interview);
+
+                Comment coachComment = new Comment(coaches.get(10+i).getId(), savedInterview, "오늘도 파이팅 ~ :)");
+                Comment crewComment = new Comment(crews.get(i).getId(), savedInterview, "오늘도 파이팅 ~ :)");
+                commentRepository.save(coachComment);
+                commentRepository.save(crewComment);
             }
 
             addDefaultAvailableDateTime();
