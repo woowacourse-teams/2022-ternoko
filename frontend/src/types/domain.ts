@@ -116,10 +116,3 @@ export type DayOfWeekWithStartDayType = {
   name: DayNameOfWeekType;
   startDay: OneWeekDayType;
 };
-
-export type ModalPositionType = {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-};

@@ -7,8 +7,8 @@ import Button from '@/components/@common/Button/styled';
 import GridContainer from '@/components/@common/GridContainer/styled';
 import TitleBox from '@/components/@common/TitleBox';
 
-import Calendar from '@/components/Calendar';
 import CoachProfile from '@/components/CoachProfile';
+import CrewApplyInterviewCalendar from '@/components/CrewApplyInterviewCalendar';
 import Header from '@/components/Header';
 import TextAreaField from '@/components/TextAreaField';
 import resizeTextArea from '@/components/TextAreaField/resizeTextArea';
@@ -53,9 +53,14 @@ const InterviewApplyPage = () => {
   const interviewId = new URLSearchParams(search).get('interviewId');
 
   const { year, month, selectedDates } = useCalendarState();
-  const { initializeYearMonth, setDay, resetSelectedDates, addSelectedDates } =
-    useCalendarActions();
-  const { getDateStrings, isSameDate } = useCalendarUtils();
+  const {
+    initializeYearMonth,
+    removeDate,
+    addOrSetDateBySelectMode,
+    resetSelectedDates,
+    addSelectedDates,
+  } = useCalendarActions();
+  const { getDateStrings, isSameDate, isSelectedDate } = useCalendarUtils();
 
   const [stepStatus, setStepStatus] = useState<StepStatus[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
@@ -92,8 +97,8 @@ const InterviewApplyPage = () => {
 
   const coachScheduleAPI = () =>
     interviewId && coachId === originCoachIdRef.current
-      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month + 1)
-      : getCoachScheduleAPI(coachId, year, month + 1);
+      ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month)
+      : getCoachScheduleAPI(coachId, year, month);
 
   const updateStatusWhenCalendarShow = (calendarTimes: CrewSelectTime[]) => {
     const schedules = calendarTimes.reduce(
@@ -161,10 +166,17 @@ const InterviewApplyPage = () => {
 
   const getHandleClickDay = (day: number) => () => {
     const times = getDayType(day) === 'default' ? availableSchedules[day] : [];
+
     setAvailableTimes(times);
-    setDay(day);
     setAvailableDateTimeId(INITIAL_NUMBER_STATE);
+
     changeCoachIdRef.current = false;
+
+    if (isSelectedDate(day)) {
+      removeDate(day);
+    } else {
+      addOrSetDateBySelectMode(day);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -241,7 +253,7 @@ const InterviewApplyPage = () => {
 
       const { year, month, day } = separateFullDate(interviewStartTime);
 
-      initializeYearMonth(Number(year), Number(month) - 1);
+      initializeYearMonth(Number(year), Number(month));
       addSelectedDates([{ year: Number(year), month: Number(month), day: Number(day) }]);
     })();
   }, []);
@@ -320,11 +332,10 @@ const InterviewApplyPage = () => {
 
             <div className="fold-box">
               <S.DateBox>
-                <Calendar
+                <CrewApplyInterviewCalendar
                   rerenderCondition={rerenderCondition}
                   getHandleClickDay={getHandleClickDay}
                   getDayType={getDayType}
-                  haveTimeDays={new Set()}
                 />
 
                 <S.TimeContainer key={timeRerenderKey} heightUnit={availableTimes.length}>

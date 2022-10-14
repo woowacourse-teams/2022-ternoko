@@ -1,6 +1,16 @@
 import { dayNamesOfWeek } from '@/context/CalendarProvider';
 
-import { DayNameOfWeekType, DayOfWeekWithStartDayType, OneWeekDayType } from '@/types/domain';
+import {
+  CalendarTime,
+  DayNameOfWeekType,
+  DayOfWeekWithStartDayType,
+  OneWeekDayType,
+} from '@/types/domain';
+
+export const convertMonthToMonthIndex = (month: CalendarTime['month']) => month - 1;
+
+export const convertMonthIndexToMonth = (monthIndex: number): CalendarTime['month'] =>
+  monthIndex + 1;
 
 export const separateFullDate = (fullDate: string) => {
   const [date, time] = fullDate.split(' ');
@@ -31,13 +41,19 @@ export const getFullDateString = (
 export const isOverToday = (fullDate: string) => {
   const { year, month, day, time } = separateFullDate(fullDate);
   const [hour, minute] = time.split(':');
-  const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute));
+  const date = new Date(
+    Number(year),
+    convertMonthToMonthIndex(Number(month)),
+    Number(day),
+    Number(hour),
+    Number(minute),
+  );
 
   return date.getTime() <= new Date().getTime();
 };
 
 export const getDayNameOfWeek = (year: number, month: number, day: number): DayNameOfWeekType => {
-  return dayNamesOfWeek[new Date(year, month, day).getDay()] as any;
+  return dayNamesOfWeek[new Date(year, convertMonthToMonthIndex(month), day).getDay()] as any;
 };
 
 export const generateDayOfWeekWithStartDay = (
@@ -51,9 +67,10 @@ export const generateDayOfWeekWithStartDay = (
         startDay: 1,
       } as DayOfWeekWithStartDayType),
   );
+  const monthIndex = convertMonthToMonthIndex(month);
 
   for (let day = 1; day <= 7; day++) {
-    dayNamesOfWeekWithStartDay[new Date(year, month, day).getDay()].startDay =
+    dayNamesOfWeekWithStartDay[new Date(year, monthIndex, day).getDay()].startDay =
       day as OneWeekDayType;
   }
 

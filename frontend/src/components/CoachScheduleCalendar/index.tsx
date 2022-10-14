@@ -1,26 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import * as S from './styled';
 
 import BabyShowMoreModal from '@/components/@common/BabyShowMoreModal';
+import { BabyModalPositionType } from '@/components/@common/BabyShowMoreModal';
 import Button from '@/components/@common/Button/styled';
-import * as C from '@/components/@common/CalendarStyle/styled';
+import Calendar from '@/components/@common/Calendar';
 import Dimmer from '@/components/@common/Dimmer/styled';
 
-import {
-  dayNamesOfWeek,
-  monthNames,
-  useCalendarActions,
-  useCalendarState,
-  useCalendarUtils,
-} from '@/context/CalendarProvider';
+import { dayNamesOfWeek, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
-import {
-  DayNameOfWeekType,
-  InterviewStatus,
-  InterviewType,
-  ModalPositionType,
-} from '@/types/domain';
+import { DayNameOfWeekType, InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
 import { getDayNameOfWeek, isOverToday, separateFullDate } from '@/utils';
@@ -34,7 +24,7 @@ type ScheduleType = {
 
 type SchedulesType = { [key: number]: ScheduleType[] };
 
-type CoachCalendarProps = {
+type CoachScheduleCalendarProps = {
   getHandleClickSchedule: (interviewId: number) => () => void;
   getHandleClickCommentButton: (interviewId: number, status: InterviewStatus) => () => void;
 };
@@ -57,28 +47,17 @@ const calculateModalPosition = (clickX: number, clickY: number) => {
   return position;
 };
 
-const CoachCalendar = ({
+const CoachScheduleCalendar = ({
   getHandleClickSchedule,
   getHandleClickCommentButton,
-}: CoachCalendarProps) => {
-  const { year, month, showMonthPicker } = useCalendarState();
-  const {
-    handleClickPrevYear,
-    handleClickNextYear,
-    handleClickPrevMonth,
-    handleClickNextMonth,
-    handleClickMonthPicker,
-    getHandleClickMonth,
-  } = useCalendarActions();
+}: CoachScheduleCalendarProps) => {
+  const { year, month } = useCalendarState();
   const { daysLength, isToday, isBelowToday, isOverFirstDay, getDay } = useCalendarUtils();
 
   const [schedules, setSchedules] = useState<SchedulesType>({});
   const [scheduleViewCount, setScheduleViewCount] = useState(1);
   const [isOpenBabyModal, setIsOpenModal] = useState(false);
-  const [babyModalPosition, setBabyModalPosition] = useState<ModalPositionType>({
-    top: 0,
-    left: 0,
-  });
+  const [babyModalPosition, setBabyModalPosition] = useState<BabyModalPositionType>({});
   const [babyModalDay, setBabyModalDay] = useState(-1);
   const [babyModalSchedules, setBabyModalSchedules] = useState<React.ReactNode[]>([]);
 
@@ -98,7 +77,7 @@ const CoachCalendar = ({
 
   useEffect(() => {
     (async () => {
-      const response = await getCoachInterviewAPI(year, month + 1);
+      const response = await getCoachInterviewAPI(year, month);
 
       const schedules = response.data.calendar.reduce(
         (
@@ -145,32 +124,19 @@ const CoachCalendar = ({
 
   return (
     <S.Box>
-      <C.Header>
-        <C.YearPicker>
-          <C.DateChange onClick={handleClickPrevYear}>{'<'}</C.DateChange>
-          <p>{year}</p>
-          <C.DateChange onClick={handleClickNextYear}>{'>'}</C.DateChange>
-        </C.YearPicker>
-        <C.MonthPicker>
-          <C.DateChange onClick={handleClickPrevMonth}>{'<'}</C.DateChange>
-          <p onClick={handleClickMonthPicker}>{monthNames[month]}</p>
-          <C.DateChange onClick={handleClickNextMonth}>{'>'}</C.DateChange>
-        </C.MonthPicker>
-      </C.Header>
-
-      <C.Body>
-        <C.WeekDay>
+      <Calendar>
+        <S.WeekDay>
           {dayNamesOfWeek.map((dayNameOfWeek: DayNameOfWeekType) => (
             <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
           ))}
-        </C.WeekDay>
-        <C.Days key={rerenderKey} ref={daysRef}>
+        </S.WeekDay>
+        <S.Days key={rerenderKey} ref={daysRef}>
           {Array.from({ length: daysLength }, (_, index) => {
             if (isOverFirstDay(index)) {
               const day = getDay(index);
               const interviews = schedules[day]
                 ? schedules[day].map(({ id, crewNickname, times: [startTime, endTime], status }) =>
-                    isOverToday(`${year}-${month + 1}-${day} ${endTime}`) ? (
+                    isOverToday(`${year}-${month}-${day} ${endTime}`) ? (
                       <S.Schedule key={id} status="COMMENT" padding={0}>
                         <S.CrewNickname onClick={getHandleClickSchedule(id)}>
                           {crewNickname}
@@ -244,18 +210,10 @@ const CoachCalendar = ({
               </BabyShowMoreModal>
             </>
           )}
-        </C.Days>
-      </C.Body>
-
-      <C.MonthContainer show={showMonthPicker}>
-        {monthNames.map((monthName, index) => (
-          <div key={index} onClick={getHandleClickMonth(index)}>
-            {monthName}
-          </div>
-        ))}
-      </C.MonthContainer>
+        </S.Days>
+      </Calendar>
     </S.Box>
   );
 };
 
-export default CoachCalendar;
+export default memo(CoachScheduleCalendar);

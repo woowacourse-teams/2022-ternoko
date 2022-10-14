@@ -8,7 +8,7 @@ import CommentModal from '@/components/@common/CommentModal';
 import InterviewDetailModal from '@/components/@common/InterviewDetailModal';
 import useModal from '@/components/@common/Modal/useModal';
 
-import CoachCalendar from '@/components/CoachCalendar';
+import CoachScheduleCalendar from '@/components/CoachScheduleCalendar';
 
 import CalendarProvider from '@/context/CalendarProvider';
 
@@ -67,7 +67,7 @@ const CoachHomePage = () => {
         </Link>
       </S.TitleBox>
       <CalendarProvider selectMode="SINGLE">
-        <CoachCalendar
+        <CoachScheduleCalendar
           key={calendarRerenderkeyRef.current}
           getHandleClickSchedule={getHandleClickSchedule}
           getHandleClickCommentButton={getHandleClickCommentButton}
