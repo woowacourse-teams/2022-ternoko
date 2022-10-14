@@ -47,4 +47,8 @@ public class Member {
     public boolean isSameId(Long id) {
         return this.id.equals(id);
     }
+
+    public boolean isSameNickname(String nickname) {
+        return nickname.equals(this.nickname);
+    }
 }

@@ -4,6 +4,7 @@ import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.MONTH_REQUEST;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW;
 import static com.woowacourse.ternoko.support.fixture.CoachAvailableTimeFixture.NOW_PLUS_1_MONTH;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH3;
 import static com.woowacourse.ternoko.support.fixture.MemberFixture.TIME2;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
@@ -142,7 +144,7 @@ public class CoachServiceTest extends DatabaseSupporter {
                 new Coach("공지철", "공유", " share@woowahan.com", userId, imageUrl, "null"));
 
         //when
-        coachService.partUpdateCrew(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
+        coachService.updateCoach(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
         final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
 
         //then
@@ -150,6 +152,51 @@ public class CoachServiceTest extends DatabaseSupporter {
                 () -> assertThat(foundCoach.getNickname()).isEqualTo(nickname),
                 () -> assertThat(foundCoach.getIntroduce()).isEqualTo(introduce)
         );
+
+        coachRepository.delete(savedCoach);
+    }
+
+    @Test
+    @DisplayName("slack 회원가입 후 닉네임 변경 시 동일한 닉네임으로 변경할 수 있다.")
+    void updateCoachSameNickName() {
+        //given
+        final String imageUrl = ".png";
+        final String nickname = "공유";
+        final String introduce = "안녕하세요. 도깨비 입니다.";
+        final String userId = "U223456789";
+
+        final Coach savedCoach = coachRepository.save(
+                new Coach("공지철", "공유", " share@woowahan.com", userId, imageUrl, "null"));
+
+        //when
+        coachService.updateCoach(savedCoach.getId(), new CoachUpdateRequest(nickname, imageUrl, introduce));
+        final CoachResponse foundCoach = coachService.findCoach(savedCoach.getId());
+
+        //then
+        assertAll(
+                () -> assertThat(foundCoach.getNickname()).isEqualTo(nickname),
+                () -> assertThat(foundCoach.getIntroduce()).isEqualTo(introduce)
+        );
+
+        coachRepository.delete(savedCoach);
+    }
+
+    @Test
+    @DisplayName("slack 회원가입 후 닉네임변경 시 본인의 닉네임이 아니면서 이미 존재하는 회원 닉네임이면 예외를 반환한다.")
+    void partUpdateCrewException() {
+        // given
+        final String imageUrl = ".png";
+        final String nickname = COACH1.getNickname();
+        final String introduce = "안녕하세요. 도깨비 입니다.";
+        final String userId = "U223456789";
+
+        final Coach savedCoach = coachRepository.save(
+                new Coach("공지철", "도깨비", " share@woowahan.com", userId, imageUrl, "null"));
+
+        //when, then
+        assertThatThrownBy(() -> coachService.updateCoach(savedCoach.getId(),
+                new CoachUpdateRequest(nickname, imageUrl, introduce)))
+                .isInstanceOf(InvalidMemberNicknameException.class);
 
         coachRepository.delete(savedCoach);
     }

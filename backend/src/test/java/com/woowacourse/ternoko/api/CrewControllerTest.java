@@ -34,7 +34,7 @@ public class CrewControllerTest extends RestDocsTestSupporter {
     @Test
     @DisplayName("크루 - 내 정보를 수정한다.")
     void updateCrew() throws Exception {
-        doNothing().when(crewService).partUpdateCrew(any(), any());
+        doNothing().when(crewService).updateCrew(any(), any());
         // given, when, then
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/crews/me")
