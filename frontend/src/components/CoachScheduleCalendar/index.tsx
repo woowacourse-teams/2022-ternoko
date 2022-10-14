@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import * as S from './styled';
 
@@ -220,4 +220,4 @@ const CoachScheduleCalendar = ({
   );
 };
 
-export default CoachScheduleCalendar;
+export default memo(CoachScheduleCalendar);
