@@ -49,11 +49,8 @@ public enum ExceptionType {
     INVALID_COMMENT_MEMBER_ID(BAD_REQUEST, 6005, "해당 코멘트에 해당하지 않는 회원은 접근할 수 없습니다."),
     INVALID_COMMENT_INTERVIEW_ID(BAD_REQUEST, 6006, "코멘트에 해당하지 않는 면담입니다."),
 
-    // HTTP 관련 Exception
-    REQUEST_EXCEPTION(null, 8001, "http 요청 에러입니다."),
-
     // 알수 없는 Exception
-    UNHANDLED_EXCEPTION(null, 9999, "예상치 못한 예외입니다.");
+    UNHANDLED_EXCEPTION(BAD_REQUEST, 9999, "예상치 못한 예외입니다.");
 
     private final HttpStatus httpStatus;
     private final int statusCode;
