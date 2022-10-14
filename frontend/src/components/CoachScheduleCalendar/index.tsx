@@ -3,18 +3,14 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './styled';
 
 import BabyShowMoreModal from '@/components/@common/BabyShowMoreModal';
+import { BabyModalPositionType } from '@/components/@common/BabyShowMoreModal';
 import Button from '@/components/@common/Button/styled';
 import Calendar from '@/components/@common/Calendar';
 import Dimmer from '@/components/@common/Dimmer/styled';
 
 import { dayNamesOfWeek, useCalendarState, useCalendarUtils } from '@/context/CalendarProvider';
 
-import {
-  DayNameOfWeekType,
-  InterviewStatus,
-  InterviewType,
-  ModalPositionType,
-} from '@/types/domain';
+import { DayNameOfWeekType, InterviewStatus, InterviewType } from '@/types/domain';
 
 import { getCoachInterviewAPI } from '@/api';
 import { getDayNameOfWeek, isOverToday, separateFullDate } from '@/utils';
@@ -61,7 +57,7 @@ const CoachScheduleCalendar = ({
   const [schedules, setSchedules] = useState<SchedulesType>({});
   const [scheduleViewCount, setScheduleViewCount] = useState(1);
   const [isOpenBabyModal, setIsOpenModal] = useState(false);
-  const [babyModalPosition, setBabyModalPosition] = useState<ModalPositionType>({});
+  const [babyModalPosition, setBabyModalPosition] = useState<BabyModalPositionType>({});
   const [babyModalDay, setBabyModalDay] = useState(-1);
   const [babyModalSchedules, setBabyModalSchedules] = useState<React.ReactNode[]>([]);
 

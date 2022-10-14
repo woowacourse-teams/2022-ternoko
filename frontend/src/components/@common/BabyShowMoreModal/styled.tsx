@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { ModalPositionType } from '@/types/domain';
+import { BabyModalPositionType } from '@/components/@common/BabyShowMoreModal';
 
-export const Box = styled.div<ModalPositionType>`
+export const Box = styled.div<BabyModalPositionType>`
   position: fixed;
 
   ${({ top }) =>
