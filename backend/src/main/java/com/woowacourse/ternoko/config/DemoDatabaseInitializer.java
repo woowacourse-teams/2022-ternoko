@@ -3,6 +3,10 @@ package com.woowacourse.ternoko.config;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
+import com.woowacourse.ternoko.core.domain.interview.Interview;
+import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
+import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
+import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
@@ -11,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +49,7 @@ public class DemoDatabaseInitializer {
         private final CoachRepository coachRepository;
         private final CrewRepository crewRepository;
         private final AvailableDateTimeRepository availableDateTimeRepository;
+        private final InterviewRepository interviewRepository;
 
         public void dbInit() {
             ArrayList<Coach> coaches = new ArrayList<>();
@@ -65,6 +71,21 @@ public class DemoDatabaseInitializer {
 
             coachRepository.saveAll(coaches);
             crewRepository.saveAll(crews);
+
+            for (int i = 0; i < 50; i++) {
+
+            Interview interview = new Interview(null,
+                    LocalDateTime.of(LocalDate.of(2022, 10,13), LocalTime.of(14, 0)),
+                    LocalDateTime.of(LocalDate.of(2022, 10,13), LocalTime.of(14, 30)),
+                    coaches.get(12 + i),
+                    crews.get(i),
+                    List.of(FormItem.of("고정질문1", "답변1"),
+                            FormItem.of("고정질문2", "답변2"),
+                            FormItem.of("고정질문3", "답변3")),
+                    InterviewStatusType.COMMENT);
+
+                interviewRepository.save(interview);
+            }
 
             addDefaultAvailableDateTime();
         }
