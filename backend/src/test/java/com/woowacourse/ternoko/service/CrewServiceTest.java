@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
+import com.woowacourse.ternoko.common.exception.CrewInvalidException;
 import com.woowacourse.ternoko.core.application.CrewService;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
@@ -77,7 +77,7 @@ public class CrewServiceTest extends DatabaseSupporter {
 
         // when, then
         assertThatThrownBy(() ->  crewService.updateCrew(savedCrew.getId(), new CrewUpdateRequest(existNickname, imageUrl)))
-                .isInstanceOf(InvalidMemberNicknameException.class);
+                .isInstanceOf(CrewInvalidException.class);
 
         crewRepository.deleteById(savedCrew.getId());
     }

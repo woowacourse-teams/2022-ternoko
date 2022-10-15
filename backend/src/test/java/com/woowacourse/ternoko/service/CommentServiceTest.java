@@ -12,11 +12,8 @@ import static com.woowacourse.ternoko.support.fixture.MemberFixture.CREW2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
-import com.woowacourse.ternoko.common.exception.exception.CommentNotFoundException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidCommentInterviewIdException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.application.CommentService;
 import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.domain.interview.InterviewStatusType;
@@ -120,7 +117,7 @@ public class CommentServiceTest extends DatabaseSupporter {
 
         // when & then
         assertThatThrownBy(() -> commentService.create(COACH2.getId(), FIXED_INTERVIEW_ID, commentRequest))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(INVALID_INTERVIEW_MEMBER_ID.getMessage());
     }
 
@@ -132,7 +129,7 @@ public class CommentServiceTest extends DatabaseSupporter {
 
         // when & then
         assertThatThrownBy(() -> commentService.create(COACH1.getId(), NOT_FOUNT_INTERVIEW_ID, commentRequest))
-                .isInstanceOf(InterviewNotFoundException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(NOT_FOUNT_INTERVIEW_ID + INTERVIEW_NOT_FOUND.getMessage());
     }
 
@@ -145,7 +142,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         // when
         commentService.create(CREW2.getId(), FIXED_INTERVIEW_ID, commentRequest);
         assertThatThrownBy(() -> commentService.create(CREW2.getId(), FIXED_INTERVIEW_ID, commentRequest))
-                .isInstanceOf(InvalidStatusCreateCommentException.class)
+                .isInstanceOf(CommentInvalidException.class)
                 .hasMessage(INVALID_STATUS_CREATE_COMMENT.getMessage());
     }
 
@@ -158,7 +155,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         // when & then
         commentService.create(COACH1.getId(), FIXED_INTERVIEW_ID, commentRequest);
         assertThatThrownBy(() -> commentService.create(COACH1.getId(), FIXED_INTERVIEW_ID, commentRequest))
-                .isInstanceOf(InvalidStatusCreateCommentException.class)
+                .isInstanceOf(CommentInvalidException.class)
                 .hasMessage(INVALID_STATUS_CREATE_COMMENT.getMessage());
     }
 
@@ -167,7 +164,7 @@ public class CommentServiceTest extends DatabaseSupporter {
     void createCommentByCoach_InvalidStatus_OtherStatus() {
         final CommentRequest commentRequest = new CommentRequest("너무나도 유익한 시간이었습니다. 감사합니다.");
         assertThatThrownBy(() -> commentService.create(COACH1.getId(), EDITABLE_INTERVIEW_ID, commentRequest))
-                .isInstanceOf(InvalidStatusCreateCommentException.class)
+                .isInstanceOf(CommentInvalidException.class)
                 .hasMessage(INVALID_STATUS_CREATE_COMMENT.getMessage());
     }
 
@@ -234,7 +231,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         final Long interviewId = -1L;
         // when & then
         assertThatThrownBy(() -> commentService.findComments(COACH1.getId(), interviewId))
-                .isInstanceOf(InterviewNotFoundException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(interviewId + INTERVIEW_NOT_FOUND.getMessage());
     }
 
@@ -247,7 +244,7 @@ public class CommentServiceTest extends DatabaseSupporter {
 
         // when & then
         assertThatThrownBy(() -> commentService.findComments(CREW1.getId(), FIXED_INTERVIEW_ID))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(INVALID_INTERVIEW_MEMBER_ID.getMessage());
     }
 
@@ -279,7 +276,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         // when & then
         final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
         assertThatThrownBy(() -> commentService.update(CREW2.getId(), FIXED_INTERVIEW_ID, 10L, updateCommentRequest))
-                .isInstanceOf(CommentNotFoundException.class)
+                .isInstanceOf(CommentInvalidException.class)
                 .hasMessage(10L + COMMENT_NOT_FOUND.getMessage());
     }
 
@@ -298,7 +295,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
         assertThatThrownBy(() -> commentService.update(CREW2.getId(), firstInterviewId, secondCommentId,
                 updateCommentRequest))
-                .isInstanceOf(InvalidCommentInterviewIdException.class)
+                .isInstanceOf(CommentInvalidException.class)
                 .hasMessage(INVALID_COMMENT_INTERVIEW_ID.getMessage());
     }
 
@@ -317,7 +314,7 @@ public class CommentServiceTest extends DatabaseSupporter {
         final CommentRequest updateCommentRequest = new CommentRequest("이 말을 빼먹었어요~");
         assertThatThrownBy(() -> commentService.update(CREW2.getId(), firstInterviewId, secondCommentId,
                 updateCommentRequest))
-                .isInstanceOf(InvalidCommentInterviewIdException.class)
+                .isInstanceOf(CommentInvalidException.class)
                 .hasMessage(INVALID_COMMENT_INTERVIEW_ID.getMessage());
     }
 
@@ -333,6 +330,6 @@ public class CommentServiceTest extends DatabaseSupporter {
         assertThatThrownBy(
                 () -> commentService.update(CREW2.getId(), FIXED_INTERVIEW_ID, NOT_FOUND_COMMENT_ID,
                         updateCommentRequest))
-                .isInstanceOf(CommentNotFoundException.class);
+                .isInstanceOf(CommentInvalidException.class);
     }
 }

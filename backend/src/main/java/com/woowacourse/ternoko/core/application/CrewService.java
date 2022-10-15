@@ -2,9 +2,8 @@ package com.woowacourse.ternoko.core.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.DUPLICATED_MEMBER_NICKNAME;
 
-import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
+import com.woowacourse.ternoko.common.exception.CrewInvalidException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
@@ -28,7 +27,7 @@ public class CrewService {
         final String requestNickname = request.getNickname();
 
         if (memberRepository.existsByIdAndNicknameExceptMe(crewId, requestNickname)) {
-            throw new InvalidMemberNicknameException(DUPLICATED_MEMBER_NICKNAME);
+            throw new CrewInvalidException(DUPLICATED_MEMBER_NICKNAME, crewId);
         }
         crewRepository.updateNickNameAndImageUrl(crewId, request.getNickname(), request.getImageUrl());
     }
@@ -45,6 +44,6 @@ public class CrewService {
 
     private Crew getCrewById(final Long crewId) {
         return crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
+                .orElseThrow(() -> new CrewInvalidException(ExceptionType.CREW_NOT_FOUND, crewId));
     }
 }

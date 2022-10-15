@@ -4,9 +4,8 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.COMMENT_NOT
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_FIND_COMMENT;
 
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.exception.CommentNotFoundException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidStatusFindCommentException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.comment.Comment;
 import com.woowacourse.ternoko.core.domain.comment.CommentRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
@@ -29,7 +28,7 @@ public class CommentService {
 
     public Long create(final Long memberId, final Long interviewId, final CommentRequest commentRequest) {
         final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+                .orElseThrow(() -> new InterviewInvalidException(INTERVIEW_NOT_FOUND, interviewId));
 
         final MemberType memberType = interview.findMemberType(memberId);
         final Comment comment = commentRepository.save(
@@ -42,7 +41,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentsResponse findComments(final Long memberId, final Long interviewId) {
         final Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+                .orElseThrow(() -> new InterviewInvalidException(INTERVIEW_NOT_FOUND, interviewId));
         interview.findMemberType(memberId);
         validateFindStatus(interview);
         final List<Comment> comments = commentRepository.findByInterviewId(interviewId);
@@ -51,7 +50,7 @@ public class CommentService {
 
     private void validateFindStatus(final Interview interview) {
         if (!interview.canFindCommentBy()) {
-            throw new InvalidStatusFindCommentException(INVALID_STATUS_FIND_COMMENT);
+            throw new CommentInvalidException(INVALID_STATUS_FIND_COMMENT);
         }
     }
 
@@ -60,7 +59,7 @@ public class CommentService {
                        final Long commentId,
                        final CommentRequest commentRequest) {
         final Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND, commentId));
+                .orElseThrow(() -> new CommentInvalidException(COMMENT_NOT_FOUND, commentId));
         comment.update(memberId, interviewId, commentRequest.getComment());
     }
 }

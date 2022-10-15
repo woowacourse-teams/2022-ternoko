@@ -16,9 +16,9 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "and MONTH(a.localDateTime) = :month "
             + "and a.availableDateTimeStatus = :status")
     void deleteAllByCoachAndYearAndMonthAndStatus(@Param("coachId") final Long coachId,
-                                                @Param("year") final int year,
-                                                @Param("month") final int month,
-                                                @Param("status") final AvailableDateTimeStatus status);
+                                                  @Param("year") final int year,
+                                                  @Param("month") final int month,
+                                                  @Param("status") final AvailableDateTimeStatus status);
 
     List<AvailableDateTime> findAllByCoachId(final Long coachId);
 
@@ -36,6 +36,6 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "where a.coachId = :coachId "
             + "and a.localDateTime between :startDateTime and :endDateTime ")
     Long countByCoachId(@Param("coachId") final Long coachId,
-            @Param("startDateTime") final LocalDateTime startDateTime,
-            @Param("endDateTime")  final LocalDateTime endDateTime);
+                        @Param("startDateTime") final LocalDateTime startDateTime,
+                        @Param("endDateTime") final LocalDateTime endDateTime);
 }

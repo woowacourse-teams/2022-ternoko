@@ -32,14 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
-import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
+import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.application.CoachService;
 import com.woowacourse.ternoko.core.application.InterviewService;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
-import com.woowacourse.ternoko.core.domain.interview.InvalidInterviewMemberException;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
@@ -152,7 +150,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // when
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(김록바.getId(), interviewId))
-                .isInstanceOf(InvalidInterviewMemberException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
@@ -181,14 +179,14 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // then
         assertThatThrownBy(() -> interviewService.create(김애쉬.getId(), 면담생성요청정보_준_2022_07_01_10_00))
-                .isInstanceOf(InvalidInterviewDateException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
     @DisplayName("크루 - 면담 예약 선택 일자가 코치의 가능한 시간이 아닌 경우 예외가 발생한다.")
     void create_WhenInvalidAvailableDateTime() {
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00))
-                .isInstanceOf(AvailableDateTimeNotFoundException.class);
+                .isInstanceOf(AvailableDateTimeInvalidException.class);
     }
 
     @Test
@@ -203,28 +201,15 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // then
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_토미_2022_07_01_10_00))
-                .isInstanceOf(InvalidInterviewDateException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
     @DisplayName("크루 - 없는 면담을 조회할 시 예외가 발생한다.")
     void findInterviewNotFound() {
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(김록바.getId(), -1L))
-                .isInstanceOf(InterviewNotFoundException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
-
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 면담의 시간과 동일한 면담가능시간은 남아있어야 한다.")
-//    void test1() {
-//
-//    }
-//
-//    @Test
-//    @DisplayName("되는시간에서 면담이 예약된 시간을 생성하고 삭제해도 같은 시간으로 면담 수정이 되어야 한다.")
-//    void test2() {
-//
-//    }
-
 
     @Test
     @DisplayName("크루 - 정렬된 면담 예약 목록을 조회한다.")
@@ -326,7 +311,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // when & then
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00))
-                .isInstanceOf(InvalidInterviewDateException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(INVALID_INTERVIEW_DATE.getMessage());
     }
 
@@ -339,7 +324,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // when & then
         assertThatThrownBy(() -> interviewService.create(허수달.getId(), 면담생성요청정보_준_2022_07_01_10_00))
-                .isInstanceOf(InvalidInterviewDateException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(INVALID_INTERVIEW_DATE.getMessage());
     }
 
@@ -388,7 +373,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // when
         assertThatThrownBy(() -> interviewService.update(허수달.getId(), -1L, 토미면담요청정보생성_2022_07_02_10_00()))
-                .isInstanceOf(InterviewNotFoundException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
@@ -405,7 +390,7 @@ class InterviewServiceTest extends DatabaseSupporter {
         // then
         assertThatThrownBy(
                 () -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보(토미, 면담가능시간_토미_2022_07_01_10_00)))
-                .isInstanceOf(InvalidInterviewDateException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
@@ -421,7 +406,7 @@ class InterviewServiceTest extends DatabaseSupporter {
         // then
         assertThatThrownBy(
                 () -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보(준, 면담가능시간_준_2022_07_01_12_00)))
-                .isInstanceOf(InvalidInterviewDateException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
@@ -438,7 +423,7 @@ class InterviewServiceTest extends DatabaseSupporter {
         // then
         assertThatThrownBy(
                 () -> interviewService.update(허수달.getId(), interviewId, 면담생성요청정보(준, 면담가능시간_준_2022_07_01_12_00)))
-                .isInstanceOf(InvalidInterviewDateException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test
@@ -453,7 +438,7 @@ class InterviewServiceTest extends DatabaseSupporter {
 
         // then
         assertThatThrownBy(() -> interviewService.findInterviewResponseById(허수달.getId(), interviewId))
-                .isInstanceOf(InterviewNotFoundException.class);
+                .isInstanceOf(InterviewInvalidException.class);
     }
 
     @Test

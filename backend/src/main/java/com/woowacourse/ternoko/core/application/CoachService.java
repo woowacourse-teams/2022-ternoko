@@ -4,8 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_F
 import static com.woowacourse.ternoko.common.exception.ExceptionType.DUPLICATED_MEMBER_NICKNAME;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidMemberNicknameException;
+import com.woowacourse.ternoko.common.exception.CoachInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
@@ -32,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CoachService {
 
     private final CoachRepository coachRepository;
-    private final MemberRepository memberRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
@@ -64,7 +63,7 @@ public class CoachService {
 
     private Coach getCoachById(final Long coachId) {
         return coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachInvalidException(COACH_NOT_FOUND, coachId));
     }
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
@@ -106,7 +105,7 @@ public class CoachService {
         final String requestNickname = coachUpdateRequest.getNickname();
 
         if (memberRepository.existsByIdAndNicknameExceptMe(coachId, requestNickname)) {
-            throw new InvalidMemberNicknameException(DUPLICATED_MEMBER_NICKNAME);
+            throw new CoachInvalidException(DUPLICATED_MEMBER_NICKNAME, coachId);
 
         }
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId,

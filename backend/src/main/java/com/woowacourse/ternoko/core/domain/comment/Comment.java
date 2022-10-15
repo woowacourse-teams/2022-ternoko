@@ -5,9 +5,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_COM
 import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_STATUS_CREATE_COMMENT;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.woowacourse.ternoko.common.exception.exception.InvalidCommentInterviewIdException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidCommentMemberIdException;
-import com.woowacourse.ternoko.common.exception.exception.InvalidStatusCreateCommentException;
+import com.woowacourse.ternoko.common.exception.CommentInvalidException;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import java.time.LocalDateTime;
@@ -59,13 +57,13 @@ public class Comment {
 
     private static void validateCreateTime(final Interview interview) {
         if (LocalDateTime.now().isBefore(interview.getInterviewEndTime())) {
-            throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
+            throw new CommentInvalidException(INVALID_STATUS_CREATE_COMMENT);
         }
     }
 
     private static void validateCreateStatus(final Interview interview, final MemberType memberType) {
         if (!interview.canCreateCommentBy(memberType)) {
-            throw new InvalidStatusCreateCommentException(INVALID_STATUS_CREATE_COMMENT);
+            throw new CommentInvalidException(INVALID_STATUS_CREATE_COMMENT);
         }
     }
 
@@ -76,10 +74,10 @@ public class Comment {
 
     private void validateUpdate(final Long memberId, final Long interviewId) {
         if (!this.isCreatedByMember(memberId)) {
-            throw new InvalidCommentMemberIdException(INVALID_COMMENT_MEMBER_ID);
+            throw new CommentInvalidException(INVALID_COMMENT_MEMBER_ID);
         }
         if (!this.isCreatedByInterview(interviewId)) {
-            throw new InvalidCommentInterviewIdException(INVALID_COMMENT_INTERVIEW_ID);
+            throw new CommentInvalidException(INVALID_COMMENT_INTERVIEW_ID);
         }
     }
 

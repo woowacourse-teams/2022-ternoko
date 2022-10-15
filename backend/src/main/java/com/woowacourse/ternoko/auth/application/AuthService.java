@@ -11,7 +11,7 @@ import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.TokenInvalidException;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
@@ -133,19 +133,19 @@ public class AuthService {
 
     private void validateType(String type) {
         if (!MemberType.existType(type)) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCoachTypeByMemberId(final Long id, final String type) {
         if (COACH.matchType(type) && !coachRepository.existsById(id)) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCrewTypeByMemberId(final Long id, final String type) {
         if (CREW.matchType(type) && !crewRepository.existsById(id)) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 }
