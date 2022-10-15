@@ -12,9 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "interviewResponseBuilder")
 public class InterviewResponse {
 
     private Long id;
@@ -37,7 +37,7 @@ public class InterviewResponse {
                 .map(FormItemResponse::from)
                 .collect(Collectors.toList());
 
-        return InterviewResponse.interviewResponseBuilder()
+        return InterviewResponse.builder()
                 .id(interview.getId())
                 .coachNickname(interview.getCoach().getNickname())
                 .coachImageUrl(interview.getCoach().getImageUrl())

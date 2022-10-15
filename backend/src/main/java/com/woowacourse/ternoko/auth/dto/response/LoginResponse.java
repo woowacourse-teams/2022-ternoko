@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "loginResponseBuilder")
 public class LoginResponse {
 
     private boolean hasNickname;
@@ -17,7 +17,7 @@ public class LoginResponse {
     private String accessToken;
 
     public static LoginResponse of(final MemberType memberRole, final String accessToken, final boolean hasNickname) {
-        return LoginResponse.loginResponseBuilder()
+        return LoginResponse.builder()
                 .memberRole(memberRole)
                 .accessToken(accessToken)
                 .hasNickname(hasNickname)

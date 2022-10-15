@@ -10,9 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "calenderResponseBuilder")
 public class CalendarResponse {
 
     private Long id;
@@ -25,7 +25,7 @@ public class CalendarResponse {
     private String interviewStatus;
 
     public static CalendarResponse from(final Interview interview) {
-        return CalendarResponse.calenderResponseBuilder()
+        return CalendarResponse.builder()
                 .id(interview.getId())
                 .crewNickname(interview.getCrew().getNickname())
                 .interviewStartTime(interview.getInterviewStartTime())

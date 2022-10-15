@@ -7,16 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "formItemBuilder")
 public class FormItemRequest {
 
     private String question;
     private String answer;
 
     public static FormItemRequest from(FormItem formItem) {
-        return FormItemRequest.formItemBuilder()
+        return FormItemRequest.builder()
                 .question(formItem.getQuestion().getValue())
                 .answer(formItem.getAnswer().getValue())
                 .build();
