@@ -22,7 +22,6 @@ import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,8 +43,7 @@ public class AuthService {
     private final String clientId;
     private final String clientSecret;
 
-    private final static AtomicLong ATOMIC_COACH_ID = new AtomicLong(0L);
-    private final static AtomicLong ATOMIC_CREW_ID = new AtomicLong(0L);
+    private final RandomMemberIdGenerator memberIdGenerator = RandomMemberIdGenerator.of(111, 210, 11, 110);
 
     public AuthService(final MethodsClientImpl slackMethodClient,
                        final MemberRepository memberRepository,
@@ -64,7 +62,7 @@ public class AuthService {
     }
 
     public LoginResponse loginCoach() {
-        long coachId = (ATOMIC_COACH_ID.getAndAdd(1)) % 100 + 11;
+        final Long coachId = memberIdGenerator.getRandomCoachId();
         final Member member = memberRepository.findById(coachId)
                 .orElseThrow(() -> new NoSuchElementException("로그인할 coachId가 존재하지 않습니다."));
 
@@ -72,7 +70,7 @@ public class AuthService {
     }
 
     public LoginResponse loginCrew()  {
-        long crewId = (ATOMIC_CREW_ID.getAndAdd(1)) % 100 + 111;
+        final Long crewId = memberIdGenerator.getRandomCrewId();
         final Member member = memberRepository.findById(crewId)
                 .orElseThrow(() -> new NoSuchElementException("로그인할 crewId가 존재하지 않습니다."));
 
