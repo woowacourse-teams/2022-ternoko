@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as S from './styled';
 
@@ -10,7 +10,7 @@ import useModal from '@/components/@common/Modal/useModal';
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
-import { InterviewStatus, InterviewType, MemberRole } from '@/types/domain';
+import { InterviewType, MemberRole } from '@/types/domain';
 
 import { deleteCrewInterviewAPI, getInterviewAPI } from '@/api';
 import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/constants';
