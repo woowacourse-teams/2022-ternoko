@@ -3,6 +3,8 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 
+import { FloatingButton } from './styled';
+
 import TernokoLoading from '@/components/@common/TernokoLoading';
 import Toast from '@/components/@common/Toast';
 
@@ -14,6 +16,7 @@ import { useLoadingState } from '@/context/LoadingProvider';
 import { useUserActions } from '@/context/UserProvider';
 
 import { PAGE } from '@/constants';
+
 // import { OAuthRedirectHandlerPage } from '@/pages/OAuthRedirectHandlerPage';
 // import { OAuthRedirectHandlerPageCoach } from '@/pages/OAuthRedirectHandlerPage copy';
 
@@ -97,6 +100,7 @@ const AppRoutes = () => {
         </Routes>
       </Suspense>
       <Toast />
+      <FloatingButton to="/login">홈으로</FloatingButton>
       {show && <TernokoLoading />}
     </BrowserRouter>
   );
