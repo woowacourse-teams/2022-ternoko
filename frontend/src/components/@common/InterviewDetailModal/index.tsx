@@ -35,7 +35,7 @@ const InterviewDetailModal = ({
 }: InterviewDetailModalProps) => {
   const [interview, setInterview] = useState<InterviewType | null>();
 
-  const isAbleDelete = interview
+  const canDelete = interview
     ? !['COMPLETED', 'CREW_COMPLETED', 'COACH_COMPLETED'].includes(interview.status)
     : false;
 
@@ -83,7 +83,7 @@ const InterviewDetailModal = ({
       handleCloseModal={handleCloseModal}
     >
       <S.IconContainer>
-        {isAbleDelete && (
+        {canDelete && (
           <picture>
             <source srcSet="/assets/icon/delete.avif" type="image/avif" />
             <S.Icon
