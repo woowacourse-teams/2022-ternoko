@@ -72,11 +72,12 @@ const MyPage = () => {
         offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_COACH_INFO);
       }
-    } catch (e) {
-      offLoading();
-    } finally {
+
       setIsEditMode(false);
       initializeUser(null);
+    } catch (e) {
+      offLoading();
+      showToast('ERROR', ERROR_MESSAGE.DUPLICATED_NICKNAME);
     }
   };
 
