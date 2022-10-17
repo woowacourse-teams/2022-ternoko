@@ -10,8 +10,7 @@ import useModal from '@/components/@common/Modal/useModal';
 import { useLoadingActions } from '@/context/LoadingProvider';
 import { useToastActions } from '@/context/ToastProvider';
 
-import { InterviewType } from '@/types/domain';
-import { MemberRole } from '@/types/domain';
+import { InterviewType, MemberRole } from '@/types/domain';
 
 import { deleteCrewInterviewAPI, getInterviewAPI } from '@/api';
 import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/constants';
@@ -35,6 +34,10 @@ const InterviewDetailModal = ({
   afterDeleteInterview,
 }: InterviewDetailModalProps) => {
   const [interview, setInterview] = useState<InterviewType | null>();
+
+  const canDelete = interview
+    ? !['COMPLETED', 'CREW_COMPLETED', 'COACH_COMPLETED'].includes(interview.status)
+    : false;
 
   const {
     show: askShow,
@@ -80,15 +83,17 @@ const InterviewDetailModal = ({
       handleCloseModal={handleCloseModal}
     >
       <S.IconContainer>
-        <picture>
-          <source srcSet="/assets/icon/delete.avif" type="image/avif" />
-          <S.Icon
-            src="/assets/icon/delete.png"
-            alt="삭제 아이콘"
-            active
-            onClick={handleClickDeleteButton}
-          />
-        </picture>
+        {canDelete && (
+          <picture>
+            <source srcSet="/assets/icon/delete.avif" type="image/avif" />
+            <S.Icon
+              src="/assets/icon/delete.png"
+              alt="삭제 아이콘"
+              active
+              onClick={handleClickDeleteButton}
+            />
+          </picture>
+        )}
         <picture>
           <source srcSet="/assets/icon/close.avif" type="image/avif" />
           <S.Icon
