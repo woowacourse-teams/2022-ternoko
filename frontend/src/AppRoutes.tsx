@@ -3,33 +3,30 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import TernokoLoading from '@/components/@common/TernokoLoading';
-import Toast from '@/components/@common/Toast';
-
-import Header from '@/components/Header';
-import PrivateRoute from '@/components/PrivateRoute';
-
-import CalendarProvider from '@/context/CalendarProvider';
-import { useLoadingState } from '@/context/LoadingProvider';
-import { useUserActions } from '@/context/UserProvider';
-
-import { PAGE } from '@/constants';
+import TernokoLoading from '@/common/components/@common/TernokoLoading';
+import Toast from '@/common/components/@common/Toast';
+import Header from '@/common/components/Header';
+import PrivateRoute from '@/common/components/PrivateRoute';
+import { PAGE } from '@/common/constants';
+import CalendarProvider from '@/common/context/CalendarProvider';
+import { useLoadingState } from '@/common/context/LoadingProvider';
+import { useUserActions } from '@/common/context/UserProvider';
 
 // 크루 도메인
-const HomePage = lazy(() => import('@/pages/HomePage'));
-const InterviewApplyPage = lazy(() => import('@/pages/InterviewApplyPage'));
-const InterviewCompletePage = lazy(() => import('@/pages/InterviewCompletePage'));
+const HomePage = lazy(() => import('@/Crew/pages/HomePage'));
+const InterviewApplyPage = lazy(() => import('@/Crew/pages/InterviewApplyPage'));
+const InterviewCompletePage = lazy(() => import('@/Crew/pages/InterviewCompletePage'));
 
 // 코치 도메인
-const CoachHomePage = lazy(() => import('@/pages/CoachHomePage'));
-const CoachInterviewCreatePage = lazy(() => import('@/pages/CoachInterviewCreatePage'));
+const CoachHomePage = lazy(() => import('@/Coach/pages/CoachHomePage'));
+const CoachInterviewCreatePage = lazy(() => import('@/Coach/pages/CoachInterviewCreatePage'));
 
 // 공통 도메인
-const LoginPage = lazy(() => import('@/pages/LoginPage'));
-const LoginRegisterPage = lazy(() => import('@/pages/LoginRegisterPage'));
-const MyPage = lazy(() => import('@/pages/MyPage'));
-const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
-const OAuthRedirectHandlerPage = lazy(() => import('@/pages/OAuthRedirectHandlerPage'));
+const LoginPage = lazy(() => import('@/common/pages/LoginPage'));
+const LoginRegisterPage = lazy(() => import('@/common/pages/LoginRegisterPage'));
+const MyPage = lazy(() => import('@/common/pages/MyPage'));
+const NotFoundPage = lazy(() => import('@/common/pages/NotFoundPage'));
+const OAuthRedirectHandlerPage = lazy(() => import('@/common/pages/OAuthRedirectHandlerPage'));
 
 const AppRoutes = () => {
   const { initializeUser } = useUserActions();
