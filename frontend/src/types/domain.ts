@@ -47,6 +47,12 @@ export interface InterviewType {
   interviewQuestions: InterviewQuestionType[];
 }
 
+export type DateType = {
+  year: number;
+  month: number;
+  day: number;
+};
+
 export interface CalendarTime {
   year: number;
   month: number;

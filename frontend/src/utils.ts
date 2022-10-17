@@ -76,3 +76,6 @@ export const generateDayOfWeekWithStartDay = (
 
   return dayNamesOfWeekWithStartDay;
 };
+
+export const isSunDay = (year: number, month: number, day: number) =>
+  new Date(year, convertMonthToMonthIndex(month), day).getDay() === 0;

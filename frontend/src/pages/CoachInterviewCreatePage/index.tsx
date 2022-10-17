@@ -231,7 +231,7 @@ const CoachInterviewCreatePage = () => {
 
       <S.DateBox>
         <CoachCreateTimeCalendar
-          onChangeSelectedDatesByClickDayOfWeek={resetTimes}
+          onChangeDateLine={resetTimes}
           getHandleClickDay={getHandleClickDay}
           haveTimeDays={haveTimeDays}
         />
