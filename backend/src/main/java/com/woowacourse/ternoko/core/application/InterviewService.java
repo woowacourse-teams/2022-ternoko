@@ -230,15 +230,15 @@ public class InterviewService {
         setDeleteMessage(interview);
     }
 
-    private void deleteComment(Long crewId, Interview interview) {
-        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), crewId);
-        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), interview.getCoach().getId());
-    }
-
     private void openAvailableDateTimeIfNotCanceled(final Interview interview) {
         if (!interview.isCanceled()) {
             interview.changeAvailableTimeStatus(OPEN);
         }
+    }
+
+    private void deleteComment(Long crewId, Interview interview) {
+        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), crewId);
+        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), interview.getCoach().getId());
     }
 
     private void deleteInterview(final Long crewId, final Interview interview) {
