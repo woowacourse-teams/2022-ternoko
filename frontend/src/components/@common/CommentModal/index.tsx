@@ -14,7 +14,12 @@ import { CommentType, MemberRole } from '@/types/domain';
 import { InterviewStatus } from '@/types/domain';
 
 import { getCommentAPI, postCommentAPI, putCommentAPI } from '@/api';
-import { COMMENT_MAX_LENGTH, ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/constants';
+import {
+  COMMENT_MAX_LENGTH,
+  ERROR_MESSAGE,
+  INITIAL_NUMBER_STATE,
+  SUCCESS_MESSAGE,
+} from '@/constants';
 import { isValidCommentLength } from '@/validations';
 
 type CommentModalProps = {
@@ -36,7 +41,7 @@ const CommentModal = ({
   afterPostAndPutComment,
   handleCloseModal,
 }: CommentModalProps) => {
-  const [commentId, setCommentId] = useState(-1);
+  const [commentId, setCommentId] = useState(INITIAL_NUMBER_STATE);
   const [coachComment, setCoachComment] = useState('');
   const [crewComment, setCrewComment] = useState('');
 
@@ -62,7 +67,7 @@ const CommentModal = ({
 
       if (!isValidCommentLength(comment)) return;
 
-      if (commentId === -1) {
+      if (commentId === INITIAL_NUMBER_STATE) {
         onLoading();
         await postCommentAPI(interviewId, { comment });
         offLoading();
@@ -83,6 +88,8 @@ const CommentModal = ({
   useEffect(() => {
     if (!show) {
       memberRole === 'CREW' ? setCrewComment('') : setCoachComment('');
+      setCommentId(INITIAL_NUMBER_STATE);
+
       return;
     }
 
@@ -145,7 +152,7 @@ const CommentModal = ({
                   inActive={!isValidCommentLength(coachComment)}
                   onClick={handleClickButton}
                 >
-                  코멘트 {commentId === -1 ? '완료' : '수정'}하기
+                  코멘트 {commentId === INITIAL_NUMBER_STATE ? '완료' : '수정'}하기
                 </Button>
               </S.ButtonBox>
             )}
@@ -170,7 +177,7 @@ const CommentModal = ({
                   inActive={!isValidCommentLength(crewComment)}
                   onClick={handleClickButton}
                 >
-                  코멘트 {commentId === -1 ? '완료' : '수정'}하기
+                  코멘트 {commentId === INITIAL_NUMBER_STATE ? '완료' : '수정'}하기
                 </Button>
               </S.ButtonBox>
             )}
