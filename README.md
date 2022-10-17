@@ -63,7 +63,7 @@
 
 |FRONTEND|FRONTEND|BACKEND|BACKEND|BACKEND|BACKEND|BACKEND
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|[<img width="120px" src="https://avatars.githubusercontent.com/u/19251499?s=100&v=4" />]|[<img width="120px" src="https://avatars.githubusercontent.com/u/38878617?s=100&v=4" />]|[<img width="120px" src="https://avatars.githubusercontent.com/u/26570275?s=100&v=4" />]|[<img width="120px" src="https://avatars.githubusercontent.com/u/54317630?s=100&v=4" />]| [<img width="120px" src="https://avatars.githubusercontent.com/u/36189291?s=100&v=4" />]|[<img width="120px" src="https://avatars.githubusercontent.com/u/83059234?s=100&v=4" />]|[<img width="120px" src="https://avatars.githubusercontent.com/u/43205258?s=100&v=4" />]
+|<img width="120px" src="https://avatars.githubusercontent.com/u/19251499?s=100&v=4" />|<img width="120px" src="https://avatars.githubusercontent.com/u/38878617?s=100&v=4" />|<img width="120px" src="https://avatars.githubusercontent.com/u/26570275?s=100&v=4" />|<img width="120px" src="https://avatars.githubusercontent.com/u/54317630?s=100&v=4" />|<img width="120px" src="https://avatars.githubusercontent.com/u/36189291?s=100&v=4" />|<img width="120px" src="https://avatars.githubusercontent.com/u/83059234?s=100&v=4" />|<img width="120px" src="https://avatars.githubusercontent.com/u/43205258?s=100&v=4" />
 |[록바](https://github.com/lokba)|[아놀드](https://github.com/sanaandmomo)|[수달](https://github.com/her0807)|[애쉬](https://github.com/dongho108)|[바니](https://github.com/HyeonbinSa)|[앤지](https://github.com/soominsohn)|[열음](https://github.com/Juhyung990122)|
 
 
