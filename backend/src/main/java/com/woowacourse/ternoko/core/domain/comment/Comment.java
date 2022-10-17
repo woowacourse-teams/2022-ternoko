@@ -40,7 +40,7 @@ public class Comment {
 
     private String comment;
 
-    public Comment(final Long memberId, final Interview interview, final String comment) {
+    private Comment(final Long memberId, final Interview interview, final String comment) {
         this.memberId = memberId;
         this.interview = interview;
         this.comment = comment;

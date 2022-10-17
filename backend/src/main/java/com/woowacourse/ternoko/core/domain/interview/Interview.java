@@ -90,23 +90,6 @@ public class Interview {
         this.interviewStatusType = interviewStatusType;
     }
 
-    public Interview(
-            final AvailableDateTime availableDateTime,
-            final LocalDateTime interviewStartTime,
-            final LocalDateTime interviewEndTime,
-            final Coach coach,
-            final Crew crew,
-            final List<FormItem> formItems,
-            final InterviewStatusType interviewStatusType) {
-        this.availableDateTime = availableDateTime;
-        this.interviewStartTime = interviewStartTime;
-        this.interviewEndTime = interviewEndTime;
-        this.coach = coach;
-        this.crew = crew;
-        this.formItems = new FormItems(formItems, this);
-        this.interviewStatusType = interviewStatusType;
-    }
-
     public Interview(final AvailableDateTime availableDateTime,
                      final LocalDateTime interviewStartTime,
                      final LocalDateTime interviewEndTime,

@@ -8,16 +8,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class RandomMemberIdGenerator {
 
-    final static Random RANDOM = new Random(System.currentTimeMillis());
+    private final static Random RANDOM = new Random(System.currentTimeMillis());
 
-    final long startCrewId;
-    final long endCrewId;
-    final long startCoachId;
-    final long endCoachId;
-    List<Long> crewIds;
-    List<Long> coachIds;
+    private final long startCrewId;
+    private final long endCrewId;
+    private final long startCoachId;
+    private final long endCoachId;
+    private List<Long> crewIds;
+    private List<Long> coachIds;
 
-    public RandomMemberIdGenerator(final long startCrewId, final long endCrewId, final long startCoachId,
+    private RandomMemberIdGenerator(final long startCrewId,
+                                   final long endCrewId,
+                                   final long startCoachId,
                                    final long endCoachId,
                                    final List<Long> crewIds, final List<Long> coachIds) {
         this.startCrewId = startCrewId;
