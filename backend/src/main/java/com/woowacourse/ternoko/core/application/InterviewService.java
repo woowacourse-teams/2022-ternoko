@@ -20,6 +20,7 @@ import com.woowacourse.ternoko.common.exception.CrewInvalidException;
 import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.domain.comment.CommentRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
@@ -58,6 +59,7 @@ public class InterviewService {
     private final CrewRepository crewRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
+    private final CommentRepository commentRepository;
     private final AlarmResponseCache cache;
 
     @Transactional(isolation = SERIALIZABLE)
@@ -223,8 +225,14 @@ public class InterviewService {
     public void delete(final Long crewId, final Long interviewId) {
         final Interview interview = getInterviewById(interviewId);
         openAvailableDateTimeIfNotCanceled(interview);
+        deleteComment(crewId, interview);
         deleteInterview(crewId, interview);
         setDeleteMessage(interview);
+    }
+
+    private void deleteComment(Long crewId, Interview interview) {
+        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), crewId);
+        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), interview.getCoach().getId());
     }
 
     private void openAvailableDateTimeIfNotCanceled(final Interview interview) {

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByInterviewId(Long interviewId);
+
+    void deleteByInterviewIdAndMemberId(Long interviewId, Long memberId);
 }
