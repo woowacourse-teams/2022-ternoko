@@ -58,3 +58,11 @@ export const AllTimeButton = styled.button<AllTimeButtonTypes>`
 
   transition: background-color 0.2s linear;
 `;
+
+export const ScrollContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 47rem;
+  overflow-y: scroll;
+  padding-right: 3rem;
+`;

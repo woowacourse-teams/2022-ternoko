@@ -1,10 +1,8 @@
-import { dayNamesOfWeek } from '@/common/context/CalendarProvider';
-import {
-  DayNameOfWeekType,
-  DayOfWeekWithStartDayType,
-  OneWeekDayType,
-} from '@/common/types/domain';
-import { convertMonthToMonthIndex } from '@/common/utils';
+import { dayNamesOfWeek } from '@/Shared/context/CalendarProvider';
+
+import { convertMonthToMonthIndex } from '@/Shared/utils';
+
+import { DayNameOfWeekType, DayOfWeekWithStartDayType, OneWeekDayType } from '@/Types/domain';
 
 export const getFullDateString = (
   year: number,

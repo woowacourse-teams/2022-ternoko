@@ -3,32 +3,37 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
-import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/Coach/api';
-import CoachCreateTimeCalendar from '@/Coach/components/CoachCreateTimeCalendar';
 import useTimes from '@/Coach/pages/CoachInterviewCreatePage/useTimes';
-import { getFullDateString } from '@/Coach/util';
-import AllScheduleOfMonthModal from '@/common/components/@common/AllScheduleOfMonthModal';
-import Button from '@/common/components/@common/Button/styled';
-import useModal from '@/common/components/@common/Modal/useModal';
-import ScrollContainer from '@/common/components/@common/ScrollContainer/styled';
-import TitleBox from '@/common/components/@common/TitleBox';
-import Time from '@/common/components/Time/styled';
-import { ERROR_MESSAGE, INITIAL_NUMBER_STATE, PAGE, SUCCESS_MESSAGE } from '@/common/constants';
+
+import AllScheduleOfMonthModal from '@/Coach/components/AllScheduleOfMonthModal';
+import CreateTimeCalendar from '@/Coach/components/CreateTimeCalendar';
+
+import Button from '@/Shared/components/Button/styled';
+import useModal from '@/Shared/components/Modal/useModal';
+import Time from '@/Shared/components/Time/styled';
+import TitleBox from '@/Shared/components/TitleBox';
+
 import {
   useCalendarActions,
   useCalendarState,
   useCalendarUtils,
-} from '@/common/context/CalendarProvider';
-import { useLoadingActions } from '@/common/context/LoadingProvider';
-import { useToastActions } from '@/common/context/ToastProvider';
-import { useUserState } from '@/common/context/UserProvider';
+} from '@/Shared/context/CalendarProvider';
+import { useLoadingActions } from '@/Shared/context/LoadingProvider';
+import { useToastActions } from '@/Shared/context/ToastProvider';
+import { useUserState } from '@/Shared/context/UserProvider';
+
+import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/Coach/api';
+import { getFullDateString } from '@/Coach/util';
+
+import { ERROR_MESSAGE, INITIAL_NUMBER_STATE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { separateFullDate } from '@/Shared/utils';
+
 import {
   CalendarTimeType,
   CoachScheduleRequestCalendarTimeType,
   CrewSelectTimeType,
   StringDictionaryType,
-} from '@/common/types/domain';
-import { separateFullDate } from '@/common/utils';
+} from '@/Types/domain';
 
 const defaultTimes = [
   '10:00',
@@ -231,13 +236,13 @@ const CoachInterviewCreatePage = () => {
       </S.HeaderBox>
 
       <S.DateBox>
-        <CoachCreateTimeCalendar
+        <CreateTimeCalendar
           onChangeDateLine={resetTimes}
           getHandleClickDay={getHandleClickDay}
           haveTimeDays={haveTimeDays}
         />
 
-        <ScrollContainer>
+        <S.ScrollContainer>
           <S.AllTimeButton active={isAllSelectedTimes} onClick={handleClickAllTimeButton}>
             {isAllSelectedTimes ? '전체 해제' : '전체 선택'}
           </S.AllTimeButton>
@@ -251,7 +256,7 @@ const CoachInterviewCreatePage = () => {
               {defaultTime}
             </Time>
           ))}
-        </ScrollContainer>
+        </S.ScrollContainer>
       </S.DateBox>
       <S.ButtonContainer>
         <Link to={PAGE.COACH_HOME}>

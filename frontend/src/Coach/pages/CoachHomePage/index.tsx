@@ -3,15 +3,19 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styled';
 
-import CoachScheduleCalendar from '@/Coach/components/CoachScheduleCalendar';
-import Button from '@/common/components/@common/Button/styled';
-import CommentModal from '@/common/components/@common/CommentModal';
-import InterviewDetailModal from '@/common/components/@common/InterviewDetailModal';
-import useModal from '@/common/components/@common/Modal/useModal';
-import { PAGE } from '@/common/constants';
-import CalendarProvider from '@/common/context/CalendarProvider';
-import LocalStorage from '@/common/localStorage';
-import { InterviewStatusType } from '@/common/types/domain';
+import ScheduleCalendar from '@/Coach/components/ScheduleCalendar';
+
+import Button from '@/Shared/components/Button/styled';
+import CommentModal from '@/Shared/components/CommentModal';
+import InterviewDetailModal from '@/Shared/components/InterviewDetailModal';
+import useModal from '@/Shared/components/Modal/useModal';
+
+import CalendarProvider from '@/Shared/context/CalendarProvider';
+
+import { PAGE } from '@/Shared/constants';
+import LocalStorage from '@/Shared/localStorage';
+
+import { InterviewStatusType } from '@/Types/domain';
 
 const CoachHomePage = () => {
   const memberRole = LocalStorage.getMemberRole();
@@ -64,7 +68,7 @@ const CoachHomePage = () => {
         </Link>
       </S.TitleBox>
       <CalendarProvider selectMode="SINGLE">
-        <CoachScheduleCalendar
+        <ScheduleCalendar
           key={calendarRerenderkeyRef.current}
           getHandleClickSchedule={getHandleClickSchedule}
           getHandleClickCommentButton={getHandleClickCommentButton}
