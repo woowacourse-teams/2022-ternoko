@@ -2,13 +2,14 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { ThemeProvider } from 'styled-components';
 
-import LoadingProvider from '@/context/LoadingProvider';
-import ToastProvider from '@/context/ToastProvider';
-import UserProvider from '@/context/UserProvider';
+import AppRoutes from '@/Router/AppRoutes';
 
-import AppRoutes from '@/AppRoutes';
-import GlobalStyle from '@/styles/GlobalStyle';
-import theme from '@/styles/theme';
+import GlobalStyle from '@/Styles/GlobalStyle';
+import theme from '@/Styles/theme';
+
+import LoadingProvider from '@/Shared/context/LoadingProvider';
+import ToastProvider from '@/Shared/context/ToastProvider';
+import UserProvider from '@/Shared/context/UserProvider';
 
 const queryClient = new QueryClient();
 
