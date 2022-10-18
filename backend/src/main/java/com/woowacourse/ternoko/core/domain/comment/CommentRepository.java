@@ -10,11 +10,9 @@ import org.springframework.data.repository.query.Param;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByInterviewId(Long interviewId);
 
-//    void deleteByInterviewIdAndMemberId(Long interviewId, Long memberId);
-
     @Modifying(clearAutomatically = true)
     @Query("DELETE FROM Comment c WHERE c.interview = :interview and c.memberId IN (:coachId, :crewId)")
     void deleteByInterviewIdAndMemberIds(@Param("interview") final Interview interview,
-                                               @Param("coachId") final Long coachId,
-                                               @Param("crewId") final Long crewId);
+                                         @Param("coachId") final Long coachId,
+                                         @Param("crewId") final Long crewId);
 }
