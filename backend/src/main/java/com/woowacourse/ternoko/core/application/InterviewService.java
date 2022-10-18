@@ -237,8 +237,8 @@ public class InterviewService {
     }
 
     private void deleteComment(Long crewId, Interview interview) {
-        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), crewId);
-        commentRepository.deleteByInterviewIdAndMemberId(interview.getId(), interview.getCoach().getId());
+        final Long coachId = interview.getCoach().getId();
+        commentRepository.deleteByInterviewIdAndMemberIds(interview, coachId, crewId);
     }
 
     private void deleteInterview(final Long crewId, final Interview interview) {
