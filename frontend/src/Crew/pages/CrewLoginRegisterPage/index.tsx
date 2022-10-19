@@ -64,10 +64,9 @@ const CrewLoginRegisterPage = () => {
   useEffect(() => {
     (async () => {
       const response = await getCrewInfoAPI();
-      const { name, imageUrl } = response.data;
 
-      setName(name);
-      setImageUrl(imageUrl);
+      setName(response.data.name);
+      setImageUrl(response.data.imageUrl);
     })();
   }, []);
 

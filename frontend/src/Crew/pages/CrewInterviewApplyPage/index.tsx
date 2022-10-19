@@ -104,7 +104,7 @@ const CrewInterviewApplyPage = () => {
       : getCoachScheduleAPI(coachId, year, month);
 
   const updateStatusWhenCalendarShow = (calendarTimes: AvailableTimeType[]) => {
-    const schedules = calendarTimes.reduce((acc, { id, calendarTime }: AvailableTimeType) => {
+    const schedules = calendarTimes.reduce((acc, { id, calendarTime }) => {
       const { day, time } = separateFullDate(calendarTime);
 
       acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], { id, time }] : [{ id, time }];

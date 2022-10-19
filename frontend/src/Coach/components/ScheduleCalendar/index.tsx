@@ -19,7 +19,7 @@ import { getCoachInterviewAPI } from '@/Crew/api';
 
 import { isOverToday, separateFullDate } from '@/Shared/utils';
 
-import { DayNameOfWeekType, InterviewStatusType } from '@/Types/domain';
+import { InterviewStatusType } from '@/Types/domain';
 
 type ScheduleType = {
   id: number;
@@ -129,7 +129,7 @@ const CoachScheduleCalendar = ({
     <S.Box>
       <Calendar>
         <S.WeekDay>
-          {dayNamesOfWeek.map((dayNameOfWeek: DayNameOfWeekType) => (
+          {dayNamesOfWeek.map((dayNameOfWeek) => (
             <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
           ))}
         </S.WeekDay>

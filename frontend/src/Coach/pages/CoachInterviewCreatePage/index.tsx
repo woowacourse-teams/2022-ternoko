@@ -114,8 +114,7 @@ const CoachInterviewCreatePage = () => {
 
   const getHandleClickDay = (day: number) => () => {
     const currentCalendarTime = calendarTimes.find(
-      (calendarTime: CalendarTimeType) =>
-        calendarTime.year === year && calendarTime.month === month,
+      (calendarTime) => calendarTime.year === year && calendarTime.month === month,
     );
 
     if (currentCalendarTime) {
@@ -123,16 +122,16 @@ const CoachInterviewCreatePage = () => {
         const finalDay = selectedDates.find((selectedDate) => selectedDate.day !== day)?.day;
 
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) === finalDay)
-          .map((fullDate: string) => separateFullDate(fullDate).time);
+          .filter((time) => Number(separateFullDate(time).day) === finalDay)
+          .map((fullDate) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
       } else if (selectedDates.length >= 1) {
         resetTimes();
       } else {
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) === day)
-          .map((fullDate: string) => separateFullDate(fullDate).time);
+          .filter((time) => Number(separateFullDate(time).day) === day)
+          .map((fullDate) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
       }
@@ -149,13 +148,13 @@ const CoachInterviewCreatePage = () => {
     if (!selectedDates.length) return;
 
     calendarTimes
-      .filter((calendarTime: CalendarTimeType) =>
+      .filter((calendarTime) =>
         selectedDates.some(
           ({ year, month }) => calendarTime.year === year && calendarTime.month === month,
         ),
       )
-      .forEach((calendarTime: CalendarTimeType) => {
-        calendarTime.times = calendarTime.times.filter((fullDate: string) => {
+      .forEach((calendarTime) => {
+        calendarTime.times = calendarTime.times.filter((fullDate) => {
           const { day } = separateFullDate(fullDate);
 
           return selectedDates.every((selectedDate) => selectedDate.day !== Number(day));
@@ -174,7 +173,7 @@ const CoachInterviewCreatePage = () => {
 
     const body = {
       calendarTimes: compactCalendarTimes([...legacyCalendarTimes, ...clickedCalendarTimes]).map(
-        (calendarTime: CalendarTimeType): CoachScheduleRequestCalendarTimeType => ({
+        (calendarTime): CoachScheduleRequestCalendarTimeType => ({
           ...calendarTime,
           times: calendarTime.times.map((time: string) => ({
             time,

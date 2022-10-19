@@ -14,7 +14,7 @@ const useModal = () => {
     setTimeout(() => setDisplay(false), 500);
   };
 
-  return { show, handleOpenModal, display, handleCloseModal };
+  return { show, display, handleOpenModal, handleCloseModal };
 };
 
 export default useModal;
