@@ -16,11 +16,9 @@ import { COACH_INTRODUCE_MAX_LENGTH } from '@/Coach/constants';
 import { isValidIntroduceLength } from '@/Coach/validation';
 
 import { getDuplicatedNicknameStatusAPI } from '@/Shared/api';
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import { isValidNicknameLength } from '@/Shared/validations';
-
-import { CrewType as UserType } from '@/Types/domain';
-import { DuplicatedNicknameStatusType } from '@/Types/domain';
 
 const CoachLoginRegisterPage = () => {
   const navigate = useNavigate();
@@ -52,7 +50,7 @@ const CoachLoginRegisterPage = () => {
         onLoading();
 
         const response = await getDuplicatedNicknameStatusAPI(nickname);
-        const { exists }: DuplicatedNicknameStatusType = response.data;
+        const { exists } = response.data;
 
         if (exists) {
           offLoading();
@@ -64,7 +62,7 @@ const CoachLoginRegisterPage = () => {
         await patchCoachInfoAPI({ nickname, introduce, imageUrl });
         offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_COACH_INFO);
-        initializeUser(() => navigate(PAGE.COACH_HOME));
+        initializeUser(() => navigate(PATH.COACH_HOME));
       } catch (error) {
         offLoading();
       }
@@ -74,10 +72,9 @@ const CoachLoginRegisterPage = () => {
   useEffect(() => {
     (async () => {
       const response = await getCoachInfoAPI();
-      const { name, imageUrl }: UserType = response.data;
 
-      setName(name);
-      setImageUrl(imageUrl);
+      setName(response.data.name);
+      setImageUrl(response.data.imageUrl);
     })();
   }, []);
 

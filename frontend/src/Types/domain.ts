@@ -1,13 +1,3 @@
-// FIXME check this type
-// export type UserType = {
-//   id: number;
-//   name: string;
-//   nickname: string;
-//   imageUrl: string;
-//   introduce?: string;
-//   hasOpenTime: boolean;
-// };
-
 export type CoachType = {
   id: number;
   name: string;
@@ -17,23 +7,17 @@ export type CoachType = {
   hasOpenTime: boolean;
 };
 
-export type CrewType = Omit<CoachType, 'introduce'>;
-
-type InterviewQuestionType = {
-  question: string;
-  answer: string;
-};
-
-export type InterviewRequestBodyType = {
-  coachId: number;
-  interviewDatetime: string;
-  interviewQuestions: InterviewQuestionType[];
-};
-
-export type UserRequestBodyType = {
+export type CrewType = {
+  id: number;
+  name: string;
   nickname: string;
   imageUrl: string;
-  introduce?: string;
+  hasOpenTime: boolean;
+};
+
+export type InterviewQuestionType = {
+  question: string;
+  answer: string;
 };
 
 export type InterviewStatusType =
@@ -71,7 +55,7 @@ export type CalendarTimeType = {
 
 export type TimeStatusType = 'OPEN' | 'USED';
 
-export type CrewSelectTimeType = {
+export type AvailableTimeType = {
   id: number;
   calendarTime: string;
   status: TimeStatusType;
@@ -88,14 +72,6 @@ export type CoachScheduleRequestCalendarTimeType = {
   times: CoachAvailableTimeType[];
 };
 
-export type CoachScheduleRequestBodyType = {
-  calendarTimes: CoachScheduleRequestCalendarTimeType[];
-};
-
-export type CommentRequestBodyType = {
-  comment: string;
-};
-
 export type CommentType = {
   role: MemberRoleType;
   commentId: number;
@@ -104,7 +80,7 @@ export type CommentType = {
 
 export type MemberRoleType = 'CREW' | 'COACH';
 
-export type MemberExtendedRoleType = MemberRoleType | 'ALL';
+export type MemberExtendedRoleType = 'ALL' | MemberRoleType;
 
 export type UserStatusType = {
   accessToken: string;

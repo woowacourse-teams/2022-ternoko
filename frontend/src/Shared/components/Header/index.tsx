@@ -5,7 +5,7 @@ import * as S from './styled';
 
 import { useUserState } from '@/Shared/context/UserProvider';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
 
 const Header = () => {
@@ -19,13 +19,13 @@ const Header = () => {
 
   const handleLogout = () => {
     LocalStorage.removeAccessToken();
-    navigate(PAGE.LOGIN);
+    navigate(PATH.LOGIN);
   };
 
   return (
     <S.Box>
       {memberRole === 'COACH' ? (
-        <Link to={PAGE.COACH_HOME}>
+        <Link to={PATH.COACH_HOME}>
           <picture>
             <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
             <img src="/assets/logo/mainLogo.png" alt="로고" />
@@ -33,7 +33,7 @@ const Header = () => {
           <h1>코치도 터놓고</h1>
         </Link>
       ) : (
-        <Link to={PAGE.CREW_HOME}>
+        <Link to={PATH.CREW_HOME}>
           <picture>
             <source srcSet="/assets/logo/mainLogo.avif" type="image/avif" />
             <img src="/assets/logo/mainLogo.png" alt="로고" />
@@ -47,7 +47,7 @@ const Header = () => {
           <S.ProfileImage src={imageUrl} alt="프로필" onClick={toggleDropdown} />
 
           <S.DropdownContainer open={isOpenDropdown}>
-            <Link to={PAGE.MY_PAGE}>
+            <Link to={PATH.MY_PAGE}>
               <S.DropdownItem onClick={toggleDropdown}>마이 페이지</S.DropdownItem>
             </Link>
             <S.DropdownItem onClick={handleLogout}>로그아웃</S.DropdownItem>

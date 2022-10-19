@@ -12,7 +12,7 @@ import useModal from '@/Shared/components/Modal/useModal';
 
 import CalendarProvider from '@/Shared/context/CalendarProvider';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
 
 import { InterviewStatusType } from '@/Types/domain';
@@ -63,7 +63,7 @@ const CoachHomePage = () => {
     <>
       <S.TitleBox>
         <h2>면담 리스트</h2>
-        <Link to={PAGE.COACH_INTERVIEW_CREATE}>
+        <Link to={PATH.COACH_INTERVIEW_CREATE}>
           <Button home>스케쥴 생성</Button>
         </Link>
       </S.TitleBox>

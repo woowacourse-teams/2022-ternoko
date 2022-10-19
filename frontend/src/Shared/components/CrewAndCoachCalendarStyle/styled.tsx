@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { DayType } from '@/Shared/types/domain';
+import { DayType } from '@/Types/domain';
 
 export const Box = styled.div`
   width: max-content;

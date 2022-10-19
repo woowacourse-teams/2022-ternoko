@@ -7,10 +7,8 @@ import TernokoLoading from '@/Shared/components/TernokoLoading';
 import { useUserActions } from '@/Shared/context/UserProvider';
 
 import { getUserStatusAPI } from '@/Shared/api';
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
-
-import { UserStatusType } from '@/Types/domain';
 
 const OAuthRedirectHandlerPage = () => {
   const navigate = useNavigate();
@@ -24,7 +22,8 @@ const OAuthRedirectHandlerPage = () => {
       code as string,
       process.env.SLACK_REDIRECT_URL as string,
     );
-    const { accessToken, hasNickname, memberRole }: UserStatusType = response.data;
+
+    const { accessToken, hasNickname, memberRole } = response.data;
 
     LocalStorage.setAccessToken(accessToken);
     LocalStorage.setMemberRole(memberRole);
@@ -32,9 +31,9 @@ const OAuthRedirectHandlerPage = () => {
 
     initializeUser(() => {
       if (memberRole === 'CREW') {
-        navigate(hasNickname ? PAGE.CREW_HOME : PAGE.LOGIN_REGISTER);
+        navigate(hasNickname ? PATH.CREW_HOME : PATH.LOGIN_REGISTER);
       } else {
-        navigate(hasNickname ? PAGE.COACH_HOME : PAGE.LOGIN_REGISTER);
+        navigate(hasNickname ? PATH.COACH_HOME : PATH.LOGIN_REGISTER);
       }
     });
   })();

@@ -13,9 +13,10 @@ import { useToastActions } from '@/Shared/context/ToastProvider';
 import { getInterviewAPI } from '@/Crew/api';
 
 import { deleteCrewInterviewAPI } from '@/Shared/api';
-import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
-import { InterviewType, MemberRoleType } from '@/Shared/types/domain';
+import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
 import { getDateString, getTimeString } from '@/Shared/utils';
+
+import { InterviewType, MemberRoleType } from '@/Types/domain';
 
 type InterviewDetailModalProps = {
   show: boolean;
@@ -34,7 +35,7 @@ const InterviewDetailModal = ({
   handleCloseModal,
   afterDeleteInterview,
 }: InterviewDetailModalProps) => {
-  const [interview, setInterview] = useState<InterviewType | null>();
+  const [interview, setInterview] = useState<InterviewType | null>(null);
 
   const canDelete = interview
     ? !['COMPLETED', 'CREW_COMPLETED', 'COACH_COMPLETED'].includes(interview.status)

@@ -25,13 +25,14 @@ import { useUserState } from '@/Shared/context/UserProvider';
 import { getCoachScheduleAPI, postCoachScheduleAPI } from '@/Coach/api';
 import { getFullDateString } from '@/Coach/util';
 
-import { ERROR_MESSAGE, INITIAL_NUMBER_STATE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { INITIAL_NUMBER_STATE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import { separateFullDate } from '@/Shared/utils';
 
 import {
   CalendarTimeType,
   CoachScheduleRequestCalendarTimeType,
-  CrewSelectTimeType,
   StringDictionaryType,
 } from '@/Types/domain';
 
@@ -52,7 +53,7 @@ const defaultTimes = [
   '16:30',
   '17:00',
   '17:30',
-];
+] as const;
 
 const compactCalendarTimes = (times: CalendarTimeType[]) => {
   const result = times.reduce((acc, { year, month, times }) => {
@@ -113,8 +114,7 @@ const CoachInterviewCreatePage = () => {
 
   const getHandleClickDay = (day: number) => () => {
     const currentCalendarTime = calendarTimes.find(
-      (calendarTime: CalendarTimeType) =>
-        calendarTime.year === year && calendarTime.month === month,
+      (calendarTime) => calendarTime.year === year && calendarTime.month === month,
     );
 
     if (currentCalendarTime) {
@@ -122,16 +122,16 @@ const CoachInterviewCreatePage = () => {
         const finalDay = selectedDates.find((selectedDate) => selectedDate.day !== day)?.day;
 
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) === finalDay)
-          .map((fullDate: string) => separateFullDate(fullDate).time);
+          .filter((time) => Number(separateFullDate(time).day) === finalDay)
+          .map((fullDate) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
       } else if (selectedDates.length >= 1) {
         resetTimes();
       } else {
         const times = currentCalendarTime.times
-          .filter((time: string) => Number(separateFullDate(time).day) === day)
-          .map((fullDate: string) => separateFullDate(fullDate).time);
+          .filter((time) => Number(separateFullDate(time).day) === day)
+          .map((fullDate) => separateFullDate(fullDate).time);
 
         setSelectedTimes(times);
       }
@@ -148,13 +148,13 @@ const CoachInterviewCreatePage = () => {
     if (!selectedDates.length) return;
 
     calendarTimes
-      .filter((calendarTime: CalendarTimeType) =>
+      .filter((calendarTime) =>
         selectedDates.some(
           ({ year, month }) => calendarTime.year === year && calendarTime.month === month,
         ),
       )
-      .forEach((calendarTime: CalendarTimeType) => {
-        calendarTime.times = calendarTime.times.filter((fullDate: string) => {
+      .forEach((calendarTime) => {
+        calendarTime.times = calendarTime.times.filter((fullDate) => {
           const { day } = separateFullDate(fullDate);
 
           return selectedDates.every((selectedDate) => selectedDate.day !== Number(day));
@@ -173,7 +173,7 @@ const CoachInterviewCreatePage = () => {
 
     const body = {
       calendarTimes: compactCalendarTimes([...legacyCalendarTimes, ...clickedCalendarTimes]).map(
-        (calendarTime: CalendarTimeType): CoachScheduleRequestCalendarTimeType => ({
+        (calendarTime): CoachScheduleRequestCalendarTimeType => ({
           ...calendarTime,
           times: calendarTime.times.map((time: string) => ({
             time,
@@ -210,17 +210,16 @@ const CoachInterviewCreatePage = () => {
       const response = await getCoachScheduleAPI(id, year, month);
 
       const recentCalendarTimes = compactCalendarTimes(
-        response.data.calendarTimes.map(({ calendarTime }: CrewSelectTimeType) => {
+        response.data.calendarTimes.map(({ calendarTime }) => {
           const { year, month } = separateFullDate(calendarTime);
 
-          return { year, month, times: [calendarTime] };
+          return { year: Number(year), month: Number(month), times: [calendarTime] };
         }),
       );
 
       const oldCalendarTimes = calendarTimes.filter(({ year, month }) =>
         recentCalendarTimes.every(
-          (calendarTime: CalendarTimeType) =>
-            calendarTime.year !== year || calendarTime.month !== month,
+          (calendarTime) => calendarTime.year !== year || calendarTime.month !== month,
         ),
       );
 
@@ -231,7 +230,7 @@ const CoachInterviewCreatePage = () => {
   return (
     <S.Box>
       <S.HeaderBox>
-        <TitleBox to={PAGE.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
+        <TitleBox to={PATH.COACH_HOME}>면담 스케쥴 만들기</TitleBox>
         <Button onClick={handleOpenModal}>{month}월 한눈에 보기</Button>
       </S.HeaderBox>
 
@@ -259,7 +258,7 @@ const CoachInterviewCreatePage = () => {
         </S.ScrollContainer>
       </S.DateBox>
       <S.ButtonContainer>
-        <Link to={PAGE.COACH_HOME}>
+        <Link to={PATH.COACH_HOME}>
           <Button width="100%" height="35px" white={true}>
             홈으로
           </Button>

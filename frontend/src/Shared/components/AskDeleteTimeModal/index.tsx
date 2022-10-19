@@ -8,7 +8,7 @@ import { useToastActions } from '@/Shared/context/ToastProvider';
 
 import { deleteCoachInterviewAPI } from '@/Coach/api';
 
-import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { CONFIRM_DELETE_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
 
 type AskDeleteTimeModalProps = {
   show: boolean;

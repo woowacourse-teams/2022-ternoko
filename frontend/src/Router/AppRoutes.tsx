@@ -13,7 +13,7 @@ import CalendarProvider from '@/Shared/context/CalendarProvider';
 import { useLoadingState } from '@/Shared/context/LoadingProvider';
 import { useUserActions } from '@/Shared/context/UserProvider';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 
 const CrewHomePage = lazy(() => import('@/Crew/pages/CrewHomePage'));
 const CrewInterviewApplyPage = lazy(() => import('@/Crew/pages/CrewInterviewApplyPage'));
@@ -40,28 +40,28 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Suspense fallback={<TernokoLoading />}>
         <Routes>
-          <Route path={PAGE.LOGIN} element={<LoginPage />} />
-          <Route path={PAGE.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
-          <Route path={PAGE.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
-          <Route path={PAGE.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
+          <Route path={PATH.LOGIN} element={<LoginPage />} />
+          <Route path={PATH.OAUTH_REDIRECT} element={<OAuthRedirectHandlerPage />} />
+          <Route path={PATH.NOT_FOUND} element={<NotFoundPage type="DEFAULT" />} />
+          <Route path={PATH.ACCESS_DENY} element={<NotFoundPage type="DENY" />} />
 
-          <Route path={PAGE.BASE} element={<Layout />}>
+          <Route path={PATH.BASE} element={<Layout />}>
             <Route element={<PrivateRoute auth="ALL" checkNickname={false} />}>
-              <Route path={PAGE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
+              <Route path={PATH.LOGIN_REGISTER} element={<LoginRegisterPage />} />
             </Route>
             <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
-              <Route path={PAGE.CREW_HOME} element={<CrewHomePage />} />
+              <Route path={PATH.CREW_HOME} element={<CrewHomePage />} />
             </Route>
 
             <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
               <Route
-                path={`${PAGE.INTERVIEW_COMPLETE}/:interviewId`}
+                path={`${PATH.INTERVIEW_COMPLETE}/:interviewId`}
                 element={<CrewInterviewCompletePage />}
               />
             </Route>
             <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
               <Route
-                path={PAGE.COACH_INTERVIEW_CREATE}
+                path={PATH.COACH_INTERVIEW_CREATE}
                 element={
                   <CalendarProvider selectMode="MULTIPLE">
                     <CoachInterviewCreatePage />
@@ -70,16 +70,16 @@ const AppRoutes = () => {
               />
             </Route>
             <Route element={<PrivateRoute auth="COACH" checkNickname={true} />}>
-              <Route path={PAGE.COACH_HOME} element={<CoachHomePage />} />
+              <Route path={PATH.COACH_HOME} element={<CoachHomePage />} />
             </Route>
             <Route element={<PrivateRoute auth="ALL" checkNickname={true} />}>
-              <Route path={PAGE.MY_PAGE} element={<MyPage />} />
+              <Route path={PATH.MY_PAGE} element={<MyPage />} />
             </Route>
           </Route>
 
           <Route element={<PrivateRoute auth="CREW" checkNickname={true} />}>
             <Route
-              path={PAGE.INTERVIEW_APPLY}
+              path={PATH.INTERVIEW_APPLY}
               element={
                 <CalendarProvider selectMode="SINGLE">
                   <CrewInterviewApplyPage />

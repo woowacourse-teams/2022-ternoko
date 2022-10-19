@@ -12,7 +12,7 @@ export const getFullDateString = (
 ) => `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${time}`;
 
 export const getDayNameOfWeek = (year: number, month: number, day: number): DayNameOfWeekType => {
-  return dayNamesOfWeek[new Date(year, convertMonthToMonthIndex(month), day).getDay()] as any;
+  return dayNamesOfWeek[new Date(year, convertMonthToMonthIndex(month), day).getDay()];
 };
 
 export const generateDayOfWeekWithStartDay = (
@@ -20,7 +20,7 @@ export const generateDayOfWeekWithStartDay = (
   month: number,
 ): DayOfWeekWithStartDayType[] => {
   const dayNamesOfWeekWithStartDay = dayNamesOfWeek.map(
-    (dayNameOfWeek: DayNameOfWeekType) =>
+    (dayNameOfWeek) =>
       ({
         name: dayNameOfWeek,
         startDay: 1,

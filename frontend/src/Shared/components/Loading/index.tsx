@@ -1,20 +1,5 @@
 import * as S from './styled';
 
-export type TernokoMemberNicknameType =
-  | '앤지'
-  | '애쉬'
-  | '열음'
-  | '바니'
-  | '수달'
-  | '아놀드'
-  | '록바';
-
-type TernokoMemberType = {
-  nickname: TernokoMemberNicknameType;
-  pngImageUrl: string;
-  avifImageUrl: string;
-};
-
 const ternokoMembers = [
   {
     nickname: '앤지',
@@ -51,7 +36,7 @@ const ternokoMembers = [
     pngImageUrl: '/assets/image/angel.png',
     avifImageUrl: '/assets/image/lokba.avif',
   },
-] as TernokoMemberType[];
+] as const;
 
 type LoadingProps = {
   additionalBoxStyle?: string;

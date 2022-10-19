@@ -1,8 +1,8 @@
-import BabyShowMoreModal, { BabyModalPositionType } from '../BabyShowMoreModal';
-
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import * as S from './styled';
+
+import BabyShowMoreModal, { BabyModalPositionType } from '@/Coach/components/BabyShowMoreModal';
 
 import Button from '@/Shared/components/Button/styled';
 import Calendar from '@/Shared/components/Calendar';
@@ -19,7 +19,7 @@ import { getCoachInterviewAPI } from '@/Crew/api';
 
 import { isOverToday, separateFullDate } from '@/Shared/utils';
 
-import { DayNameOfWeekType, InterviewStatusType, InterviewType } from '@/Types/domain';
+import { InterviewStatusType } from '@/Types/domain';
 
 type ScheduleType = {
   id: number;
@@ -86,10 +86,7 @@ const CoachScheduleCalendar = ({
       const response = await getCoachInterviewAPI(year, month);
 
       const schedules = response.data.calendar.reduce(
-        (
-          acc: SchedulesType,
-          { id, crewNickname, interviewStartTime, interviewEndTime, status }: InterviewType,
-        ) => {
+        (acc, { id, crewNickname, interviewStartTime, interviewEndTime, status }) => {
           const { day, time: startTime } = separateFullDate(interviewStartTime);
           const { time: endTime } = separateFullDate(interviewEndTime);
           const schedule = { id, crewNickname, times: [startTime, endTime], status };
@@ -98,7 +95,7 @@ const CoachScheduleCalendar = ({
 
           return acc;
         },
-        {},
+        {} as SchedulesType,
       );
 
       setSchedules(schedules);
@@ -132,7 +129,7 @@ const CoachScheduleCalendar = ({
     <S.Box>
       <Calendar>
         <S.WeekDay>
-          {dayNamesOfWeek.map((dayNameOfWeek: DayNameOfWeekType) => (
+          {dayNamesOfWeek.map((dayNameOfWeek) => (
             <div key={dayNameOfWeek}>{dayNameOfWeek}</div>
           ))}
         </S.WeekDay>

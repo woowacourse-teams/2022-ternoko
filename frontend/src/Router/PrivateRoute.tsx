@@ -8,7 +8,7 @@ import TernokoLoading from '@/Shared/components/TernokoLoading';
 import { useUserState } from '@/Shared/context/UserProvider';
 
 import { validateAccessTokenAPI } from '@/Shared/api';
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
 
 import { MemberExtendedRoleType } from '@/Types/domain';
@@ -34,13 +34,13 @@ const PrivateRoute = ({ auth, checkNickname }: PrivateRouteProps) => {
   const accessToken = LocalStorage.getAccessToken();
 
   if (!accessToken) {
-    return <Navigate to={PAGE.LOGIN} />;
+    return <Navigate to={PATH.LOGIN} />;
   }
 
   const { nickname } = useUserState();
 
   if (checkNickname && !nickname) {
-    return <Navigate to={PAGE.LOGIN_REGISTER} />;
+    return <Navigate to={PATH.LOGIN_REGISTER} />;
   }
 
   const navigate = useNavigate();

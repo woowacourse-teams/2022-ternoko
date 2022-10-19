@@ -13,7 +13,8 @@ import useModal from '@/Shared/components/Modal/useModal';
 
 import { getInterviewsAPI } from '@/Crew/api';
 
-import { EMPTY_SCREEN_MESSAGE, PAGE } from '@/Shared/constants';
+import { EMPTY_SCREEN_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
 
 import { InterviewStatusType, InterviewType } from '@/Types/domain';
@@ -43,17 +44,11 @@ const CrewHomePage = () => {
     useState<InterviewStatusType>('EDITABLE');
 
   const doingInterviews = useMemo(
-    () =>
-      interviews.filter(
-        ({ status }: InterviewType) => !['CREW_COMPLETED', 'COMPLETED'].includes(status),
-      ),
+    () => interviews.filter(({ status }) => !['CREW_COMPLETED', 'COMPLETED'].includes(status)),
     [interviews],
   );
   const doneInterviews = useMemo(
-    () =>
-      interviews.filter(({ status }: InterviewType) =>
-        ['CREW_COMPLETED', 'COMPLETED'].includes(status),
-      ),
+    () => interviews.filter(({ status }) => ['CREW_COMPLETED', 'COMPLETED'].includes(status)),
     [interviews],
   );
 
@@ -97,7 +92,7 @@ const CrewHomePage = () => {
     <>
       <S.TitleBox>
         <h2>나의 면담</h2>
-        <Link to={PAGE.INTERVIEW_APPLY}>
+        <Link to={PATH.INTERVIEW_APPLY}>
           <Button home>+ 신청하기</Button>
         </Link>
       </S.TitleBox>

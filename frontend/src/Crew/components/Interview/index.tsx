@@ -4,7 +4,7 @@ import * as S from './styled';
 
 import Button from '@/Shared/components/Button/styled';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import { getDateString, getTimeString, isOverToday } from '@/Shared/utils';
 
 import { InterviewType } from '@/Types/domain';
@@ -69,7 +69,7 @@ const Interview = ({
           상세보기
         </Button>
         {['EDITABLE', 'CANCELED'].includes(status) && (
-          <Link to={`${PAGE.INTERVIEW_APPLY}?interviewId=${id}`}>
+          <Link to={`${PATH.INTERVIEW_APPLY}?interviewId=${id}`}>
             <Button orange={true}>
               <picture>
                 <source srcSet="/assets/icon/edit.avif" type="image/avif" />
