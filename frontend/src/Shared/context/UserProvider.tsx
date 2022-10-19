@@ -6,7 +6,7 @@ import { getCoachInfoAPI } from '@/Coach/api';
 
 import { getCrewInfoAPI } from '@/Crew/api';
 
-import { CrewType as UserType } from '@/Shared/types/domain';
+import { CrewType as UserType } from '@/Types/domain';
 
 type UserProviderProps = {
   children: React.ReactNode;
