@@ -165,7 +165,8 @@ public class AcceptanceSupporter extends DatabaseSupporter {
         put("/api/calendar/times", generateHeader(COACH1), new CalendarRequest(List.of(afterTwoDays)));
     }
 
-    protected ExtractableResponse<Response> createInterviewByCoach1(final Crew crew, final InterviewRequest interviewRequest) {
+    protected ExtractableResponse<Response> createInterviewByCoach1(final Crew crew,
+                                                                    final InterviewRequest interviewRequest) {
         return post("/api/interviews/", generateHeader(crew), interviewRequest);
     }
 
@@ -175,7 +176,8 @@ public class AcceptanceSupporter extends DatabaseSupporter {
         return post("/api/interviews/", generateHeader(crew), createInterviewRequest(COACH1, availableDateTime));
     }
 
-    private static InterviewRequest createInterviewRequest(final Coach coach, final AvailableDateTime availableDateTime) {
+    private static InterviewRequest createInterviewRequest(final Coach coach,
+                                                           final AvailableDateTime availableDateTime) {
         return new InterviewRequest(coach.getId(),
                 availableDateTime.getId(),
                 availableDateTime.getLocalDateTime(),

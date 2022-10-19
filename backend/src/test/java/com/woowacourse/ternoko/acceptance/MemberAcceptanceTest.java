@@ -66,7 +66,8 @@ class MemberAcceptanceTest extends AcceptanceSupporter {
     void findCalendarTimesByCrew() {
         // given
         putAvailableTimes_Coach1();
-        final ExtractableResponse<Response> interviewResponse = createInterviewByCoach1(CREW1, COACH1_INTERVIEW_REQUEST1);
+        final ExtractableResponse<Response> interviewResponse = createInterviewByCoach1(CREW1,
+                COACH1_INTERVIEW_REQUEST1);
         final Long interviewId = parseLocationHeader(interviewResponse, "/api/interviews/");
         createInterviewByCoach1(CREW2, COACH1_INTERVIEW_REQUEST2);
 
