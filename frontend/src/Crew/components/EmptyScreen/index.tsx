@@ -1,6 +1,6 @@
 import * as S from './styled';
 
-import { EMPTY_SCREEN_MESSAGE } from '@/Shared/constants';
+import { EMPTY_SCREEN_MESSAGE } from '@/Shared/constants/message';
 
 import { ValueofType } from '@/Types/utilities';
 

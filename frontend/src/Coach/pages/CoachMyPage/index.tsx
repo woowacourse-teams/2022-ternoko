@@ -15,10 +15,9 @@ import { getCoachInfoAPI, patchCoachInfoAPI } from '@/Coach/api';
 import { COACH_INTRODUCE_MAX_LENGTH } from '@/Coach/constants';
 import { isValidIntroduceLength } from '@/Coach/validation';
 
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import { isValidNicknameLength } from '@/Shared/validations';
-
-import { CoachType as UserType } from '@/Types/domain';
 
 const CoachMyPage = () => {
   const { showToast } = useToastActions();
@@ -74,14 +73,12 @@ const CoachMyPage = () => {
   useEffect(() => {
     (async () => {
       const response = await getCoachInfoAPI();
-      const user: UserType = response.data;
 
-      setNickname(user.nickname);
-      setImageUrl(user.imageUrl);
-      setIntroduce(user.introduce);
-
-      defaultNicknameRef.current = user.nickname;
-      defaultIntroduceRef.current = user.introduce;
+      setNickname(response.data.nickname);
+      setImageUrl(response.data.imageUrl);
+      setIntroduce(response.data.introduce);
+      defaultNicknameRef.current = response.data.nickname;
+      defaultIntroduceRef.current = response.data.introduce;
     })();
   }, []);
 
@@ -147,7 +144,7 @@ const CoachMyPage = () => {
           </S.ButtonContainer>
         ) : (
           <S.ButtonContainer>
-            <Link to={PAGE.COACH_HOME}>
+            <Link to={PATH.COACH_HOME}>
               <Button width="100%" white={true}>
                 홈으로
               </Button>

@@ -9,7 +9,7 @@ import useModal from '@/Shared/components/Modal/useModal';
 
 import { getInterviewAPI } from '@/Crew/api';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
 import { getDateString, getTimeString } from '@/Shared/utils';
 
@@ -26,7 +26,7 @@ const CrewInterviewCompletePage = () => {
 
   const afterDeleteInterview = () => {
     handleCloseModal();
-    navigate(PAGE.CREW_HOME);
+    navigate(PATH.CREW_HOME);
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const CrewInterviewCompletePage = () => {
           면담확인
         </Button>
 
-        <Link to={PAGE.CREW_HOME}>
+        <Link to={PATH.CREW_HOME}>
           <Button width="100%" height="3.5rem">
             홈으로
           </Button>

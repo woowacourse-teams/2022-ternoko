@@ -1,7 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { TernokoMemberNicknameType } from './';
-
 type BoxProps = {
   additionalBoxStyle?: string;
 };
@@ -81,6 +79,8 @@ const toTopToTop = keyframes`
     bottom: 50%;
   }
 `;
+
+type TernokoMemberNicknameType = '앤지' | '애쉬' | '열음' | '바니' | '수달' | '아놀드' | '록바';
 
 type ProfileProps = {
   nickname: TernokoMemberNicknameType;

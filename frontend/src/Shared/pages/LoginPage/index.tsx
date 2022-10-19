@@ -2,7 +2,7 @@ import * as S from './styled';
 
 import Loading from '@/Shared/components/Loading';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 
 const LoginPage = () => {
   return (
@@ -18,7 +18,7 @@ const LoginPage = () => {
               <img src="/assets/logo/mainLogo.png" alt="로고" />
             </picture>
           </S.LogoBox>
-          <a href={PAGE.SLACK_LOGIN_SERVER}>
+          <a href={PATH.SLACK_LOGIN_SERVER}>
             <S.LoginButton>
               <picture>
                 <source srcSet="/assets/icon/slack.avif" type="image/avif" />

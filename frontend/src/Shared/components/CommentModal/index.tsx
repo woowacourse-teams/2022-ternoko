@@ -10,14 +10,11 @@ import { useLoadingActions } from '@/Shared/context/LoadingProvider';
 import { useToastActions } from '@/Shared/context/ToastProvider';
 
 import { getCommentAPI, postCommentAPI, putCommentAPI } from '@/Shared/api';
-import {
-  COMMENT_MAX_LENGTH,
-  ERROR_MESSAGE,
-  INITIAL_NUMBER_STATE,
-  SUCCESS_MESSAGE,
-} from '@/Shared/constants';
-import { CommentType, InterviewStatusType, MemberRoleType } from '@/Shared/types/domain';
+import { COMMENT_MAX_LENGTH, INITIAL_NUMBER_STATE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
 import { isValidCommentLength } from '@/Shared/validations';
+
+import { InterviewStatusType, MemberRoleType } from '@/Types/domain';
 
 type CommentModalProps = {
   show: boolean;
@@ -92,12 +89,8 @@ const CommentModal = ({
 
     (async () => {
       const response = await getCommentAPI(Number(interviewId));
-      const coachCommentItem = response.data.comments.find(
-        ({ role }: CommentType) => role === 'COACH',
-      ) as CommentType;
-      const crewCommentItem = response.data.comments.find(
-        ({ role }: CommentType) => role === 'CREW',
-      ) as CommentType;
+      const coachCommentItem = response.data.comments.find(({ role }) => role === 'COACH');
+      const crewCommentItem = response.data.comments.find(({ role }) => role === 'CREW');
 
       if (coachCommentItem) {
         setCoachComment(coachCommentItem.comment);

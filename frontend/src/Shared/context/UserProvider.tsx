@@ -6,8 +6,6 @@ import { getCoachInfoAPI } from '@/Coach/api';
 
 import { getCrewInfoAPI } from '@/Crew/api';
 
-import { CrewType as UserType } from '@/Types/domain';
-
 type UserProviderProps = {
   children: React.ReactNode;
 };
@@ -40,11 +38,10 @@ const UserProvider = ({ children }: UserProviderProps) => {
       if (!accessToken || !memberRole) return;
 
       const response = await (memberRole === 'CREW' ? getCrewInfoAPI() : getCoachInfoAPI());
-      const user: UserType = response.data;
 
-      setId(user.id);
-      setNickname(user.nickname);
-      setImageUrl(user.imageUrl);
+      setId(response.data.id);
+      setNickname(response.data.nickname);
+      setImageUrl(response.data.imageUrl);
 
       if (typeof callback === 'function') callback();
     },

@@ -13,10 +13,9 @@ import { useUserActions } from '@/Shared/context/UserProvider';
 
 import { getCrewInfoAPI, patchCrewInfoAPI } from '@/Crew/api';
 
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import { isValidNicknameLength } from '@/Shared/validations';
-
-import { CoachType as UserType } from '@/Types/domain';
 
 const CrewMyPage = () => {
   const { showToast } = useToastActions();
@@ -65,12 +64,10 @@ const CrewMyPage = () => {
   useEffect(() => {
     (async () => {
       const response = await getCrewInfoAPI();
-      const user: UserType = response.data;
 
-      setNickname(user.nickname);
-      setImageUrl(user.imageUrl);
-
-      defaultNicknameRef.current = user.nickname;
+      setNickname(response.data.nickname);
+      setImageUrl(response.data.imageUrl);
+      defaultNicknameRef.current = response.data.nickname;
     })();
   }, []);
 
@@ -109,7 +106,7 @@ const CrewMyPage = () => {
           </S.ButtonContainer>
         ) : (
           <S.ButtonContainer>
-            <Link to={PAGE.CREW_HOME}>
+            <Link to={PATH.CREW_HOME}>
               <Button width="100%" white={true}>
                 홈으로
               </Button>

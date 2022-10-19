@@ -13,10 +13,9 @@ import { useUserActions } from '@/Shared/context/UserProvider';
 import { getCrewInfoAPI, patchCrewInfoAPI } from '@/Crew/api';
 
 import { getDuplicatedNicknameStatusAPI } from '@/Shared/api';
-import { ERROR_MESSAGE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import { isValidNicknameLength } from '@/Shared/validations';
-
-import { DuplicatedNicknameStatusType, CrewType as UserType } from '@/Types/domain';
 
 const CrewLoginRegisterPage = () => {
   const navigate = useNavigate();
@@ -43,7 +42,7 @@ const CrewLoginRegisterPage = () => {
         onLoading();
 
         const response = await getDuplicatedNicknameStatusAPI(nickname);
-        const { exists }: DuplicatedNicknameStatusType = response.data;
+        const { exists } = response.data;
 
         if (exists) {
           offLoading();
@@ -55,7 +54,7 @@ const CrewLoginRegisterPage = () => {
         await patchCrewInfoAPI({ nickname, imageUrl });
         offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_CREW_INFO);
-        initializeUser(() => navigate(PAGE.CREW_HOME));
+        initializeUser(() => navigate(PATH.CREW_HOME));
       } catch (error) {
         offLoading();
       }
@@ -65,7 +64,7 @@ const CrewLoginRegisterPage = () => {
   useEffect(() => {
     (async () => {
       const response = await getCrewInfoAPI();
-      const { name, imageUrl }: UserType = response.data;
+      const { name, imageUrl } = response.data;
 
       setName(name);
       setImageUrl(imageUrl);

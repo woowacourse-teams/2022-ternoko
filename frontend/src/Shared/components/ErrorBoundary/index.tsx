@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 
 type ErrorBoundaryProps = {
   children?: React.ReactNode;
@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         hasError: false,
       });
 
-      return <Navigate to={PAGE.LOGIN} />;
+      return <Navigate to={PATH.LOGIN} />;
     }
 
     return children;

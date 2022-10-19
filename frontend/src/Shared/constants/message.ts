@@ -2,31 +2,12 @@ import { COACH_INTRODUCE_MAX_LENGTH, COACH_INTRODUCE_MIN_LENGTH } from '@/Coach/
 
 import { CREW_APPLY_FORM_MAX_LENGTH, CREW_APPLY_FORM_MIN_LENGTH } from '@/Crew/constants';
 
-export const PAGE = {
-  BASE: '/',
-  LOGIN: '/login',
-  LOGIN_REGISTER: '/login/register',
-  SLACK_LOGIN_SERVER: `https://slack.com/openid/connect/authorize?scope=openid,email,profile&response_type=code&redirect_uri=${process.env.SLACK_REDIRECT_URL}&client_id=${process.env.SLACK_CLIENT_ID}`,
-  CREW_HOME: '/',
-  INTERVIEW_APPLY: '/interview/apply',
-  INTERVIEW_COMPLETE: '/interview/complete',
-  COACH_INTERVIEW_CREATE: '/coach/interview/create',
-  COACH_HOME: '/coach/home',
-  MY_PAGE: '/mypage',
-  OAUTH_REDIRECT: '/api/login',
-  ACCESS_DENY: '/access/deny',
-  NOT_FOUND: '*',
-} as const;
-
-export const NICKNAME_MIN_LENGTH = 1;
-
-export const NICKNAME_MAX_LENGTH = 5;
-
-export const COMMENT_MIN_LENGTH = 5;
-
-export const COMMENT_MAX_LENGTH = 25;
-
-export const INITIAL_NUMBER_STATE = -1;
+import {
+  COMMENT_MAX_LENGTH,
+  COMMENT_MIN_LENGTH,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MIN_LENGTH,
+} from '@/Shared/constants';
 
 export const ERROR_MESSAGE = {
   ENTER_IN_RANGE_APPLY_FORM_LENGTH: `면담 입력폼은 ${CREW_APPLY_FORM_MIN_LENGTH}글자 이상 ${CREW_APPLY_FORM_MAX_LENGTH}글자 이하를 입력해주세요.`,
