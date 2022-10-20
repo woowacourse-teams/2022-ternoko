@@ -138,6 +138,10 @@ public class DemoDatabaseInitializer {
                         interview.updateStatus(InterviewStatusType.FIXED);
                     }
                 }
+                for (AvailableDateTime time : times) {
+                    time.changeStatus(AvailableDateTimeStatus.USED);
+                }
+                availableDateTimeRepository.saveAll(times);
             }
         }
 
