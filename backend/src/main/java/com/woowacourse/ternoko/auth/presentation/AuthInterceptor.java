@@ -4,7 +4,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import com.woowacourse.ternoko.auth.application.AuthService;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.TokenInvalidException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         String header = request.getHeader(AUTHORIZATION);
         if (header == null) {
-            throw new InvalidTokenException(ExceptionType.UNAUTHORIZED_MEMBER);
+            throw new TokenInvalidException(ExceptionType.UNAUTHORIZED_MEMBER);
         }
         return authService.isValid(header);
     }

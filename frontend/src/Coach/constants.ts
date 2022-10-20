@@ -1,0 +1,3 @@
+export const COACH_INTRODUCE_MIN_LENGTH = 10;
+
+export const COACH_INTRODUCE_MAX_LENGTH = 100;

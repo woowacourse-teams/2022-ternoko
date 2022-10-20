@@ -50,8 +50,9 @@ public class InterviewController {
     }
 
     @GetMapping("/interviews/{interviewId}")
-    public ResponseEntity<InterviewResponse> findInterviewById(@PathVariable final Long interviewId) {
-        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(interviewId);
+    public ResponseEntity<InterviewResponse> findInterviewById(@AuthenticationPrincipal final Long memberId,
+                                                               @PathVariable final Long interviewId) {
+        final InterviewResponse interviewResponse = interviewService.findInterviewResponseById(memberId, interviewId);
         return ResponseEntity.ok(interviewResponse);
     }
 

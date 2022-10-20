@@ -4,7 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.OVER_LENGTH
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.woowacourse.ternoko.common.exception.InvalidLengthException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class QuestionTest {
     @DisplayName("question에는 255자가 넘어가면 예외를 반환해야 한다.")
     void questionInvalidLengthTest() {
         assertThatThrownBy(() -> Question.from("한".repeat(256)))
-                .isInstanceOf(InvalidLengthException.class)
+                .isInstanceOf(InterviewInvalidException.class)
                 .hasMessage(255 + OVER_LENGTH.getMessage());
     }
 }

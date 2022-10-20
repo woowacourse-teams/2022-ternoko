@@ -4,8 +4,7 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.UNAUTHORIZE
 
 import com.woowacourse.ternoko.auth.exception.TokenNotValidException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.ExpiredTokenException;
-import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.TokenInvalidException;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -49,9 +48,9 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            throw new ExpiredTokenException(ExceptionType.EXPIRED_TOKEN);
+            throw new TokenInvalidException(ExceptionType.EXPIRED_TOKEN);
         } catch (Exception e) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 

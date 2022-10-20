@@ -2,14 +2,18 @@ package com.woowacourse.ternoko.core.domain.member.coach;
 
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @DiscriminatorValue("COACH")
 public class Coach extends Member {
@@ -44,4 +48,20 @@ public class Coach extends Member {
         this(null, name, null, email, userId, imageUrl, null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        Coach coach = (Coach) o;
+        return getId() != null && Objects.equals(getId(), coach.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

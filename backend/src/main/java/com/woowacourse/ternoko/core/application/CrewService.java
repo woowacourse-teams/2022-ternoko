@@ -1,7 +1,10 @@
 package com.woowacourse.ternoko.core.application;
 
-import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.DUPLICATED_MEMBER_NICKNAME;
+
+import com.woowacourse.ternoko.common.exception.CrewInvalidException;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
+import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import com.woowacourse.ternoko.core.dto.request.CrewUpdateRequest;
@@ -18,8 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class CrewService {
 
     private final CrewRepository crewRepository;
+    private final MemberRepository memberRepository;
 
-    public void partUpdateCrew(final Long crewId, final CrewUpdateRequest request) {
+    public void updateCrew(final Long crewId, final CrewUpdateRequest request) {
+        final String requestNickname = request.getNickname();
+
+        if (memberRepository.existsByIdAndNicknameExceptMe(crewId, requestNickname)) {
+            throw new CrewInvalidException(DUPLICATED_MEMBER_NICKNAME, crewId);
+        }
         crewRepository.updateNickNameAndImageUrl(crewId, request.getNickname(), request.getImageUrl());
     }
 
@@ -35,6 +44,6 @@ public class CrewService {
 
     private Crew getCrewById(final Long crewId) {
         return crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(ExceptionType.CREW_NOT_FOUND, crewId));
+                .orElseThrow(() -> new CrewInvalidException(ExceptionType.CREW_NOT_FOUND, crewId));
     }
 }

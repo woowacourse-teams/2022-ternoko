@@ -41,12 +41,16 @@ security:
       secret-key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ih1aovtQShabQ7l0cINw4k1fagApg3qLWiB8Kt59Lno'
       expire-length: 3600000
 
-server:
-  ssl:
-    key-store: classpath:ternoko-keystore.p12
-    key-store-type: PKCS12
-    key-store-password: 980807
-    key-alias: ternoko-keystore
-
 logging:
   config: classpath:log4j2-local.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info
+  health:
+    mail:
+      enabled: false
+
+

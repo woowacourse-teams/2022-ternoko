@@ -11,9 +11,7 @@ import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.
 import static com.woowacourse.ternoko.core.domain.member.MemberType.COACH;
 import static com.woowacourse.ternoko.core.domain.member.MemberType.CREW;
 
-import com.woowacourse.ternoko.common.exception.InterviewStatusException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
-import com.woowacourse.ternoko.common.exception.MemberNotFoundException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
@@ -118,7 +116,7 @@ public class Interview {
 
     private static void validateNextDay(final AvailableDateTime availableDateTime) {
         if (availableDateTime.isPast() || availableDateTime.isToday()) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DATE);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_DATE);
         }
     }
 
@@ -134,14 +132,6 @@ public class Interview {
         formItems.update(interview.getFormItems());
     }
 
-    /**
-     * 1. 취소된 면담을 편집할 때 (원래시간 건드릴 필요 없음) -> 근데 다른시간으로 편집하는거긴 함
-     *  - 새로운 시간으로 갈아끼기만 함
-     * 2. 그냥 면담을 편집할 때
-     *  - 다른 면담가능시간으로 편집 -> 원래시간 OPEN, 새로운시간 갈아끼기
-     *  - 같은 면담가능시간으로 편집 -> 새로운 시간 갈아끼기
-     *
-     */
     private void openOriginTime(final Interview interview) {
         final AvailableDateTime availableDateTime = interview.getAvailableDateTime();
         if (this.availableDateTime.isSame(availableDateTime.getId())) {
@@ -162,7 +152,7 @@ public class Interview {
 
     private void validateUpdateCrew(final Interview interview) {
         if (!isCreatedBy(interview.getCrew().getId())) {
-            throw new InvalidInterviewMemberException(CANNOT_UPDATE_CREW);
+            throw new InterviewInvalidException(CANNOT_UPDATE_CREW);
         }
     }
 
@@ -176,7 +166,7 @@ public class Interview {
 
     private void validateInterviewStatus(final InterviewStatusType invalidStatus) {
         if (this.interviewStatusType == invalidStatus) {
-            throw new InterviewStatusException(CANNOT_EDIT_INTERVIEW);
+            throw new InterviewInvalidException(CANNOT_EDIT_INTERVIEW);
         }
     }
 
@@ -210,7 +200,7 @@ public class Interview {
             return crew.getMemberType();
         }
 
-        throw new MemberNotFoundException(INVALID_INTERVIEW_MEMBER_ID);
+        throw new InterviewInvalidException(INVALID_INTERVIEW_MEMBER_ID);
     }
 
     public boolean canCreateCommentBy(final MemberType memberType) {
@@ -250,6 +240,10 @@ public class Interview {
 
     public boolean isCanceled() {
         return interviewStatusType.equals(CANCELED);
+    }
+
+    public boolean containsMember(final long memberId) {
+        return coach.isSameId(memberId) || crew.isSameId(memberId);
     }
 }
 
