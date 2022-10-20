@@ -11,19 +11,17 @@ import static com.woowacourse.ternoko.common.exception.ExceptionType.USED_BY_OTH
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
 import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.isCanceled;
+import static java.lang.Long.valueOf;
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
-import com.woowacourse.ternoko.common.exception.AvailableDateTimeNotFoundException;
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
-import com.woowacourse.ternoko.common.exception.CrewNotFoundException;
-import com.woowacourse.ternoko.common.exception.InterviewNotFoundException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewCrewIdException;
-import com.woowacourse.ternoko.common.exception.InvalidInterviewDateException;
+import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
+import com.woowacourse.ternoko.common.exception.CoachInvalidException;
+import com.woowacourse.ternoko.common.exception.CrewInvalidException;
+import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
 import com.woowacourse.ternoko.core.domain.interview.Interview;
 import com.woowacourse.ternoko.core.domain.interview.InterviewRepository;
-import com.woowacourse.ternoko.core.domain.interview.InvalidInterviewMemberException;
 import com.woowacourse.ternoko.core.domain.interview.formitem.FormItem;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
@@ -33,9 +31,7 @@ import com.woowacourse.ternoko.core.dto.request.FormItemRequest;
 import com.woowacourse.ternoko.core.dto.request.InterviewRequest;
 import com.woowacourse.ternoko.core.dto.response.InterviewResponse;
 import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
-import com.woowacourse.ternoko.support.alarm.AlarmResponse;
-import com.woowacourse.ternoko.support.alarm.AlarmResponseCache;
-import com.woowacourse.ternoko.support.alarm.SlackMessageType;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -60,7 +56,6 @@ public class InterviewService {
     private final CrewRepository crewRepository;
     private final InterviewRepository interviewRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
-    private final AlarmResponseCache cache;
 
     @Transactional(isolation = SERIALIZABLE)
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
@@ -68,7 +63,7 @@ public class InterviewService {
         validateDuplicateStartTimeByCrew(interviewRequest.getInterviewDatetime(), crewId);
         validateUsedTime(interview);
         interview.changeAvailableTimeStatus(USED);
-        setCreateMessage(interview);
+//        setCreateMessage(interview);
         return interviewRepository.save(interview).getId();
     }
 
@@ -78,7 +73,7 @@ public class InterviewService {
         final boolean existNotCanceled = interviews.stream()
                 .anyMatch(interview -> !interview.isCanceled());
         if (existNotCanceled) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
     }
 
@@ -94,13 +89,13 @@ public class InterviewService {
 
     private void validateUsedTime(final Interview interview) {
         if (interview.getAvailableDateTime().isUsed()) {
-            throw new InvalidInterviewDateException(USED_BY_OTHER);
+            throw new InterviewInvalidException(USED_BY_OTHER);
         }
     }
 
     private AvailableDateTime getAvailableDateTimeById(final Long availableDateTimeId) {
         return availableDateTimeRepository.findById(availableDateTimeId)
-                .orElseThrow(() -> new AvailableDateTimeNotFoundException(AVAILABLE_DATE_TIME_NOT_FOUND,
+                .orElseThrow(() -> new AvailableDateTimeInvalidException(AVAILABLE_DATE_TIME_NOT_FOUND,
                         availableDateTimeId));
     }
 
@@ -112,12 +107,12 @@ public class InterviewService {
 
     private Crew getCrewById(final Long crewId) {
         return crewRepository.findById(crewId)
-                .orElseThrow(() -> new CrewNotFoundException(CREW_NOT_FOUND, crewId));
+                .orElseThrow(() -> new CrewInvalidException(CREW_NOT_FOUND, crewId));
     }
 
     private Coach getCoachById(final Long interviewRequest) {
         return coachRepository.findById(interviewRequest)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, interviewRequest));
+                .orElseThrow(() -> new CoachInvalidException(COACH_NOT_FOUND, interviewRequest));
     }
 
     @Transactional(readOnly = true)
@@ -129,7 +124,7 @@ public class InterviewService {
 
     private void validateOwnMember(final Long memberId, final Interview interview) {
         if (!interview.containsMember(memberId)) {
-            throw new InvalidInterviewMemberException(INVALID_INTERVIEW_BY_MEMBER);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_BY_MEMBER);
         }
     }
 
@@ -176,27 +171,27 @@ public class InterviewService {
 
         updateInterview.changeAvailableTimeStatus(USED);
         interview.update(updateInterview);
-        setUpdateMessage(interview, origin);
+//        setUpdateMessage(interview, origin);
     }
 
     private void validateDuplicate(final Long interviewId,
                                    final Long crewId,
                                    final LocalDateTime interviewDateTime) {
         if (interviewRepository.existsByNotIdAndCrewIdAndInterviewStartTime(interviewId, crewId, interviewDateTime)) {
-            throw new InvalidInterviewDateException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
+            throw new InterviewInvalidException(INVALID_INTERVIEW_DUPLICATE_DATE_TIME);
         }
     }
 
     private void validateUsedAvailableDateTime(final AvailableDateTime origin, final Long updateAvailableDateTimeId) {
         final AvailableDateTime update = getAvailableDateTimeById(updateAvailableDateTimeId);
         if (update.isUsed() && !origin.isSame(update.getId())) {
-            throw new InvalidInterviewDateException(USED_BY_OTHER);
+            throw new AvailableDateTimeInvalidException(USED_BY_OTHER);
         }
     }
 
     private Interview getInterviewById(Long interviewId) {
         return interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new InterviewNotFoundException(INTERVIEW_NOT_FOUND, interviewId));
+                .orElseThrow(() -> new InterviewInvalidException(INTERVIEW_NOT_FOUND, valueOf(interviewId)));
     }
 
     public void cancelAndDeleteAvailableTime(final Long interviewId,
@@ -206,12 +201,12 @@ public class InterviewService {
         if (onlyInterview) {
             saveDuplicatedAvailableDateTimeOfInterview(interview);
             interview.cancel();
-            setCancelMessage(interview);
+//            setCancelMessage(interview);
             return;
         }
 
         interview.cancel();
-        setCancelMessage(interview);
+//        setCancelMessage(interview);
     }
 
     private void saveDuplicatedAvailableDateTimeOfInterview(final Interview interview) {
@@ -226,7 +221,7 @@ public class InterviewService {
         final Interview interview = getInterviewById(interviewId);
         openAvailableDateTimeIfNotCanceled(interview);
         deleteInterview(crewId, interview);
-        setDeleteMessage(interview);
+//        setDeleteMessage(interview);
     }
 
     private void openAvailableDateTimeIfNotCanceled(final Interview interview) {
@@ -242,7 +237,7 @@ public class InterviewService {
 
     private void validateCreator(final Long crewId, final Interview interview) {
         if (!interview.isCreatedBy(crewId)) {
-            throw new InvalidInterviewCrewIdException(INVALID_INTERVIEW_CREW_ID);
+            throw new CrewInvalidException(INVALID_INTERVIEW_CREW_ID, crewId);
         }
     }
 
@@ -266,23 +261,24 @@ public class InterviewService {
                 .collect(Collectors.toList());
     }
 
-    private void setCreateMessage(final Interview interview) {
-        cache.setOrigin(AlarmResponse.from(interview));
-        cache.setMessageType(SlackMessageType.CREW_CREATE);
-    }
+//    private void setCreateMessage(final Interview interview) {
+//        cache.setOrigin(AlarmResponse.from(interview));
+//        cache.setMessageType(SlackMessageType.CREW_CREATE);
+//    }
 
-    private void setUpdateMessage(final Interview interview, final Interview origin) {
-        cache.setOrigin(AlarmResponse.from(origin));
-        cache.setUpdate(AlarmResponse.from(interview));
-        cache.setMessageType(SlackMessageType.CREW_UPDATE);
-    }
+//    private void setUpdateMessage(final Interview interview, final Interview origin) {
+//        cache.setOrigin(AlarmResponse.from(origin));
+//        cache.setUpdate(AlarmResponse.from(interview));
+//        cache.setMessageType(SlackMessageType.CREW_UPDATE);
+//        cache.setMessageType(SlackMessageType.CREW_UPDATE);
+//    }
+//
+//    private void setCancelMessage(final Interview interview) {
+//        cache.setOrigin(AlarmResponse.from(interview));
+//        cache.setMessageType(SlackMessageType.COACH_CANCEL);
+//    }
 
-    private void setCancelMessage(final Interview interview) {
-        cache.setOrigin(AlarmResponse.from(interview));
-        cache.setMessageType(SlackMessageType.COACH_CANCEL);
-    }
-
-    private void setDeleteMessage(final Interview interview) {
-        cache.setOrigin(AlarmResponse.from(interview));
-    }
+//    private void setDeleteMessage(final Interview interview) {
+//        cache.setOrigin(AlarmResponse.from(interview));
+//    }
 }

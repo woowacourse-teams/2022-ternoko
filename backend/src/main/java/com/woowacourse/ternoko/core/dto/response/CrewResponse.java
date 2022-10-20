@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "crewResponseBuilder")
 public class CrewResponse {
 
     private Long id;
@@ -19,7 +19,7 @@ public class CrewResponse {
     private String imageUrl;
 
     public static CrewResponse from(final Crew crew) {
-        return CrewResponse.crewResponseBuilder()
+        return CrewResponse.builder()
                 .id(crew.getId())
                 .name(crew.getName())
                 .nickname(crew.getNickname())

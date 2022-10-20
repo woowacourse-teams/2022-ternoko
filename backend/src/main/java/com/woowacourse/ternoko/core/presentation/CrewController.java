@@ -32,7 +32,7 @@ public class CrewController {
     @PatchMapping("/me")
     public ResponseEntity<Void> updateCrew(@AuthenticationPrincipal final Long crewId,
                                            @RequestBody final CrewUpdateRequest crewUpdateRequest) {
-        crewService.partUpdateCrew(crewId, crewUpdateRequest);
+        crewService.updateCrew(crewId, crewUpdateRequest);
         return ResponseEntity.ok().build();
     }
 }

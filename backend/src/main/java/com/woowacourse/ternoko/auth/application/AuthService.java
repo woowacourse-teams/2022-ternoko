@@ -11,7 +11,7 @@ import com.slack.api.methods.response.openid.connect.OpenIDConnectTokenResponse;
 import com.slack.api.methods.response.openid.connect.OpenIDConnectUserInfoResponse;
 import com.woowacourse.ternoko.auth.dto.response.LoginResponse;
 import com.woowacourse.ternoko.common.exception.ExceptionType;
-import com.woowacourse.ternoko.common.exception.InvalidTokenException;
+import com.woowacourse.ternoko.common.exception.TokenInvalidException;
 import com.woowacourse.ternoko.core.domain.member.Member;
 import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.MemberType;
@@ -20,6 +20,7 @@ import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.domain.member.crew.Crew;
 import com.woowacourse.ternoko.core.domain.member.crew.CrewRepository;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,8 @@ public class AuthService {
     private final String clientId;
     private final String clientSecret;
 
+    private final RandomMemberIdGenerator memberIdGenerator = RandomMemberIdGenerator.of(111, 210, 11, 110);
+
     public AuthService(final MethodsClientImpl slackMethodClient,
                        final MemberRepository memberRepository,
                        final CoachRepository coachRepository,
@@ -56,6 +59,22 @@ public class AuthService {
         this.jwtProvider = jwtProvider;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+    }
+
+    public LoginResponse loginCoach() {
+        final Long coachId = memberIdGenerator.getRandomCoachId();
+        final Member member = memberRepository.findById(coachId)
+                .orElseThrow(() -> new NoSuchElementException("로그인할 coachId가 존재하지 않습니다."));
+
+        return LoginResponse.of(COACH, jwtProvider.createToken(member), true);
+    }
+
+    public LoginResponse loginCrew()  {
+        final Long crewId = memberIdGenerator.getRandomCrewId();
+        final Member member = memberRepository.findById(crewId)
+                .orElseThrow(() -> new NoSuchElementException("로그인할 crewId가 존재하지 않습니다."));
+
+        return LoginResponse.of(CREW, jwtProvider.createToken(member), true);
     }
 
     public LoginResponse login(final String code, String redirectUrl) throws SlackApiException, IOException {
@@ -133,19 +152,19 @@ public class AuthService {
 
     private void validateType(String type) {
         if (!MemberType.existType(type)) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCoachTypeByMemberId(final Long id, final String type) {
         if (COACH.matchType(type) && !coachRepository.existsById(id)) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 
     private void validateCrewTypeByMemberId(final Long id, final String type) {
         if (CREW.matchType(type) && !crewRepository.existsById(id)) {
-            throw new InvalidTokenException(ExceptionType.INVALID_TOKEN);
+            throw new TokenInvalidException(ExceptionType.INVALID_TOKEN);
         }
     }
 }

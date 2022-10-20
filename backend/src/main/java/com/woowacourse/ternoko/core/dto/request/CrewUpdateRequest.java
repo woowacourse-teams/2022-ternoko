@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(builderMethodName = "crewUpdateBuilder")
 public class CrewUpdateRequest {
 
     private String nickname;

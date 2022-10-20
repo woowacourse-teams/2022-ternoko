@@ -1,11 +1,13 @@
 package com.woowacourse.ternoko.core.application;
 
 import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.DUPLICATED_MEMBER_NICKNAME;
 import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
 
-import com.woowacourse.ternoko.common.exception.CoachNotFoundException;
+import com.woowacourse.ternoko.common.exception.CoachInvalidException;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTime;
 import com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeRepository;
+import com.woowacourse.ternoko.core.domain.member.MemberRepository;
 import com.woowacourse.ternoko.core.domain.member.coach.Coach;
 import com.woowacourse.ternoko.core.domain.member.coach.CoachRepository;
 import com.woowacourse.ternoko.core.dto.request.AvailableDateTimeRequest;
@@ -20,6 +22,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +35,12 @@ public class CoachService {
 
     private final CoachRepository coachRepository;
     private final AvailableDateTimeRepository availableDateTimeRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public CoachesResponse findCoaches() {
-        final List<Coach> coaches = coachRepository.findAll();
+        Pageable limit = PageRequest.of(0, 10);
+        final Page<Coach> coaches = coachRepository.findAll(limit);
 
         final List<CoachResponse> coachResponses = coaches.stream()
                 .map(coach -> CoachResponse.of(coach, countAvailableDateTimeByCoachId(coach.getId())))
@@ -60,7 +67,7 @@ public class CoachService {
 
     private Coach getCoachById(final Long coachId) {
         return coachRepository.findById(coachId)
-                .orElseThrow(() -> new CoachNotFoundException(COACH_NOT_FOUND, coachId));
+                .orElseThrow(() -> new CoachInvalidException(COACH_NOT_FOUND, coachId));
     }
 
     public void putAvailableDateTimesByCoachId(final Long coachId,
@@ -98,8 +105,13 @@ public class CoachService {
         return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
     }
 
-    //:todo partUpdateCoach 같은데 현재 PR 에서 변경해도 될지?
-    public void partUpdateCrew(Long coachId, CoachUpdateRequest coachUpdateRequest) {
+    public void updateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
+        final String requestNickname = coachUpdateRequest.getNickname();
+
+        if (memberRepository.existsByIdAndNicknameExceptMe(coachId, requestNickname)) {
+            throw new CoachInvalidException(DUPLICATED_MEMBER_NICKNAME, coachId);
+
+        }
         coachRepository.updateNickNameAndImageUrlAndIntroduce(coachId,
                 coachUpdateRequest.getNickname(),
                 coachUpdateRequest.getImageUrl(),
