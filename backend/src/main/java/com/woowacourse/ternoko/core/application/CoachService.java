@@ -104,7 +104,7 @@ public class CoachService {
             final int year,
             final int month) {
 
-        return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
+        return availableDateTimeRepository.findOpenAndUsedAvailableDateTimesByCoachId(coachId, year, month);
     }
 
     public void updateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
