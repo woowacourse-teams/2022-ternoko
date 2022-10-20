@@ -39,8 +39,8 @@ public interface AvailableDateTimeRepository extends JpaRepository<AvailableDate
             + "and (a.availableDateTimeStatus = 'OPEN' or a.availableDateTimeStatus = 'USED') "
             + "order by a.localDateTime")
     List<AvailableDateTime> findOpenAndUsedAvailableDateTimesByCoachId(@Param("coachId") final Long coachId,
-                                                                @Param("year") final int year,
-                                                                @Param("month") final int month);
+                                                                       @Param("year") final int year,
+                                                                       @Param("month") final int month);
 
     @Query("select count(a.id) from AvailableDateTime a "
             + "where a.coachId = :coachId "
