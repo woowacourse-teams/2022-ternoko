@@ -24,7 +24,7 @@ const LoginPage = () => {
                 <source srcSet="/assets/icon/slack.avif" type="image/avif" />
                 <img src="/assets/icon/slack.png" alt="슬랙 로고" />
               </picture>
-              크루 로그인
+              크루 체험하기
             </S.LoginButton>
 
           </a>
@@ -35,7 +35,7 @@ const LoginPage = () => {
                 <source srcSet="/assets/icon/slack.avif" type="image/avif" />
                 <img src="/assets/icon/slack.png" alt="슬랙 로고" />
               </picture>
-              코치 로그인
+              코치 체험하기
             </S.LoginButton>
 
           </a>
