@@ -35,8 +35,4 @@ const theme = {
   },
 };
 
-export type Colors = typeof theme.colors;
-export type Shadows = typeof theme.shadows;
-export type Devices = typeof theme.devices;
-
 export default theme;

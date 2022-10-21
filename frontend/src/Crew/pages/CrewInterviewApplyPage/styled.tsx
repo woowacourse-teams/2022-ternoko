@@ -41,7 +41,7 @@ export const Body = styled.div`
 `;
 
 type BoxProps = {
-  StepStatusType: StepStatusType;
+  stepStatus: StepStatusType;
   hideFoldBoxOverflow?: boolean;
 };
 
@@ -72,8 +72,8 @@ export const Box = styled.div<BoxProps>`
       }
     `}
 
-  ${({ StepStatusType }) =>
-    StepStatusType === 'show' &&
+  ${({ stepStatus }) =>
+    stepStatus === 'show' &&
     css`
       display: block;
 
@@ -86,14 +86,14 @@ export const Box = styled.div<BoxProps>`
       }
     `}
 
-  ${({ StepStatusType }) =>
-    StepStatusType === 'hidden' &&
+  ${({ stepStatus }) =>
+    stepStatus === 'hidden' &&
     css`
       display: none;
     `}
 
-  ${({ StepStatusType }) =>
-    StepStatusType === 'onlyShowTitle' &&
+  ${({ stepStatus }) =>
+    stepStatus === 'onlyShowTitle' &&
     css`
       display: block;
 

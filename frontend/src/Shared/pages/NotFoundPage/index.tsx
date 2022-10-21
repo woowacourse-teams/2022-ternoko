@@ -4,7 +4,7 @@ import * as S from './styled';
 
 import Button from '@/Shared/components/Button/styled';
 
-import { PAGE } from '@/Shared/constants';
+import { PATH } from '@/Shared/constants/path';
 import LocalStorage from '@/Shared/localStorage';
 
 type NotFoundPageType = 'DENY' | 'DEFAULT';
@@ -17,14 +17,14 @@ const NotFoundPage = ({ type }: NotFoundPageProps) => {
   const role = LocalStorage.getMemberRole();
 
   if (!role) {
-    return <Navigate to={PAGE.LOGIN} />;
+    return <Navigate to={PATH.LOGIN} />;
   }
 
   const handleClickButton = () => {
     if (type === 'DEFAULT') {
-      location.href = PAGE.LOGIN;
+      location.href = PATH.LOGIN;
     } else if (type === 'DENY') {
-      location.href = role === 'CREW' ? PAGE.CREW_HOME : PAGE.COACH_HOME;
+      location.href = role === 'CREW' ? PATH.CREW_HOME : PATH.COACH_HOME;
     }
   };
 

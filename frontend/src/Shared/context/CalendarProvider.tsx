@@ -55,7 +55,7 @@ export const monthNames = [
   '10월',
   '11월',
   '12월',
-];
+] as const;
 
 export const dayNamesOfWeek = ['일', '월', '화', '수', '목', '금', '토'] as const;
 

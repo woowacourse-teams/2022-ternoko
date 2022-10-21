@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const dotenv = require('dotenv');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (mode = {}) => {
@@ -11,14 +10,11 @@ module.exports = (mode = {}) => {
 
   return {
     entry: `${path.resolve(__dirname, '../src')}/index.tsx`,
-    module: {
-      rules: [
-        {
-          test: /\.(ts|tsx|js|jsx)$/,
-          use: 'babel-loader',
-          exclude: /node_modules/,
-        },
-      ],
+    output: {
+      filename: '[name].[contenthash].js',
+      path: path.resolve(__dirname, '../dist'),
+      publicPath: '/',
+      clean: true,
     },
     plugins: [
       new webpack.EnvironmentPlugin(process.env),

@@ -33,15 +33,18 @@ import {
 import { CREW_APPLY_FORM_MAX_LENGTH } from '@/Crew/constants';
 import { isValidApplyFormLength } from '@/Crew/validation';
 
-import { ERROR_MESSAGE, INITIAL_NUMBER_STATE, PAGE, SUCCESS_MESSAGE } from '@/Shared/constants';
+import { INITIAL_NUMBER_STATE } from '@/Shared/constants';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '@/Shared/constants/message';
+import { PATH } from '@/Shared/constants/path';
 import { separateFullDate } from '@/Shared/utils';
 
-import { CoachType, CrewSelectTimeType, InterviewType, StringDictionaryType } from '@/Types/domain';
+import { AvailableTimeType, CoachType, StringDictionaryType } from '@/Types/domain';
 
 export type StepStatusType = 'show' | 'hidden' | 'onlyShowTitle';
 
-type AvailableTimeType = { id: number; time: string };
-type AvailableScheduleType = StringDictionaryType<{ id: number; time: string }>;
+type ServerTimeType = { id: number; time: string };
+
+type AvailableScheduleType = StringDictionaryType<ServerTimeType>;
 
 const CrewInterviewApplyPage = () => {
   const navigate = useNavigate();
@@ -62,14 +65,10 @@ const CrewInterviewApplyPage = () => {
   } = useCalendarActions();
   const { getDateStrings, isSameDate, isSelectedDate } = useCalendarUtils();
 
-  const [StepStatusType, setStepStatusType] = useState<StepStatusType[]>([
-    'show',
-    'hidden',
-    'hidden',
-  ]);
+  const [stepStatus, setStepStatus] = useState<StepStatusType[]>(['show', 'hidden', 'hidden']);
   const [coaches, setCoaches] = useState<CoachType[]>([]);
   const [availableSchedules, setAvailableSchedules] = useState<AvailableScheduleType>({});
-  const [availableTimes, setAvailableTimes] = useState<AvailableTimeType[]>([]);
+  const [availableTimes, setAvailableTimes] = useState<ServerTimeType[]>([]);
 
   const [coachId, setCoachId] = useState(INITIAL_NUMBER_STATE);
   const [availableDateTimeId, setAvailableDateTimeId] = useState(INITIAL_NUMBER_STATE);
@@ -82,7 +81,7 @@ const CrewInterviewApplyPage = () => {
   const initRef = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const rerenderCondition = useMemo(() => Date.now(), [StepStatusType[1]]);
+  const rerenderCondition = useMemo(() => Date.now(), [stepStatus[1]]);
   const timeRerenderKey = useMemo(() => Date.now(), [selectedDates]);
 
   const isNotValidForm =
@@ -104,17 +103,14 @@ const CrewInterviewApplyPage = () => {
       ? getCoachScheduleAndUsedScheduleAPI(Number(interviewId), coachId, year, month)
       : getCoachScheduleAPI(coachId, year, month);
 
-  const updateStatusWhenCalendarShow = (calendarTimes: CrewSelectTimeType[]) => {
-    const schedules = calendarTimes.reduce(
-      (acc: AvailableScheduleType, { id, calendarTime }: CrewSelectTimeType) => {
-        const { day, time } = separateFullDate(calendarTime);
+  const updateStatusWhenCalendarShow = (calendarTimes: AvailableTimeType[]) => {
+    const schedules = calendarTimes.reduce((acc, { id, calendarTime }) => {
+      const { day, time } = separateFullDate(calendarTime);
 
-        acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], { id, time }] : [{ id, time }];
+      acc[Number(day)] = acc[Number(day)] ? [...acc[Number(day)], { id, time }] : [{ id, time }];
 
-        return acc;
-      },
-      {} as AvailableScheduleType,
-    );
+      return acc;
+    }, {} as AvailableScheduleType);
 
     setAvailableSchedules(schedules);
 
@@ -125,9 +121,7 @@ const CrewInterviewApplyPage = () => {
     } else if (interviewId && initRef.current) {
       schedules[selectedDates[0].day] || resetSelectedDates();
 
-      const usedCalendarTime = calendarTimes.find(
-        ({ status }: CrewSelectTimeType) => status === 'USED',
-      ) as CrewSelectTimeType;
+      const usedCalendarTime = calendarTimes.find(({ status }) => status === 'USED');
 
       usedCalendarTime && setAvailableDateTimeId(usedCalendarTime.id);
 
@@ -138,7 +132,7 @@ const CrewInterviewApplyPage = () => {
   };
 
   const handleClickStepTitle = (step: number) => {
-    setStepStatusType((prevStepStatusType) =>
+    setStepStatus((prevStepStatusType) =>
       prevStepStatusType.map((StepStatusType, index) =>
         index === step ? 'show' : index > step ? 'hidden' : StepStatusType,
       ),
@@ -146,7 +140,7 @@ const CrewInterviewApplyPage = () => {
   };
 
   const handleClickStepNextButton = (step: number) => {
-    setStepStatusType((prevStepStatusType) =>
+    setStepStatus((prevStepStatusType) =>
       prevStepStatusType.map((StepStatusType, index) =>
         index === step ? 'onlyShowTitle' : index === step + 1 ? 'show' : StepStatusType,
       ),
@@ -219,14 +213,14 @@ const CrewInterviewApplyPage = () => {
         await putInterviewAPI(Number(interviewId), body);
         offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.UPDATE_INTERVIEW);
-        navigate(`${PAGE.INTERVIEW_COMPLETE}/${interviewId}`);
+        navigate(`${PATH.INTERVIEW_COMPLETE}/${interviewId}`);
       } else {
         const response = await postInterviewAPI(body);
         const location = response.headers.location;
 
         offLoading();
         showToast('SUCCESS', SUCCESS_MESSAGE.CREATE_INTERVIEW);
-        navigate(`${PAGE.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
+        navigate(`${PATH.INTERVIEW_COMPLETE}/${location.split('/').pop()}`);
       }
     } catch (error) {
       showToast('ERROR', ERROR_MESSAGE.CHECK_DAY_AND_TIME);
@@ -237,19 +231,20 @@ const CrewInterviewApplyPage = () => {
   useEffect(() => {
     (async () => {
       const coachResponse = await getCoachesAPI();
+
       setCoaches(coachResponse.data.coaches);
 
       if (!interviewId) return;
 
       const interviewResponse = await getInterviewAPI(Number(interviewId));
-      const { coachNickname, interviewQuestions, interviewStartTime }: InterviewType =
-        interviewResponse.data;
+      const { coachNickname, interviewQuestions, interviewStartTime } = interviewResponse.data;
 
-      const coach = coachResponse.data.coaches.find(
-        ({ nickname }: CoachType) => nickname === coachNickname,
-      );
-      setCoachId(coach.id);
-      originCoachIdRef.current = coach.id;
+      const coach = coachResponse.data.coaches.find(({ nickname }) => nickname === coachNickname);
+
+      if (coach) {
+        setCoachId(coach.id);
+        originCoachIdRef.current = coach.id;
+      }
 
       setAnswer1(interviewQuestions[0].answer);
       setAnswer2(interviewQuestions[1].answer);
@@ -263,22 +258,22 @@ const CrewInterviewApplyPage = () => {
   }, []);
 
   useEffect(() => {
-    if (StepStatusType[1] === 'show') {
+    if (stepStatus[1] === 'show') {
       (async () => {
         const response = await coachScheduleAPI();
 
         updateStatusWhenCalendarShow(response.data.calendarTimes);
       })();
     }
-  }, [StepStatusType, year, month]);
+  }, [stepStatus, year, month]);
 
   return (
     <>
       <Header />
       <S.Body>
-        <TitleBox to={PAGE.CREW_HOME}>{interviewId ? '면담 수정하기' : '면담 신청하기'}</TitleBox>
+        <TitleBox to={PATH.CREW_HOME}>{interviewId ? '면담 수정하기' : '면담 신청하기'}</TitleBox>
         <S.Container>
-          <S.Box StepStatusType={StepStatusType[0]}>
+          <S.Box stepStatus={stepStatus[0]}>
             <div className="sub-title" onClick={() => handleClickStepTitle(0)}>
               <S.Circle>1</S.Circle>
               <h3>
@@ -322,7 +317,7 @@ const CrewInterviewApplyPage = () => {
             </div>
           </S.Box>
 
-          <S.Box StepStatusType={StepStatusType[1]} hideFoldBoxOverflow>
+          <S.Box stepStatus={stepStatus[1]} hideFoldBoxOverflow>
             <div className="sub-title" onClick={() => handleClickStepTitle(1)}>
               <S.Circle>2</S.Circle>
               <h3>
@@ -366,7 +361,7 @@ const CrewInterviewApplyPage = () => {
             </div>
           </S.Box>
 
-          <S.Box StepStatusType={StepStatusType[2]}>
+          <S.Box stepStatus={stepStatus[2]}>
             <div className="sub-title">
               <S.Circle>3</S.Circle>
               <h3>사전 논의 내용을 입력해주세요.</h3>

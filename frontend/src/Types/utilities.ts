@@ -1,1 +1,1 @@
-export type ValueofType<T> = T[keyof T];
+export type ValueofType<T extends unknown> = T[keyof T];
