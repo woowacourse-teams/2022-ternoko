@@ -20,7 +20,7 @@ spring:
     generate-ddl: true
     defer-datasource-initialization: true
   datasource:
-    url:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
     username: sa
   h2:
     console:

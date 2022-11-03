@@ -1,11 +1,14 @@
 package com.woowacourse.ternoko.support.utils;
 
-import com.google.common.base.CaseFormat;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.CaseFormat;
 
 @Component
 public class DatabaseCleaner {
@@ -31,7 +34,7 @@ public class DatabaseCleaner {
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
 
         for (String tableName : tableNames) {
-            entityManager.createNativeQuery("TRUNCATE TABLE " + tableName + " RESTART IDENTITY ").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
         }
 
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
