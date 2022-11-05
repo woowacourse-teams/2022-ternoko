@@ -1,18 +1,18 @@
 package com.woowacourse.ternoko.core.application;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.AVAILABLE_DATE_TIME_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.COACH_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.CREW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INTERVIEW_NOT_FOUND;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_BY_MEMBER;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_CREW_ID;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DUPLICATE_DATE_TIME;
-import static com.woowacourse.ternoko.common.exception.ExceptionType.USED_BY_OTHER;
-import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.USED;
-import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.isCanceled;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.*;
+import static com.woowacourse.ternoko.core.domain.interview.InterviewStatusType.*;
 import static java.lang.Long.valueOf;
-import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
 import com.woowacourse.ternoko.common.exception.CoachInvalidException;
@@ -34,14 +34,8 @@ import com.woowacourse.ternoko.core.dto.response.ScheduleResponse;
 import com.woowacourse.ternoko.support.alarm.AlarmResponse;
 import com.woowacourse.ternoko.support.alarm.AlarmResponseCache;
 import com.woowacourse.ternoko.support.alarm.SlackMessageType;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -60,7 +54,7 @@ public class InterviewService {
     private final AvailableDateTimeRepository availableDateTimeRepository;
     private final AlarmResponseCache cache;
 
-    @Transactional(isolation = SERIALIZABLE)
+    @Transactional
     public Long create(final Long crewId, final InterviewRequest interviewRequest) {
         final Interview interview = convertInterview(crewId, interviewRequest);
         validateDuplicateStartTimeByCrew(interviewRequest.getInterviewDatetime(), crewId);

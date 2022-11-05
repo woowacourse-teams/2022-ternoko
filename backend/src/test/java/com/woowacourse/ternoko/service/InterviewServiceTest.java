@@ -1,36 +1,31 @@
 package com.woowacourse.ternoko.service;
 
-import static com.woowacourse.ternoko.common.exception.ExceptionType.INVALID_INTERVIEW_DATE;
-import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.DELETED;
-import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.OPEN;
-import static com.woowacourse.ternoko.support.fixture.MemberFixture.COACH1;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture._2022_07_01_10_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_브리_2022_07_01_10_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_준_2022_07_01_10_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_준_2022_07_01_11_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_준_2022_07_01_12_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_토미_2022_07_01_10_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_토미_2022_07_01_11_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간_토미_2022_07_01_12_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간생성요청정보_2022_07_01_10_TO_12;
-import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.면담가능시간생성요청정보_2022_07_02_10_TO_12;
-import static com.woowacourse.ternoko.support.fixture.refactor.InterviewFixture.면담사전질문요청정보들;
-import static com.woowacourse.ternoko.support.fixture.refactor.InterviewFixture.면담생성요청정보_준_2022_07_01_10_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.InterviewFixture.면담생성요청정보_토미_2022_07_01_10_00;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.김록바;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.김애쉬;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.네오;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.브리;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.손앤지;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.준;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.토미;
-import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.허수달;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import static com.woowacourse.ternoko.common.exception.ExceptionType.*;
+import static com.woowacourse.ternoko.core.domain.availabledatetime.AvailableDateTimeStatus.*;
+import static com.woowacourse.ternoko.support.fixture.MemberFixture.*;
+import static com.woowacourse.ternoko.support.fixture.refactor.AvailableDateTimeFixture.*;
+import static com.woowacourse.ternoko.support.fixture.refactor.InterviewFixture.*;
+import static com.woowacourse.ternoko.support.fixture.refactor.MemberFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.woowacourse.ternoko.common.exception.AvailableDateTimeInvalidException;
 import com.woowacourse.ternoko.common.exception.InterviewInvalidException;
@@ -48,20 +43,6 @@ import com.woowacourse.ternoko.support.alarm.AlarmResponseCache;
 import com.woowacourse.ternoko.support.alarm.SlackAlarm;
 import com.woowacourse.ternoko.support.time.TimeMachine;
 import com.woowacourse.ternoko.support.utils.DatabaseSupporter;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class InterviewServiceTest extends DatabaseSupporter {
@@ -530,22 +511,31 @@ class InterviewServiceTest extends DatabaseSupporter {
     }
 
     @Test
-    @Disabled
-    @DisplayName("같은 가능 시간에 여러개의 면담을 생성할 수 없다. (동시성테스트)")
-    void test_concurrent() {
+    @DisplayName("한 코치의 하나의 면담 가능 시간으로 동시에 여러개의 면담을 생성할 수 없다. - 동시성테스트")
+    void concurrentCreate() throws InterruptedException {
+        final int numberOfThreads = 2;
+        final ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
+        final CountDownLatch start = new CountDownLatch(numberOfThreads);
+        final CountDownLatch end = new CountDownLatch(numberOfThreads);
         coachService.putAvailableDateTimesByCoachId(준.getId(), 면담가능시간생성요청정보_2022_07_01_10_TO_12);
-        ExecutorService service = Executors.newCachedThreadPool();
 
-        for (Long i = 5L; i <= 6L; i++) {
-            final Long finalI = i;
+        for (long i = 5L; i < 5 + numberOfThreads; i++) {
+            final long finalI = i;
             service.execute(() -> {
                 try {
+                    start.countDown();
+                    start.await();
                     interviewService.create(finalI, 면담생성요청정보_준_2022_07_01_10_00);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
+                } finally {
+                    end.countDown();
                 }
             });
         }
+        end.await();
+        final ScheduleResponse response = interviewService.findAllByCoach(준.getId(), 2022, 7);
+        assertThat(response.getCalendar()).hasSize(1);
     }
 
     private void 현재시간_설정(final int year, final int month, final int day, final int hour, final int minute) {
