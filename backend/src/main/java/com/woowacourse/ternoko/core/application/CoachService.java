@@ -82,7 +82,13 @@ public class CoachService {
                 availableDateTime.getYear(),
                 availableDateTime.getMonth(),
                 OPEN);
-        availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, availableDateTime.getTimes()));
+
+        final List<AvailableDateTimeSummaryRequest> onlyOpenTimes = availableDateTime.getTimes().stream()
+                .filter(availableDateTimeSummaryRequest ->
+                        availableDateTimeSummaryRequest.getAvailableDateTimeStatus().equals(OPEN))
+                .collect(Collectors.toList());
+
+        availableDateTimeRepository.saveAll(toAvailableDateTimes(coach, onlyOpenTimes));
     }
 
     private List<AvailableDateTime> toAvailableDateTimes(final Coach coach,
@@ -98,7 +104,7 @@ public class CoachService {
             final int year,
             final int month) {
 
-        return availableDateTimeRepository.findOpenAvailableDateTimesByCoachId(coachId, year, month);
+        return availableDateTimeRepository.findOpenAndUsedAvailableDateTimesByCoachId(coachId, year, month);
     }
 
     public void updateCoach(final Long coachId, final CoachUpdateRequest coachUpdateRequest) {
