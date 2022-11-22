@@ -30,7 +30,7 @@ jobs:
       - name: 리포지토리를 가져옵니다
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.SUBMODULE_TOKEN }}
+          token: ${{ secrets.TOKEN }}
           submodules: recursive
 
       - name: JDK 11을 설치합니다
@@ -56,7 +56,7 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
-          token: ${{ github.token }}
+          token: ${{ secrets.TOKEN }}
 
       - name: build 실패 시 Slack으로 알립니다
         uses: 8398a7/action-slack@v3
